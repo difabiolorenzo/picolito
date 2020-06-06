@@ -1,0 +1,41 @@
+:root {
+    --picolo_yellow: #E7BB00;
+    --picolo_red: #E51000;
+    --picolo_blue: #1B586B;
+    --picolo_green: #00B407;
+  }
+
+.page {
+    padding: 5vw;
+    height: 100vh;
+}
+.btn-secondary{ width: 100%; }
+#game {
+}
+#ingame_content {    
+    text-align: center;
+    color:white;
+}
+#ingame_text {
+    padding-top:10%;
+}
+
+p#ingame_sentence {font-weight: bold;font-size: 6.5vh;}
+
+div#game.yellow {background-color: var(--picolo_yellow);}
+div#game.red {background-color: var(--picolo_red);}
+div#game.blue {background-color: var(--picolo_blue);}
+div#game.green {background-color: var(--picolo_green);}
+
+@media screen and (orientation:portrait) {
+    #ingame_content {
+        text-align: center;
+        transform: rotate(90deg) translateX(50%) translateY(-50%) scale(0.75);
+        height: 0vw;
+        width: 100vh;
+    }
+    p#ingame_sentence {
+        font-size: 5vh;
+    }
+}
+
