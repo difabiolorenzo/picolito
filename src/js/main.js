@@ -1,25 +1,53 @@
 function init() {
-    gamemode = "default"
     player_list = [];
 
+    // generateRandomPlayer();
     defaultVariables();
-    goGamePage()
+    // goGamePage()
+}
+
+function generateRandomPlayer() {
+    function randomHex(hex) {
+        return (Math.random()*hex<<0).toString(16)
+    }
+    for (var i = 0; i < Math.floor(Math.random() * 10); i++ ) {
+        var randomUUID = (randomHex(0xFFFFFFFF))
+        player_list.push(randomUUID)
+    }
 }
 
 function defaultVariables() {
     game = {
         started: false,
         cycle_state: 0,
+        gamemode: "default",
 
-        settings: {
-            sentence_amont: 50
-        },
         sip: { min: 1, max: 5 },
-        probability: { default: 1, blue: 0.6, red: 0.05, green: 0.3, yellow: 0.25 },
-        nature: { blue: [1, 8, 10, 13, 15, 16, 18, 19, 24, 25], red: [5, 6, 7], green: [4, 11, 12, 14, 17, 20, 21, 25, 23], yellow: [2, 3] },
-
+        type_info : [
+            ["blue", 0.65, [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25]],
+            ["red", 0.05, [5, 6, 7]],
+            ["green", 0.25, [4, 11, 12, 14, 17, 20, 21, 22, 23]],
+            ["yellow", 0.05, [2, 3]]
+        ],
+        type_used_by_gamemode: [
+            ["bar", [1, 2, 4, 17, 18, 19, 20, 21, 22]],
+            ["default", [1, 2, 3, 4, 5, 14, 15, 23, 24, 25]],
+            ["hot", [1, 2, 3, 4, 7, 14, 23, 24, 25]],
+            ["silly", [1, 2, 3, 4, 6, 14, 23, 24, 25]],
+            ["war", [8, 9, 10, 11, 12, 13]]
+        ],
+        nb_players_info: [   //"bar", "default", "hot", "silly", "war"
+            ["bar", [0,1,2], [1,3], ["X"], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], ["X"], ["X"], ["X"]],
+            ["default", [0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [2], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3], [3], [0,1,2,3,4]],
+            ["hot", [0,1,2,3,4,5], [1,2], [0], [0,1,2], ["X"], ["X"], [1,2], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [3,4], [0,1,2]],
+            ["silly", [0,1,2,3,4], [0,1,2], [0], [1,2,3], ["X"], [0,1,2,3], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3,4], [3,4], [0,1,2]],
+            ["war", ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"]]
+        ],
         sentence_history: [],
+        held_key: "",
+        holding_key: false,
 
+        sentence_amont: 50,
         have_down_drinked: false,
         virus_active: false,
         virus_end: undefined,
@@ -90,7 +118,11 @@ function updateHTMLPlayerCount() {
 }
 
 function updateHTMLGameCycleCount() {
-    document.getElementById("game_cycle_count").innerHTML = game.cycle_state + "/" + game.settings.sentence_amont
+    document.getElementById("game_cycle_count").innerHTML = game.cycle_state + "/" + game.sentence_amont
+}
+
+function updateHTMLBackgroundColor() {
+    document.getElementById("game").className = "page " + game.sentence_history[game.cycle_state-1].nature
 }
 
 function goGamePage() {
@@ -107,8 +139,8 @@ function exitGame() {
     displayPage('menu')
 }
 
-function nextSentence(){
-    if (game.cycle_state < game.settings.sentence_amont) {
+function nextSentence() {
+    if (game.cycle_state < game.sentence_amont) {
         game.cycle_state++;
         checkGameCycle()
         updateHTMLGameCycleCount()
@@ -126,6 +158,7 @@ function nextSentence(){
         } else {
             retrieve(game.cycle_state);
         }
+        updateHTMLBackgroundColor()
     }
 }
 
@@ -133,6 +166,7 @@ function previousSentence() {
     game.cycle_state--;
     checkGameCycle()
     updateHTMLGameCycleCount()
+    updateHTMLBackgroundColor()
 
     retrieve( game.cycle_state - 1 )
 }
@@ -146,7 +180,7 @@ function checkGameCycle() {
         document.getElementById("game_cycle_previous_button").disabled = true
     }
 
-    if (game.cycle_state == game.settings.sentence_amont) {
+    if (game.cycle_state == game.sentence_amont) {
         document.getElementById("game_cycle_next_button").className = "btn btn-secondary"
         document.getElementById("game_cycle_next_button").disabled = true
     } else {
@@ -157,28 +191,25 @@ function checkGameCycle() {
 
 function generate(nb_players_max) {
     
-    var type = getType();
-    var nature = "blue";
+    while (request == undefined) {
+        var get_type = getType(nb_players_max);
+        var type = get_type[0];
+        var nb_players = get_type[1];
+        var sentence_nature = get_type[2];
     
-    if (nb_players_max > 0) {
-        var nb_players = Math.floor(Math.random() * nb_players_max) + 1
-    } else {
-        var nb_players = 0
+        var request = db().filter({nb_players:nb_players.toString(), type:type}).get();
+        // console.log("request", request)
+        var random = Math.floor(Math.random() * Math.floor(request.length));
+        var sentence = brigadier(request[random].text);
     }
 
-    var request = default_fr().filter({nb_players:nb_players.toString(), type:type.toString()}).get();
-    var random = Math.floor(Math.random() * Math.floor(request.length));
-    var sentence = brigadier(request[random].text);
-
     document.getElementById("ingame_sentence").innerHTML = sentence;
-
-    document.getElementById("game").className = "page " + nature;
 
     var sentence_history_item = {
         id: game.cycle_state,
         sentence: sentence,
         type: type,
-        nature: nature
+        nature : sentence_nature
     }
     game.sentence_history.push(sentence_history_item);
 }
@@ -189,24 +220,97 @@ function retrieve(sentence_id) {
     updateHTMLGameCycleCount()
 }
 
-function getType() {
+function getType(nb_players_max) {
 
-    var nature_probability = [];
-    for (var i in game.probability) { nature_probability.push([i, game.probability[i]]); }
-    nature_probability.sort( function(a, b) { return a[1] - b[1]; } );
-    console.log(nature_probability)
+    //sorting raw default type data
+    var probability_list = [];
+    for (var i in game.type_info) {
+        probability_list.push(game.type_info[i])
+    }
+    probability_list.sort( function(a, b) { return a[1] - b[1]; } );
 
-    // var random_type_probability = 1 - Math.round(Math.random() * 100) / 100
-    // console.log(random_type_probability)
-
-    for (var i = 0; i < nature_probability; i++) {
+    //random between 0 and 1
+    while (random_probability == 0 || random_probability == 1 || random_probability == undefined) {
+        var random_probability = 1 - Math.round(Math.random() * 100) / 100
     }
 
-    // if (Math.random() <= 0.66) { }
-    // if (Math.random() >= 0.5) console.log("type vert");
+    //get type by random number
+    var selected_type = []
+    var sentence_nature = ""
+    var random_probability_step = 0;
+    var random_probability_next_step = 0;
+    for (var i = 0; i < probability_list.length; i++) {
 
-    var type = 1;
-    return type;
+        random_probability_next_step = random_probability_next_step + probability_list[i][1];
+
+        if (random_probability > random_probability_step && random_probability < random_probability_next_step) {
+            sentence_nature = probability_list[i][0]
+            selected_type = probability_list[i]
+        }
+        random_probability_step = random_probability_next_step;
+    }
+
+    //get type by selected gamemode
+    var possible_type_by_gamemode
+    var useable_type_by_gamemode = []
+    for (var i in game.type_used_by_gamemode) {
+        if (game.gamemode == game.type_used_by_gamemode[i][0]) {
+            possible_type_by_gamemode = game.type_used_by_gamemode[i]
+            break;
+        }
+    }
+
+    for (var i in possible_type_by_gamemode[1]) {
+        for (var j in selected_type[2]) {
+            if (possible_type_by_gamemode[1][i] == selected_type[2][j]) {
+                useable_type_by_gamemode.push(possible_type_by_gamemode[1][i])
+            }
+        }
+    }
+
+    // get nb_players by gamemode
+    var nb_players_by_type = []
+    for (var i in useable_type_by_gamemode) {
+        for (var j in game.nb_players_info) {
+            if (game.nb_players_info[j][0] == game.gamemode) {
+                nb_players_by_type.push([useable_type_by_gamemode[i], game.nb_players_info[j][useable_type_by_gamemode[i]]])
+            }
+        }
+    }
+
+    //select type by compatible nb_players in nb_players_by_type
+    var possible_type = []
+    for (var i in nb_players_by_type) {
+        var possible_type_nb_players = []
+        for (var j in nb_players_by_type[i][1]) {
+            if (nb_players_by_type[i][1][j] <= nb_players_max) {
+                // console.log(nb_players_max, nb_players_by_type[i][0], nb_players_by_type[i][1][j])
+                possible_type_nb_players.push(nb_players_by_type[i][1][j])
+            }
+        }
+        if (possible_type_nb_players.length != 0) {
+            possible_type.push([nb_players_by_type[i][0], possible_type_nb_players])
+        }
+    }
+
+    //random mode and random player number by that selected mode
+    var selection_type_index = Math.floor(Math.random() * possible_type.length)
+    var selected_type = possible_type[selection_type_index][0].toString()
+
+    var selection_nb_players_index = Math.floor(Math.random() * possible_type[selection_type_index][1].length)
+    var selected_nb_players = possible_type[selection_type_index][1][selection_nb_players_index]
+    
+    // var type = useable_type_by_gamemode[Math.floor(Math.random() * useable_type_by_gamemode.length)].toString()
+
+    //type selection from possible_type
+    // var selected_type_index = Math.floor(Math.random() * possible_type.length)
+    // var selected_type = (possible_type[selected_type_index][0]).toString()
+    // var selected_nb_players = Math.floor(Math.random() * (possible_type[selected_type_index][1][1] - possible_type[selected_type_index][1][0])) + possible_type[selected_type_index][1][0]
+
+    var data = [selected_type, selected_nb_players, sentence_nature]
+    // console.log("data", data)
+
+    return data;
 }
 
 function brigadier(text) {

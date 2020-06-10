@@ -18,11 +18,22 @@
         <script type="text/javascript" src="./src/js/db/default_fr.js"></script>
     </head>
     <body onload="init()">
+        <a style="display: block;position: absolute;bottom: 0;left:0;color: white;font-size: 3vw;background-color: black;">WIP mdrrr</a>
+        <a style="display: block;position: absolute;bottom: 0;right:0;color: white;font-size: 3vw;background-color: black;">0.2</a>
         <div class="warning page" id="disclaimer" style="display:block">
             <h2 id="disclaimer_title">Attention</h2>
             <p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolito.</p>
             <button class="btn btn-success" onclick="displayPage('menu')">Ok</button>
             <!-- <button class="btn btn-danger">Fermer</button> -->
+            <hr>
+            <h2>En développement</h2>
+            <p>Le mode de jeu <b>Before</b> est le seul fonctionnel</p>
+            <p>Certaines phrases du type:</p>
+            <ul>
+                <p>Désignez tous ensemble la personne la plus intelligente qui devra boire X gorgées</p>
+                <p>Einstein se venge et distribue X gorgées</p>
+            </ul>
+            <p>peuvent s'afficher sans qu'on ne leur ait demandé quoi que ce soit. Et bien sûr dans un ordre au pif</p>
         </div>
         <div class="page" id="menu" style="display:none;">
             <h1>PICOLITO</h1>
@@ -49,31 +60,31 @@
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary">
-                  <input type="radio" name="default" id="option1" onclick="gamemode = this.value" autocomplete="off" checked>
+                  <input type="radio" name="default" id="option1" onclick="game.gamemode = this.value" autocomplete="off" checked>
                   <h3>Before</h3>
                   <p>Le mode de jeu parfait pour s'ambiancer en soirées.</p>
                   <p>Soyez prêts, car Picolito ne vous fera pas de cadeaux.</p>
                 </label><hr>
                 <label class="btn btn-secondary">
-                  <input type="radio" name="silly" id="option2" onclick="gamemode = this.value" autocomplete="off">
+                  <input type="radio" name="silly" id="option2" onclick="game.gamemode = this.value" autocomplete="off">
                   <h3>On est débiles</h3>
                   <p>Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.</p>
                   <p>Attention, public averti.</p>
                 </label><hr>
                 <label class="btn btn-secondary">
-                  <input type="radio" name="bar" id="option3" onclick="gamemode = this.value" autocomplete="off">
+                  <input type="radio" name="bar" id="option3" onclick="game.gamemode = this.value" autocomplete="off">
                   <h3>Bar</h3>
                   <p>Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.</p>
                   <p>Attention, il ne faut pas avoir peur du ridicule.</p>
                 </label><hr>
                 <label class="btn btn-secondary">
-                  <input type="radio" name="hot" id="option4" onclick="gamemode = this.value" autocomplete="off">
+                  <input type="radio" name="hot" id="option4" onclick="game.gamemode = this.value" autocomplete="off">
                   <h3>Caliente</h3>
                   <p>Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
                   <p>Est-ce que ça va pécho ce soir?</p>
                 </label><hr>
                 <label class="btn btn-secondary">
-                  <input type="radio" name="war" id="option5" onclick="gamemode = this.value" autocomplete="off">
+                  <input type="radio" name="war" id="option5" onclick="game.gamemode = this.value" autocomplete="off">
                   <h3>Guerre</h3>
                   <p>Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
                   <p>Ce soir c'est la guerre!</p>
@@ -91,7 +102,7 @@
                     </div>
                     <button class="col-md-1 btn btn-secondary" onclick="exitGame()">Joueurs</button>
                 </div>
-                <div id="ingame_text">
+                <div id="ingame_text" onclick="nextSentence()">
                     <h1 id="ingame_title"></h1>
                     <p id="ingame_sentence"></p>
                 </div>

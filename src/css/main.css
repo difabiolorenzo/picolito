@@ -10,8 +10,7 @@
     height: 100vh;
 }
 .btn-secondary{ width: 100%; }
-#game {
-}
+#game {transition: background-color 0.5s ease;}
 #ingame_content {    
     text-align: center;
     color:white;
@@ -20,7 +19,7 @@
     padding-top:10%;
 }
 
-p#ingame_sentence {font-weight: bold;font-size: 6.5vh;}
+p#ingame_sentence {font-weight: bold;font-size: 6.5vh;user-select: none;}
 
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
@@ -39,3 +38,6 @@ div#game.green {background-color: var(--picolo_green);}
     }
 }
 
+/* p {
+        text-shadow: 0.5vw 0.5vh 1vw rgb(0 0 0 / 50%);
+} */
