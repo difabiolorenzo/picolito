@@ -1,9 +1,15 @@
 function init() {
     player_list = [];
 
-    // generateRandomPlayer();
-    defaultVariables();
-    // goGamePage()
+    // generateRandomPlayer()
+    defaultVariables()
+    filterVariables()
+    // dev()
+}
+
+function dev() {
+    displayPage('menu')
+    goGamePage()
 }
 
 function generateRandomPlayer() {
@@ -18,10 +24,6 @@ function generateRandomPlayer() {
 
 function defaultVariables() {
     game = {
-        started: false,
-        cycle_state: 0,
-        gamemode: "default",
-
         sip: { min: 1, max: 5 },
         type_info : [
             ["blue", 0.65, [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25]],
@@ -36,36 +38,69 @@ function defaultVariables() {
             ["silly", [1, 2, 3, 4, 6, 14, 23, 24, 25]],
             ["war", [8, 9, 10, 11, 12, 13]]
         ],
-        nb_players_info: [   //"bar", "default", "hot", "silly", "war"
+        nb_players_info: [
             ["bar", [0,1,2], [1,3], ["X"], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], ["X"], ["X"], ["X"]],
             ["default", [0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [2], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3], [3], [0,1,2,3,4]],
             ["hot", [0,1,2,3,4,5], [1,2], [0], [0,1,2], ["X"], ["X"], [1,2], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [3,4], [0,1,2]],
             ["silly", [0,1,2,3,4], [0,1,2], [0], [1,2,3], ["X"], [0,1,2,3], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2,3,4], [3,4], [0,1,2]],
             ["war", ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"], ["X"]]
         ],
-        sentence_history: [],
-        held_key: "",
-        holding_key: false,
 
-        sentence_amont: 50,
-        have_down_drinked: false,
-        virus_active: false,
-        virus_end: undefined,
-        allow_shot: true,
-        player_disavantaged: false
+        started: false,
+        cycle_state: 0,
+        gamemode: "default",
+
+        sentence_history: [],
+        sentence_amount: 50,
+
+        down_drinking_actived: true,
+        down_drinking_triggered: false,
+        down_drinking_cycle_state_start_min: 10,                     // down_drinking start to appear after cycle_state X
+
+        virus_actived: true,
+        virus_amount: 1,
+        virus_triggered: false,
+        virus_end_min: 3,                                           // virus can end after X more cycle_state minimum
+        virus_end_max: 10,                                          // virus can end after X more cycle_state maximum
+        virus_cycle_state_start_min: 3,                             // virus start to appear after cycle_state X
+    }
+}
+ 
+function hopper(array, nature) {
+    var probability = []
+    for (var i in array) {
+        if (array[i][0] == nature) {
+            probability = array[i][1]
+            array.splice(i, 1)
+        }
+    }
+    
+    for (var i in array) {
+        array[i][1] = array[i][1] + (probability / array.length)
     }
 }
 
-function addDatabases(gamemode, language) {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = "./src/js/db/" + gamemode + "_" + language + ".js";    
-
-    document.getElementsByTagName('head')[0].appendChild(script);
+function filterVariables() {
+    if (game.down_drinking_actived == false) {
+        //delete and share red probability into others colors
+        hopper(game.type_info, "red")
+    }
+    if (game.virus_actived == false) {
+        //delete and share yellow probability into others colors
+        hopper(game.type_info, "yellow")
+    }
 }
 
-function replaceAt(string, index, replace, lenght) {
-    return string.substring(0, index) + replace + string.substring(index+lenght + 1);
+// function addDatabases(gamemode, language) {
+//     var script = document.createElement('script');
+//     script.type = 'text/javascript';
+//     script.src = "./src/js/db/" + gamemode + "_" + language + ".js";    
+
+//     document.getElementsByTagName('head')[0].appendChild(script);
+// }
+
+function replaceAt(string, index, replace, length) {
+    return string.substring(0, index) + replace + string.substring(index+length + 1);
 }
 
 function displayPage(page) {
@@ -118,11 +153,15 @@ function updateHTMLPlayerCount() {
 }
 
 function updateHTMLGameCycleCount() {
-    document.getElementById("game_cycle_count").innerHTML = game.cycle_state + "/" + game.sentence_amont
+    document.getElementById("game_cycle_count").innerHTML = game.cycle_state + "/" + game.sentence_amount
 }
 
 function updateHTMLBackgroundColor() {
-    document.getElementById("game").className = "page " + game.sentence_history[game.cycle_state-1].nature
+    if (game.sentence_history[game.cycle_state-1].nature != undefined) {
+        document.getElementById("game").className = "page " + game.sentence_history[game.cycle_state-1].nature
+    } else {
+        previousSentence()
+    }
 }
 
 function goGamePage() {
@@ -140,10 +179,9 @@ function exitGame() {
 }
 
 function nextSentence() {
-    if (game.cycle_state < game.sentence_amont) {
+    if (game.cycle_state < game.sentence_amount) {
         game.cycle_state++;
         checkGameCycle()
-        updateHTMLGameCycleCount()
 
         //nb_players_max
         if (player_list.length > 4) {
@@ -159,6 +197,7 @@ function nextSentence() {
             retrieve(game.cycle_state);
         }
         updateHTMLBackgroundColor()
+        updateHTMLGameCycleCount()
     }
 }
 
@@ -180,7 +219,7 @@ function checkGameCycle() {
         document.getElementById("game_cycle_previous_button").disabled = true
     }
 
-    if (game.cycle_state == game.sentence_amont) {
+    if (game.cycle_state == game.sentence_amount) {
         document.getElementById("game_cycle_next_button").className = "btn btn-secondary"
         document.getElementById("game_cycle_next_button").disabled = true
     } else {
@@ -190,28 +229,65 @@ function checkGameCycle() {
 }
 
 function generate(nb_players_max) {
-    
-    while (request == undefined) {
-        var get_type = getType(nb_players_max);
-        var type = get_type[0];
-        var nb_players = get_type[1];
-        var sentence_nature = get_type[2];
-    
-        var request = db().filter({nb_players:nb_players.toString(), type:type}).get();
-        // console.log("request", request)
-        var random = Math.floor(Math.random() * Math.floor(request.length));
-        var sentence = brigadier(request[random].text);
+    console.clear()
+    var get_type = getType(nb_players_max);
+    console.log(get_type)
+    var type = get_type[0];
+    var nb_players = get_type[1];
+    var sentence_nature = get_type[2];
+
+    var request = db().filter({nb_players:nb_players.toString(), type:type, parent_key:""}).get();
+    var random = Math.floor(Math.random() * Math.floor(request.length));
+    var key = request[random].key
+    var parent_key = request[random].parent_key
+    var sentence = brigadier(request[random].text);
+
+    console.log(request, sentence)
+    console.log(key, parent_key, sentence_nature)
+
+    //generate other sentence if key is something
+    if (key != "") {
+        if (sentence_nature == "yellow") {
+
+        } else {
+            var request = db().filter({nb_players:nb_players.toString(), type:type, parent_key:key}).get();
+            var random = Math.floor(Math.random() * Math.floor(request.length));
+            var sentence = brigadier(request[random].text);
+        }
     }
 
     document.getElementById("ingame_sentence").innerHTML = sentence;
 
+    addHistoryItem(0, sentence, key, (request[random].parent_key), type, sentence_nature)
+
+    //disable down drinking after once
+    if (sentence_nature == "red") {
+        game.down_drinking_triggered = true;
+        console.log("red disabled")
+    }
+}
+
+function addHistoryItem(posOffset, sentence, key, parent_key, type, nature) {
+    if (posOffset > 0) {
+        for (var i = 0; i < posOffset; i++) {
+            game.sentence_history.push("");
+        }
+    }
+
     var sentence_history_item = {
-        id: game.cycle_state,
         sentence: sentence,
+        key: key,
+        parent_key: parent_key,
         type: type,
-        nature : sentence_nature
+        nature : nature
     }
     game.sentence_history.push(sentence_history_item);
+}
+
+function checkBuggySituation(sentence_history_item) {
+    while (game.sentence_history[game.cycle_state - 1] == undefined) {
+        game.cycle_state--
+    }
 }
 
 function retrieve(sentence_id) {
@@ -221,13 +297,22 @@ function retrieve(sentence_id) {
 }
 
 function getType(nb_players_max) {
-
     //sorting raw default type data
     var probability_list = [];
     for (var i in game.type_info) {
-        probability_list.push(game.type_info[i])
+        if (game.type_info[i][0] == "red" && game.down_drinking_actived == true && game.down_drinking_cycle_state_start_min <= game.cycle_state && game.down_drinking_triggered == false) {
+            probability_list.push(game.type_info[i])
+        }
+        if (game.type_info[i][0] == "yellow" && game.virus_actived == true && game.virus_cycle_state_start_min <= game.cycle_state && game.virus_triggered == false) {
+            probability_list.push(game.type_info[i])
+        }
+        if (game.type_info[i][0] == "blue" || game.type_info[i][0] == "green") {
+            probability_list.push(game.type_info[i])
+        }
     }
+
     probability_list.sort( function(a, b) { return a[1] - b[1]; } );
+    console.log(probability_list)
 
     //random between 0 and 1
     while (random_probability == 0 || random_probability == 1 || random_probability == undefined) {
@@ -237,18 +322,17 @@ function getType(nb_players_max) {
     //get type by random number
     var selected_type = []
     var sentence_nature = ""
-    var random_probability_step = 0;
-    var random_probability_next_step = 0;
-    for (var i = 0; i < probability_list.length; i++) {
+        var random_probability_step = 0;
+        var random_probability_next_step = 0;
+        for (var i = 0; i < probability_list.length; i++) {
+            random_probability_next_step = random_probability_next_step + probability_list[i][1];
 
-        random_probability_next_step = random_probability_next_step + probability_list[i][1];
-
-        if (random_probability > random_probability_step && random_probability < random_probability_next_step) {
-            sentence_nature = probability_list[i][0]
-            selected_type = probability_list[i]
+            if (random_probability > random_probability_step && random_probability < random_probability_next_step) {
+                sentence_nature = probability_list[i][0]
+                selected_type = probability_list[i]
+            }
+            random_probability_step = random_probability_next_step;
         }
-        random_probability_step = random_probability_next_step;
-    }
 
     //get type by selected gamemode
     var possible_type_by_gamemode
@@ -256,7 +340,6 @@ function getType(nb_players_max) {
     for (var i in game.type_used_by_gamemode) {
         if (game.gamemode == game.type_used_by_gamemode[i][0]) {
             possible_type_by_gamemode = game.type_used_by_gamemode[i]
-            break;
         }
     }
 
@@ -267,6 +350,7 @@ function getType(nb_players_max) {
             }
         }
     }
+    console.log(useable_type_by_gamemode)
 
     // get nb_players by gamemode
     var nb_players_by_type = []
@@ -298,18 +382,9 @@ function getType(nb_players_max) {
     var selected_type = possible_type[selection_type_index][0].toString()
 
     var selection_nb_players_index = Math.floor(Math.random() * possible_type[selection_type_index][1].length)
-    var selected_nb_players = possible_type[selection_type_index][1][selection_nb_players_index]
-    
-    // var type = useable_type_by_gamemode[Math.floor(Math.random() * useable_type_by_gamemode.length)].toString()
-
-    //type selection from possible_type
-    // var selected_type_index = Math.floor(Math.random() * possible_type.length)
-    // var selected_type = (possible_type[selected_type_index][0]).toString()
-    // var selected_nb_players = Math.floor(Math.random() * (possible_type[selected_type_index][1][1] - possible_type[selected_type_index][1][0])) + possible_type[selected_type_index][1][0]
+    var selected_nb_players = possible_type[selection_type_index][1][selection_nb_players_index].toString()
 
     var data = [selected_type, selected_nb_players, sentence_nature]
-    // console.log("data", data)
-
     return data;
 }
 

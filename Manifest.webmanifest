@@ -1,0 +1,27 @@
+{
+  "short_name": "Picolito",
+  "name": "Picolito Online",
+  "theme_color": "#E7BB00",
+  "background_color": "#f8f9fa",
+  "display": "fullscreen",
+  "Scope": "/",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./src/img/icon_48.jpg",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "./src/img/icon_96.jpg",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "./src/img/icon_192.jpg",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "index.html"
+}

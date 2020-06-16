@@ -1,37 +1,53 @@
-## Welcome to GitHub Pages
+## Picolito
 
-You can use the [editor on GitHub](https://github.com/difabiolorenzo/picolito/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
+**en développement**
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Différences
 
-### Markdown
+**-**
+- Beaucoup de bugs en plus
+- Beaucoup de fonctionnalités en moins
+- Une seule langue (French 🥖)
+- Juste le mode `Before`
+- Impossible d'ajouter des règles personalisées
+- Impossible d'ajouter des joueurs en cours de jeu
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+**+**
+- Possibilité de faire marche arrières
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+### Prévention
 
-- Bulleted
-- List
+**Version Picolo**
 
-1. Numbered
-2. List
+L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo.
 
-**Bold** and _Italic_ and `Code` text
+**Version Picolito**
 
-[Link](url) and ![Image](src)
-```
+L'abus d'alcool est dangereux pour la santé. Prenez soins de vous et de vos ami(e)s. Cet alcool permet d'animer vos soirées cependant il peux aussi la ruiner...
+Merci de ne pas forcer les personnes jouant à ce jeu à boire plus qu'ils ne le peuvent.
+Pour plus d'information sur l'alcool et l'alcoolisme:
+- rendez vous sur [alcool-info-service.fr](https://www.alcool-info-service.fr/)
+- ou appeler le `0 980 980 930` _de 8h à 2h, appel non surtaxé_
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Fonctionnement
 
-### Jekyll Themes
+Il existe 5 mode de jeu pouvant avoir des thèmes divers `Before`, `On est débiles`, `Bar`, `Caliente` et `Guerre`.
+Chaques partie a 50 phrases ayant une couleur prédéfinie indiquant sont objectifs:
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/difabiolorenzo/picolito/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+`Bleu`
+Possède arbitrairement **65%** d'apparition.
+Peux être des actions, des questions, etc...
 
-### Support or Contact
+`Vert`
+Possède arbitrairement **25%** d'apparition.
+Peux être des sondages en groupe, des jeux, etc...
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+`Jaune`
+Possède arbitrairement **5%** d'apparition.
+Est un virus appliqué à un ou des joueur(s).
+
+`Rouge`
+Possède arbitrairement **5%** d'apparition.
+Oblige un joueur ou des joueur(s) à finir son verre.
