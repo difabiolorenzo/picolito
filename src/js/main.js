@@ -24,7 +24,7 @@ function generateRandomPlayer() {
 
 function defaultVariables() {
     game = {
-        sip: { min: 1, max: 5 },
+        sip: { min: 2, max: 5 },
         type_info : [
             ["blue", 0.65, [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25]],
             ["red", 0.05, [5, 6, 7]],
@@ -157,10 +157,10 @@ function updateHTMLGameCycleCount() {
 }
 
 function updateHTMLBackgroundColor() {
-    if (game.sentence_history[game.cycle_state-1].nature != undefined) {
-        document.getElementById("game").className = "page " + game.sentence_history[game.cycle_state-1].nature
-    } else {
+    if (game.sentence_history[game.cycle_state - 1] == undefined) {
         previousSentence()
+    } else {
+        document.getElementById("game").className = "page " + game.sentence_history[game.cycle_state-1].nature
     }
 }
 
@@ -181,7 +181,6 @@ function exitGame() {
 function nextSentence() {
     if (game.cycle_state < game.sentence_amount) {
         game.cycle_state++;
-        checkGameCycle()
 
         //nb_players_max
         if (player_list.length > 4) {
@@ -191,26 +190,27 @@ function nextSentence() {
         }
 
         //generate or retrieve
-        if (game.sentence_history[game.cycle_state] == undefined) {
+        if (game.sentence_history[game.cycle_state-1] == undefined) {
             generate(nb_players_max);
         } else {
-            retrieve(game.cycle_state);
+            retrieve(game.cycle_state - 1);
         }
         updateHTMLBackgroundColor()
         updateHTMLGameCycleCount()
+        updateGameCycle()
     }
 }
 
 function previousSentence() {
     game.cycle_state--;
-    checkGameCycle()
+    updateGameCycle()
     updateHTMLGameCycleCount()
     updateHTMLBackgroundColor()
 
     retrieve( game.cycle_state - 1 )
 }
 
-function checkGameCycle() {
+function updateGameCycle() {
     if (game.cycle_state > 1) {
         document.getElementById("game_cycle_previous_button").className = "btn btn-secondary btn-info"
         document.getElementById("game_cycle_previous_button").disabled = false
@@ -229,36 +229,35 @@ function checkGameCycle() {
 }
 
 function generate(nb_players_max) {
-    console.clear()
     var get_type = getType(nb_players_max);
     console.log(get_type)
     var type = get_type[0];
     var nb_players = get_type[1];
     var sentence_nature = get_type[2];
 
-    var request = db().filter({nb_players:nb_players.toString(), type:type, parent_key:""}).get();
+    var request = db().filter({nb_players:nb_players, type:type, parent_key:""}).get();
     var random = Math.floor(Math.random() * Math.floor(request.length));
     var key = request[random].key
-    var parent_key = request[random].parent_key
     var sentence = brigadier(request[random].text);
 
     console.log(request, sentence)
-    console.log(key, parent_key, sentence_nature)
+    console.log(key, sentence_nature)
+
+    document.getElementById("ingame_sentence").innerHTML = sentence;
+    addHistoryItem(0, sentence, key, type, sentence_nature)
 
     //generate other sentence if key is something
     if (key != "") {
         if (sentence_nature == "yellow") {
+            console.log("report de la phrase à X position de plus")
+        } else if (sentence_nature == "blue" || sentence_nature == "green" ) {
+            request = db().filter({nb_players:nb_players, type:type, parent_key:key}).get();
+            random = Math.floor(Math.random() * Math.floor(request.length));
+            sentence = brigadier(request[random].text);
 
-        } else {
-            var request = db().filter({nb_players:nb_players.toString(), type:type, parent_key:key}).get();
-            var random = Math.floor(Math.random() * Math.floor(request.length));
-            var sentence = brigadier(request[random].text);
+            addHistoryItem(0, sentence, key, type, sentence_nature)
         }
     }
-
-    document.getElementById("ingame_sentence").innerHTML = sentence;
-
-    addHistoryItem(0, sentence, key, (request[random].parent_key), type, sentence_nature)
 
     //disable down drinking after once
     if (sentence_nature == "red") {
@@ -267,17 +266,16 @@ function generate(nb_players_max) {
     }
 }
 
-function addHistoryItem(posOffset, sentence, key, parent_key, type, nature) {
+function addHistoryItem(posOffset, sentence, key, type, nature) {
     if (posOffset > 0) {
         for (var i = 0; i < posOffset; i++) {
-            game.sentence_history.push("");
+            game.sentence_history.push({sentence:"none"});
         }
     }
 
     var sentence_history_item = {
         sentence: sentence,
         key: key,
-        parent_key: parent_key,
         type: type,
         nature : nature
     }
