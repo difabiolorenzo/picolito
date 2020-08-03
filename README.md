@@ -12,6 +12,7 @@ Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 - Juste le mode `Before`
 - Impossible d'ajouter des règles personalisées
 - Impossible d'ajouter des joueurs en cours de jeu
+- impossible d'ajouter d'équipe
 
 **+**
 - Possibilité de faire marche arrières
