@@ -2,7 +2,7 @@
   "short_name": "Picolito",
   "name": "Picolito Online",
   "theme_color": "#E7BB00",
-  "background_color": "#f8f9fa",
+  "background_color": "#E7BB00",
   "display": "fullscreen",
   "Scope": "/",
   "orientation": "portrait",
