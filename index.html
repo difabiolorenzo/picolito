@@ -17,9 +17,11 @@
 
         <link rel='stylesheet' type='text/css' href='./src/css/main.css'>
         <script type="text/javascript" src="./src/js/main.js"></script>
+        <script type="text/javascript" src="./src/js/core_engine.js"></script>
         <script type="text/javascript" src="./src/js/db/default_fr.js"></script>
     </head>
     <body onload="init()">
+        </div>
         <div class="warning page" id="disclaimer">            
             <h3><b>Le contenu de ce site est très volumineux, téléchargez cette page ou connectez-vous à un réseau WIFI pour ne pas trop utiliser vos données cellulaires</b></h3>
             <br><h2 id="disclaimer_title">Attention</h2>
@@ -46,8 +48,8 @@
             <hr><div id="player_list"></div><hr>
 
             <ul class="list-group">
-                <li class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito', '_blank')">GitHub</li>
-                <li class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito/issues', '_blank')">Signaler un bug</li>
+                <li href="https://github.com/difabiolorenzo/picolito" class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito', '_blank')">GitHub</li>
+                <li href="https://github.com/difabiolorenzo/picolito/issues" class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito/issues', '_blank')">Signaler un bug</li>
                 <li class="list-group-item list-group-item-dark" role="button" onclick="" disabled>Changer de langage</li>                
               </ul>
         </div>
@@ -118,6 +120,10 @@
                     <p id="ingame_sentence"></p>
                 </div>
             </div>
+            <table id="recapSentences">
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>

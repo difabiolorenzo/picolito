@@ -26,10 +26,22 @@ div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 
+table#recapSentences {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5%;
+}
+td {
+    border: 1px solid black;
+    color: white;
+}
+
 @media screen and (orientation:portrait) {
     #ingame_content {
         text-align: center;
-        transform: rotate(90deg) translateX(50%) translateY(-50%) scale(0.75);
+        transform: rotate(-90deg) translateX(-25em) translateY(-25em) scale(0.9);
         height: 0vw;
         width: 100vh;
     }
