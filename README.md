@@ -9,13 +9,14 @@ Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 - Beaucoup de bugs en plus
 - Beaucoup de fonctionnalités en moins
 - Une seule langue (French 🥖)
-- Juste le mode `Before`
+- Modes `Before`, `On est débiles`, `Bar` et `Caliente` disponibles (`Guerre` indisponible). 
 - Impossible d'ajouter des règles personalisées
 - Impossible d'ajouter des joueurs en cours de jeu
 - impossible d'ajouter d'équipe
 
 **+**
 - Possibilité de faire marche arrières
+- Les modes `On est débiles`, `Bar` et `Caliente` sont débloqués
 
 
 ### Prévention
@@ -38,15 +39,15 @@ Il existe 5 mode de jeu pouvant avoir des thèmes divers `Before`, `On est débi
 Chaques partie a 50 phrases ayant une couleur prédéfinie indiquant sont objectifs:
 
 `Bleu`
-Possède arbitrairement **65%** d'apparition.
+Possède arbitrairement **55%** d'apparition.
 Peux être des actions, des questions, etc...
 
 `Vert`
-Possède arbitrairement **25%** d'apparition.
-Peux être des sondages en groupe, des jeux, etc...
+Possède arbitrairement **20%** d'apparition.
+Peux être des sondages de groupe, des jeux, etc...
 
 `Jaune`
-Possède arbitrairement **5%** d'apparition.
+Possède arbitrairement **20%** d'apparition.
 Est un virus appliqué à un ou des joueur(s).
 
 `Rouge`
