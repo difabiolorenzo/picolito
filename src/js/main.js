@@ -67,6 +67,13 @@ function defaultVariables() {
         virus_cycle_state_start_min: 3,                             // virus start to appear after cycle_state X
     }
 }
+
+function create_script_element(script_src) {
+    var headTag = document.getElementsByTagName("head").item(0);
+    var scriptTag = document.createElement("script");
+    scriptTag.src = script_src;
+    headTag.appendChild(scriptTag);
+}
  
 function hopper(array, nature) {
     var probability = []
@@ -168,6 +175,8 @@ function updateHTMLBackgroundColor() {
 }
 
 function goGamePage() {
+    create_script_element("./src/js/db/" + game.gamemode + "_fr.js")
+
     if (game.started == false) {
         game.started = true;
         nextSentence();

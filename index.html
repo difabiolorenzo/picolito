@@ -18,14 +18,14 @@
         <link rel='stylesheet' type='text/css' href='./src/css/main.css'>
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
-        <script type="text/javascript" src="./src/js/db/default_fr.js"></script>
+        <!-- <script type="text/javascript" src="./src/js/db/default_fr.js"></script> -->
     </head>
     <body onload="init()">
         </div>
-        <div class="warning page" id="disclaimer">            
-            <h3><b>Le contenu de ce site est très volumineux, téléchargez cette page ou connectez-vous à un réseau WIFI pour ne pas trop utiliser vos données cellulaires</b></h3>
-            <br><h2 id="disclaimer_title">Attention</h2>
-            <p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
+        <div class="warning page" id="disclaimer">
+            <h2 id="disclaimer_title"><b>Attention</b></h2>
+            <h3>Le contenu de ce site est très volumineux, téléchargez cette page ou connectez-vous à un réseau WIFI pour ne pas trop utiliser vos données cellulaires</h3>
+            <br><p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
             <p>Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi la ruiner...</p>
             <p>Merci de ne pas forcer les personnes jouant à ce jeu à boire plus qu'ils ne le peuvent.
             Pour plus d'information sur l'alcool et l'alcoolisme:</p>
@@ -42,7 +42,7 @@
             <hr>
             <input type="text" class="form-control" pattern="[A-Za-z]" id="player_input" placeholder="Ajouter un joueur">
             <br>
-            <button type="submit" class="btn btn-dark" disabled>Paramètres</button>
+            <!-- <button type="submit" class="btn btn-dark" disabled>Paramètres</button> -->
             <button type="submit" class="btn btn-success" onclick="addPlayer()">Ajouter</button>
             <button type="submit" class="btn btn-info" onclick="displayPage('gamemode')">Lancer</button>
             <hr><div id="player_list"></div><hr>
@@ -57,36 +57,36 @@
             <div class="d-flex">
                 <button class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
                 <a class="col-md-6 text-center" id="player_number">0 joueur</a>
-                <button class="col-md-3 btn btn-success" class="btn btn-success" onclick="goGamePage()">Jouer</button>
+                <button class="col-md-3 btn btn-success" onclick="goGamePage()">Jouer</button>
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="default" id="option1" onclick="game.gamemode = this.value" autocomplete="off" checked>
+                  <input type="radio" name="default" id="option1" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off" checked>
                   <h3>Before</h3>
                   <p>Le mode de jeu parfait pour s'ambiancer en soirées.</p>
                   <p>Soyez prêts, car Picolito ne vous fera pas de cadeaux.</p>
                 </label><hr>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="silly" id="option2" onclick="game.gamemode = this.value" autocomplete="off" disabled>
+                <label class="btn btn-secondary btn-success">
+                  <input type="radio" name="silly" id="option2" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
                   <h3>On est débiles</h3>
                   <p>Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.</p>
                   <p>Attention, public averti.</p>
                 </label><hr>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="bar" id="option3" onclick="game.gamemode = this.value" autocomplete="off" disabled>
+                <label class="btn btn-secondary btn-success">
+                  <input type="radio" name="bar" id="option3" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
                   <h3>Bar</h3>
                   <p>Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.</p>
                   <p>Attention, il ne faut pas avoir peur du ridicule.</p>
                 </label><hr>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="hot" id="option4" onclick="game.gamemode = this.value" autocomplete="off" disabled>
+                <label class="btn btn-secondary btn-success">
+                  <input type="radio" name="hot" id="option4" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
                   <h3>Caliente</h3>
                   <p>Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
                   <p>Est-ce que ça va pécho ce soir?</p>
                 </label><hr>
                 <label class="btn btn-secondary">
-                  <input type="radio" name="war" id="option5" onclick="game.gamemode = this.value" autocomplete="off" disabled>
+                  <input type="radio" name="war" id="option5" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off" disabled="true">
                   <h3>Guerre</h3>
                   <p>Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
                   <p>Ce soir c'est la guerre!</p>
@@ -103,21 +103,22 @@
                         <button type="submit" class="btn btn-default">Annuler</button>
                     </div>
                     <div class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
-                        <button type="button" class="btn btn-secondary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
-                        <button type="button" class="btn btn-secondary" id="game_cycle_count" disabled>0/x</button>
-                        <button type="button" class="btn btn-secondary btn-info" id="game_cycle_next_button" onclick="nextSentence()">></button>
+                        <button type="button" class="btn btn-secondary" id="game_cycle_previous_button" disabled onclick="previousSentence()"><</button>
+                        <button type="button" class="btn btn-secondary" id="game_cycle_count" disabled></button>
+                        <button type="button" class="btn btn-secondary btn-info" id="game_cycle_next_button" onclick="nextSentence(); document.getElementById('game_cycle_next_button').innerHTML = '>';">Commencer</button>
                     </div>
                     
-                    <button class="col-md-2 btn btn-secondary dropdown-toggle" type="button" id="addPlayerDropdown" data-toggle="dropdown" aria-haspopup="true">Joueurs</button>
-                    <div class="dropdown-menu p-4" aria-labelledby="addPlayerDropdown">
+                    <!-- <button class="col-md-2 btn btn-secondary dropdown-toggle" type="button" id="addPlayerDropdown" data-toggle="dropdown" aria-haspopup="true">Joueurs</button> -->
+                    <button class="col-md-2 btn btn-secondary " type="button" id="addPlayerDropdown" aria-haspopup="true">Joueurs</button>
+                    <!-- <div class="dropdown-menu p-4" aria-labelledby="addPlayerDropdown">
                         <div id="ingame_player_list"></div>
                         <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
                         <button type="submit" class="btn btn-default" onclick="addPlayer()">Ajouter</button>
-                    </div>
+                    </div> -->
                 </div>
-                <div id="ingame_text" onclick="nextSentence()">
+                <div id="ingame_text" onclick="nextSentence(); document.getElementById('game_cycle_next_button').innerHTML = '>';">
                     <h1 id="ingame_title"></h1>
-                    <p id="ingame_sentence"></p>
+                    <p id="ingame_sentence">Prêts?</p>
                 </div>
             </div>
             <table id="recapSentences">
