@@ -25,11 +25,27 @@ function nextSentence() {
 
 function previousSentence() {
     game.cycle_state--;
+
+    var pos = game.cycle_state-1;
+    var color = game.sentence_history[pos].nature
+    
+    // document.getElementById("recap_sentences_cell_" + (() + posOffset)).style = "background-color: var(--picolo_" + sentence_history_item.nature + ")"
     updateGameCycle()
     updateHTMLGameCycleCount()
     updateHTMLBackgroundColor()
+    updateHTMLIndicator(pos, color)
+    retrieve(pos)
+}
 
-    retrieve( game.cycle_state - 1 )
+function goToSpecificSentence(pos) {
+    game.cycle_state = pos;
+    var color = game.sentence_history[pos].nature
+    
+    updateGameCycle()
+    updateHTMLGameCycleCount()
+    updateHTMLBackgroundColor()
+    updateHTMLIndicator(pos, color)
+    retrieve(pos)
 }
 
 function retrieve(sentence_id) {

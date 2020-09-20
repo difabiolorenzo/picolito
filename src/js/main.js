@@ -1,16 +1,17 @@
 function init() {
     player_list = [];
 
-    // generateRandomPlayer(Math.floor(Math.random() * 10))
     defaultVariables()
     filterVariables()
     // dev()
 }
 
 function dev() {
-    displayPage('menu')
+    displayPage('gamemode')
+
+    game.display_indicator = true
     createRecapSentenceIndicator()
-    goGamePage()
+    generateRandomPlayer(Math.floor(Math.random() * 10))
 }
 
 function generateRandomPlayer(nb_players) {
@@ -19,8 +20,12 @@ function generateRandomPlayer(nb_players) {
     }
     for (var i = 0; i < nb_players; i++ ) {
         var randomUUID = (randomHex(0xFFFFFFFF))
-        player_list.push(randomUUID)
+        if (randomUUID.charAt(0) == "-") {
+            randomUUID.substring(1)
+        }
+        addPlayer(randomUUID)
     }
+
 }
 
 function defaultVariables() {
@@ -121,8 +126,11 @@ function displayPage(page) {
     document.getElementById(page).style = 'display:block';
 }
 
-function addPlayer() {
-    var player_name = document.getElementById("player_input").value;
+function addPlayer(player_name) {
+    if (player_name == undefined) {
+        var player_name = document.getElementById("player_input").value;
+    }
+
     if (player_name.length > 0 && player_name.length <= 50) {
 
         //prevent name start by spaces
@@ -158,7 +166,13 @@ function removePlayer(player_button) {
 }
 
 function updateHTMLPlayerCount() {
-    document.getElementById("player_number").innerHTML = player_list.length + " joueur(s)";
+    if (player_list.length > 1) {
+        var text = " joueurs"
+    } else {
+        var text = " joueur"
+    }
+
+    document.getElementById("player_number").innerHTML = player_list.length + text;
 }
 
 function updateHTMLGameCycleCount() {
@@ -174,6 +188,13 @@ function updateHTMLBackgroundColor() {
 
 }
 
+function updateHTMLIndicator(pos, color) {
+    if (game.display_indicator == true) {
+        document.getElementById("recap_sentences_cell_" + pos).style = "background-color: var(--picolo_" + color + ")"
+        document.getElementById("recap_sentences_cell_" + pos).onclick = "background-color: var(--picolo_" + color + ")"
+    }
+}
+
 function goGamePage() {
     create_script_element("./src/js/db/" + game.gamemode + "_fr.js")
 
@@ -183,17 +204,10 @@ function goGamePage() {
         updateHTMLGameCycleCount();
     }
     displayPage('game');
+
+    createRecapSentenceIndicator()
 }
 
-function createRecapSentenceIndicator() {
-    game.display_indicator = true;
-    var recap_sentences_html = ""
-    for (var i = 0; i < game.sentence_amount; i++) {
-        recap_sentences_html += "<td id='recap_sentences_cell_" + i + "' style='background-color:grey;'></td>"
-    }
-    document.getElementById("recapSentences").innerHTML = "<tbody><tr>"+ recap_sentences_html + "</tr></tbody>"
-
-}
 
 function exitGame() {
     defaultVariables();
@@ -232,9 +246,7 @@ function addHistoryItem(posOffset, sentence, key, type, nature) {
         nature : nature
     }
 
-    if (game.display_indicator == true) {
-        document.getElementById("recap_sentences_cell_" + ((game.cycle_state - 1) + posOffset)).style = "background-color: var(--picolo_" + sentence_history_item.nature + ")"
-    }
+    updateHTMLIndicator((game.cycle_state - 1) + posOffset, sentence_history_item.nature);        
 
     if (game.sentence_history[game.cycle_state] == undefined) {
         game.sentence_history.push(sentence_history_item);
@@ -272,4 +284,14 @@ function brigadier(text) {
         }
     }
     return text;
+}
+
+function createRecapSentenceIndicator() {
+    if (game.display_indicator == true) {
+        var recap_sentences_html = ""
+        for (var i = 0; i < game.sentence_amount; i++) {
+            recap_sentences_html += "<td id='recap_sentences_cell_" + i + "' style='background-color:grey;'></td>"
+        }
+        document.getElementById("recapSentences").innerHTML = "<tbody><tr>"+ recap_sentences_html + "</tr></tbody>"
+    }
 }

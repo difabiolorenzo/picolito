@@ -7,21 +7,25 @@
   "Scope": "/",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "./src/img/icon_48.jpg",
-      "type": "image/png",
-      "sizes": "48x48"
-    },
-    {
-      "src": "./src/img/icon_96.jpg",
-      "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src": "./src/img/icon_192.jpg",
-      "type": "image/png",
-      "sizes": "192x192"
-    }
+      {
+          "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_48.jpg",
+          "type": "image/png",
+          "sizes": "48x48"
+      },
+      {
+          "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_96.jpg",
+          "type": "image/png",
+          "sizes": "96x96"
+      },
+      {
+          "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_192.jpg",
+          "type": "image/png",
+          "sizes": "192x192"
+      }
   ],
-  "start_url": "index.html"
+  "start_url": "https://difabiolorenzo.github.io/picolito/index.html",
+  "url": "https://difabiolorenzo.github.io/picolito/",
+  "lang": "",
+  "screenshots": [],
+  "description": "Version en ligne de l'application Picolo"
 }
