@@ -26,16 +26,18 @@ div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 
-table#recapSentences {
+table#html_recap_sentences {
     position: absolute;
-    bottom: 0;
+    bottom: 1px;
     left: 0;
     width: 100%;
-    height: 5%;
+    height: 2vw;
 }
 td {
     border: 1px solid black;
     color: white;
+    width: 2vw;
+    height: 2vw;
 }
 
 @media screen and (orientation:portrait) {
@@ -49,7 +51,3 @@ td {
         font-size: 5vh;
     }
 }
-
-/* p {
-        text-shadow: 0.5vw 0.5vh 1vw rgb(0 0 0 / 50%);
-} */

@@ -1,0 +1,46 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.btn, .form-control, .list-group, .list-group-item{
+    border-radius: .125rem;
+    margin-left: 1px;
+    margin-right: 1px;
+    transition: 0.25s;
+}
+.btn:hover, .form-control:hover, .list-group-item:hover{
+    box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: .5rem;
+}
+
+hr {
+    border-top: 1px solid #0000000d;
+}
+
+.btn-dark, .list-group-item-dark {
+    color: white;
+    background-color: var(--gray);
+    border-color: var(--gray);
+}
+.btn-dark:hover, .list-group-item-dark:hover {
+    color: white;
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+}
+
+.dark_mode .dark_affected{
+    background-color: #252525;
+    color: white;
+    transition: 0.25s;
+}
+.dark_mode .dark_affected .list-group-item-dark, .dark_mode .dark_affected .btn {
+    color: #ffffff;
+    background-color: #0000;
+}
+
+.dropdown-menu {
+    transform: translate(10px, 10px) !important;
+}

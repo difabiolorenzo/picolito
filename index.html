@@ -9,6 +9,7 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./src/css/radium.css">
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -22,13 +23,15 @@
     </head>
     <body onload="init()">
         </div>
-        <div class="warning page" id="disclaimer">
+        <div class="page dark_affected" id="disclaimer">
             <h2 id="disclaimer_title"><b>Attention</b></h2>
             <h3>Le contenu de ce site est très volumineux, téléchargez cette page ou connectez-vous à un réseau WIFI pour ne pas trop utiliser vos données cellulaires</h3>
-            <br><p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
-            <p>Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi la ruiner...</p>
-            <p>Merci de ne pas forcer les personnes jouant à ce jeu à boire plus qu'ils ne le peuvent.
-            Pour plus d'information sur l'alcool et l'alcoolisme:</p>
+            <hr>
+            <p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
+            <p>Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...</p>
+            <p>Fixer vos limites sans outre-passer celles des autres.</p>
+            <hr>
+            <p>Pour plus d'information sur l'alcool et l'alcoolisme:</p>
             <p>- rendez vous sur <a href="https://www.alcool-info-service.fr/">alcool-info-service.fr</a></p>
             <p>- ou appeler le <i>0 980 980 930</i> <code>de 8h à 2h, appel non surtaxé</code></p>
             
@@ -37,61 +40,118 @@
             </div>
             <hr>
         </div>
-        <div class="page" id="menu" style="display:none;">
+        <div class="page dark_affected" id="menu" style="display:none;">
             <h1>PICOLITO</h1>
             <hr>
-            <input type="text" class="form-control" pattern="[A-Za-z]" id="player_input" placeholder="Ajouter un joueur">
+            <div class="d-flex">
+                <input type="text" class="form-control" pattern="[A-Za-z]" id="player_input" placeholder="Ajouter un joueur">
+                <!-- <button type="submit" class="btn btn-info" onclick="generateRandomPlayer(1)">Random</button> -->
+                <button type="submit" class="btn btn-info" onclick="addPlayer()">Ajouter</button>
+            </div>
             <br>
-            <!-- <button type="submit" class="btn btn-dark" disabled>Paramètres</button> -->
-            <button type="submit" class="btn btn-success" onclick="addPlayer()">Ajouter</button>
-            <button type="submit" class="btn btn-info" onclick="displayPage('gamemode')">Lancer</button>
-            <hr><div id="player_list"></div><hr>
-
-            <ul class="list-group">
-                <li href="https://github.com/difabiolorenzo/picolito" class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito', '_blank')">GitHub</li>
-                <li href="https://github.com/difabiolorenzo/picolito/issues" class="list-group-item list-group-item-success" role="button" onclick="window.open('https://github.com/difabiolorenzo/picolito/issues', '_blank')">Signaler un bug</li>
-                <!-- <li class="list-group-item list-group-item-dark" role="button" onclick="" disabled>Changer de langue</li> -->
-              </ul>
+            <div id="player_list"></div>
+            <hr>
+            <button id="button_menu_settings" type="submit" class="btn btn-warning" onclick="toggleSettingsPage()">Paramètres</button>
+            <button id="button_menu_links" type="submit" class="btn btn-warning" onclick="toggleSettingsPage()" style="display:none">Liens</button>
+            <button type="submit" class="btn btn-success" onclick="displayPage('gamemode')">Modes de jeu</button>
+            <hr>
+            <div id="menu_content">
+                <div id="menu_links">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-dark" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'" role="button">GitHub</li>
+                        <li class="list-group-item list-group-item-dark" role="button" onclick="displayPage('disclaimer')">Menu de prévention</li>
+                        <!-- <li class="list-group-item list-group-item-dark" role="button" onclick="" disabled>Changer de langue</li> -->
+                    </ul>
+                    <br>
+                </div>
+                <div id="settings" style="display:none;">
+                    <div>
+                    </div>
+                    <div class="form-check">
+                        <h5>Lancement rapide</h5>
+                        <div>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('default')">/gamemode default</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('silly')">/gamemode silly</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('bar')">/gamemode bar</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('hot')">/gamemode hot</button>
+                            <button class="btn btn-dark" onclick="lunchSelectedGamemode('war')" disabled>/gamemode war</button>
+                            <button class="btn btn-success" onclick="">Lancer</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-check">
+                        <h5>Fonctionnement</h5>
+                        <div>
+                            <input class="form-check-input" id="input_down_drinking_enabled" type="checkbox" onclick="game.down_drinking_enabled = this.checked">
+                            <label class="form-check-label">Culs secs</label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" id="input_virus_enabled" type="checkbox" onclick="game.virus_enabled = this.checked">
+                            <label class="form-check-label" >Virus</label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" type="checkbox" onclick="" checked disabled>
+                            <label class="form-check-label" >Phrases "poste une phrase débile..."</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <h5>Affichage</h5>
+                        <div>
+                            <input class="form-check-input" id="input_dark_mode_settings" type="checkbox" onclick="toggleDarkMode()" >
+                            <label class="form-check-label">Mode sombre (inutile)</label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
+                            <label class="form-check-label">Debug: Récapitulatif</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <h5>Autre</h5>
+                        <a href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="page" id="gamemode" style="display:none">
+        <div class="page dark_affected" id="gamemode" style="display:none">
             <div class="d-flex">
                 <button class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
                 <a class="col-md-6 text-center" id="player_number">0 joueur</a>
-                <button class="col-md-3 btn btn-success" onclick="goGamePage()">Jouer</button>
+                <button class="col-md-3 btn btn-success" onclick="initGame()">Suivant</button>
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="default" id="option1" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off" checked>
+                  <input type="radio" name="default" id="option1" onclick="selectGamemode(this.name);" autocomplete="off" checked>
                   <h3>Before</h3>
                   <p>Le mode de jeu parfait pour s'ambiancer en soirées.</p>
                   <p>Soyez prêts, car Picolito ne vous fera pas de cadeaux.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="silly" id="option2" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
+                  <input type="radio" name="silly" id="option2" onclick="selectGamemode(this.name);" autocomplete="off">
                   <h3>On est débiles</h3>
                   <p>Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.</p>
                   <p>Attention, public averti.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="bar" id="option3" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
+                  <input type="radio" name="bar" id="option3" onclick="selectGamemode(this.name);" autocomplete="off">
                   <h3>Bar</h3>
                   <p>Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.</p>
                   <p>Attention, il ne faut pas avoir peur du ridicule.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="hot" id="option4" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off">
+                  <input type="radio" name="hot" id="option4" onclick="selectGamemode(this.name);" autocomplete="off">
                   <h3>Caliente</h3>
                   <p>Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
                   <p>Est-ce que ça va pécho ce soir?</p>
                 </label><hr>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="war" id="option5" onclick="game.gamemode = this.name; console.log(this.name)" autocomplete="off" disabled="true">
+                <label class="btn btn-secondary btn-dark" disabled>
+                  <input type="radio" name="war" id="option5" onclick="selectGamemode(this.name);" autocomplete="off">
                   <h3>Guerre</h3>
                   <p>Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
                   <p>Ce soir c'est la guerre!</p>
                 </label>
               </div>
+              <hr>
         </div>
         <div class="page blue" id="game" style="display:none">
             <div id="ingame_content">
@@ -104,12 +164,12 @@
                     </div>
                     <div class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button type="button" class="btn btn-secondary" id="game_cycle_previous_button" disabled onclick="previousSentence()"><</button>
-                        <button type="button" class="btn btn-secondary" id="game_cycle_count" disabled></button>
-                        <button type="button" class="btn btn-secondary btn-info" id="game_cycle_next_button" onclick="nextSentence(); document.getElementById('game_cycle_next_button').innerHTML = '>';">Commencer</button>
+                        <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()"></button>
+                        <button type="button" class="btn btn-secondary btn-info" id="game_cycle_next_button" onclick="nextSentence();">Commencer</button>
                     </div>
                     
                     <!-- <button class="col-md-2 btn btn-secondary dropdown-toggle" type="button" id="addPlayerDropdown" data-toggle="dropdown" aria-haspopup="true">Joueurs</button> -->
-                    <button class="col-md-2 btn btn-secondary " type="button" id="addPlayerDropdown" aria-haspopup="true">Joueurs</button>
+                    <button disabled class="col-md-2 btn btn-secondary " type="button" id="addPlayerDropdown" aria-haspopup="true">Joueurs</button>
                     <!-- <div class="dropdown-menu p-4" aria-labelledby="addPlayerDropdown">
                         <div id="ingame_player_list"></div>
                         <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
@@ -121,10 +181,12 @@
                     <p id="ingame_sentence">Prêts?</p>
                 </div>
             </div>
-            <table id="recapSentences">
+            <table id="html_recap_sentences" style="display:block;">
                 <tbody>
                 </tbody>
             </table>
+            <div id="sentence_list">
+            </div>
         </div>
     </body>
 </html>
