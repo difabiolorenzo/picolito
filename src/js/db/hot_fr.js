@@ -756,4 +756,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, si tu es une fille lèch
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà nagé nu dans la mer ou l'océan",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà fait un bain avec un groupe de potes mixte, où tous étaient nus",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà eu des rapports sexuels sur la plage",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà couché avec quelqu'un dans une auberge de jeunesse",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà couché avec quelqu'un dans une auberge de jeunesse",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"}]);
+retrieveDB();

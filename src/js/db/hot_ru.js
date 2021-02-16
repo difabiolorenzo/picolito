@@ -297,4 +297,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, если ты девуш
 {cycle_state:"false",type:"23",text:"По очереди каждый игрок должен потрогать своего соседа/свою соседку справа между ног или сделать $ глотка(ов), %s начинает",key:"",parent_key:"",pack_name:"hot",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"23",text:"По очереди каждый игрок должен потрогать грудь своего соседа/своей соседки справа или сделать $ глотка(ов), %s начинает",key:"",parent_key:"",pack_name:"hot",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"23",text:"По очереди каждый игрок должен потрогать грудь своего соседа/своей соседки слева или сделать $ глотка(ов), %s начинает",key:"",parent_key:"",pack_name:"hot",language:"ru",nb_players:"1"},
-{cycle_state:"false",type:"23",text:"По очереди каждый игрок должен показать пигментное пятно на теле и решить, кому делать $ глотка(ов). Если такого пятна нет, делайте $ глотка(ов), %s начинает",key:"",parent_key:"",pack_name:"hot",language:"ru",nb_players:"1"}])
+{cycle_state:"false",type:"23",text:"По очереди каждый игрок должен показать пигментное пятно на теле и решить, кому делать $ глотка(ов). Если такого пятна нет, делайте $ глотка(ов), %s начинает",key:"",parent_key:"",pack_name:"hot",language:"ru",nb_players:"1"}]);
+retrieveDB();

@@ -1080,4 +1080,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imitiere einen Typ beim K
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal einen Wettbewerb im Auf-ex-Trinken gemacht hast",key:"",parent_key:"",pack_name:"silly",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal deinen Kreativitätshöhepunkt erreicht hast, als du gegen einen Kumpel Kopf oder Zahl als Saufspiel gespielt hast",key:"",parent_key:"",pack_name:"silly",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal Stein Papier Schere als Trinkspiel gespielt hast",key:"",parent_key:"",pack_name:"silly",language:"de",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Verteil $ Schlucke, wenn du schon einmal ein Glas Alkohol am Ende des Abends getrunken hast, obwohl du wusstest, dass es dich zum Kotzen bringt",key:"",parent_key:"",pack_name:"silly",language:"de",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Verteil $ Schlucke, wenn du schon einmal ein Glas Alkohol am Ende des Abends getrunken hast, obwohl du wusstest, dass es dich zum Kotzen bringt",key:"",parent_key:"",pack_name:"silly",language:"de",nb_players:"0"}]);
+retrieveDB();

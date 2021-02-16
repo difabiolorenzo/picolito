@@ -2544,4 +2544,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, tu as 5 minutes pour fin
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà été dans une ville à Spring Break",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tes potes ont déjà réussi à te confisquer ton maillot de bain alors que tu étais dans l'eau",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà brûlé tes cours à la fin de l'année",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà inventé un jeu d'alcool",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà inventé un jeu d'alcool",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"}]);
+retrieveDB();

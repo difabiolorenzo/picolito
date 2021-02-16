@@ -788,4 +788,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"%tチーム、$口を賭け�
 {cycle_state:"false",type:"13",text:"二つのチームが$口で乾杯する!",key:"",parent_key:"",pack_name:"war",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"鼻が一番高い人のチームが$口飲む!",key:"",parent_key:"",pack_name:"war",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"%tチーム、メンバーの中から1人選んで下さい。その人は自分のグラスを飲み干す",key:"",parent_key:"",pack_name:"war",language:"ja",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"%tチーム、自分のメンバーの中で、自分のグラスを飲み干してくれる人二人を選んで下さい",key:"",parent_key:"",pack_name:"war",language:"ja",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"%tチーム、自分のメンバーの中で、自分のグラスを飲み干してくれる人二人を選んで下さい",key:"",parent_key:"",pack_name:"war",language:"ja",nb_players:"0"}]);
+retrieveDB();

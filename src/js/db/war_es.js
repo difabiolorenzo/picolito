@@ -785,4 +785,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Equipo %t, una pregunta con 
 {cycle_state:"false",type:"13",text:"¡Los dos equipos brindan con $ tragos!",key:"",parent_key:"",pack_name:"war",language:"es",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"¡El equipo que tenga al jugador con la nariz más grande bebe $ tragos!",key:"",parent_key:"",pack_name:"war",language:"es",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Equipo %t, elegid entre vosotros al pozo sin fondo del equipo. Tendrá que terminarse su copa",key:"",parent_key:"",pack_name:"war",language:"es",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Equipo %t, elegid a dos de vosotros, que tendrán que terminarse su copa",key:"",parent_key:"",pack_name:"war",language:"es",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Equipo %t, elegid a dos de vosotros, que tendrán que terminarse su copa",key:"",parent_key:"",pack_name:"war",language:"es",nb_players:"0"}]);
+retrieveDB();

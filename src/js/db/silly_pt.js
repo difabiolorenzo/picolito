@@ -655,4 +655,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imita um gajo a evacuar o
 {cycle_state:"false",type:"25",text:"Bebe $ goles se já rebentaste as borbulhas de mais de 2 pessoas diferentes",key:"",parent_key:"",pack_name:"silly",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bebe $ goles se já cuspiste para cima de mais de 2 pessoas desconhecidas",key:"",parent_key:"",pack_name:"silly",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, bebe $ goles se já vomitaste uma refeição logo a seguir a comê-la. Caso contrário, distribui-os",key:"",parent_key:"",pack_name:"silly",language:"pt",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, bebe $ goles se já tentaste chupar-te a ti-mesmo, mesmo quando eras miúdo. Se fores uma rapariga, distribui $ goles",key:"",parent_key:"",pack_name:"silly",language:"pt",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, bebe $ goles se já tentaste chupar-te a ti-mesmo, mesmo quando eras miúdo. Se fores uma rapariga, distribui $ goles",key:"",parent_key:"",pack_name:"silly",language:"pt",nb_players:"1"}]);
+retrieveDB();

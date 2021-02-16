@@ -656,4 +656,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imiteert een gast die aan
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je wel eens pukkels hebt uitgeknepen van meer dan 2 verschillende mensen",key:"",parent_key:"",pack_name:"silly",language:"nl",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je wel eens op twee onbekenden hebt gespuugd",key:"",parent_key:"",pack_name:"silly",language:"nl",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, neem $ slokken als je wel eens een maaltijd hebt uitgekotst vlak nadat je gegeten had. Zo niet, deel ze dan uit",key:"",parent_key:"",pack_name:"silly",language:"nl",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, neem $ slokken als je wel eens geprobeerd hebt om jezelf te pijpen, zelfs als kind. Als je een meisje bent, deel je $ slokken uit",key:"",parent_key:"",pack_name:"silly",language:"nl",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, neem $ slokken als je wel eens geprobeerd hebt om jezelf te pijpen, zelfs als kind. Als je een meisje bent, deel je $ slokken uit",key:"",parent_key:"",pack_name:"silly",language:"nl",nb_players:"1"}]);
+retrieveDB();

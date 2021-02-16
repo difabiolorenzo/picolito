@@ -664,4 +664,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Команда %t : фам�
 {cycle_state:"false",type:"13",text:"Обе команды чокаются и делают $ глотка(ов) !",key:"",parent_key:"",pack_name:"war",language:"ru",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"У кого в команде игрок с самым большим носом, те делают $ глотка !",key:"",parent_key:"",pack_name:"war",language:"ru",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Команда %t, выберете того игрока из вашей команды, который допьет свой бокал до дна ! ",key:"",parent_key:"",pack_name:"war",language:"ru",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Команда %t, выберете двух игроков из вашей команды, которые допьют свои бокалы до дна ! ",key:"",parent_key:"",pack_name:"war",language:"ru",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Команда %t, выберете двух игроков из вашей команды, которые допьют свои бокалы до дна ! ",key:"",parent_key:"",pack_name:"war",language:"ru",nb_players:"0"}]);
+retrieveDB();

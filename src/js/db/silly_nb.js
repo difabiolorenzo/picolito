@@ -654,4 +654,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imiter en gubbe som drit
 {cycle_state:"false",type:"25",text:"Drikk $ slurker hvis du har klemt kviser på mer enn to personer",key:"",parent_key:"",pack_name:"silly",language:"nb",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drikk $ slurker hvis du har spyttet på mer enn 2 fremmede",key:"",parent_key:"",pack_name:"silly",language:"nb",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, drikk $ slurker hvis du noen gang har spydd opp et måltid rett etter å ha spist det. Del ellers ut $ slurker",key:"",parent_key:"",pack_name:"silly",language:"nb",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, drikk $ slurker hvis du noen gang har prøvd å suge deg selv, inklusive når du var barn. Hvis du er jente deler du ut $ slurker",key:"",parent_key:"",pack_name:"silly",language:"nb",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, drikk $ slurker hvis du noen gang har prøvd å suge deg selv, inklusive når du var barn. Hvis du er jente deler du ut $ slurker",key:"",parent_key:"",pack_name:"silly",language:"nb",nb_players:"1"}]);
+retrieveDB();

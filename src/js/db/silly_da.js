@@ -653,4 +653,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, efterlign en person, der
 {cycle_state:"false",type:"25",text:"Drik $ slurke, hvis du har trykket bumser ud på mere end to personer",key:"",parent_key:"",pack_name:"silly",language:"da",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drik $ slurke, hvis du har spyttet på mere end to fremmede mennesker",key:"",parent_key:"",pack_name:"silly",language:"da",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, drik $ slurke, hvis du nogensinde har kastet et måltid op lige efter at have spist. Hvis ikke, kan du dele $ slurke ud",key:"",parent_key:"",pack_name:"silly",language:"da",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, drik $ slurke, hvis du nogensinde har forsøgt at give dig selv et blowjob, også da du var barn. Hvis du er en pige, deler du $ slurke ud",key:"",parent_key:"",pack_name:"silly",language:"da",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, drik $ slurke, hvis du nogensinde har forsøgt at give dig selv et blowjob, også da du var barn. Hvis du er en pige, deler du $ slurke ud",key:"",parent_key:"",pack_name:"silly",language:"da",nb_players:"1"}]);
+retrieveDB();

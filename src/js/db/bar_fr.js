@@ -448,4 +448,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, si tu tournes à la biè
 {cycle_state:"false",type:"22",text:"%s, dessine un toboggan volant. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, dessine une dinde farcie. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, dessine un cheval en érection. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"}
-])
+]);
+retrieveDB();

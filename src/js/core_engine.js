@@ -1,11 +1,11 @@
 function nextSentence() {
-    if (game.sentence_id == -1) {
-        startGame();
+    if (game.cycle_id == -1) {
+        document.getElementById('game_cycle_next_button').innerHTML = '>';
     }
-    if (game.sentence_id < game.sentence_amount - 1) {
-        game.sentence_id++;
+    if (game.cycle_id < game.sentence_amount - 1) {
+        game.cycle_id++;
         
-        retrieve(game.sentence_id);
+        retrieve(game.cycle_id);
 
         updateHTMLBackgroundColor();
         updateHTMLGameCycleCount();
@@ -15,38 +15,42 @@ function nextSentence() {
 }
 
 function previousSentence() {
-    if (game.sentence_id > 0) {
-        game.sentence_id--;
-        goToSpecificSentence(game.sentence_id)
+    if (game.cycle_id > 0) {
+        game.cycle_id--;
+        goToSpecificSentence(game.cycle_id)
     }
 }
 
 function goToSpecificSentence(position) {
-    game.sentence_id = position;
-    var color = game.sentence_history[position].nature;
+    game.cycle_id = position;
     
     updateGameCycle();
     updateHTMLGameCycleCount();
     updateHTMLBackgroundColor();
-    updateHTMLIndicator(position, color);
+    updateHTMLIndicator(position, game.sentence_history[position].color);
     retrieve(position);
     displaySentenceList(true);
 }
 
-function checkMaxPlayerNumber() {
+function retrieveDB() {
+    game.database = TAFFY(db().get())
+}
+
+function getMinPlayer() {
     if (game.gamemode == "war" && game.player_list.length >= 3) {
-        return 3;
+        game.max_player_number = 3;
     } else if (game.gamemode != "war" && game.player_list.length >= 4) {
-        return 4;
+        game.max_player_number = 4;
     } else {
-        return game.player_list.length;
+        game.max_player_number = game.player_list.length;
     }
+    console.log("min player", game.max_player_number)
 }
 
 function retrieve(sentence_id) {
     //generate or retrieve
-    if (game.sentence_history[game.sentence_id] == undefined || game.sentence_history[game.sentence_id].sentence == "none") {
-        generate(checkMaxPlayerNumber());
+    if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
+        generate();
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
         document.getElementById("ingame_sentence").innerHTML = sentence_requested.sentence;
@@ -54,155 +58,197 @@ function retrieve(sentence_id) {
     }
 }
 
-function getNature() {
-    //sorting raw default type data
-    var available_nature_probability = [];
-    for (var i in game.type_info) {
-        if (game.type_info[i][0] == "red" && game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.sentence_id && game.down_drinking_triggered == false) {
-            available_nature_probability.push(game.type_info[i]);
-        }
-        if (game.type_info[i][0] == "yellow" && game.virus_enabled == true && game.virus_sentence_id_start_min <= game.sentence_id && game.virus_triggered == false) {
-            available_nature_probability.push(game.type_info[i]);
-        }
-        if (game.type_info[i][0] == "blue" || game.type_info[i][0] == "green") {
-            available_nature_probability.push(game.type_info[i]);
-        }
+function getRandomColor() {
+    var available_color_probability = [];
+    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_triggered == false) {
+        available_color_probability.push(["red", game.filter.color_probability.red])
     }
-    available_nature_probability.sort( function(a, b) { return a[1] - b[1]; } );
-    return available_nature_probability;
-}
+    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_triggered == false) {
+        available_color_probability.push(["yellow", game.filter.color_probability.yellow])
+    }
+    available_color_probability.push(["blue", game.filter.color_probability.blue])
+    available_color_probability.push(["green", game.filter.color_probability.green])
 
-function getType(nb_players_max) {
-    //prevent overlaping viruses end
-    var posible_virus = false;
+    available_color_probability.sort( function(a, b) { return a[1] - b[1]; } );
 
-    if ((game.sentence_history[game.sentence_id] == undefined || game.sentence_history[game.sentence_id].sentence == "none") && game.sentence_id < game.sentence_amount) {
-        posible_virus = true;
+    //random percentage
+    while (random_percent == 0 || random_percent == 1 || random_percent == undefined) {
+        var random_percent = Math.round(Math.random() * 100);
     }
 
-    var available_nature_probability = getNature();
-    console.log("sorting probability", available_nature_probability)
-
-    //random between 0 and 1
-    while (random_probability == 0 || random_probability == 1 || random_probability == undefined) {
-        var random_probability = Math.round(Math.random() * 100);
-    }
-    console.log("random", random_probability)
-
-    //get type by random number
-    var selected_type = [];
-    var sentence_nature = "";
+    //filter color probability by random_percent
+    var color = "";
     var random_probability_step = 0;
     var random_probability_next_step = 0;
-    for (var i = 0; i < available_nature_probability.length; i++) {
-        random_probability_next_step = random_probability_next_step + available_nature_probability[i][1];
-        if ( (random_probability > random_probability_step && random_probability < random_probability_next_step) || (random_probability > random_probability_next_step)) {
-            sentence_nature = available_nature_probability[i][0];
-            selected_type = available_nature_probability[i];
+    for (var i = 0; i < available_color_probability.length; i++) {
+        random_probability_next_step = random_probability_next_step + available_color_probability[i][1];
+        if ( (random_percent > random_probability_step && random_percent < random_probability_next_step) || (random_percent > random_probability_next_step) || (random_percent > random_probability_step)) {
+            color = available_color_probability[i][0];
         }
         random_probability_step = random_probability_next_step;
     }
-
-    //get type by selected gamemode
-    var possible_type_by_gamemode = [];
-    var useable_type_by_gamemode = [];
-
-    for (var i in game.type_used_by_gamemode) {
-        if (game.gamemode == game.type_used_by_gamemode[i][0]) {
-            possible_type_by_gamemode = game.type_used_by_gamemode[i];
-        }
-    }
-    console.log("possible_type_by_gamemode", possible_type_by_gamemode)
-
-    for (var i in possible_type_by_gamemode[1]) {
-        for (var j in selected_type[2]) {
-            if (possible_type_by_gamemode[1][i] == selected_type[2][j]) {
-                useable_type_by_gamemode.push(possible_type_by_gamemode[1][i]);
-            }
-        }
-    }
-    console.log("useable_type_by_gamemode", useable_type_by_gamemode)
-
-    // get nb_players by gamemode
-    var nb_players_by_type = []
-    for (var i in useable_type_by_gamemode) {
-        for (var j in game.nb_players_info) {
-            if (game.nb_players_info[j][0] == game.gamemode) {
-                nb_players_by_type.push([useable_type_by_gamemode[i], game.nb_players_info[j][useable_type_by_gamemode[i]]]);
-            }
-        }
-    }
-    console.log("nb_players_by_type", nb_players_by_type)
-
-    //select type by compatible nb_players in nb_players_by_type
-    var possible_type = []
-    for (var i in nb_players_by_type) {
-        var possible_type_nb_players = [];
-        for (var j in nb_players_by_type[i][1]) {
-            if (nb_players_by_type[i][1][j] <= nb_players_max) {
-                // console.log(nb_players_max, nb_players_by_type[i][0], nb_players_by_type[i][1][j]);
-                possible_type_nb_players.push(nb_players_by_type[i][1][j]);
-            }
-        }
-        if (possible_type_nb_players.length != 0) {
-            possible_type.push([nb_players_by_type[i][0], possible_type_nb_players]);
-        }
-    }
-    console.log("possible_type", possible_type)
-
-    //random mode and random player number by that selected mode
-    var selection_type_index = Math.floor(Math.random() * possible_type.length);
-    var selected_type = possible_type[selection_type_index][0].toString();
-
-    var selection_nb_players_index = Math.floor(Math.random() * possible_type[selection_type_index][1].length);
-    var selected_nb_players = possible_type[selection_type_index][1][selection_nb_players_index].toString();
-
-    var data = [selected_type, selected_nb_players, sentence_nature];
-    return data;
+    return color;
 }
 
-function generate(nb_players_max) {
-    var get_type = getType(nb_players_max);
-    var type = get_type[0];
-    var nb_players = get_type[1];
-    var sentence_nature = get_type[2];
+function getRandomType() {
+    if (game.max_player_number != -1) {
+        var type_by_gamemode = [];
+        var max_player_number_by_gamemode = [];
+        switch (game.gamemode) {
+            case "bar":
+                type_by_gamemode = game.filter.type_by_gamemode.bar;            
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.bar;            
+                break;
+            case "default":
+                type_by_gamemode = game.filter.type_by_gamemode.default;
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.default;
+                break;
+            case "hot":
+                type_by_gamemode = game.filter.type_by_gamemode.hot;
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.hot;
+                break;
+            case "silly":
+                type_by_gamemode = game.filter.type_by_gamemode.silly;
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.silly;
+                break;
+            case "war":
+                type_by_gamemode = game.filter.type_by_gamemode.war;
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.war;
+                break;
+        }
 
-    var request = db().filter({nb_players:nb_players, type:type, parent_key:""}).get();
-    var random = Math.floor(Math.random() * Math.floor(request.length));
-    var key = request[random].key;
-    var sentence = textReplacer(request[random].text);
+        var color = getRandomColor();
+        var type_by_color = []
+        switch (color) {
+            case "blue":
+                type_by_color = game.filter.type_by_color.blue;            
+                break;
+            case "red":
+                type_by_color = game.filter.type_by_color.red;
+                break;
+            case "green":
+                type_by_color = game.filter.type_by_color.green;
+                break;
+            case "yellow":
+                type_by_color = game.filter.type_by_color.yellow;
+                break;
+            default:
 
-    document.getElementById("ingame_sentence").innerHTML = sentence;
-    addHistoryItem(0, sentence, key, type, sentence_nature);
+        }
 
-    //generate other sentence if key is something
-    if (key != "") {
+        var color_gamemode_matching_type = []
+        for (var i in type_by_gamemode) {
+            for (var j in type_by_color) {
+                if (type_by_gamemode[i] == type_by_color[j]) {
+                    if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {         
+                        console.log("SOCIAL POSTING DISABLED")
+                    } else {
+                        color_gamemode_matching_type.push(type_by_gamemode[i]);
+                    }
+                }
+            }
+        }
 
-        request = db().filter({nb_players:nb_players, type:type, parent_key:key}).get();
-        random = Math.floor(Math.random() * Math.floor(request.length));
-        sentence = textReplacer(request[random].text);
+        var potential_type = []
+        for (var i in color_gamemode_matching_type) {
+            var checking_cg_matching_type = color_gamemode_matching_type[i]
+            var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type-1];
+            if (checking_mp_by_gamemode.length != 0) {
+                for (var j in checking_mp_by_gamemode) {
+                    if (checking_mp_by_gamemode[j] <= game.max_player_number) {
+                        potential_type.push(checking_cg_matching_type)
+                    }
+                }
+            }
+        }
+    
+        var random_type_index = Math.floor(Math.random() * potential_type.length);
+        var selected_type = potential_type[random_type_index];
 
+        return [color, selected_type];
+    } else {
+        getMinPlayer()
+        getRandomType()
+    }
+}
 
-        if (sentence_nature == "yellow") {
-            game.virus_triggered = true;
-            randomEndVirus = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
+function generate() {
+    var get_random_color_type = getRandomType();
+    var color = get_random_color_type[0];
+    var type = get_random_color_type[1];        // text
+    var max_player = game.max_player_number;
 
-            request = db().filter({nb_players:nb_players, type:type, parent_key:key}).get();
-            random = Math.floor(Math.random() * Math.floor(request.length));
-            sentence = textReplacer(request[random].text);
-
-            console.log("end virus: " + sentence)
-
-            console.log(randomEndVirus, sentence, key, type, sentence_nature)
-            addHistoryItem(randomEndVirus, sentence, key, type, sentence_nature);
-
-        } else if (sentence_nature == "blue" || sentence_nature == "green" ) {
-            addHistoryItem(0, sentence, key, type, sentence_nature);
+    function getSentence(use_parent_key, selected_nb_players, selected_type) {
+        if (use_parent_key == false) {
+            return game.database().filter({nb_players:i.toString(), type:type.toString(), parent_key:""}).get();
+        } else {
+            return game.database().filter({nb_players:i.toString(), type:type.toString(), parent_key:key}).get();
         }
     }
 
-    //disable down drinking after once
-    if (sentence_nature == "red") {
+    function getRandomSentence() {
+        var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        database_id = request[random_int].___id;
+        sentence = textReplacer(request[random_int].text);
+        console.log(request[random_int].key)
+        if (request[random_int].key != "") { key = request[random_int].key; }
+
+        console.log(random_int, sentence)
+
+        //remove sentence from db
+        game.database().filter({___id:database_id}).remove();
+        console.log(database_id, "removed")
+    }
+
+    var request = []
+    var key = "";
+    var sentence = "";
+    var database_id = "";
+
+    //get sentence from lower nb_player
+    for (var i = 0; i <= max_player; i++) {
+        var addind_request = getSentence(false, i.toString(), type.toString())
+        request.push(...addind_request)
+    }
+    getRandomSentence()
+    console.log("request", request)
+    console.log(color, "type", type, "max_player", max_player, "key", key)
+
+    updateHTMLBackgroundColor(color);
+    document.getElementById("ingame_sentence").innerHTML = sentence;
+    addHistoryItem(0, database_id, sentence, key, type, color);
+
+    if (key != "") {
+        request = [];
+        sentence = "";
+        database_id = "";
+        
+        //get sentence from lower nb_player
+        for (var i = 0; i <= max_player; i++) {
+            var addind_request = getSentence(true, i.toString(), type.toString())
+            request.push(...addind_request)
+        }
+        getRandomSentence()
+
+        if (color == "yellow") {
+            game.virus_triggered = true;
+            random_virus_end = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
+
+            console.log("game_cycle end virus", random_virus_end)
+            console.log(sentence, "key", key, "type", type)
+            addHistoryItem(random_virus_end, database_id, sentence, key, type, color);
+
+            game.virus_established_start = game.cycle_id;
+            game.virus_established_end = game.cycle_id + random_virus_end;
+
+        } else if (color == "blue" || color == "green" ) {
+            addHistoryItem(1, database_id, sentence, key, type, color);
+        }
+
+    }
+
+    //disable down drinking if trigerred
+    if (color == "red") {
         game.down_drinking_triggered = true;
     }
 }

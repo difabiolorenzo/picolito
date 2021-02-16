@@ -318,4 +318,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s、フレーバービー�
 {cycle_state:"false",type:"22",text:"%s、飛ぶすべり台を描いてください。グループが選んだ知らない人に絵を見せて、それが何か答えられたら誰かに$口飲ませることができる。間違ったら自分が飲む。",key:"",parent_key:"",pack_name:"bar",language:"ja",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s、七面鳥の詰め物を描いてください。グループが選んだ知らない人に絵を見せて、それが何か答えられたら誰かに$口飲ませることができる。間違ったら自分が飲む。",key:"",parent_key:"",pack_name:"bar",language:"ja",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s、アソコが元気な馬を描いてください。グループが選んだ知らない人に絵を見せて、それが何か答えられたら誰かに$口飲ませることができる。間違ったら自分が飲む。",key:"",parent_key:"",pack_name:"bar",language:"ja",nb_players:"1"}
-])
+]);
+retrieveDB();

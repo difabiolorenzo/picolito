@@ -411,4 +411,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, jos olet tyttö, nuole s
 {cycle_state:"false",type:"25",text:"Kaikki, jotka pitävät siitä, että joku puree heitä rinnoista, juovat $ huikkaa",key:"",parent_key:"",pack_name:"hot",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, jaa $ huikkaa sille, kenellä uskot olevan eniten seksivalloituksia. Muuten juo huikat itse",key:"",parent_key:"",pack_name:"hot",language:"fi",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"Kaikki, joiden mielestä useampi osallistuja on viehättävä, juovat $ huikkaa",key:"",parent_key:"",pack_name:"hot",language:"fi",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Kaikki, jotka ovat joskus harrastaneet seksiä deittisovelluksen ansiosta, juovat $ huikkaa",key:"",parent_key:"",pack_name:"hot",language:"fi",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Kaikki, jotka ovat joskus harrastaneet seksiä deittisovelluksen ansiosta, juovat $ huikkaa",key:"",parent_key:"",pack_name:"hot",language:"fi",nb_players:"0"}]);
+retrieveDB();

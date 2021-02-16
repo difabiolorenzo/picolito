@@ -2546,4 +2546,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, du hast 5 Minuten, um de
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn es deinen Freunden schon einmal gelungen ist, dir deine/n Badeanzug/Badehose wegzunehmen, als du im Wasser warst",key:"",parent_key:"",pack_name:"default",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal dein Unterrichtsmaterial zum Jahresende verbrannt hast",key:"",parent_key:"",pack_name:"default",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal versucht hast, ein Saufspiel zu erfinden",key:"",parent_key:"",pack_name:"default",language:"de",nb_players:"0"}
-])
+]);
+retrieveDB();

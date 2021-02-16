@@ -653,4 +653,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imitera någon som skite
 {cycle_state:"false",type:"25",text:"Drick $ klunkar om du har klämt finnar på fler än två personer",key:"",parent_key:"",pack_name:"silly",language:"sv",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drick $ klunkar om du har spottat på fler än 2 främlingar",key:"",parent_key:"",pack_name:"silly",language:"sv",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, drick $ klunkar om du någon gång har har spytt upp en måltid just efter att ha ätit den. Dela i annat fall ut $ klunkar",key:"",parent_key:"",pack_name:"silly",language:"sv",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, drick $ klunkar om du någon gång har försökt att suga dig själv, inklusive när du var barn. Om du är en tjej delar du ut $ klunkar",key:"",parent_key:"",pack_name:"silly",language:"sv",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, drick $ klunkar om du någon gång har försökt att suga dig själv, inklusive när du var barn. Om du är en tjej delar du ut $ klunkar",key:"",parent_key:"",pack_name:"silly",language:"sv",nb_players:"1"}]);
+retrieveDB();

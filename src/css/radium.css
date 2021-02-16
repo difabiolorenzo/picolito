@@ -31,7 +31,7 @@ hr {
     border-color: var(--gray-dark);
 }
 
-.dark_mode .dark_affected{
+.dark_mode .dark_affected, body.dark_mode{
     background-color: #252525;
     color: white;
     transition: 0.25s;

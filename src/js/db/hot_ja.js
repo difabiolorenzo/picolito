@@ -411,4 +411,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s、女なら、エロい�
 {cycle_state:"false",type:"25",text:"乳首を軽く噛んでもらうのが好きなら、$口飲む",key:"",parent_key:"",pack_name:"hot",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s、このテーブルの中で、自分が一番多くの彼氏・彼女と付き合ったことがあると思うなら、$口飲むじゃなければ、自分が飲む",key:"",parent_key:"",pack_name:"hot",language:"ja",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"このテーブルの人達がお互いに好きになりそうと思ったら、$口飲む",key:"",parent_key:"",pack_name:"hot",language:"ja",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"出会い系アプリで誰かとエッチしたことがあるなら、$口飲む",key:"",parent_key:"",pack_name:"hot",language:"ja",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"出会い系アプリで誰かとエッチしたことがあるなら、$口飲む",key:"",parent_key:"",pack_name:"hot",language:"ja",nb_players:"0"}]);
+retrieveDB();

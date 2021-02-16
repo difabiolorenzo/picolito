@@ -2024,4 +2024,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, sinulla on 5 minuuttia a
 {cycle_state:"false",type:"25",text:"Juo $ huikkaa, jos olet joskus palannut yhteen exäsi kanssa",key:"",parent_key:"",pack_name:"default",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Juo $ huikkaa, jos olet joskus harrastanut suojaamatonta seksiä tuntemattoman henkilön kanssa",key:"",parent_key:"",pack_name:"default",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Juo $ huikkaa, jos Picolo-ohje on tarvinnut toistaa sen takia, ettet ollut valppaana",key:"",parent_key:"",pack_name:"default",language:"fi",nb_players:"0"}
-])
+]);
+retrieveDB();

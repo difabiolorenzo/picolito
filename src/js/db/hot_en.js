@@ -757,4 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, if you are a girl, lick 
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever swum naked in the sea or ocean",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever been swimming with a group of friends, guys and girls, and all of you were naked",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever had sex on the beach",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Drink $ sips if you've ever slept with someone in a youth hostel",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Drink $ sips if you've ever slept with someone in a youth hostel",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"}]);
+retrieveDB();

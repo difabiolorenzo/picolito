@@ -654,4 +654,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imitoi paskovaa jätkä�
 {cycle_state:"false",type:"25",text:"Ota $ huikkaa, jos olet puristanut finnejä useammalta kuin kahdelta henkilöltä",key:"",parent_key:"",pack_name:"silly",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Ota $ huikkaa, jos paikalla on enemmän kuin kaksi sinulle vierasta henkilöä",key:"",parent_key:"",pack_name:"silly",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, ota $ huikkaa, jos olet joskus yrjönnyt ruokasi heti syömisen jälkeen. Muussa tapauksessa jaa $ huikkaa",key:"",parent_key:"",pack_name:"silly",language:"fi",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, juo $ huikkaa, jos olet joskus yrittänyt ottaa itseltäsi suihin. Lapsuuden kokeilut lasketaan. Jos olet tyttö, saat jakaa $ huikkaa",key:"",parent_key:"",pack_name:"silly",language:"fi",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, juo $ huikkaa, jos olet joskus yrittänyt ottaa itseltäsi suihin. Lapsuuden kokeilut lasketaan. Jos olet tyttö, saat jakaa $ huikkaa",key:"",parent_key:"",pack_name:"silly",language:"fi",nb_players:"1"}]);
+retrieveDB();

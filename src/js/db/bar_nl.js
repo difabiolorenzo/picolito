@@ -318,4 +318,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, als je bier met een smaa
 {cycle_state:"false",type:"22",text:"%s, teken een vliegende glijbaan. Laat raden wat je getekend hebt door de groep gekozen onbekende, als die het raadt, mag jij $ slokken uitdelen, zo niet dan drink je zelf",key:"",parent_key:"",pack_name:"bar",language:"nl",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, teken een gevulde kalkoen. Laat raden wat je getekend hebt door de groep gekozen onbekende, als die het raadt, mag jij $ slokken uitdelen, zo niet dan drink je zelf",key:"",parent_key:"",pack_name:"bar",language:"nl",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, teken een paard met een erectie. Laat raden wat je getekend hebt door de groep gekozen onbekende, als die het raadt, mag jij $ slokken uitdelen, zo niet dan drink je zelf",key:"",parent_key:"",pack_name:"bar",language:"nl",nb_players:"1"}
-])
+]);
+retrieveDB();

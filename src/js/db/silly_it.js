@@ -655,4 +655,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imita un ragazzo che caga
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se hai già schiacciato i brufoli di più di 2 persone diverse",key:"",parent_key:"",pack_name:"silly",language:"it",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se hai sputato su più di 2 persone conosciute",key:"",parent_key:"",pack_name:"silly",language:"it",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, bevi $ sorsi se hai già vomitato un pasto subito dopo averlo mangiato. In caso contrario distribuiscili",key:"",parent_key:"",pack_name:"silly",language:"it",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, bevi $ sorsi se hai già provato a succhiartelo da solo, anche da piccolo. Se sei una ragazza, distribuisci $ sorsi",key:"",parent_key:"",pack_name:"silly",language:"it",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, bevi $ sorsi se hai già provato a succhiartelo da solo, anche da piccolo. Se sei una ragazza, distribuisci $ sorsi",key:"",parent_key:"",pack_name:"silly",language:"it",nb_players:"1"}]);
+retrieveDB();

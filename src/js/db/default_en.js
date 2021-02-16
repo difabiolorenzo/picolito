@@ -2527,4 +2527,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, you have 5 minutes to fi
 {cycle_state:"false",type:"25",text:"Drink $ sips if your friends have ever managed to run away with your swimming trunks/swimsuit, leaving you in the water",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever burnt your notes at the end of the year",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever made up a drinking game",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"}
-])
+]);
+retrieveDB();

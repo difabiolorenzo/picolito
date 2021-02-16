@@ -757,4 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Lag %t: Vilket flicknamn har
 {cycle_state:"false",type:"13",text:"Bägge lagen skålar med $ klunkar!",key:"",parent_key:"",pack_name:"war",language:"sv",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Laget som har den mest stornästa personen i rummet måste dricka $ klunkar!",key:"",parent_key:"",pack_name:"war",language:"sv",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Lag %t: Besluta vem som är den nyktraste deltagaren i ert lag, hen måste dricka upp sitt glas inom 2 minuter",key:"",parent_key:"",pack_name:"war",language:"sv",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Lag %t: Välj ut två lagkamrater som ska tömma sina glas",key:"",parent_key:"",pack_name:"war",language:"sv",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Lag %t: Välj ut två lagkamrater som ska tömma sina glas",key:"",parent_key:"",pack_name:"war",language:"sv",nb_players:"0"}]);
+retrieveDB();

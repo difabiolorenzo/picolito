@@ -757,4 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Team %t: What's %s's mother'
 {cycle_state:"false",type:"13",text:"Both teams, toast with $ sips!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"The team that has the person with the largest nose in the room, must drink $ times!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Team %t: Decide who is the most sober out of your team, they have to finish their drink within 2 minutes",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Team %t: Pick two of your teammates to finish their drinks",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Team %t: Pick two of your teammates to finish their drinks",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"}]);
+retrieveDB();

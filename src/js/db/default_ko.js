@@ -2020,4 +2020,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, 너는 네 잔을 다 �
 {cycle_state:"false",type:"25",text:"일 년 이상 치과에 가지 않았다면 $번 마셔",key:"",parent_key:"",pack_name:"default",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"네 전 애인하고 헤어지고 나서 다시 사겨봤으면 $번 마셔",key:"",parent_key:"",pack_name:"default",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"모르는 사람하고 피임하지 않고 자본적 있으면 $번 마셔",key:"",parent_key:"",pack_name:"default",language:"ko",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"네가 듣지 않아서, 이 게임 동안 피콜로 게임의 룰을 다시 말해야 했다면 $번 마셔.",key:"",parent_key:"",pack_name:"default",language:"ko",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"네가 듣지 않아서, 이 게임 동안 피콜로 게임의 룰을 다시 말해야 했다면 $번 마셔.",key:"",parent_key:"",pack_name:"default",language:"ko",nb_players:"0"}]);
+retrieveDB();

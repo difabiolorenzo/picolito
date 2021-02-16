@@ -654,4 +654,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s 똥을 싸고있는 남�
 {cycle_state:"false",type:"25",text:"다른 두 명 이상의 여드름을 짜봤으면 $번 마셔",key:"",parent_key:"",pack_name:"silly",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"모르는 2명 이상에게 침을 뱉어봤으면 $번 마셔",key:"",parent_key:"",pack_name:"silly",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, 음식을 먹고 나서 바로 토를 해봤으면 $번 마셔. 그렇지 않으면 다른 사람에게 마시라고 해",key:"",parent_key:"",pack_name:"silly",language:"ko",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s, 네가 아주 어렸을지라도 스스로 네 고추를 빨아보려고 시도했다면 $번 마셔. 만약 네가 여자라면 다른 사람에게 $번 마시라고 해",key:"",parent_key:"",pack_name:"silly",language:"ko",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s, 네가 아주 어렸을지라도 스스로 네 고추를 빨아보려고 시도했다면 $번 마셔. 만약 네가 여자라면 다른 사람에게 $번 마시라고 해",key:"",parent_key:"",pack_name:"silly",language:"ko",nb_players:"1"}]);
+retrieveDB();

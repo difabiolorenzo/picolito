@@ -413,4 +413,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, 네가 여자라면 네 
 {cycle_state:"false",type:"25",text:"사람들이 네 찌찌를 깨무는 걸 좋아하면 $번 마셔",key:"",parent_key:"",pack_name:"hot",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, 이 테이블에서 네가 가장 많이 잤다고 생각하면, 다른 사람에게 $번 마시라고 해. 아니면 네가 그걸 마셔",key:"",parent_key:"",pack_name:"hot",language:"ko",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"이 테이블에 있는 여러사람이 육체적으로 널 매혹시키면 $번 마셔",key:"",parent_key:"",pack_name:"hot",language:"ko",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"미팅 앱에서 만난 사람하고 자본적 있는 사람은 $번 마셔",key:"",parent_key:"",pack_name:"hot",language:"ko",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"미팅 앱에서 만난 사람하고 자본적 있는 사람은 $번 마셔",key:"",parent_key:"",pack_name:"hot",language:"ko",nb_players:"0"}]);
+retrieveDB();

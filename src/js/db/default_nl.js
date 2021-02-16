@@ -2025,4 +2025,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, je moet je glas leeg bin
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je weer een relatie hebt met een van je exen",key:"",parent_key:"",pack_name:"default",language:"nl",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je al eens onbeschermde seks hebt gehad met een vreemde",key:"",parent_key:"",pack_name:"default",language:"nl",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Neem $ slokken als ze een Picolo-regel moesten herhalen, omdat je niet luisterde",key:"",parent_key:"",pack_name:"default",language:"nl",nb_players:"0"}
-])
+]);
+retrieveDB();

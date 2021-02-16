@@ -759,4 +759,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Joukkue %t: Mikä on pelaaja
 {cycle_state:"false",type:"13",text:"Molemmat joukkueet skoolaavat $ huikalla!",key:"",parent_key:"",pack_name:"war",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Joukkue, josta löytyy porukan isonenäisin henkilö, juo $ huikkaa!",key:"",parent_key:"",pack_name:"war",language:"fi",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Joukkue %t: Päättäkää, kuka on joukkueenne selvin jäsen. Hänen tulee juoda lasinsa tyhjäksi 2 minuutin sisällä",key:"",parent_key:"",pack_name:"war",language:"fi",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Joukkue %t: Valitkaa kaksi joukkueenne jäsentä, joiden tulee tyhjentää lasinsa",key:"",parent_key:"",pack_name:"war",language:"fi",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Joukkue %t: Valitkaa kaksi joukkueenne jäsentä, joiden tulee tyhjentää lasinsa",key:"",parent_key:"",pack_name:"war",language:"fi",nb_players:"0"}]);
+retrieveDB();

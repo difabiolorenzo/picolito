@@ -2024,4 +2024,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, hai 5 minuti per finire 
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se sei già tornato(a) con un(una) ex",key:"",parent_key:"",pack_name:"default",language:"it",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se hai già fatto l’amore con uno(a) sconosciuto(a) senza protezione",key:"",parent_key:"",pack_name:"default",language:"it",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se è già stato necessario ripetere una regola di Picolo perché non stavi ascoltando",key:"",parent_key:"",pack_name:"default",language:"it",nb_players:"0"}
-])
+]);
+retrieveDB();

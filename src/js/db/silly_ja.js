@@ -655,4 +655,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s、うんちをしてい�
 {cycle_state:"false",type:"25",text:"2人以上の人のできものをつぶしたことがあるなら$口飲む",key:"",parent_key:"",pack_name:"silly",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"知らない人2人以上につばを吐いたことがあるなら$口飲む",key:"",parent_key:"",pack_name:"silly",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s、料理を食べた後すぐに吐いたことがあるなら$口飲む。なければ、誰かに飲ませることができる",key:"",parent_key:"",pack_name:"silly",language:"ja",nb_players:"1"},
-{cycle_state:"false",type:"25",text:"%s、子供の頃でも、自分で自分のち〇こをなめてみたことがあるなら$口飲む。女性の場合は、誰かに$口飲ませることができる",key:"",parent_key:"",pack_name:"silly",language:"ja",nb_players:"1"}])
+{cycle_state:"false",type:"25",text:"%s、子供の頃でも、自分で自分のち〇こをなめてみたことがあるなら$口飲む。女性の場合は、誰かに$口飲ませることができる",key:"",parent_key:"",pack_name:"silly",language:"ja",nb_players:"1"}]);
+retrieveDB();

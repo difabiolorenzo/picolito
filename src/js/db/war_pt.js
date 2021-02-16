@@ -787,4 +787,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Equipa %t, pergunta com $ go
 {cycle_state:"false",type:"13",text:"As duas equipas brindam com $ goles!",key:"",parent_key:"",pack_name:"war",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"A equipa que tem o jogador com o nariz maior bebe $ goles!",key:"",parent_key:"",pack_name:"war",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Equipa %t, escolham, de entre vocês, a esponja da equipa. Ele/Ela terá de acabar o seu copo",key:"",parent_key:"",pack_name:"war",language:"pt",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Equipa %t, escolham dois dos vossos membros, os quais terão de acabar os seus copos",key:"",parent_key:"",pack_name:"war",language:"pt",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"Equipa %t, escolham dois dos vossos membros, os quais terão de acabar os seus copos",key:"",parent_key:"",pack_name:"war",language:"pt",nb_players:"0"}]);
+retrieveDB();

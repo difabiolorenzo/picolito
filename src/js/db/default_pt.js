@@ -2023,4 +2023,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, tens 5 minutos para acab
 {cycle_state:"false",type:"25",text:"Bebe $ goles se já voltaste para um(a) ex-namorado(a)",key:"",parent_key:"",pack_name:"default",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bebe $ goles se já fizeste amor com um(a) desconhecido(a) sem proteção",key:"",parent_key:"",pack_name:"default",language:"pt",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bebe $ goles se já tiveram de repetir uma regra Picolo porque não estavas a ouvir",key:"",parent_key:"",pack_name:"default",language:"pt",nb_players:"0"}
-])
+]);
+retrieveDB();

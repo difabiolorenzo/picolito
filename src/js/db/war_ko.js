@@ -780,4 +780,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"팀 %t, 질문과 함께 벌
 {cycle_state:"false",type:"13",text:"두 팀은 $번 마시며 건배해!",key:"",parent_key:"",pack_name:"war",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"코가 가장 큰 사람을 데리고 있는 팀은 $번 마셔!",key:"",parent_key:"",pack_name:"war",language:"ko",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"팀 %t, 너네들 중 팀의 술고래를 선택해. 그 또는 그녀는 자신의 잔을 전부 마셔",key:"",parent_key:"",pack_name:"war",language:"ko",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"팀 %t, 너네 멤버들 중 자신의 잔을 전부 다 마실 두 명을 선택해",key:"",parent_key:"",pack_name:"war",language:"ko",nb_players:"0"}])
+{cycle_state:"false",type:"13",text:"팀 %t, 너네 멤버들 중 자신의 잔을 전부 다 마실 두 명을 선택해",key:"",parent_key:"",pack_name:"war",language:"ko",nb_players:"0"}]);
+retrieveDB();

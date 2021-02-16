@@ -319,4 +319,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, 맛이 나는 맥주를 
 {cycle_state:"false",type:"22",text:"%s, 날으는 봅슬레이 썰매를 그려. 그룹이 선택한 모르는 사람에게 이 그림이 뭔지 맞춰보라고 해, 만약 그 사람이 맞추면 너는 다른 사람에게 $번 마시라고 하고, 그렇지 않으면 네가 마셔",key:"",parent_key:"",pack_name:"bar",language:"ko",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, 속을 채운 칠면조를 그려. 그룹이 선택한 모르는 사람에게 이 그림이 뭔지 맞춰보라고 해, 만약 그 사람이 맞추면 너는 다른 사람에게 $번 마시라고 하고, 그렇지 않으면 네가 마셔",key:"",parent_key:"",pack_name:"bar",language:"ko",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, 발기된 말을 그려. 그룹이 선택한 모르는 사람에게 이 그림이 뭔지 맞춰보라고 해, 만약 그 사람이 맞추면 너는 다른 사람에게 $번 마시라고 하고, 그렇지 않으면 네가 마셔",key:"",parent_key:"",pack_name:"bar",language:"ko",nb_players:"1"}
-])
+]);
+retrieveDB();

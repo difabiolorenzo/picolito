@@ -319,4 +319,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, se carburas à cerveja a
 {cycle_state:"false",type:"22",text:"%s, desenha um escorrega voador. Pede a uma pessoa desconhecida, escolhida pelo grupo, para adivinhar o que é. Se acertar, podes distribuir $ goles, caso contrário, bebes tu",key:"",parent_key:"",pack_name:"bar",language:"pt",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, desenha um peru recheado. Pede a uma pessoa desconhecida, escolhida pelo grupo, para adivinhar o que é. Se acertar, podes distribuir $ goles, caso contrário, bebes tu",key:"",parent_key:"",pack_name:"bar",language:"pt",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, desenha um cavalo ereto. Pede a uma pessoa desconhecida, escolhida pelo grupo, para adivinhar o que é. Se acertar, podes distribuir $ goles, caso contrário, bebes tu",key:"",parent_key:"",pack_name:"bar",language:"pt",nb_players:"1"}
-])
+]);
+retrieveDB();

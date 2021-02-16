@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="manifest" href="./Manifest.webmanifest">
         <link rel="icon" type="image/png" href="./src/img/icon_96.jpg" />
         <title>Picolito</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="./src/css/radium.css">
@@ -16,7 +16,7 @@
 
         <script type="text/javascript" src="./src/js/taffy/taffy.js"></script>
 
-        <link rel='stylesheet' type='text/css' href='./src/css/main.css'>
+        <link rel="stylesheet" type="text/css" href="./src/css/main.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
         <!-- <script type="text/javascript" src="./src/js/db/default_fr.js"></script> -->
@@ -29,7 +29,7 @@
             <hr>
             <p id="disclaimer_content">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
             <p>Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...</p>
-            <p>Fixer vos limites sans outre-passer celles des autres.</p>
+            <p>Fixez vos limites sans outre-passer celles des autres.</p>
             <hr>
             <p>Pour plus d'information sur l'alcool et l'alcoolisme:</p>
             <p>- rendez vous sur <a href="https://www.alcool-info-service.fr/">alcool-info-service.fr</a></p>
@@ -45,8 +45,8 @@
             <hr>
             <div class="d-flex">
                 <input type="text" class="form-control" pattern="[A-Za-z]" id="player_input" placeholder="Ajouter un joueur">
-                <!-- <button type="submit" class="btn btn-info" onclick="generateRandomPlayer(1)">Random</button> -->
                 <button type="submit" class="btn btn-info" onclick="addPlayer()">Ajouter</button>
+                <!-- <button type="submit" class="btn btn-info" onclick="generateRandomPlayer(1)">Random</button> -->
             </div>
             <br>
             <div id="player_list"></div>
@@ -60,7 +60,6 @@
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-dark" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'" role="button">GitHub</li>
                         <li class="list-group-item list-group-item-dark" role="button" onclick="displayPage('disclaimer')">Menu de prévention</li>
-                        <!-- <li class="list-group-item list-group-item-dark" role="button" onclick="" disabled>Changer de langue</li> -->
                     </ul>
                     <br>
                 </div>
@@ -75,39 +74,78 @@
                             <button class="btn btn-info" onclick="lunchSelectedGamemode('bar')">/gamemode bar</button>
                             <button class="btn btn-info" onclick="lunchSelectedGamemode('hot')">/gamemode hot</button>
                             <button class="btn btn-dark" onclick="lunchSelectedGamemode('war')" disabled>/gamemode war</button>
-                            <button class="btn btn-success" onclick="">Lancer</button>
                         </div>
                     </div>
                     <hr>
                     <div class="form-check">
                         <h5>Fonctionnement</h5>
                         <div>
-                            <input class="form-check-input" id="input_down_drinking_enabled" type="checkbox" onclick="game.down_drinking_enabled = this.checked">
+                            <input class="form-check-input" type="checkbox" id="input_down_drinking_enabled" onclick="game.down_drinking_enabled = this.checked">
                             <label class="form-check-label">Culs secs</label>
                         </div>
                         <div>
-                            <input class="form-check-input" id="input_virus_enabled" type="checkbox" onclick="game.virus_enabled = this.checked">
+                            <input class="form-check-input" type="checkbox" id="input_virus_enabled" onclick="game.virus_enabled = this.checked">
                             <label class="form-check-label" >Virus</label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="checkbox" onclick="" checked disabled>
+                            <input class="form-check-input" type="checkbox" id="input_social_posting_enabled" onclick="game.social_posting_enabled = this.checked">
                             <label class="form-check-label" >Phrases "poste une phrase débile..."</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="input_sip_min">Gorgées minimum</label>
+                            <select disabled class="form-control" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                              <option>6</option>
+                              <option>7</option>
+                              <option>8</option>
+                              <option>9</option>
+                              <option>10</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input_sip_max">Gorgées maximum</label>
+                            <select disabled class="form-control" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-check">
                         <h5>Affichage</h5>
                         <div>
                             <input class="form-check-input" id="input_dark_mode_settings" type="checkbox" onclick="toggleDarkMode()" >
-                            <label class="form-check-label">Mode sombre (inutile)</label>
-                        </div>
-                        <div>
-                            <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
-                            <label class="form-check-label">Debug: Récapitulatif</label>
+                            <label class="form-check-label">Mode sombre</label>
                         </div>
                     </div>
                     <div class="form-check">
+                        <h5>DEBUG</h5>
+                        <div>
+                            <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
+                            <label class="form-check-label">Récapitulatif</label>
+                        </div>
+                    </div>
+                    <!-- <div class="form-check">
+                        <h5>Cookies</h5>
+                        <a href="#">Sauvegarder les paramètres</a><br>
+                        <a href="#">Sauvegarder les joueurs</a><br>
+                        <a href="#" onclick="deleteAllCookies()">Supprimer les cookies</a><br>
+                    </div> -->
+                    <div class="form-check">
                         <h5>Autre</h5>
-                        <a href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a>
+                        <a href="#" onclick="removeAllPlayers()">Supprimer tous les joueurs</a><br>
+                        <a href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a><br>
                     </div>
                 </div>
             </div>
@@ -153,6 +191,7 @@
               </div>
               <hr>
         </div>
+        <!-- <div class="page blue dark_affected" id="game" style="display:none"> -->
         <div class="page blue" id="game" style="display:none">
             <div id="ingame_content">
                 <div class="d-flex" id="ingame_topbar">
@@ -180,13 +219,13 @@
                     <h1 id="ingame_title"></h1>
                     <p id="ingame_sentence">Prêts?</p>
                 </div>
+                <div id="sentence_list">
+                </div>
             </div>
             <table id="html_recap_sentences" style="display:block;">
                 <tbody>
                 </tbody>
             </table>
-            <div id="sentence_list">
-            </div>
         </div>
     </body>
 </html>

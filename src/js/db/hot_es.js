@@ -411,4 +411,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, si eres una chica, láme
 {cycle_state:"false",type:"25",text:"Bebe $ tragos si te encanta que te mordisqueen los pezones",key:"",parent_key:"",pack_name:"hot",language:"es",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, si crees que eres la persona con más conquistas de esta mesa, reparte $ tragos. Si no, bébetelos",key:"",parent_key:"",pack_name:"hot",language:"es",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"Bebe $ tragos si varios jugadores de esta mesa de atraen físicamente",key:"",parent_key:"",pack_name:"hot",language:"es",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bebe $ tragos si alguna vez te has acostado con alguien mediante una aplicación de citas",key:"",parent_key:"",pack_name:"hot",language:"es",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Bebe $ tragos si alguna vez te has acostado con alguien mediante una aplicación de citas",key:"",parent_key:"",pack_name:"hot",language:"es",nb_players:"0"}]);
+retrieveDB();

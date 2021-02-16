@@ -319,4 +319,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, если ты заказ
 {cycle_state:"false",type:"22",text:"%s, нарисуй летающую детскую горку. Покажи рисунок незнакомому человеку. Если он угадает, решай, кому из игроков делать $ глотка. Если нет - пей сам(а) ",key:"",parent_key:"",pack_name:"bar",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, нарисуй фаршированную индюшку. Покажи рисунок незнакомому человеку. Если он угадает, решай, кому из игроков делать $ глотка. Если нет - пей сам(а) ",key:"",parent_key:"",pack_name:"bar",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, нарисуй лошадь с эрекцией. Покажи рисунок незнакомому человеку. Если он угадает, решай, кому из игроков делать $ глотка. Если нет - пей сам(а) ",key:"",parent_key:"",pack_name:"bar",language:"ru",nb_players:"1"}
-])
+]);
+retrieveDB()

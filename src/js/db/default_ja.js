@@ -2022,4 +2022,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s、後5分でドリンク�
 {cycle_state:"false",type:"25",text:"元カレ/元カノとまた寝ちゃったことあるなら$口飲む",key:"",parent_key:"",pack_name:"default",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"知らない人と生でヤってしまったことあるなら$口飲む",key:"",parent_key:"",pack_name:"default",language:"ja",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"聞いていなかったせいでPicoloのルールを読み直させたことあるなら$口飲む",key:"",parent_key:"",pack_name:"default",language:"ja",nb_players:"0"}
-])
+]);
+retrieveDB();

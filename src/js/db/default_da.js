@@ -2024,4 +2024,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, du får 5 minutter til a
 {cycle_state:"false",type:"25",text:"Drik $ slurke, hvis du nogensinde har fundet tilbage til en ex",key:"",parent_key:"",pack_name:"default",language:"da",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drik $ slurke, hvis du nogensinde har haft ubeskyttet sex med en fremmed",key:"",parent_key:"",pack_name:"default",language:"da",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drik $ slurke, hvis en Picolo-regel har måtte gentages, fordi du ikke var opmærksom",key:"",parent_key:"",pack_name:"default",language:"da",nb_players:"0"}
-])
+]);
+retrieveDB();

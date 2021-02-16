@@ -2022,4 +2022,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, tienes 5 minutos para te
 {cycle_state:"false",type:"25",text:"Bebe $ tragos si no has ido al dentista desde hace más de un año",key:"",parent_key:"",pack_name:"default",language:"es",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bebe $ tragos si has vuelto a hacerlo con un/a ex",key:"",parent_key:"",pack_name:"default",language:"es",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bebe $ tragos si alguna vez has hecho el amor con un desconocido/a sin protección",key:"",parent_key:"",pack_name:"default",language:"es",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bebe $ tragos si ya te han tenido que repetir una regla de Picolo porque no escuchabas",key:"",parent_key:"",pack_name:"default",language:"es",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Bebe $ tragos si ya te han tenido que repetir una regla de Picolo porque no escuchabas",key:"",parent_key:"",pack_name:"default",language:"es",nb_players:"0"}]);
+retrieveDB();

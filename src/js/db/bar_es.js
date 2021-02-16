@@ -318,4 +318,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, bebe si consumes cerveza
 {cycle_state:"false",type:"22",text:"%s, dibuja a un león gay. Haz que la persona desconocida que elija el grupo lo adivine, si lo hace, puedes repartir $ tragos, si no, bebe",key:"",parent_key:"",pack_name:"bar",language:"es",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, dibuja un tobogán volante. Haz que la persona desconocida que elija el grupo lo adivine, si lo hace, puedes repartir $ tragos, si no, bebe",key:"",parent_key:"",pack_name:"bar",language:"es",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, dibuja a un pavo relleno. Haz que la persona desconocida que elija el grupo lo adivine, si lo hace, puedes repartir $ tragos, si no, bebe",key:"",parent_key:"",pack_name:"bar",language:"es",nb_players:"1"},
-{cycle_state:"false",type:"22",text:"%s, dibuja a un caballo con una erección. Haz que la persona desconocida que elija el grupo lo adivine, si lo hace, puedes repartir $ tragos, si no, bebe",key:"",parent_key:"",pack_name:"bar",language:"es",nb_players:"1"}])
+{cycle_state:"false",type:"22",text:"%s, dibuja a un caballo con una erección. Haz que la persona desconocida que elija el grupo lo adivine, si lo hace, puedes repartir $ tragos, si no, bebe",key:"",parent_key:"",pack_name:"bar",language:"es",nb_players:"1"}]);
+retrieveDB();

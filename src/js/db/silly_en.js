@@ -1079,4 +1079,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imitate a guy taking a s
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever had a drink-downing contest",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever reached the peak of your creativity while playing heads or tails as a drinking game with a buddy",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever played rock-paper-scissors as a drinking game",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Give out $ sips if you've ever had an alcoholic drink at the end of a night out, knowing very well that it would make you puke",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Give out $ sips if you've ever had an alcoholic drink at the end of a night out, knowing very well that it would make you puke",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"}]);
+retrieveDB();

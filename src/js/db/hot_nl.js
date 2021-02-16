@@ -410,4 +410,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, als je een meisje bent, 
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je het lekker vindt als je er aan je tepels geknabbeld wordt",key:"",parent_key:"",pack_name:"hot",language:"nl",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, als je denkt dat je de meeste veroveringen aan deze tafel hebt, deel dan $ slokken uit. Zo niet, drink ze dan zelf op",key:"",parent_key:"",pack_name:"hot",language:"nl",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"Neem $ slokken als je meer dan een spelers aan deze tafel aantrekkelijk vindt.",key:"",parent_key:"",pack_name:"hot",language:"nl",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Neem $ slokken als je al eens met iemand gesekst hebt die je ontmoet hebt via een dating-app",key:"",parent_key:"",pack_name:"hot",language:"nl",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Neem $ slokken als je al eens met iemand gesekst hebt die je ontmoet hebt via een dating-app",key:"",parent_key:"",pack_name:"hot",language:"nl",nb_players:"0"}]);
+retrieveDB();

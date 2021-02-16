@@ -410,4 +410,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, om du er jente, slikk fi
 {cycle_state:"false",type:"25",text:"Alle som liker å bli bitt i brystet tar $ slurker",key:"",parent_key:"",pack_name:"hot",language:"nb",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, del ut $ slurker hvis du mener at du har mest sexerfaring i gjengen. Hvis ikke, ta dem selv",key:"",parent_key:"",pack_name:"hot",language:"nb",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"Alle som synes flere andre spillere er attraktive tar $ slurker",key:"",parent_key:"",pack_name:"hot",language:"nb",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Alle som har hatt sex med noen på grunn av en dating-app tar $ slurker",key:"",parent_key:"",pack_name:"hot",language:"nb",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Alle som har hatt sex med noen på grunn av en dating-app tar $ slurker",key:"",parent_key:"",pack_name:"hot",language:"nb",nb_players:"0"}]);
+retrieveDB();

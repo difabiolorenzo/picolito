@@ -316,4 +316,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, drikk en slurk hvis du d
 {cycle_state:"false",type:"22",text:"%s, tegn en lekeplasshuske i full fart. La en utenforstående som gruppen velger ut gjette hva det er. Hvis personen gjetter riktig deler du ut $ slurker, er det feil må du ta en slurk",key:"",parent_key:"",pack_name:"bar",language:"nb",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, tegn en fylt kalkun. La en utenforstående som gruppen velger ut gjette hva det er. Hvis personen gjetter riktig deler du ut $ slurker, er det feil må du ta en slurk",key:"",parent_key:"",pack_name:"bar",language:"nb",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, tegn en hest med ståtiss. La en utenforstående som gruppen velger ut gjette hva det er. Hvis personen gjetter riktig deler du ut $ slurker, er det feil må du ta en slurk",key:"",parent_key:"",pack_name:"bar",language:"nb",nb_players:"1"}
-])
+]);
+retrieveDB();

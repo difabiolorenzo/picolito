@@ -453,4 +453,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, изобрази, буд
 {cycle_state:"false",type:"23",text:"%s, начинай пить. Игрок слева от тебя тоже должен начать пить, и так дальше по очереди. Нельзя останавливаться, пока не остановится игрок справа от тебя",key:"",parent_key:"",pack_name:"silly",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"23",text:"Выберете вместе прозвище для %s. До конца игры все обращаются к нему/ней по придуманному прозвищу",key:"",parent_key:"",pack_name:"silly",language:"ru",nb_players:"1"},
 {cycle_state:"false",type:"23",text:"%s, скажи любую фразу с набитым ртом. Первый, кто угадает, решит, кому делать $ глотка(ов)",key:"",parent_key:"",pack_name:"silly",language:"ru",nb_players:"1"},
-{cycle_state:"false",type:"23",text:"%s, закрой глаза. Игроки делают для тебя коктейль, если ты угадаешь, из чего он состоит, ты решаешь, кому делать $ глотка(ов). Если не угадаешь, делаешь $ ",key:"",parent_key:"",pack_name:"silly",language:"ru",nb_players:"1"}])
+{cycle_state:"false",type:"23",text:"%s, закрой глаза. Игроки делают для тебя коктейль, если ты угадаешь, из чего он состоит, ты решаешь, кому делать $ глотка(ов). Если не угадаешь, делаешь $ ",key:"",parent_key:"",pack_name:"silly",language:"ru",nb_players:"1"}]);
+retrieveDB();

@@ -411,4 +411,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, se sei una ragazza lecca
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se ti piace farti mordicchiare le tette",key:"",parent_key:"",pack_name:"hot",language:"it",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"%s, se pensi di essere la persona che fa più conquiste a questo tavolo, distribuisci $ sorsi. In caso contrario... bevili",key:"",parent_key:"",pack_name:"hot",language:"it",nb_players:"1"},
 {cycle_state:"false",type:"25",text:"Bevi $ sorsi se ci sono diversi giocatori a questo tavolo che ti attirano fisicamente",key:"",parent_key:"",pack_name:"hot",language:"it",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bevi $ sorsi se sei già stato(a) a letto con una persona incontrata tramite un’applicazione di incontri",key:"",parent_key:"",pack_name:"hot",language:"it",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Bevi $ sorsi se sei già stato(a) a letto con una persona incontrata tramite un’applicazione di incontri",key:"",parent_key:"",pack_name:"hot",language:"it",nb_players:"0"}]);
+retrieveDB();

@@ -319,4 +319,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, se ti butti sulla birra 
 {cycle_state:"false",type:"22",text:"%s, disegna uno scivolo volante. Fai indovinare cos’hai disegnato ad una persona sconosciuta scelta dal gruppo, se indovina potrai distribuire $ sorsi, altrimenti bevi",key:"",parent_key:"",pack_name:"bar",language:"it",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, disegna un tacchino farcito. Fai indovinare cos’hai disegnato ad una persona sconosciuta scelta dal gruppo, se indovina potrai distribuire $ sorsi, altrimenti bevi",key:"",parent_key:"",pack_name:"bar",language:"it",nb_players:"1"},
 {cycle_state:"false",type:"22",text:"%s, disegna un cavallo in erezione. Fai indovinare cos’hai disegnato ad una persona sconosciuta scelta dal gruppo, se indovina potrai distribuire $ sorsi, altrimenti bevi",key:"",parent_key:"",pack_name:"bar",language:"it",nb_players:"1"}
-])
+]);
+retrieveDB();

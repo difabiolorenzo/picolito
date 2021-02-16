@@ -757,4 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, wenn du ein Mädchen bis
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal nackt im Meer oder Ozean geschwommen bist",key:"",parent_key:"",pack_name:"hot",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon mal mit einer Gruppe gemischter Freunde gebadet hast, als alle nackt waren",key:"",parent_key:"",pack_name:"hot",language:"de",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal Geschlechtsverkehr am Strand hattest",key:"",parent_key:"",pack_name:"hot",language:"de",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal mit jemandem in einer Jugendherberge geschlafen hast",key:"",parent_key:"",pack_name:"hot",language:"de",nb_players:"0"}])
+{cycle_state:"false",type:"25",text:"Trink $ Schlucke, wenn du schon einmal mit jemandem in einer Jugendherberge geschlafen hast",key:"",parent_key:"",pack_name:"hot",language:"de",nb_players:"0"}]);
+retrieveDB();
