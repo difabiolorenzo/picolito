@@ -173,16 +173,20 @@ function getRandomType() {
 }
 
 function generate() {
+    console.clear()
     var get_random_color_type = getRandomType();
     var color = get_random_color_type[0];
     var type = get_random_color_type[1];        // text
     var max_player = game.max_player_number;
+    console.log(get_random_color_type, color, type, max_player)
 
     function getSentence(use_parent_key, selected_nb_players, selected_type) {
         if (use_parent_key == false) {
-            return game.database().filter({nb_players:i.toString(), type:type.toString(), parent_key:""}).get();
+            console.log(selected_nb_players, selected_type)
+            console.log(game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get())
+            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
         } else {
-            return game.database().filter({nb_players:i.toString(), type:type.toString(), parent_key:key}).get();
+            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:key}).get();
         }
     }
 

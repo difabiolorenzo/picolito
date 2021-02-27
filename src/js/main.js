@@ -11,6 +11,8 @@ function dev_override_settings() {
     // game.down_drinking_enabled = false;
     // game.virus_enabled = false;
     // game.social_posting_enabled = false;
+
+    // lunchSelectedGamemode("default")
 }
 
 function defaultVariables() {
@@ -63,6 +65,15 @@ function defaultVariables() {
         player_list: [],
         max_player_number: -1,
 
+        team_1: "EQUIPE# 1",
+        team_2: "EQUIPE# 2",
+        team_1_player_list: [],
+        team_2_player_list: [],
+
+        random_team_name: {
+            fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
+        },
+
         sip: { min: 2, max: 5 },
         started: false,
         cycle_id: -1,
@@ -85,21 +96,24 @@ function defaultVariables() {
         social_posting_enabled: false,
     }
 
+    updateRecapSentenceIndicator();
+    checkBrowserColorScheme()
+
     if (global.dev_mode == true) {
         dev_override_settings()
     }
 
+    input_team_1.value = game.team_1;
+    input_team_2.value = game.team_2;
+
     input_display_indicator.checked = game.display_indicator;
+
     input_down_drinking_enabled.checked = game.down_drinking_enabled;
     input_virus_enabled.checked = game.virus_enabled;
     input_social_posting_enabled.checked = game.social_posting_enabled;
+
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
-
-    updateRecapSentenceIndicator();
-    if (global.settings_status == "visible") {
-        toggleSettingsPage()
-    }
 }
 
 function toggleDisplayIndicator(force) {
@@ -107,12 +121,45 @@ function toggleDisplayIndicator(force) {
     updateRecapSentenceIndicator();
 }
 
-function toggleDarkMode() {
+function checkBrowserColorScheme() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
+        toggleDarkMode(true)
+    } else {
+        toggleDarkMode(false)
+    }
+}
+
+function toggleDarkMode(value_forced) {
     document.body.classList.toggle('dark_mode')
+    if (document.body.classList[0] == "dark_mode") { input_dark_mode_settings.checked = true}
+
+    if (value_forced == true) {
+        document.body.classList.value = "dark_mode"
+        input_dark_mode_settings.checked = true;
+    } else if (value_forced == false) {
+        document.body.classList.value = " "
+        input_dark_mode_settings.checked = false;
+    }
 }
 
 function changeSipSettings(setting, value) {
     //prevent settings to be incoherent (ex: min_sip = 8 && max_sip == 4)
+
+    if (setting == "min") {
+        game.sip.min = value;
+        if (value > game.sip.max) {
+            game.sip.max = value;
+        }
+    } else if (setting == "max") {
+        game.sip.max = value;
+        if (value < game.sip.min) {
+            game.sip.min = value;
+        }
+    }
+
+    //update HTML
+    input_sip_min.value = game.sip.min;
+    input_sip_max.value = game.sip.max;
 }
 
 function createScriptElement(script_src) {
@@ -155,6 +202,7 @@ function displayPage(page) {
     document.getElementById('disclaimer').style.display = 'none';
     document.getElementById('menu').style.display = 'none';
     document.getElementById('gamemode').style.display = 'none';
+    document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
 
     document.getElementById(page).style.display = 'block';
@@ -193,7 +241,7 @@ function addPlayer(player_name) {
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("player_list").innerHTML += "<button id='player_button_" + game.player_list.length + "' class='btn btn-danger' onclick='removePlayer(this)'>" + player_name + " ✖ <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>";
+                    document.getElementById("player_list").innerHTML += "<button id='player_button_" + game.player_list.length + "' class=\"btn btn-danger\" onclick=\"removePlayer('" + player_name + "', this.id, 'main_page')\">" + player_name + " ✖ <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>";
 
                     game.player_list.push(player_name);
                 }
@@ -213,17 +261,28 @@ function generateRandomPlayer(nb_players) {
     }
     for (var i = 0; i < nb_players; i++ ) {
         var randomUUID = (randomHex(0xFFFFFFFF));
-        addPlayer("JOUEUR#"+ (i+1))
+        addPlayer("J#"+ (i+1))
         // addPlayer(randomUUID);
     }
 }
 
-function removePlayer(html_player_button) {
-    var player_id = html_player_button.id.substring(14);
-    game.player_list.splice(player_id, 1);
-    //remove button
-    html_player_button.remove();
+function removePlayer(player_name, html_element_id, location) {
+    var player_id = getIDFromString(html_element_id)
 
+    //remove button
+    if (location == "team_selection_page") {
+        document.getElementById("player_id_team_selection_" + player_id).remove();
+    }
+    document.getElementById("player_button_" + player_id).remove();
+
+    leaveTeam(game.player_list[player_id])
+
+    for (var i in game.player_list) {
+        if (player_name == game.player_list[i]) {
+            game.player_list.splice(i, 1)
+        }
+    }
+    
     updateHTMLPlayerCount();
 }
 
@@ -241,6 +300,10 @@ function updateHTMLPlayerCount() {
     }
 
     document.getElementById("player_number").innerHTML = game.player_list.length + text;
+}
+
+function getIDFromString(text) {
+    return text.substr(text.length - 1, 1);
 }
 
 function updateHTMLGameCycleCount() {
@@ -266,21 +329,25 @@ function updateHTMLIndicator(pos, color) {
     }
 }
 
-function initGame() {
+function initGame(select_team) {
     getMinPlayer()
-    if (game.started == false) {
-        
-        game.started = true;
-        createScriptElement("./src/js/db/" + game.gamemode + "_" + global.current_language + ".js")
-        if (typeof db === "function") {
-            initGame()
-            retrieveDB()
-            nextSentence();
-            updateHTMLGameCycleCount();
-            updateRecapSentenceIndicator();
+    if (game.gamemode == "war" && select_team == true) {
+        displayPage('team_selection');
+        updateTeamSelectiontable();
+    } else {
+        if (game.started == false) {
+            game.started = true;
+            createScriptElement("./src/js/db/" + game.gamemode + "_" + global.current_language + ".js")
+            if (typeof db === "function") {
+                initGame()
+                retrieveDB()
+                nextSentence();
+                updateHTMLGameCycleCount();
+                updateRecapSentenceIndicator();
+            }
         }
+        displayPage('game');
     }
-    displayPage('game');
 }
 
 function exitGame() {
@@ -295,7 +362,11 @@ function exitGame() {
 
 function lunchSelectedGamemode(selected_gamemode) {
     selectGamemode(selected_gamemode);
-    initGame();
+    if (selected_gamemode == "war") {
+        initGame(true);
+    } else {
+        initGame();
+    }
 }
 
 function selectGamemode(selected_gamemode) {
@@ -351,6 +422,12 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
 }
 
 function textReplacer(text) {
+
+    var html_span_sip = "<span class=\"span_sip\">";
+    var html_span_player = "<span class=\"span_player\">";
+    var html_span_team = "<span class=\"span_team\">";
+    var html_span_end = "</span>";
+
     // retrieve all player name
     var player_name_list = [];
     for (var i = 0 ; i < game.player_list.length ; i++) { player_name_list.push(game.player_list[i]) }
@@ -358,8 +435,8 @@ function textReplacer(text) {
     for (var i = 0 ; i < text.length ; i++) {
         // change $ by random sip
         if (text.charAt(i) == "$") {
-            var random_sip = Math.floor(Math.random() * (game.sip.max - game.sip.min) + game.sip.min);
-            text = replaceAt(text, i, random_sip, 0);
+            var random_sip = Math.floor(Math.random() * (game.sip.max) + game.sip.min) + 1;
+            text = replaceAt(text, i, html_span_sip + random_sip + html_span_end, 0);
         }
         // change %s by random player
         if (text.charAt(i) == "%" && text.charAt(i+1) == "s") {
@@ -368,8 +445,16 @@ function textReplacer(text) {
             var random_player = player_name_list[random_player_index];
             player_name_list.splice(random_player_index,1);
 
-            var random_sip = Math.floor(Math.random() * (game.sip.max - game.sip.min) + game.sip.min);
-            text = replaceAt(text, i, random_player, 1);
+            text = replaceAt(text, i, html_span_player + random_player + html_span_end, 1);
+        }
+        // change %t by team
+        if (text.charAt(i) == "%" && text.charAt(i+1) == "t") {
+            if (Math.random() < 0.5 == true) {
+                text = replaceAt(text, i, html_span_team + game.team_1 + html_span_end, 1);
+            } else {
+                text = replaceAt(text, i, html_span_team + game.team_2 + html_span_end, 1);
+            }
+            
         }
     }
     return text;
@@ -382,7 +467,7 @@ function updateRecapSentenceIndicator() {
     
     if (game.display_indicator == true) {
         for (var i = 0; i < game.sentence_amount; i++) {
-            html_recap_sentences_elements += "<td id='recap_sentences_cell_" + i + "' style='background-color:grey;'></td>";
+            html_recap_sentences_elements += "<td class=\"recap_sentences_cell\" id=\"recap_sentences_cell_" + i + "\" style=\"background-color:grey;\"></td>";
         }
         html_recap_sentences.innerHTML = "<tbody><tr>"+ html_recap_sentences_elements + "</tr></tbody>";
     }
@@ -398,6 +483,94 @@ function displaySentenceList(force_ingame) {
     } else {
         ingame_text.style.display = "none";
         sentence_list.style.display = "block";
+    }
+}
+
+function updateTeamSelectiontable() {
+    team_selection_table = team_selection_table
+
+    //clear
+    team_selection_table.children[1].innerHTML = ""
+
+    function selectingPlayerCell(index) {
+        var player_name = game.player_list[index]
+        var html_head = "<tr id=\"player_id_team_selection_" + index + "\">"
+        var player_input = "<td>" + player_name + "</td>"
+        var select_team_1_button = "<td><button class=\"btn btn-success\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_1')\">Selectionner</button></td>"
+        var select_team_2_button = "<td><button class=\"btn btn-success\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_2')\">Selectionner</button></td>"
+        var delete_button = "<td><button class=\"btn btn-danger\" onclick=\"removePlayer('" + player_name + "', this.parentElement.parentElement.id, 'team_selection_page')\">Supprimer</button></td>"
+        var html_end = "<tr>"
+
+        return html_head + player_input + select_team_1_button + select_team_2_button + delete_button + html_end;
+    }
+
+    function addNewPlayerCell() {
+        var player_input = "<td>NEW PLAYER</td>"
+        var create_button = "<td colspan=\"3\"><button class=\"btn col-md-12 btn-success\">Créer</button></td>"
+
+        return "<tr id=\"test\">" + player_input + create_button + "</tr>";
+    }
+
+    for (var i in game.player_list) {
+        var test1 = selectingPlayerCell(i);
+        team_selection_table.children[1].innerHTML += test1;
+    }
+
+    // team_selection_table.children[1].innerHTML += addNewPlayerCell();  
+    
+    updateTeamSelectionNextButton()
+}
+
+function leaveTeam(player_name) {
+    if (game.team_1_player_list.length > 0) {
+        for (var i in game.team_1_player_list) {
+            if (player_name == game.team_1_player_list[i]) {
+                game.team_1_player_list.splice(i, 1);
+                break
+            }
+        }
+    }
+    if (game.team_2_player_list.length > 0) {
+        for (var i in game.team_2_player_list) {
+            if (player_name == game.team_2_player_list[i]) {
+                game.team_2_player_list.splice(i, 1);
+                break
+            }
+        }
+    }
+}
+
+function changeTeam(html_id, team) {
+    var html_id = document.getElementById(html_id)
+    var player_name = game.player_list[getIDFromString(html_id.id)]
+
+    leaveTeam(player_name)
+
+    var change_team_1_button = "<td><button class=\"btn btn-warning\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_1')\">Changer</button></td>"
+    var change_team_2_button = "<td><button class=\"btn btn-warning\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_2')\">Changer</button></td>"
+
+    if (team == "team_1") {
+        html_id.children[1].innerHTML = "✅";
+        html_id.children[2].innerHTML = change_team_2_button;
+        game.team_1_player_list.push(player_name)
+    } else {
+        html_id.children[1].innerHTML = change_team_1_button;
+        html_id.children[2].innerHTML = "✅";
+        game.team_2_player_list.push(player_name)
+    }
+
+    updateTeamSelectionNextButton()
+}
+
+function updateTeamSelectionNextButton() {
+    var team_1_lenght = game.team_1_player_list.length
+    var team_2_lenght = game.team_2_player_list.length
+    var player_list_length = game.player_list.length
+
+    if (team_1_lenght > 0 && team_2_lenght > 0 && (team_1_lenght + team_2_lenght == player_list_length)) {
+        document.getElementById("button_next_team_selection").disabled = false;
+    } else {
+        document.getElementById("button_next_team_selection").disabled = true;
     }
 }
 

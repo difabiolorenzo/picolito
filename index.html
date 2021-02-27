@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
         <link rel="manifest" href="./Manifest.webmanifest">
         <link rel="icon" type="image/png" href="./src/img/icon_96.jpg" />
         <title>Picolito</title>
@@ -19,7 +21,6 @@
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
-        <!-- <script type="text/javascript" src="./src/js/db/default_fr.js"></script> -->
     </head>
     <body onload="init()">
         </div>
@@ -59,22 +60,12 @@
                 <div id="menu_links">
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-dark" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'" role="button">GitHub</li>
-                        <li class="list-group-item list-group-item-dark" role="button" onclick="displayPage('disclaimer')">Menu de prévention</li>
+                        <li class="list-group-item list-group-item-dark" onclick="displayPage('disclaimer')">Menu de prévention</li>
                     </ul>
                     <br>
                 </div>
                 <div id="settings" style="display:none;">
                     <div>
-                    </div>
-                    <div class="form-check">
-                        <h5>Lancement rapide</h5>
-                        <div>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('default')">/gamemode default</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('silly')">/gamemode silly</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('bar')">/gamemode bar</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('hot')">/gamemode hot</button>
-                            <button class="btn btn-dark" onclick="lunchSelectedGamemode('war')" disabled>/gamemode war</button>
-                        </div>
                     </div>
                     <hr>
                     <div class="form-check">
@@ -89,26 +80,27 @@
                         </div>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_social_posting_enabled" onclick="game.social_posting_enabled = this.checked">
-                            <label class="form-check-label" >Phrases "poste une phrase débile..."</label>
+                            <label class="form-check-label" >Phrases sur les réseaux sociaux</label>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label for="input_sip_min">Gorgées minimum</label>
-                            <select disabled class="form-control" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                              <option>6</option>
-                              <option>7</option>
-                              <option>8</option>
-                              <option>9</option>
-                              <option>10</option>
+                            <select class="form-control col-md-1" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="input_sip_max">Gorgées maximum</label>
-                            <select disabled class="form-control" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
+                            <select class="form-control col-md-1" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -128,12 +120,42 @@
                             <input class="form-check-input" id="input_dark_mode_settings" type="checkbox" onclick="toggleDarkMode()" >
                             <label class="form-check-label">Mode sombre</label>
                         </div>
-                    </div>
-                    <div class="form-check">
-                        <h5>DEBUG</h5>
+                        <div>
+                            <input disabled class="form-check-input" id="input_color_display_settings" type="checkbox" checked >
+                            <label class="form-check-label">Distinction des informations</label>
+                        </div>
                         <div>
                             <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
                             <label class="form-check-label">Récapitulatif</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Langue</label>
+                            <select disabled class="form-control col-md-2" id="input_language">
+                                <option>Français</option>
+                                <option>Danois</option>
+                                <option>Allemand</option>
+                                <option>Anglais</option>
+                                <option>Espagnol</option>
+                                <option>Finlandais</option>
+                                <option>Italien</option>
+                                <option>Japonais</option>
+                                <option>Koréen</option>
+                                <option>Novégien</option>
+                                <option>Néerlandais</option>
+                                <option>Portugais</option>
+                                <option>Russe</option>
+                                <option>Suédois</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <h5>Debug</h5>
+                        <div>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('default')">/gamemode default</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('silly')">/gamemode silly</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('bar')">/gamemode bar</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('hot')">/gamemode hot</button>
+                            <button class="btn btn-info" onclick="lunchSelectedGamemode('war')">/gamemode war</button>
                         </div>
                     </div>
                     <!-- <div class="form-check">
@@ -154,7 +176,7 @@
             <div class="d-flex">
                 <button class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
                 <a class="col-md-6 text-center" id="player_number">0 joueur</a>
-                <button class="col-md-3 btn btn-success" onclick="initGame()">Suivant</button>
+                <button class="col-md-3 btn btn-success" onclick="initGame(true)">Suivant</button>
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
@@ -182,7 +204,7 @@
                   <p>Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
                   <p>Est-ce que ça va pécho ce soir?</p>
                 </label><hr>
-                <label class="btn btn-secondary btn-dark" disabled>
+                <label class="btn btn-secondary btn-success">
                   <input type="radio" name="war" id="option5" onclick="selectGamemode(this.name);" autocomplete="off">
                   <h3>Guerre</h3>
                   <p>Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
@@ -191,19 +213,34 @@
               </div>
               <hr>
         </div>
+        <div class="page dark_affected" id="team_selection" style="display:none">
+            <div class="d-flex">
+                <button class="col-md-3 btn btn-info" onclick="displayPage('gamemode')">Retour</button>
+                <a class="col-md-6 text-center"></a>
+                <button class="col-md-3 btn btn-success" id="button_next_team_selection" onclick="initGame()">Suivant</button>
+            </div>
+            <br>
+            <table class="table table-bordered text-center" id="team_selection_table">
+                <thead>
+                    <tr>
+                    <th scope="col"></th>
+                    <th scope="col"><input type="text" id="input_team_1" onchange="game.team_1 = this.value" class="input_name" value=""></th>
+                    <th scope="col"><input type="text" id="input_team_2" onchange="game.team_2 = this.value" class="input_name" value=""></th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
         <!-- <div class="page blue dark_affected" id="game" style="display:none"> -->
         <div class="page blue" id="game" style="display:none">
             <div id="ingame_content">
                 <div class="d-flex" id="ingame_topbar">
-                    <button class="col-md-2 btn btn-secondary dropdown-toggle" type="button" id="exitGameDropdown" data-toggle="dropdown" aria-haspopup="true">Quitter</button>
-                    <div class="dropdown-menu p-4" aria-labelledby="exitGameDropdown">
-                        <p>Voulez-vous vraimer quitter la partie?</p>
-                        <button type="submit" class="btn btn-danger" onclick="exitGame()">Quitter</button>
-                        <button type="submit" class="btn btn-default">Annuler</button>
-                    </div>
+                    <button type="submit" class="btn btn-secondary" onclick="exitGame()">Quitter</button>
                     <div class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button type="button" class="btn btn-secondary" id="game_cycle_previous_button" disabled onclick="previousSentence()"><</button>
-                        <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()"></button>
+                        <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">0</button>
                         <button type="button" class="btn btn-secondary btn-info" id="game_cycle_next_button" onclick="nextSentence();">Commencer</button>
                     </div>
                     
