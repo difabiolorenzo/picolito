@@ -8,6 +8,7 @@ function dev_override_settings() {
     removeAllPlayers()
     generateRandomPlayer(4)
     game.display_indicator = true;
+    toggleDisplayIndicator(true)
     // game.down_drinking_enabled = false;
     // game.virus_enabled = false;
     // game.social_posting_enabled = false;
@@ -15,11 +16,11 @@ function dev_override_settings() {
     // lunchSelectedGamemode("default")
 }
 
-function defaultVariables() {
+function defaultVariables(reinit) {
     global = {
-        settings_status: "masked",
         current_language: "fr",
         dev_mode: false,
+        settings_status: "masked",
     },
     tips = {            //fr
         painters: [""],
@@ -30,6 +31,7 @@ function defaultVariables() {
         physicists: [""],
         philosophers: [""]
     }
+
     game = {
         filter: {
             color_probability: {
@@ -96,7 +98,6 @@ function defaultVariables() {
         social_posting_enabled: false,
     }
 
-    updateRecapSentenceIndicator();
     checkBrowserColorScheme()
 
     if (global.dev_mode == true) {
@@ -116,34 +117,56 @@ function defaultVariables() {
     input_sip_max.value = game.sip.max;
 }
 
+function resetVariables() {
+    game.db = {};                                             //All database
+
+    game.team_1_player_list = [];
+    game.team_2_player_list = [];
+
+    game.started = false;
+    game.cycle_id = -1;
+    game.gamemode = "default";
+    game.virus_triggered = false;
+    game.database = undefined;
+
+    game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
+
+    if (game.display_indicator == true) {
+        createRecapSentenceIndicator();
+    }
+
+    game_cycle_count.innerHTML = "-";
+}
+
 function toggleDisplayIndicator(force) {
     game.display_indicator = force;
-    updateRecapSentenceIndicator();
+    createRecapSentenceIndicator();
 }
 
 function checkBrowserColorScheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
-        toggleDarkMode(true)
+        toggleDarkMode(true);
     } else {
-        toggleDarkMode(false)
+        toggleDarkMode(false);
     }
 }
 
 function toggleDarkMode(value_forced) {
-    document.body.classList.toggle('dark_mode')
+    document.body.classList.toggle('dark_mode');
     if (document.body.classList[0] == "dark_mode") { input_dark_mode_settings.checked = true}
 
     if (value_forced == true) {
-        document.body.classList.value = "dark_mode"
+        document.body.classList.value = "dark_mode";
         input_dark_mode_settings.checked = true;
     } else if (value_forced == false) {
-        document.body.classList.value = " "
+        document.body.classList.value = " ";
         input_dark_mode_settings.checked = false;
     }
 }
 
 function changeSipSettings(setting, value) {
     //prevent settings to be incoherent (ex: min_sip = 8 && max_sip == 4)
+    var value = parseInt(value)
 
     if (setting == "min") {
         game.sip.min = value;
@@ -160,6 +183,7 @@ function changeSipSettings(setting, value) {
     //update HTML
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
+    // console.log(`changeSipSettings(${setting}, ${value}) - ${game.sip.min} - ${game.sip.max}`);
 }
 
 function createScriptElement(script_src) {
@@ -322,13 +346,6 @@ function updateHTMLBackgroundColor(forced_color) {
     }
 }
 
-function updateHTMLIndicator(pos, color) {
-    if (game.display_indicator == true || game.cycle_id == -1) {
-        document.getElementById("recap_sentences_cell_" + pos).style = "background-color: var(--picolo_" + color + ")";
-        document.getElementById("recap_sentences_cell_" + pos).onclick = "goToSpecificSentence(" + pos + ")";
-    }
-}
-
 function initGame(select_team) {
     getMinPlayer()
     if (game.gamemode == "war" && select_team == true) {
@@ -343,7 +360,6 @@ function initGame(select_team) {
                 retrieveDB()
                 nextSentence();
                 updateHTMLGameCycleCount();
-                updateRecapSentenceIndicator();
             }
         }
         displayPage('game');
@@ -353,7 +369,7 @@ function initGame(select_team) {
 function exitGame() {
     document.getElementById("ingame_sentence").innerHTML = "";  // reset HTML sentence display
     game.sentence_history = [];                          // reset history
-    defaultVariables()                                          //reset settings
+    resetVariables()
     updateHTMLGameCycleCount()                                  // reset cycle count
     updateHTMLBackgroundColor();
 
@@ -412,13 +428,23 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
         type: type,
         color : color
     }
-    updateHTMLIndicator((game.cycle_id) + posOffset, sentence_history_item.color);        
+    if (game.display_indicator == true) { updateRecapSentenceIndicator((game.cycle_id) + posOffset, sentence_history_item.color); }     
 
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
     } else if (game.sentence_history[offset_sentence_id].sentence == "none") {
         game.sentence_history[offset_sentence_id] = sentence_history_item;
     }
+}
+
+function randomSip() {
+    var sip_min = game.sip.min
+    var sip_max = game.sip.max
+    var step = sip_max - sip_min
+
+    var random_sip = Math.floor(Math.random() * (step + 1)) + sip_min
+
+    return random_sip;
 }
 
 function textReplacer(text) {
@@ -435,7 +461,7 @@ function textReplacer(text) {
     for (var i = 0 ; i < text.length ; i++) {
         // change $ by random sip
         if (text.charAt(i) == "$") {
-            var random_sip = Math.floor(Math.random() * (game.sip.max) + game.sip.min) + 1;
+            var random_sip = randomSip();
             text = replaceAt(text, i, html_span_sip + random_sip + html_span_end, 0);
         }
         // change %s by random player
@@ -460,9 +486,10 @@ function textReplacer(text) {
     return text;
 }
 
-function updateRecapSentenceIndicator() {
+function createRecapSentenceIndicator() {
     var html_recap_sentences = document.getElementById("html_recap_sentences")
     var html_recap_sentences_elements = "";
+
     html_recap_sentences.innerHTML = "";
     
     if (game.display_indicator == true) {
@@ -470,6 +497,17 @@ function updateRecapSentenceIndicator() {
             html_recap_sentences_elements += "<td class=\"recap_sentences_cell\" id=\"recap_sentences_cell_" + i + "\" style=\"background-color:grey;\"></td>";
         }
         html_recap_sentences.innerHTML = "<tbody><tr>"+ html_recap_sentences_elements + "</tr></tbody>";
+    }
+}
+
+function updateRecapSentenceIndicator(pos, color) {
+    for (var i = 0; i < game.sentence_amount; i++) {
+        document.getElementById("recap_sentences_cell_" + i).className = "recap_sentences_cell";
+    }
+    if (game.display_indicator == true || game.cycle_id == -1) {
+        document.getElementById("recap_sentences_cell_" + pos).style = "background-color: var(--picolo_" + color + ")";
+        document.getElementById("recap_sentences_cell_" + pos).onclick = "goToSpecificSentence(" + pos + ")";
+        document.getElementById("recap_sentences_cell_" + pos).className = "recap_sentences_cell active_recap_sentences_cell";
     }
 }
 

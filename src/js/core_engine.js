@@ -27,7 +27,7 @@ function goToSpecificSentence(position) {
     updateGameCycle();
     updateHTMLGameCycleCount();
     updateHTMLBackgroundColor();
-    updateHTMLIndicator(position, game.sentence_history[position].color);
+    updateRecapSentenceIndicator(position, game.sentence_history[position].color);
     retrieve(position);
     displaySentenceList(true);
 }
@@ -60,10 +60,10 @@ function retrieve(sentence_id) {
 
 function getRandomColor() {
     var available_color_probability = [];
-    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_triggered == false) {
+    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_triggered == false && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
-    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_triggered == false) {
+    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_triggered == false && game.gamemode != "war") {
         available_color_probability.push(["yellow", game.filter.color_probability.yellow])
     }
     available_color_probability.push(["blue", game.filter.color_probability.blue])
@@ -133,7 +133,6 @@ function getRandomType() {
                 type_by_color = game.filter.type_by_color.yellow;
                 break;
             default:
-
         }
 
         var color_gamemode_matching_type = []
@@ -182,8 +181,6 @@ function generate() {
 
     function getSentence(use_parent_key, selected_nb_players, selected_type) {
         if (use_parent_key == false) {
-            console.log(selected_nb_players, selected_type)
-            console.log(game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get())
             return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
         } else {
             return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:key}).get();
@@ -196,7 +193,6 @@ function generate() {
         sentence = textReplacer(request[random_int].text);
         console.log(request[random_int].key)
         if (request[random_int].key != "") { key = request[random_int].key; }
-
         console.log(random_int, sentence)
 
         //remove sentence from db
