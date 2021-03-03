@@ -13,7 +13,7 @@ function dev_override_settings() {
     // game.virus_enabled = false;
     // game.social_posting_enabled = false;
 
-    // lunchSelectedGamemode("default")
+    lunchSelectedGamemode("default")
 }
 
 function defaultVariables(reinit) {
@@ -35,10 +35,10 @@ function defaultVariables(reinit) {
     game = {
         filter: {
             color_probability: {
-                blue: 55,
+                blue: 70,
                 red: 5,
                 green: 20,
-                yellow: 20
+                yellow: 5
             },
             type_by_color: {
                 blue: [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25],
@@ -62,7 +62,7 @@ function defaultVariables(reinit) {
             },
         },
         
-        db: {},                                             //All database
+        db: {},                                             //Full database for GAMEMODE_LANG.js ; is an TAFFY()
 
         player_list: [],
         max_player_number: -1,
@@ -90,7 +90,7 @@ function defaultVariables(reinit) {
         down_drinking_sentence_id_start_min: 10,            // down_drinking start to appear after sentence_id X
 
         virus_enabled: true,
-        virus_triggered: false,
+        virus_remaining: 1,                                 // virus can occur X times (still overlap...)
         virus_end_min: 5,                                   // virus can end after X more sentence_id minimum
         virus_end_max: 12,                                  // virus can end after X more sentence_id maximum
         virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
@@ -126,7 +126,7 @@ function resetVariables() {
     game.started = false;
     game.cycle_id = -1;
     game.gamemode = "default";
-    game.virus_triggered = false;
+    game.virus_remaining = 1;
     game.database = undefined;
 
     game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
@@ -518,9 +518,34 @@ function displaySentenceList(force_ingame) {
     if (force_ingame == true || ingame_text.style.display == "none") {
         ingame_text.style.display = "block";
         sentence_list.style.display = "none";
+        updateHTMLBackgroundColor()
     } else {
         ingame_text.style.display = "none";
         sentence_list.style.display = "block";
+        updateHTMLBackgroundColor("black")
+        updateSentenceList()
+    }
+}
+
+function updateSentenceList(mode) {
+    if (mode == "clear") {
+        sentence_list.innerHTML = ""
+    } else {
+        var ul_head = "<ul class='list-group list-group-flush'></ul>";
+        var ul_end = "</ul>";
+        var html_inner = "";
+
+        for (var i in game.sentence_history) {
+            var color = game.sentence_history[i].color;
+            var sentence = game.sentence_history[i].sentence;
+
+            if (sentence != "none") {
+                html_inner += `<li class="list-group-item sentence-list ${color}" onclick="goToSpecificSentence(${i})">${sentence}</li>`;
+            } else {
+                break;
+            }
+        }
+        sentence_list.innerHTML = ul_head + html_inner + ul_end;
     }
 }
 

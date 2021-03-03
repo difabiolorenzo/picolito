@@ -18,7 +18,7 @@
     height: 100vh;
 }
 .btn-secondary{ width: 100%; }
-#game {transition: background-color 0.5s ease;}
+#game {transition: background-color 0.5s ease;background-color: var(--orange);}
 #ingame_content {    
     text-align: center;
     color:white;
@@ -33,6 +33,7 @@ div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
+div#game.black {background-color: var(--dark);}
 
 .dark_mode div#game.dark_affected {background-color: inherit}
 
@@ -92,6 +93,25 @@ span.span_team {color: var(--picolo_team);}
 .dark_mode span.span_player {color: var(--picolo_player_dark);}
 .dark_mode span.span_sip {color: var(--picolo_sip_dark);}
 .dark_mode span.span_team {color: var(--picolo_team_dark);}
+
+div#sentence_list {
+    margin-top: 5vh;
+    overflow: scroll;
+    height: 80vh;
+    overflow-x: hidden;
+    overflow-y: overlay;
+}
+
+li.list-group-item.sentence-list {
+    background-color: var(--dark_mode_light_gray);
+    border-color: var(--dark_mode_gray);
+    font-size: 120%;
+    font-weight: 700;
+}
+li.list-group-item.sentence-list.red {color:var(--picolo_red)}
+li.list-group-item.sentence-list.yellow {color:var(--picolo_yellow)}
+li.list-group-item.sentence-list.green {color:var(--picolo_green)}
+li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
 
 @media screen and (orientation:portrait) {
     #ingame_content {

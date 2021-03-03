@@ -41,7 +41,7 @@ Il existe 5 mode de jeu pouvant avoir des thèmes divers `Before`, `On est débi
 Chaques partie a 50 phrases ayant une couleur prédéfinie indiquant sont objectifs:
 
 `Bleu`
-Possède arbitrairement **55%** d'apparition.
+Possède arbitrairement **70%** d'apparition.
 Peux être des actions, des questions, etc...
 
 `Vert`
@@ -49,7 +49,7 @@ Possède arbitrairement **20%** d'apparition.
 Peux être des sondages de groupe, des jeux, etc...
 
 `Jaune`
-Possède arbitrairement **20%** d'apparition.
+Possède arbitrairement **5%** d'apparition.
 Est un virus appliqué à un ou des joueur(s).
 
 `Rouge`

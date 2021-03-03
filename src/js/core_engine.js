@@ -63,7 +63,7 @@ function getRandomColor() {
     if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_triggered == false && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
-    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_triggered == false && game.gamemode != "war") {
+    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["yellow", game.filter.color_probability.yellow])
     }
     available_color_probability.push(["blue", game.filter.color_probability.blue])
@@ -231,7 +231,7 @@ function generate() {
         getRandomSentence()
 
         if (color == "yellow") {
-            game.virus_triggered = true;
+            game.virus_remaining--;
             random_virus_end = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
 
             console.log("game_cycle end virus", random_virus_end)
