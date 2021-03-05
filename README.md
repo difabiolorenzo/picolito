@@ -6,8 +6,6 @@ Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 ### Différences
 
 ** Points Négatifs**
-- Beaucoup de bugs en plus
-- Télécharge les données à chaque raffraichissement (ne conserve pas les bases de données des phrases en cache)
 - Une seule langue (French 🥖)
 - Impossible d'ajouter des règles personalisées
 - Impossible d'ajouter des joueurs en cours de jeu
@@ -15,10 +13,11 @@ Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 
 **Points Positifs**
 - Les modes `Before` (par défaut), `On est débiles`, `Bar`, `Caliente` et `Guerre` sont débloqués
-- Possibilité de faire marche arrières
-- Mode sombre (manuel et en fonction du navigateur)
+- Possibilité de naviger entre les phrases déjà sorties (liste et bouton de navigation)
+- Mode sombre (manuel et en fonction du thème du navigateur)
 - Possibilité de désactivé les virus, les culs secs ainsi que les phrases demandant de poster sur les réseaux sociaux
 - Possibilité de changer le nombre de gorgés min. - max.
+- Distinctions des informations (joueurs, nombre de gorgées, équipes)
 
 
 ### Prévention
