@@ -265,7 +265,7 @@ function addPlayer(player_name) {
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("player_list").innerHTML += "<button id='player_button_" + game.player_list.length + "' class=\"btn btn-danger\" onclick=\"removePlayer('" + player_name + "', this.id, 'main_page')\">" + player_name + " ✖ <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>";
+                    document.getElementById("player_list").innerHTML += `<button id="player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'main_page')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
 
                     game.player_list.push(player_name);
                 }
@@ -330,10 +330,6 @@ function getIDFromString(text) {
     return text.substr(text.length - 1, 1);
 }
 
-function updateHTMLGameCycleCount() {
-    document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + game.sentence_amount;
-}
-
 function updateHTMLBackgroundColor(forced_color) {
     if (forced_color != undefined) {
         document.getElementById("game").className = "page dark_affected " + forced_color;
@@ -358,19 +354,19 @@ function initGame(select_team) {
             if (typeof db === "function") {
                 initGame()
                 retrieveDB()
-                nextSentence();
-                updateHTMLGameCycleCount();
+                updateGameCycle();
             }
         }
         displayPage('game');
+        manageOptionDisplay("start", true);
     }
 }
 
 function exitGame() {
     document.getElementById("ingame_sentence").innerHTML = "";  // reset HTML sentence display
-    game.sentence_history = [];                          // reset history
-    resetVariables()
-    updateHTMLGameCycleCount()                                  // reset cycle count
+
+    updateGameCycle();                                  // reset cycle count
+    resetVariables();
     updateHTMLBackgroundColor();
 
     displayPage('menu');
@@ -385,27 +381,83 @@ function lunchSelectedGamemode(selected_gamemode) {
     }
 }
 
+function restart(gamemode) {
+    exitGame();
+    lunchSelectedGamemode(gamemode);
+}
+
 function selectGamemode(selected_gamemode) {
     //this function only to add a console.log and purify HTML
     game.gamemode = selected_gamemode;
     console.log("/gamemode", selected_gamemode);
 }
 
-function updateGameCycle() {
-    if (game.cycle_id > 0) {
-        document.getElementById("game_cycle_previous_button").className = "btn btn-secondary btn-info";
-        document.getElementById("game_cycle_previous_button").disabled = false;
-    } else {
-        document.getElementById("game_cycle_previous_button").className = "btn btn-secondary";
-        document.getElementById("game_cycle_previous_button").disabled = true;
+function manageNavigationButton(button, display) {
+    if (button == "previous") {
+        var selected_button = game_cycle_previous_button;
+    } else if (button == "next") {
+        var selected_button = game_cycle_next_button;
+    } else if (button == "game_cyle") {
+        var selected_button = game_cycle_count;
     }
 
-    if (game.cycle_id == game.sentence_amount) {
-        document.getElementById("game_cycle_next_button").className = "btn btn-secondary";
-        document.getElementById("game_cycle_next_button").disabled = true;
+    if (display == true) {
+        selected_button.disabled = false;
+        selected_button.className = "btn btn-secondary btn-info";
+    } else if (display == false) {
+        selected_button.disabled = true;
+        selected_button.className = "btn btn-secondary";
+    }
+}
+
+function manageOptionDisplay(option, display) {
+    if (option == "start") {
+        var selected_option = start_ingame_option;
+    } else if (option == "replay") {
+        var selected_option = replay_ingame_option;
+    }
+
+    if (display == true) {
+        ingame_option.style.display = "block"
+        selected_option.style.display = "block"
+    } else if (display == false) {
+        ingame_option.style.display = "none"
+        selected_option.style.display = "none"
+    }
+}
+
+function updateGameCycle() {
+    //previous
+    if (game.cycle_id > 0) {
+        manageNavigationButton("previous", true)
     } else {
-        document.getElementById("game_cycle_next_button").className = "btn btn-secondary btn-info";
-        document.getElementById("game_cycle_next_button").disabled = false;
+        manageNavigationButton("previous", false)
+    }
+    //game count
+    if (game.cycle_id >= 0) {
+        manageNavigationButton("game_cyle", true)
+        document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + game.sentence_amount;
+    } else {
+        manageNavigationButton("game_cyle", false)
+        document.getElementById("game_cycle_count").innerHTML = "-";
+    }
+    //next
+    if (game.cycle_id < game.sentence_amount - 1 && game.cycle_id >= 0) {
+        manageNavigationButton("next", true)
+    } else {
+        manageNavigationButton("next", false)
+    }
+    //start
+    if (game.cycle_id < 0) {
+        manageOptionDisplay("start", true)
+    } else {
+        manageOptionDisplay("start", false)
+    }
+    // retry
+    if (game.cycle_id == game.sentence_amount - 1) {
+        manageOptionDisplay("replay", true)
+    } else {
+        manageOptionDisplay("replay", false)
     }
 }
 
@@ -438,11 +490,11 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
 }
 
 function randomSip() {
-    var sip_min = game.sip.min
-    var sip_max = game.sip.max
-    var step = sip_max - sip_min
+    var sip_min = game.sip.min;
+    var sip_max = game.sip.max;
+    var step = sip_max - sip_min;
 
-    var random_sip = Math.floor(Math.random() * (step + 1)) + sip_min
+    var random_sip = Math.floor(Math.random() * (step + 1)) + sip_min;
 
     return random_sip;
 }
@@ -494,20 +546,20 @@ function createRecapSentenceIndicator() {
     
     if (game.display_indicator == true) {
         for (var i = 0; i < game.sentence_amount; i++) {
-            html_recap_sentences_elements += "<td class=\"recap_sentences_cell\" id=\"recap_sentences_cell_" + i + "\" style=\"background-color:grey;\"></td>";
+            html_recap_sentences_elements += `<td class="recap_sentences_cell" id="recap_sentences_cell_${i}" style="background-color:grey;"></td>`;
         }
-        html_recap_sentences.innerHTML = "<tbody><tr>"+ html_recap_sentences_elements + "</tr></tbody>";
+        html_recap_sentences.innerHTML = `<tbody><tr>${html_recap_sentences_elements}</tr></tbody>`;
     }
 }
 
 function updateRecapSentenceIndicator(pos, color) {
     for (var i = 0; i < game.sentence_amount; i++) {
-        document.getElementById("recap_sentences_cell_" + i).className = "recap_sentences_cell";
+        document.getElementById("recap_sentences_cell_" + i).className = `recap_sentences_cell`;
     }
     if (game.display_indicator == true || game.cycle_id == -1) {
-        document.getElementById("recap_sentences_cell_" + pos).style = "background-color: var(--picolo_" + color + ")";
-        document.getElementById("recap_sentences_cell_" + pos).onclick = "goToSpecificSentence(" + pos + ")";
-        document.getElementById("recap_sentences_cell_" + pos).className = "recap_sentences_cell active_recap_sentences_cell";
+        document.getElementById("recap_sentences_cell_" + pos).style = `background-color: var(--picolo_${color})`;
+        document.getElementById("recap_sentences_cell_" + pos).onclick = `goToSpecificSentence(${pos})`;
+        document.getElementById("recap_sentences_cell_" + pos).className = `recap_sentences_cell active_recap_sentences_cell`;
     }
 }
 
@@ -531,7 +583,7 @@ function updateSentenceList(mode) {
     if (mode == "clear") {
         sentence_list.innerHTML = ""
     } else {
-        var ul_head = "<ul class='list-group list-group-flush'></ul>";
+        var ul_head = `<ul class="list-group list-group-flush"></ul>`;
         var ul_end = "</ul>";
         var html_inner = "";
 
@@ -557,30 +609,18 @@ function updateTeamSelectiontable() {
 
     function selectingPlayerCell(index) {
         var player_name = game.player_list[index]
-        var html_head = "<tr id=\"player_id_team_selection_" + index + "\">"
-        var player_input = "<td>" + player_name + "</td>"
-        var select_team_1_button = "<td><button class=\"btn btn-success\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_1')\">Selectionner</button></td>"
-        var select_team_2_button = "<td><button class=\"btn btn-success\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_2')\">Selectionner</button></td>"
-        var delete_button = "<td><button class=\"btn btn-danger\" onclick=\"removePlayer('" + player_name + "', this.parentElement.parentElement.id, 'team_selection_page')\">Supprimer</button></td>"
-        var html_end = "<tr>"
+        var player_input = `<td>${player_name}</td>`
+        var select_team_1_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">Selectionner</button></td>`
+        var select_team_2_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">Selectionner</button></td>`
+        var delete_button = `<td><button class="btn btn-danger" onclick="removePlayer('${player_name}', this.parentElement.parentElement.id, 'team_selection_page')">Supprimer</button></td>`
 
-        return html_head + player_input + select_team_1_button + select_team_2_button + delete_button + html_end;
+        return `<tr id="player_id_team_selection_${index}">` + player_input + select_team_1_button + select_team_2_button + delete_button + "<tr>";
     }
-
-    function addNewPlayerCell() {
-        var player_input = "<td>NEW PLAYER</td>"
-        var create_button = "<td colspan=\"3\"><button class=\"btn col-md-12 btn-success\">Créer</button></td>"
-
-        return "<tr id=\"test\">" + player_input + create_button + "</tr>";
-    }
-
     for (var i in game.player_list) {
         var test1 = selectingPlayerCell(i);
         team_selection_table.children[1].innerHTML += test1;
     }
 
-    // team_selection_table.children[1].innerHTML += addNewPlayerCell();  
-    
     updateTeamSelectionNextButton()
 }
 
@@ -609,16 +649,16 @@ function changeTeam(html_id, team) {
 
     leaveTeam(player_name)
 
-    var change_team_1_button = "<td><button class=\"btn btn-warning\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_1')\">Changer</button></td>"
-    var change_team_2_button = "<td><button class=\"btn btn-warning\" onclick=\"changeTeam(this.parentElement.parentElement.id, 'team_2')\">Changer</button></td>"
+    var change_team_1_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">Changer</button></td>`
+    var change_team_2_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">Changer</button></td>`
 
     if (team == "team_1") {
-        html_id.children[1].innerHTML = "✅";
+        html_id.children[1].innerHTML = `✅`;
         html_id.children[2].innerHTML = change_team_2_button;
         game.team_1_player_list.push(player_name)
     } else {
         html_id.children[1].innerHTML = change_team_1_button;
-        html_id.children[2].innerHTML = "✅";
+        html_id.children[2].innerHTML = `✅`;
         game.team_2_player_list.push(player_name)
     }
 

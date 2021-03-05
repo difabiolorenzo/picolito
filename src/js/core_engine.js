@@ -1,14 +1,10 @@
 function nextSentence() {
-    if (game.cycle_id == -1) {
-        document.getElementById('game_cycle_next_button').innerHTML = '>';
-    }
     if (game.cycle_id < game.sentence_amount - 1) {
         game.cycle_id++;
         
         retrieve(game.cycle_id);
 
         updateHTMLBackgroundColor();
-        updateHTMLGameCycleCount();
         updateGameCycle();
         displaySentenceList(true);
     }
@@ -25,7 +21,6 @@ function goToSpecificSentence(position) {
     game.cycle_id = position;
     
     updateGameCycle();
-    updateHTMLGameCycleCount();
     updateHTMLBackgroundColor();
     updateRecapSentenceIndicator(position, game.sentence_history[position].color);
     retrieve(position);
@@ -54,7 +49,7 @@ function retrieve(sentence_id) {
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
         document.getElementById("ingame_sentence").innerHTML = sentence_requested.sentence;
-        updateHTMLGameCycleCount();
+        updateGameCycle();
     }
 }
 
@@ -66,8 +61,10 @@ function getRandomColor() {
     if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["yellow", game.filter.color_probability.yellow])
     }
+    if (game.cycle_id < game.sentence_amount - 2) {
+        available_color_probability.push(["green", game.filter.color_probability.green])
+    }
     available_color_probability.push(["blue", game.filter.color_probability.blue])
-    available_color_probability.push(["green", game.filter.color_probability.green])
 
     available_color_probability.sort( function(a, b) { return a[1] - b[1]; } );
 
@@ -140,7 +137,7 @@ function getRandomType() {
             for (var j in type_by_color) {
                 if (type_by_gamemode[i] == type_by_color[j]) {
                     if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {         
-                        console.log("SOCIAL POSTING DISABLED")
+                        console.log(`SOCIAL POSTING DISABLED`)
                     } else {
                         color_gamemode_matching_type.push(type_by_gamemode[i]);
                     }
@@ -212,6 +209,7 @@ function generate() {
     }
     getRandomSentence()
     console.log("request", request)
+    console.log(color, "type", type, "max_player", max_player, "key", key)
     console.log(color, "type", type, "max_player", max_player, "key", key)
 
     updateHTMLBackgroundColor(color);

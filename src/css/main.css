@@ -27,7 +27,7 @@
     padding-top:10%;
 }
 
-p#ingame_sentence {font-weight: bold;font-size: 4.5vh;user-select: none;}
+p#ingame_sentence, #ready_text_ingame, #endgame_text_ingame {font-weight: bold;font-size: 4.5vh;user-select: none;}
 
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
@@ -123,4 +123,10 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
     p#ingame_sentence {
         font-size: 3vh;
     }
+}
+div#ingame_option {
+    background-color: #00000026;
+    margin-top: 5vh;
+    padding: 5vh;
+    border-radius: 1vh;
 }
