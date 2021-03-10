@@ -36,7 +36,7 @@
                 <button class="btn btn-success" onclick="displayPage('menu')">Passer</button>
             </div>
             <hr>
-            <div id="testificate"></div>
+            <a id="picolito_version">Javascript Désactivé :'(</a>
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 onclick="DEBUG_RandomPlayer()">PICOLITO</h1>
@@ -243,24 +243,26 @@
                     <h1 id="ingame_title"></h1>
                     <p id="ingame_sentence"></p>
                 </div>
-                <div id="ingame_option" style="display:none">
-                    <div id="start_ingame_option" style="display:none">
-                        <p id="ready_text_ingame">Prêts?</p>
-                        <button type='submit' class='btn btn-info' onclick='nextSentence()'>Commencer</button>
+                <div class="d-flex">
+                    <div id="ingame_option" style="display:none">
+                        <div id="start_ingame_option" style="display:none">
+                            <p id="ready_text_ingame">Prêts?</p>
+                            <button type='submit' class='btn btn-info' onclick='nextSentence()'>Commencer</button>
+                        </div>
+                        <div id="replay_ingame_option" style="display:none">
+                            <p id="endgame_text_ingame">Fin de partie</p>
+                            <button type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
+                            <button type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>Recommencer</button>
+                        </div>
                     </div>
-                    <div id="replay_ingame_option" style="display:none">
-                        <p id="endgame_text_ingame">Fin de partie</p>
-                        <button type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
-                        <button type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>Recommencer</button>
+                    <div id="ingame_player_option" style="display: none;">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
+                            <button type="submit" class="btn btn-info" onclick="addPlayer(undefined, 'ingame')">Ajouter</button>
+                        </div>
+                        <br>
+                        <div id="ingame_player_list"></div>
                     </div>
-                </div>
-                <div id="ingame_player_option" style="display: none;">
-                    <div class="d-flex">
-                        <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                        <button type="submit" class="btn btn-info" onclick="addPlayer(undefined, 'ingame')">Ajouter</button>
-                    </div>
-                    <br>
-                    <div id="ingame_player_list"></div>
                 </div>
                 <div id="sentence_list"></div>
             </div>

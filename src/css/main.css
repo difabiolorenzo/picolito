@@ -31,7 +31,7 @@ p#ingame_sentence, #ready_text_ingame, #endgame_text_ingame {font-weight: bold;f
 
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
-div#game.blue {background-color: var(--picolo_blue);}
+div#game.blue {background-color: var(--picolo_blue);overflow: hidden;}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark);overflow: hidden;}
 
@@ -126,4 +126,6 @@ div#ingame_option, div#ingame_player_option {
     margin-top: 5vh;
     padding: 5vh;
     border-radius: 1vh;
+    width: 100%;
+    margin: 1vh;
 }

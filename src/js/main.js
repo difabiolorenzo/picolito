@@ -21,6 +21,7 @@ function defaultVariables(reinit) {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
+        picolito_version: "0.24.1",
         debug_random_player: 0,
     },
     tips = {            //fr
@@ -116,6 +117,8 @@ function defaultVariables(reinit) {
 
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
+
+    picolito_version.innerHTML = `Picolito ${global.picolito_version}` ;
 }
 
 function resetVariables() {
