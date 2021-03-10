@@ -33,7 +33,7 @@ div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
-div#game.black {background-color: var(--dark);}
+div#game.black {background-color: var(--dark);overflow: hidden;}
 
 .dark_mode div#game.dark_affected {background-color: inherit}
 
@@ -94,13 +94,7 @@ span.span_team {color: var(--picolo_team);}
 .dark_mode span.span_sip {color: var(--picolo_sip_dark);}
 .dark_mode span.span_team {color: var(--picolo_team_dark);}
 
-div#sentence_list {
-    margin-top: 5vh;
-    overflow: scroll;
-    height: 80vh;
-    overflow-x: hidden;
-    overflow-y: overlay;
-}
+div#sentence_list {margin: 5vh;overflow: auto;height: 60vh;}
 
 li.list-group-item.sentence-list {
     background-color: var(--dark_mode_light_gray);
@@ -123,8 +117,11 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
     p#ingame_sentence {
         font-size: 3vh;
     }
+    div#sentence_list {
+        height: 30vh;
+    }
 }
-div#ingame_option {
+div#ingame_option, div#ingame_player_option {
     background-color: #00000026;
     margin-top: 5vh;
     padding: 5vh;

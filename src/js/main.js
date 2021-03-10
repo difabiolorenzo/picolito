@@ -21,6 +21,7 @@ function defaultVariables(reinit) {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
+        debug_random_player: 0,
     },
     tips = {            //fr
         painters: [""],
@@ -250,9 +251,13 @@ function toggleSettingsPage() {
     }
 }
 
-function addPlayer(player_name) {
+function addPlayer(player_name, html_origin) {
     if (player_name == undefined) {
-        var player_name = document.getElementById("player_input").value;
+        if (html_origin == "menu") {
+            var player_name = manu_player_input.value;
+        } else if (html_origin == "ingame") {
+            var player_name = ingame_player_input.value;
+        }
     }
 
     if (player_name.length > 0 && player_name.length <= 50) {
@@ -265,7 +270,8 @@ function addPlayer(player_name) {
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("player_list").innerHTML += `<button id="player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'main_page')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
 
                     game.player_list.push(player_name);
                 }
@@ -273,10 +279,16 @@ function addPlayer(player_name) {
             }
         }
     }
-    document.getElementById("player_input").value = "";
-    document.getElementById("player_input").focus();
+    if (html_origin == "menu") {
+        manu_player_input.focus();
+    } else if (html_origin == "ingame") {
+        ingame_player_input.focus();
+    }
 
-    updateHTMLPlayerCount();
+    ingame_player_input.value = "";
+    manu_player_input.value = "";
+
+    updatePlayerCount();
 }
 
 function generateRandomPlayer(nb_players) {
@@ -285,45 +297,40 @@ function generateRandomPlayer(nb_players) {
     }
     for (var i = 0; i < nb_players; i++ ) {
         var randomUUID = (randomHex(0xFFFFFFFF));
-        addPlayer("J#"+ (i+1))
-        // addPlayer(randomUUID);
+        addPlayer("J#"+ (game.player_list.length+1))
     }
 }
 
 function removePlayer(player_name, html_element_id, location) {
     var player_id = getIDFromString(html_element_id)
-
     //remove button
-    if (location == "team_selection_page") {
-        document.getElementById("player_id_team_selection_" + player_id).remove();
-    }
-    document.getElementById("player_button_" + player_id).remove();
+    document.getElementById("menu_player_button_" + player_id).remove();
+    document.getElementById("ingame_player_button_" + player_id).remove();
 
     leaveTeam(game.player_list[player_id])
-
     for (var i in game.player_list) {
         if (player_name == game.player_list[i]) {
             game.player_list.splice(i, 1)
         }
     }
-    
-    updateHTMLPlayerCount();
+    updatePlayerCount();
 }
 
 function removeAllPlayers() {
-    player_list.innerHTML = "";
+    menu_player_list.innerHTML = "";
+    ingame_player_list.innerHTML = "";
     game.player_list = [];
-    updateHTMLPlayerCount();
+    updatePlayerCount();
 }
 
-function updateHTMLPlayerCount() {
+function updatePlayerCount() {
     if (game.player_list.length > 1) {
         var text = " joueurs";
     } else {
         var text = " joueur";
     }
-
     document.getElementById("player_number").innerHTML = game.player_list.length + text;
+    getMinPlayer()
 }
 
 function getIDFromString(text) {
@@ -368,6 +375,7 @@ function exitGame() {
     updateGameCycle();                                  // reset cycle count
     resetVariables();
     updateHTMLBackgroundColor();
+    toggleIngamePlayerList("none");
 
     displayPage('menu');
 }
@@ -426,7 +434,20 @@ function manageOptionDisplay(option, display) {
     }
 }
 
+function toggleIngamePlayerList(forced_value) {
+    var status = ingame_player_option.style.display
+    if (status == "block") {
+        ingame_player_option.style.display = "none"
+    } else if (status == "none") {
+        ingame_player_option.style.display = "block"
+    }
+ 
+    ingame_player_option.style.display = forced_value
+}
+
 function updateGameCycle() {
+    displaySentenceList(true)
+
     //previous
     if (game.cycle_id > 0) {
         manageNavigationButton("previous", true)
@@ -577,6 +598,8 @@ function displaySentenceList(force_ingame) {
         updateHTMLBackgroundColor("black")
         updateSentenceList()
     }
+
+    toggleIngamePlayerList("none");
 }
 
 function updateSentenceList(mode) {
@@ -729,3 +752,12 @@ window.addEventListener("keydown", function(event) {
 //     setCookie("player_list", game.player_list)
 //     console.log(getCookie("player_list"))
 // }
+
+function DEBUG_RandomPlayer() {
+    global.debug_random_player++
+
+    if (global.debug_random_player == 3) {
+        generateRandomPlayer(1)
+        global.debug_random_player = 0
+    }
+}

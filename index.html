@@ -17,6 +17,7 @@
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
+        <script type="text/javascript" src="./src/js/confess.js"></script>
     </head>
     <body onload="init()">
         </div>
@@ -35,17 +36,17 @@
                 <button class="btn btn-success" onclick="displayPage('menu')">Passer</button>
             </div>
             <hr>
+            <div id="testificate"></div>
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
-            <h1>PICOLITO</h1>
+            <h1 onclick="DEBUG_RandomPlayer()">PICOLITO</h1>
             <hr>
             <div class="d-flex">
-                <input type="text" class="form-control" pattern="[A-Za-z]" id="player_input" placeholder="Ajouter un joueur">
-                <button type="submit" class="btn btn-info" onclick="addPlayer()">Ajouter</button>
-                <!-- <button type="submit" class="btn btn-info" onclick="generateRandomPlayer(1)">Random</button> -->
+                <input type="text" class="form-control" pattern="[A-Za-z]" id="manu_player_input" placeholder="Ajouter un joueur">
+                <button type="submit" class="btn btn-info" onclick="addPlayer(undefined, 'menu')">Ajouter</button>
             </div>
             <br>
-            <div id="player_list"></div>
+            <div id="menu_player_list"></div>
             <hr>
             <button id="button_menu_settings" type="submit" class="btn btn-success" onclick="toggleSettingsPage()">Paramètres</button>
             <button id="button_menu_links" type="submit" class="btn btn-success" onclick="toggleSettingsPage()" style="display:none">Liens</button>
@@ -175,31 +176,31 @@
             <div class="btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="default" id="option1" onclick="selectGamemode(this.name);" autocomplete="off" checked>
-                  <h3>Before</h3>
+                  <h3>Before - 🥴</h3>
                   <p>Le mode de jeu parfait pour s'ambiancer en soirées.</p>
                   <p>Soyez prêts, car Picolito ne vous fera pas de cadeaux.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="silly" id="option2" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3>On est débiles</h3>
+                  <h3>On est débiles - 🤪</h3>
                   <p>Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.</p>
                   <p>Attention, public averti.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="bar" id="option3" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3>Bar</h3>
+                  <h3>Bar - 🍻</h3>
                   <p>Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.</p>
                   <p>Attention, il ne faut pas avoir peur du ridicule.</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="hot" id="option4" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3>Caliente</h3>
+                  <h3>Caliente - 🍆</h3>
                   <p>Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
                   <p>Est-ce que ça va pécho ce soir?</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="war" id="option5" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3>Guerre</h3>
+                  <h3>Guerre - 🌩</h3>
                   <p>Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
                   <p>Ce soir c'est la guerre!</p>
                 </label>
@@ -236,14 +237,7 @@
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_next_button" onclick="nextSentence();">></button>
                     </div>
-                    
-                    <button class="col-md-2 btn btn-secondary dropdown-toggle" type="button" id="addPlayerDropdown" data-toggle="dropdown" aria-haspopup="true">Joueurs</button>
-                    <!-- <button class="col-md-2 btn btn-secondary " type="button" id="addPlayerDropdown" aria-haspopup="true">Joueurs</button> -->
-                    <div class="dropdown-menu p-4" aria-labelledby="addPlayerDropdown">
-                        <div id="ingame_player_list"></div>
-                        <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                        <a onclick="">Ajouter</a>
-                    </div>
+                    <button type="submit" class="btn btn-secondary" onclick="toggleIngamePlayerList()">Joueurs</button>
                 </div>
                 <div id="ingame_text" onclick="nextSentence(); document.getElementById('game_cycle_next_button').innerHTML = '>';">
                     <h1 id="ingame_title"></h1>
@@ -259,6 +253,14 @@
                         <button type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
                         <button type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>Recommencer</button>
                     </div>
+                </div>
+                <div id="ingame_player_option" style="display: none;">
+                    <div class="d-flex">
+                        <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
+                        <button type="submit" class="btn btn-info" onclick="addPlayer(undefined, 'ingame')">Ajouter</button>
+                    </div>
+                    <br>
+                    <div id="ingame_player_list"></div>
                 </div>
                 <div id="sentence_list"></div>
             </div>

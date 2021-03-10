@@ -8,7 +8,6 @@ Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 ** Points Négatifs**
 - Une seule langue (French 🥖)
 - Impossible d'ajouter des règles personalisées
-- Impossible d'ajouter des joueurs en cours de jeu
 - Ne sauvegarde pas les paramètres, les noms de joueurs et les noms des équipes
 
 **Points Positifs**

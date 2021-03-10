@@ -7,6 +7,8 @@ function nextSentence() {
         updateHTMLBackgroundColor();
         updateGameCycle();
         displaySentenceList(true);
+
+        toggleIngamePlayerList("none");
     }
 }
 
@@ -14,6 +16,8 @@ function previousSentence() {
     if (game.cycle_id > 0) {
         game.cycle_id--;
         goToSpecificSentence(game.cycle_id)
+
+        toggleIngamePlayerList("none");
     }
 }
 
