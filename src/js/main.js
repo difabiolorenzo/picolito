@@ -21,7 +21,7 @@ function defaultVariables(reinit) {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.24.1",
+        picolito_version: "0.24.2",
         debug_random_player: 0,
     },
     tips = {            //fr
@@ -577,13 +577,15 @@ function createRecapSentenceIndicator() {
 }
 
 function updateRecapSentenceIndicator(pos, color) {
-    for (var i = 0; i < game.sentence_amount; i++) {
-        document.getElementById("recap_sentences_cell_" + i).className = `recap_sentences_cell`;
-    }
-    if (game.display_indicator == true || game.cycle_id == -1) {
-        document.getElementById("recap_sentences_cell_" + pos).style = `background-color: var(--picolo_${color})`;
-        document.getElementById("recap_sentences_cell_" + pos).onclick = `goToSpecificSentence(${pos})`;
-        document.getElementById("recap_sentences_cell_" + pos).className = `recap_sentences_cell active_recap_sentences_cell`;
+    if (game.display_indicator == true) {
+        for (var i = 0; i < game.sentence_amount; i++) {
+            document.getElementById("recap_sentences_cell_" + i).className = `recap_sentences_cell`;
+        }
+        if (game.cycle_id == -1) {
+            document.getElementById("recap_sentences_cell_" + pos).style = `background-color: var(--picolo_${color})`;
+            document.getElementById("recap_sentences_cell_" + pos).onclick = `goToSpecificSentence(${pos})`;
+            document.getElementById("recap_sentences_cell_" + pos).className = `recap_sentences_cell active_recap_sentences_cell`;
+        }
     }
 }
 
