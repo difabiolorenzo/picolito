@@ -1,6 +1,7 @@
 function init() {
     defaultVariables();
     filterVariables();
+    checkBrowserColorScheme()
 }
 
 function dev_override_settings() {
@@ -16,12 +17,12 @@ function dev_override_settings() {
     lunchSelectedGamemode("default")
 }
 
-function defaultVariables(reinit) {
+function defaultVariables() {
     global = {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.24.2",
+        picolito_version: "0.25",
         debug_random_player: 0,
     },
     tips = {            //fr
@@ -37,6 +38,12 @@ function defaultVariables(reinit) {
     game = {
         filter: {
             color_probability: {
+                // blue: 5,
+                // red: 70,
+                // green: 5,
+                // yellow: 20
+
+                
                 blue: 70,
                 red: 5,
                 green: 20,
@@ -83,24 +90,23 @@ function defaultVariables(reinit) {
         cycle_id: -1,
         gamemode: "default",
         display_indicator: false,
+        display_color_indicator: true,
 
         sentence_history: [],                               //sentence_history_item = { sentence,key,type,nature }
         sentence_amount: 50,
 
         down_drinking_enabled: true,
-        down_drinking_triggered: false,
+        down_drinking_amount: 1,
         down_drinking_sentence_id_start_min: 10,            // down_drinking start to appear after sentence_id X
 
         virus_enabled: true,
         virus_remaining: 1,                                 // virus can occur X times (still overlap...)
         virus_end_min: 5,                                   // virus can end after X more sentence_id minimum
-        virus_end_max: 12,                                  // virus can end after X more sentence_id maximum
+        virus_end_max: 8,                                  // virus can end after X more sentence_id maximum
         virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
 
         social_posting_enabled: false,
     }
-
-    checkBrowserColorScheme()
 
     if (global.dev_mode == true) {
         dev_override_settings()
@@ -117,6 +123,8 @@ function defaultVariables(reinit) {
 
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
+    
+    game.down_drinking_remaining = game.down_drinking_amount;
 
     picolito_version.innerHTML = `Picolito ${global.picolito_version}` ;
 }
@@ -131,6 +139,7 @@ function resetVariables() {
     game.cycle_id = -1;
     game.gamemode = "default";
     game.virus_remaining = 1;
+    game.down_drinking_remaining = game.down_drinking_amount;
     game.database = undefined;
 
     game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
@@ -157,13 +166,14 @@ function checkBrowserColorScheme() {
 
 function toggleDarkMode(value_forced) {
     document.body.classList.toggle('dark_mode');
+    document.body.classList.toggle('bright_mode');
     if (document.body.classList[0] == "dark_mode") { input_dark_mode_settings.checked = true}
 
     if (value_forced == true) {
         document.body.classList.value = "dark_mode";
         input_dark_mode_settings.checked = true;
     } else if (value_forced == false) {
-        document.body.classList.value = " ";
+        document.body.classList.value = "bright_mode";
         input_dark_mode_settings.checked = false;
     }
 }
@@ -188,6 +198,11 @@ function changeSipSettings(setting, value) {
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
     // console.log(`changeSipSettings(${setting}, ${value}) - ${game.sip.min} - ${game.sip.max}`);
+}
+
+function changeDownDrinking(value) {
+    game.down_drinking_amount = parseInt(value);
+    game.down_drinking_remaining = parseInt(value);
 }
 
 function createScriptElement(script_src) {
@@ -365,6 +380,7 @@ function initGame(select_team) {
                 initGame()
                 retrieveDB()
                 updateGameCycle();
+                displaySentenceList(true);
             }
         }
         displayPage('game');
@@ -443,14 +459,22 @@ function toggleIngamePlayerList(forced_value) {
         ingame_player_option.style.display = "none"
     } else if (status == "none") {
         ingame_player_option.style.display = "block"
+
+        if (game.gamemode == "war") {
+            ingame_player_add.style.display = "none"
+            ingame_player_team_1.style.display = "block"
+            ingame_player_team_2.style.display = "block"
+        } else {
+            ingame_player_add.style.display = "block"
+            ingame_player_team_1.style.display = "none"
+            ingame_player_team_2.style.display = "none"
+        }
     }
  
     ingame_player_option.style.display = forced_value
 }
 
 function updateGameCycle() {
-    displaySentenceList(true)
-
     //previous
     if (game.cycle_id > 0) {
         manageNavigationButton("previous", true)
@@ -525,10 +549,18 @@ function randomSip() {
 
 function textReplacer(text) {
 
-    var html_span_sip = "<span class=\"span_sip\">";
-    var html_span_player = "<span class=\"span_player\">";
-    var html_span_team = "<span class=\"span_team\">";
-    var html_span_end = "</span>";
+    if (game.display_color_indicator == true) {
+        var html_span_sip = "<span class=\"span_sip\">";
+        var html_span_player = "<span class=\"span_player\">";
+        var html_span_team = "<span class=\"span_team\">";
+        var html_span_end = "</span>";
+    } else {
+        var html_span_sip = "";
+        var html_span_player = "";
+        var html_span_team = "";
+        var html_span_end = "";
+    }
+
 
     // retrieve all player name
     var player_name_list = [];

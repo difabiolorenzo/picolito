@@ -18,7 +18,7 @@
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
     </head>
-    <body onload="init()">
+    <body onload="init()" class="bright_mode">
         </div>
         <div class="page dark_affected" id="disclaimer">
             <h2><b>Attention</b></h2>
@@ -30,6 +30,7 @@
             <p>Pour plus d'information sur l'alcool et l'alcoolisme:</p>
             <p>- rendez vous sur <a href="https://www.alcool-info-service.fr/">alcool-info-service.fr</a></p>
             <p>- ou appeler le <i>0 980 980 930</i> <code>de 8h à 2h, appel non surtaxé</code></p>
+            <hr>
             
             <div class="d-flex">
                 <button class="btn btn-success" onclick="displayPage('menu')">Passer</button>
@@ -38,7 +39,7 @@
             <a id="picolito_version">Javascript Désactivé :'(</a>
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
-            <h1 onclick="DEBUG_RandomPlayer()">PICOLITO</h1>
+            <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
             <hr>
             <div class="d-flex">
                 <input type="text" class="form-control" pattern="[A-Za-z]" id="manu_player_input" placeholder="Ajouter un joueur">
@@ -105,6 +106,15 @@
                                 <option>10</option>
                             </select>
                         </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="input_sip_min">Potentiels culs secs</label>
+                            <select class="form-control col-md-1" id="input_sip_min" onchange="changeDownDrinking(this.value)">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-check">
                         <h5>Affichage</h5>
@@ -113,35 +123,35 @@
                             <label class="form-check-label">Mode sombre</label>
                         </div>
                         <div>
-                            <input disabled class="form-check-input" id="input_color_display_settings" type="checkbox" checked >
+                            <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
                             <label class="form-check-label">Distinction des informations</label>
                         </div>
-                        <div>
-                            <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
-                            <label class="form-check-label">Récapitulatif</label>
-                        </div>
                         <div class="form-group">
-                            <label>Langue</label>
-                            <select disabled class="form-control col-md-2" id="input_language">
-                                <option>Français</option>
-                                <option>Danois</option>
-                                <option>Allemand</option>
-                                <option>Anglais</option>
-                                <option>Espagnol</option>
-                                <option>Finlandais</option>
-                                <option>Italien</option>
-                                <option>Japonais</option>
-                                <option>Koréen</option>
-                                <option>Novégien</option>
-                                <option>Néerlandais</option>
-                                <option>Portugais</option>
-                                <option>Russe</option>
-                                <option>Suédois</option>
+                            <label>Langue des phrases</label>
+                            <select class="form-control col-md-2" id="input_language"  onchange="global.current_language = this.value">
+                                <option value="fr">Français</option>
+                                <option value="da">Danois</option>
+                                <option value="de">Allemand</option>
+                                <option value="en">Anglais</option>
+                                <option value="es">Espagnol</option>
+                                <option value="fi">Finlandais</option>
+                                <option value="it">Italien</option>
+                                <option value="ja">Japonais</option>
+                                <option value="ko">Coréen</option>
+                                <option value="nb">Novégien</option>
+                                <option value="nl">Néerlandais</option>
+                                <option value="pt">Portugais</option>
+                                <option value="ru">Russe</option>
+                                <!-- <option value="sv">Suédois</option> bar_sv????-->
                             </select>
                         </div>
                     </div>
                     <div class="form-check">
                         <h5>Debug</h5>
+                        <div>
+                            <input class="form-check-input" id="input_display_indicator" type="checkbox" onclick="toggleDisplayIndicator(this.checked)">
+                            <label disabled class="form-check-label">Récapitulatif</label>
+                        </div>
                         <div>
                             <button class="btn btn-info" onclick="lunchSelectedGamemode('default')">/gamemode default</button>
                             <button class="btn btn-info" onclick="lunchSelectedGamemode('silly')">/gamemode silly</button>
@@ -166,7 +176,7 @@
             </div>
         </div>
         <div class="page dark_affected" id="gamemode" style="display:none">
-            <div class="d-flex">
+            <div class="d-flex" id="gamemode_topbar">
                 <button class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
                 <a class="col-md-6 text-center" id="player_number">0 joueur</a>
                 <button class="col-md-3 btn btn-success" onclick="initGame(true)">Suivant</button>
@@ -234,11 +244,11 @@
                     <div class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
-                        <button disabled type="button" class="btn btn-secondary" id="game_cycle_next_button" onclick="nextSentence();">></button>
+                        <button disabled type="button" class="btn btn-secondary" id="game_cycle_next_button" onclick="nextSentence(true);">></button>
                     </div>
                     <button type="submit" class="btn btn-secondary" onclick="toggleIngamePlayerList()">Joueurs</button>
                 </div>
-                <div id="ingame_text" onclick="nextSentence(); document.getElementById('game_cycle_next_button').innerHTML = '>';">
+                <div id="ingame_text" onclick="nextSentence(true); document.getElementById('game_cycle_next_button').innerHTML = '>';">
                     <h1 id="ingame_title"></h1>
                     <p id="ingame_sentence"></p>
                 </div>
@@ -257,13 +267,18 @@
                     <div id="ingame_player_option" style="display: none;">
                         <div class="d-flex">
                             <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                            <button type="submit" class="btn btn-info" onclick="addPlayer(undefined, 'ingame')">Ajouter</button>
+                            <button type="submit" class="btn btn-info" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter</button>
+                        </div>
+                        <br>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-info" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter à l'équipe #2</button>
+                            <button type="submit" class="btn btn-info" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter à l'équipe #2</button>
                         </div>
                         <br>
                         <div id="ingame_player_list"></div>
                     </div>
                 </div>
-                <div id="sentence_list"></div>
+                <div id="sentence_list" style="display: none;"></div>
             </div>
             <table id="html_recap_sentences" style="display:block;">
                 <tbody>

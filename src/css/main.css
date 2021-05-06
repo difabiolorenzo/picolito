@@ -22,18 +22,21 @@
 #ingame_content {    
     text-align: center;
     color:white;
+    padding: 5vw;
 }
 #ingame_text {
-    padding-top:10%;
+    padding-top: 12%;
 }
 
 p#ingame_sentence, #ready_text_ingame, #endgame_text_ingame {font-weight: bold;font-size: 4.5vh;user-select: none;}
 
+
+div#game {overflow: auto;}
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
-div#game.blue {background-color: var(--picolo_blue);overflow: hidden;}
+div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
-div#game.black {background-color: var(--dark);overflow: hidden;}
+div#game.black {background-color: var(--dark);}
 
 .dark_mode div#game.dark_affected {background-color: inherit}
 
@@ -43,7 +46,7 @@ div#game.black {background-color: var(--dark);overflow: hidden;}
 .dark_mode .dark_affected.green #ingame_sentence {color: var(--picolo_green);}
 
 table#html_recap_sentences {
-    position: absolute;
+    position: fixed;
     bottom: 1px;
     left: 0;
     width: 100%;
@@ -67,6 +70,12 @@ table#html_recap_sentences {
     border: unset;
 }
 
+.dark_mode span.span_player, .dark_mode span.span_sip, .dark_mode span.span_team {background-color: #00000040;}
+.dark_mode span.span_player {color: var(--picolo_player_dark);}
+.dark_mode span.span_sip {color: var(--picolo_sip_dark);}
+.dark_mode span.span_team {color: var(--picolo_team_dark);}
+
+
 .dark_mode .input_name, .dark_mode .table, .dark_mode td, .dark_mode th {
     background-color: var(--dark_mode_gray);
     border-color: black !important;
@@ -84,15 +93,15 @@ table#html_recap_sentences {
     opacity:0.5;
 }
 
+/* .bright_mode #disclaimer, .bright_mode #menu, .bright_mode div#gamemode, .bright_mode div#team_selection {
+    background-color: var(--picolo_blue);
+    color: white;
+} */
 span.span_player, span.span_sip, span.span_team {padding-left: 5px; padding-right: 5px; background-color: #00000080;}
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_team);}
 
-.dark_mode span.span_player, .dark_mode span.span_sip, .dark_mode span.span_team {background-color: #00000040;}
-.dark_mode span.span_player {color: var(--picolo_player_dark);}
-.dark_mode span.span_sip {color: var(--picolo_sip_dark);}
-.dark_mode span.span_team {color: var(--picolo_team_dark);}
 
 div#sentence_list {margin: 5vh;overflow: auto;height: 60vh;}
 
@@ -110,7 +119,7 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
 @media screen and (orientation:portrait) {
     #ingame_content {
         text-align: center;
-        transform: rotate(-90deg) translateX(-25em) translateY(-25em) scale(0.9);
+        transform: rotate(-90deg) translateX(-20em) translateY(-20em) scale(0.9);
         height: 0vw;
         width: 100vh;
     }

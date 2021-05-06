@@ -1,4 +1,4 @@
-function nextSentence() {
+function nextSentence(close_sentence_list) {
     if (game.cycle_id < game.sentence_amount - 1) {
         game.cycle_id++;
         
@@ -6,7 +6,12 @@ function nextSentence() {
 
         updateHTMLBackgroundColor();
         updateGameCycle();
-        displaySentenceList(true);
+        
+        if (close_sentence_list == true) {
+            displaySentenceList(true);
+        } else {
+            updateSentenceList()
+        }
 
         toggleIngamePlayerList("none");
     }
@@ -59,7 +64,7 @@ function retrieve(sentence_id) {
 
 function getRandomColor() {
     var available_color_probability = [];
-    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_triggered == false && game.gamemode != "war") {
+    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
     if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
@@ -251,6 +256,6 @@ function generate() {
 
     //disable down drinking if trigerred
     if (color == "red") {
-        game.down_drinking_triggered = true;
+        game.down_drinking_remaining--;
     }
 }
