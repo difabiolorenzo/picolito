@@ -1,28 +1,31 @@
 function init() {
     defaultVariables();
     filterVariables();
-    checkBrowserColorScheme()
+    checkBrowserColorScheme();
+    setLanguageString();
+    global.current_language_strings = language.fr;
 }
 
 function dev_override_settings() {
     displayPage("menu")
     removeAllPlayers()
     generateRandomPlayer(4)
-    game.display_indicator = true;
-    toggleDisplayIndicator(true)
-    // game.down_drinking_enabled = false;
+    // game.shot_enabled = false;
     // game.virus_enabled = false;
     // game.social_posting_enabled = false;
 
     lunchSelectedGamemode("default")
+
+    // updateCurrentLanguageString("en")
 }
 
 function defaultVariables() {
     global = {
+        default_language: true,
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.25",
+        picolito_version: "0.26",
         debug_random_player: 0,
     },
     tips = {            //fr
@@ -91,13 +94,14 @@ function defaultVariables() {
         gamemode: "default",
         display_indicator: false,
         display_color_indicator: true,
+        animation: true,
 
         sentence_history: [],                               //sentence_history_item = { sentence,key,type,nature }
         sentence_amount: 50,
 
-        down_drinking_enabled: true,
-        down_drinking_amount: 1,
-        down_drinking_sentence_id_start_min: 10,            // down_drinking start to appear after sentence_id X
+        shot_enabled: true,
+        shot_amount: 1,
+        shot_sentence_id_start_min: 10,            // shot start to appear after sentence_id X
 
         virus_enabled: true,
         virus_remaining: 1,                                 // virus can occur X times (still overlap...)
@@ -115,18 +119,16 @@ function defaultVariables() {
     input_team_1.value = game.team_1;
     input_team_2.value = game.team_2;
 
-    input_display_indicator.checked = game.display_indicator;
-
-    input_down_drinking_enabled.checked = game.down_drinking_enabled;
+    input_shot_enabled.checked = game.shot_enabled;
     input_virus_enabled.checked = game.virus_enabled;
     input_social_posting_enabled.checked = game.social_posting_enabled;
 
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
     
-    game.down_drinking_remaining = game.down_drinking_amount;
+    game.shot_remaining = game.shot_amount;
 
-    picolito_version.innerHTML = `Picolito ${global.picolito_version}` ;
+    picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
 }
 
 function resetVariables() {
@@ -139,21 +141,12 @@ function resetVariables() {
     game.cycle_id = -1;
     game.gamemode = "default";
     game.virus_remaining = 1;
-    game.down_drinking_remaining = game.down_drinking_amount;
+    game.shot_remaining = game.shot_amount;
     game.database = undefined;
 
     game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
 
-    if (game.display_indicator == true) {
-        createRecapSentenceIndicator();
-    }
-
     game_cycle_count.innerHTML = "-";
-}
-
-function toggleDisplayIndicator(force) {
-    game.display_indicator = force;
-    createRecapSentenceIndicator();
 }
 
 function checkBrowserColorScheme() {
@@ -201,8 +194,8 @@ function changeSipSettings(setting, value) {
 }
 
 function changeDownDrinking(value) {
-    game.down_drinking_amount = parseInt(value);
-    game.down_drinking_remaining = parseInt(value);
+    game.shot_amount = parseInt(value);
+    game.shot_remaining = parseInt(value);
 }
 
 function createScriptElement(script_src) {
@@ -227,7 +220,7 @@ function hopper(array, nature) {
 }
 
 function filterVariables() {
-    if (game.down_drinking_enabled == false) {
+    if (game.shot_enabled == false) {
         //delete and share red probability into others colors
         hopper(game.type_by_color, "red");
     }
@@ -343,11 +336,14 @@ function removeAllPlayers() {
 
 function updatePlayerCount() {
     if (game.player_list.length > 1) {
-        var text = " joueurs";
+        text_gamemode_player_singular.style.display = "none"
+        text_gamemode_player_plural.style.display = "initial"
     } else {
-        var text = " joueur";
+        text_gamemode_player_singular.style.display = "initial"
+        text_gamemode_player_plural.style.display = "none"
     }
-    document.getElementById("player_number").innerHTML = game.player_list.length + text;
+
+    document.getElementById("text_gamemode_player_number").innerHTML = game.player_list.length;
     getMinPlayer()
 }
 
@@ -389,7 +385,7 @@ function initGame(select_team) {
 }
 
 function exitGame() {
-    document.getElementById("ingame_sentence").innerHTML = "";  // reset HTML sentence display
+    displaySentence("", undefined); // reset HTML sentence display
 
     updateGameCycle();                                  // reset cycle count
     resetVariables();
@@ -528,8 +524,6 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
         type: type,
         color : color
     }
-    if (game.display_indicator == true) { updateRecapSentenceIndicator((game.cycle_id) + posOffset, sentence_history_item.color); }     
-
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
     } else if (game.sentence_history[offset_sentence_id].sentence == "none") {
@@ -594,33 +588,6 @@ function textReplacer(text) {
     return text;
 }
 
-function createRecapSentenceIndicator() {
-    var html_recap_sentences = document.getElementById("html_recap_sentences")
-    var html_recap_sentences_elements = "";
-
-    html_recap_sentences.innerHTML = "";
-    
-    if (game.display_indicator == true) {
-        for (var i = 0; i < game.sentence_amount; i++) {
-            html_recap_sentences_elements += `<td class="recap_sentences_cell" id="recap_sentences_cell_${i}" style="background-color:grey;"></td>`;
-        }
-        html_recap_sentences.innerHTML = `<tbody><tr>${html_recap_sentences_elements}</tr></tbody>`;
-    }
-}
-
-function updateRecapSentenceIndicator(pos, color) {
-    if (game.display_indicator == true) {
-        for (var i = 0; i < game.sentence_amount; i++) {
-            document.getElementById("recap_sentences_cell_" + i).className = `recap_sentences_cell`;
-        }
-        if (game.cycle_id == -1) {
-            document.getElementById("recap_sentences_cell_" + pos).style = `background-color: var(--picolo_${color})`;
-            document.getElementById("recap_sentences_cell_" + pos).onclick = `goToSpecificSentence(${pos})`;
-            document.getElementById("recap_sentences_cell_" + pos).className = `recap_sentences_cell active_recap_sentences_cell`;
-        }
-    }
-}
-
 function displaySentenceList(force_ingame) {
     var ingame_text = document.getElementById("ingame_text");
     var sentence_list = document.getElementById("sentence_list");
@@ -670,9 +637,9 @@ function updateTeamSelectiontable() {
     function selectingPlayerCell(index) {
         var player_name = game.player_list[index]
         var player_input = `<td>${player_name}</td>`
-        var select_team_1_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">Selectionner</button></td>`
-        var select_team_2_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">Selectionner</button></td>`
-        var delete_button = `<td><button class="btn btn-danger" onclick="removePlayer('${player_name}', this.parentElement.parentElement.id, 'team_selection_page')">Supprimer</button></td>`
+        var select_team_1_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_select +`</button></td>`
+        var select_team_2_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_select +`</button></td>`
+        var delete_button = `<td><button class="btn btn-danger" onclick="removePlayer('${player_name}', this.parentElement.parentElement.id, 'team_selection_page')">`+ global.current_language_strings.team_delete +`</button></td>`
 
         return `<tr id="player_id_team_selection_${index}">` + player_input + select_team_1_button + select_team_2_button + delete_button + "<tr>";
     }
@@ -709,8 +676,8 @@ function changeTeam(html_id, team) {
 
     leaveTeam(player_name)
 
-    var change_team_1_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">Changer</button></td>`
-    var change_team_2_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">Changer</button></td>`
+    var change_team_1_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_change +`</button></td>`
+    var change_team_2_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_change +`</button></td>`
 
     if (team == "team_1") {
         html_id.children[1].innerHTML = `✅`;
@@ -796,5 +763,13 @@ function DEBUG_RandomPlayer() {
     if (global.debug_random_player == 3) {
         generateRandomPlayer(1)
         global.debug_random_player = 0
+    }
+}
+
+function alertRandomPlayer() {
+    if (game.player_list.length > 0) {
+        var random_int = Math.floor(Math.random() * game.player_list.length);
+        var random_player = game.player_list[random_int];
+        alert(random_player);
     }
 }

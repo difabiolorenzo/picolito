@@ -31,7 +31,6 @@ function goToSpecificSentence(position) {
     
     updateGameCycle();
     updateHTMLBackgroundColor();
-    updateRecapSentenceIndicator(position, game.sentence_history[position].color);
     retrieve(position);
     displaySentenceList(true);
 }
@@ -57,14 +56,34 @@ function retrieve(sentence_id) {
         generate();
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
-        document.getElementById("ingame_sentence").innerHTML = sentence_requested.sentence;
+        displaySentence(sentence_requested.sentence, sentence_requested.color);
         updateGameCycle();
+    }
+}
+
+function displaySentence(sentence, color) {
+    ingame_sentence.className = ""
+    ingame_title.className = ""
+
+    setTimeout(function() {
+
+        if (game.animation == true) {
+            ingame_sentence.className = "animation_text_change";
+            ingame_title.className = "animation_text_change";
+        }
+        document.getElementById("ingame_sentence").innerHTML = sentence;
+    }, 0);
+    
+    if (color == "yellow") {
+        ingame_title.innerText = "VIRUS";
+    } else {
+        ingame_title.innerText = "";
     }
 }
 
 function getRandomColor() {
     var available_color_probability = [];
-    if (game.down_drinking_enabled == true && game.down_drinking_sentence_id_start_min <= game.cycle_id && game.down_drinking_remaining > 0 && game.gamemode != "war") {
+    if (game.shot_enabled == true && game.shot_sentence_id_start_min <= game.cycle_id && game.shot_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
     if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
@@ -138,7 +157,6 @@ function getRandomType() {
             case "yellow":
                 type_by_color = game.filter.type_by_color.yellow;
                 break;
-            default:
         }
 
         var color_gamemode_matching_type = []
@@ -222,7 +240,7 @@ function generate() {
     console.log(color, "type", type, "max_player", max_player, "key", key)
 
     updateHTMLBackgroundColor(color);
-    document.getElementById("ingame_sentence").innerHTML = sentence;
+    displaySentence(sentence, color);
     addHistoryItem(0, database_id, sentence, key, type, color);
 
     if (key != "") {
@@ -256,6 +274,6 @@ function generate() {
 
     //disable down drinking if trigerred
     if (color == "red") {
-        game.down_drinking_remaining--;
+        game.shot_remaining--;
     }
 }

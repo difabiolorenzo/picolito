@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'OpenMoji';
+    src: url('../font/OpenMoj10.ttf');
+  }
+
 :root {
     --picolo_yellow: #E7BB00;
     --picolo_red: #E51000;
@@ -28,8 +33,15 @@
     padding-top: 12%;
 }
 
-p#ingame_sentence, #ready_text_ingame, #endgame_text_ingame {font-weight: bold;font-size: 4.5vh;user-select: none;}
+p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {font-weight: bold;font-size: 4.5vh;user-select: none;}
+h1#ingame_title {font-weight: 900;}
 
+.animation_text_change {
+    animation: animation_text_change 0.75s ease-in-out;
+}
+@keyframes animation_text_change {
+0% {opacity: 0;transform: translateX(1vw);}
+}
 
 div#game {overflow: auto;}
 div#game.yellow {background-color: var(--picolo_yellow);}
@@ -97,7 +109,7 @@ table#html_recap_sentences {
     background-color: var(--picolo_blue);
     color: white;
 } */
-span.span_player, span.span_sip, span.span_team {padding-left: 5px; padding-right: 5px; background-color: #00000080;}
+span.span_player, span.span_sip, span.span_team {padding-left: 10px; padding-right: 10px; background-color: #00000080;border-radius: 5px;}
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_team);}
@@ -119,7 +131,7 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
 @media screen and (orientation:portrait) {
     #ingame_content {
         text-align: center;
-        transform: rotate(-90deg) translateX(-20em) translateY(-20em) scale(0.9);
+        transform: rotate(-90deg) translateX(-23em) translateY(-23em) scale(0.9);
         height: 0vw;
         width: 100vh;
     }
