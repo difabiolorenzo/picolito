@@ -25,7 +25,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.26",
+        picolito_version: "0.26.1",
         debug_random_player: 0,
     },
     tips = {            //fr
