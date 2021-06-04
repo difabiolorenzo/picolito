@@ -127,6 +127,7 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
         transform: rotate(-90deg) translateX(-95vh);
         transform-origin: top left;
         width: 95vh;
+        padding: 11.25vw;
     }
     p#ingame_sentence {
         font-size: 3vh;
