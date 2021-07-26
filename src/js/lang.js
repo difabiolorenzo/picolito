@@ -34,7 +34,7 @@ function setLanguageString() {
             team_change: "Changer",
             team_add_in_team: "Ajouter à ",
             links: "Liens",
-            settings: "Paramètres",
+            settings: "Paramètres Picolo",
             settings_gameplay: "Fonctionnement",
             settings_shot: "Culs secs",
             settings_virus: "Virus",
@@ -46,7 +46,7 @@ function setLanguageString() {
             settings_dark_theme: "Mode sombre",
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
-            settings_debug: "Debug",
+            settings_quick_launch: "Lancement rapide",
             settings_other: "Autre",
             settings_delete_all_players: "Supprimer tous les joueurs",
             settings_report_bug: "Signaler un bug",
@@ -66,6 +66,10 @@ function setLanguageString() {
             gamemode_war_title: "Guerre - 🌩",
             gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
             gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
+            gamemode_never_title: "Je n'ai jamais",
+            gamemode_never_popular: "Populaire - ⭐",
+            gamemode_never_hot: "Coquin & Sexy - 💋",
+            gamemode_never_party: "Fête - 🎉",
             lang_fr: "Français",
             lang_da: "Danois",
             lang_de: "Allemand",
@@ -121,7 +125,7 @@ function setLanguageString() {
             team_change: "Change",
             team_add_in_team: "Add to ",
             links: "Links",
-            settings: "Settings",
+            settings: "Picolo Settings",
             settings_gameplay: "Gameplay",
             settings_shot: "Shots",
             settings_virus: "Virus",
@@ -133,7 +137,7 @@ function setLanguageString() {
             settings_dark_theme: "Dark theme",
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
-            settings_debug: "Debug",
+            settings_quick_launch: "Quick launch",
             settings_debug_display: "Récapitulatif",
             settings_other: "Other",
             settings_delete_all_players: "Delete all players",
@@ -154,6 +158,10 @@ function setLanguageString() {
             gamemode_war_title: "War - 🌩",
             gamemode_war_subtitle_0: "Friends, come together!",
             gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
+            gamemode_never_title: "Never I have ever",
+            gamemode_never_popular: "Popular - ⭐",
+            gamemode_never_hot: "Dirty & Sex - 💋",
+            gamemode_never_party: "Party - 🎉",
             lang_fr: "French",
             lang_da: "Danish",
             lang_de: "German",
@@ -262,7 +270,7 @@ function updateHTMLLanguageStrings() {
     text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
-    text_settings_information_debug.innerHTML = global.current_language_strings.settings_debug;
+    text_settings_information_quick_llaunch.innerHTML = global.current_language_strings.settings_quick_launch;
     text_settings_information_other.innerHTML = global.current_language_strings.settings_other;
     text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
@@ -286,6 +294,11 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_war.innerHTML = global.current_language_strings.gamemode_war_title;
     text_gamemode_war_subtitle_0.innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
     text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
+
+    text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
+    text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
+    text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
+    text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;

@@ -33,7 +33,13 @@
     padding-top: 12%;
 }
 
-p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {font-weight: bold;font-size: 4.5vh;user-select: none;line-height: 1.75;}
+p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
+    font-weight: bold;
+    font-size: 4.5vh;
+    user-select: none;
+    line-height: 1.75;
+}
+
 h1#ingame_title {font-weight: 900;}
 
 .animation_text_change {
@@ -49,6 +55,7 @@ div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark);}
+div#game.purple {background-color: var(--purple);}
 
 .dark_mode div#game.dark_affected {background-color: inherit;}
 
@@ -85,11 +92,6 @@ div#game.black {background-color: var(--dark);}
     background-color: var(--dark_mode_gray);
     border-color: black !important;
     color:white;
-}
-
-.dark_mode input, .dark_mode select {
-    background-color: var(--dark_mode_gray);
-    border-color:#101010;
 }
 
 .dark_mode :disabled {

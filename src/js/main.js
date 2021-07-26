@@ -1,3 +1,5 @@
+
+// First function called when #body is loaded
 function init() {
     defaultVariables();
     filterVariables();
@@ -6,17 +8,12 @@ function init() {
     global.current_language_strings = language.fr;
 }
 
+// Used when testing to avoid clicking x menus, get 4 players, etc...
 function dev_override_settings() {
     displayPage("menu")
     removeAllPlayers()
     generateRandomPlayer(4)
-    // game.shot_enabled = false;
-    // game.virus_enabled = false;
-    // game.social_posting_enabled = false;
-
-    lunchSelectedGamemode("default")
-
-    // updateCurrentLanguageString("en")
+    launchSelectedGamemode("never_popular")
 }
 
 function defaultVariables() {
@@ -25,55 +22,45 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.26.3",
+        picolito_version: "0.27.0",
         debug_random_player: 0,
-    },
-    tips = {            //fr
-        painters: [""],
-        asian_capital: [""],
-        countries: [""],
-        writers: [""],
-        mathematicians: [""],
-        physicists: [""],
-        philosophers: [""]
     }
 
     game = {
         filter: {
-            color_probability: {
-                // blue: 5,
-                // red: 70,
-                // green: 5,
-                // yellow: 20
-
-                
-                blue: 70,
-                red: 5,
-                green: 20,
-                yellow: 5
+            // Sentences of type 1 is used in "default", "hot", "bar" and "silly"
+            type_by_gamemode: {
+                default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
+                hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
+                bar: [1, 2, 4, 17, 18, 19, 20, 21, 22],
+                silly: [1, 2, 3, 4, 6, 14, 23, 24, 25],
+                war: [8, 9, 10, 11, 12, 13]
             },
+            // For .default[0], maximum players can be 0, 1, 2, 3 or 4 players (when there is more than 4 players, player count is noted 4)
+            max_player_number_by_gamemode: {
+                default: [[0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], [], [], [], [], [], [], [], [], [0,1,2], [2], [], [], [], [], [], [], [], [0,1,2,3], [3], [0,1,2,3,4]],
+                hot: [[0,1,2,3,4,5], [1,2], [0], [0,1,2], [], [], [1,2], [], [], [], [], [], [], [0,1,2,3], [], [], [], [], [], [], [], [], [0,1,2], [3,4], [0,1,2]],
+                bar: [[0,1,2], [1,3], [], [0,1], [], [], [], [], [], [], [], [], [], [], [], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], [], [], []],
+                silly: [[0,1,2,3,4], [0,1,2], [0], [1,2,3], [], [0,1,2,3], [], [], [], [], [], [], [], [0,1], [], [], [], [], [], [], [], [], [0,1,2,3,4], [3,4], [0,1,2]],
+                war: [[], [], [], [], [], [], [], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], [], [], [], [], [], [], [], [], [], [], [], []]
+            },
+            // Senteces of type 1 is blue, 2 and 3 is yellow, 4 is green, etc...
             type_by_color: {
                 blue: [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25],
                 red: [5, 6, 7],
                 green: [4, 11, 12, 14, 17, 20, 21, 22, 23],
                 yellow: [2, 3]
             },
-            type_by_gamemode: {
-                bar: [1, 2, 4, 17, 18, 19, 20, 21, 22],
-                default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
-                hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
-                silly: [1, 2, 3, 4, 6, 14, 23, 24, 25],
-                war: [8, 9, 10, 11, 12, 13]
-            },
-            max_player_number_by_gamemode: {
-                bar: [[0,1,2], [1,3], [], [0,1], [], [], [], [], [], [], [], [], [], [], [], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], [], [], []],
-                default: [[0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], [], [], [], [], [], [], [], [], [0,1,2], [2], [], [], [], [], [], [], [], [0,1,2,3], [3], [0,1,2,3,4]],
-                hot: [[0,1,2,3,4,5], [1,2], [0], [0,1,2], [], [], [1,2], [], [], [], [], [], [], [0,1,2,3], [], [], [], [], [], [], [], [], [0,1,2], [3,4], [0,1,2]],
-                silly: [[0,1,2,3,4], [0,1,2], [0], [1,2,3], [], [0,1,2,3], [], [], [], [], [], [], [], [0,1], [], [], [], [], [], [], [], [], [0,1,2,3,4], [3,4], [0,1,2]],
-                war: [[], [], [], [], [], [], [], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], [], [], [], [], [], [], [], [], [], [], [], []]
+            // % of chance for picking specific colors (70% to pick blue typed sentences)
+            color_probability: {
+                blue: 70,
+                red: 5,
+                green: 20,
+                yellow: 5
             },
         },
-        
+
+        // Dummy DB used to pick sentences one by one
         db: {},                                             //Full database for GAMEMODE_LANG.js ; is an TAFFY()
 
         player_list: [],
@@ -395,7 +382,7 @@ function exitGame() {
     displayPage('menu');
 }
 
-function lunchSelectedGamemode(selected_gamemode) {
+function launchSelectedGamemode(selected_gamemode) {
     selectGamemode(selected_gamemode);
     if (selected_gamemode == "war") {
         initGame(true);
@@ -406,7 +393,7 @@ function lunchSelectedGamemode(selected_gamemode) {
 
 function restart(gamemode) {
     exitGame();
-    lunchSelectedGamemode(gamemode);
+    launchSelectedGamemode(gamemode);
 }
 
 function selectGamemode(selected_gamemode) {

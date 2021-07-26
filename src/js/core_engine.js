@@ -1,7 +1,6 @@
 function nextSentence(close_sentence_list) {
     if (game.cycle_id < game.sentence_amount - 1) {
         game.cycle_id++;
-        
         retrieve(game.cycle_id);
 
         updateHTMLBackgroundColor();
@@ -53,7 +52,12 @@ function getMinPlayer() {
 function retrieve(sentence_id) {
     //generate or retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
-        generate();
+        
+    if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot") {
+        generateNeverDoneSentences();
+    } else {
+        generatePicoloSentences();
+    }
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
         displaySentence(sentence_requested.sentence, sentence_requested.color);
@@ -71,8 +75,7 @@ function displaySentence(sentence, color) {
             ingame_sentence.className = "animation_text_change";
             ingame_title.className = "animation_text_change";
         }
-        document.getElementById("ingame_sentence").innerHTML = sentence;
-    }, 0);
+        document.getElementById("ingame_sentence").innerHTML = sentence;}, 0);
     
     if (color == "yellow") {
         ingame_title.innerText = "VIRUS";
@@ -195,21 +198,7 @@ function getRandomType() {
     }
 }
 
-function generate() {
-    console.clear()
-    var get_random_color_type = getRandomType();
-    var color = get_random_color_type[0];
-    var type = get_random_color_type[1];        // text
-    var max_player = game.max_player_number;
-    console.log(get_random_color_type, color, type, max_player)
-
-    function getSentence(use_parent_key, selected_nb_players, selected_type) {
-        if (use_parent_key == false) {
-            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
-        } else {
-            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:key}).get();
-        }
-    }
+function generateNeverDoneSentences() {
 
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
@@ -224,19 +213,57 @@ function generate() {
         console.log(database_id, "removed")
     }
 
-    var request = []
+    var request = game.database().get();
+    
+    getRandomSentence()
+    console.log("key", key, "request", request);
+
+    updateHTMLBackgroundColor("purple");
+    displaySentence(sentence, "purple");
+    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple");
+}
+
+function generatePicoloSentences() {
+    var get_random_color_type = getRandomType();
+    var color = get_random_color_type[0];
+    var type = get_random_color_type[1];        // text
+    var max_player = game.max_player_number;
+    console.log(get_random_color_type, color, type, max_player);
+
+    function getSentence(use_parent_key, selected_nb_players, selected_type) {
+        if (use_parent_key == false) {
+            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
+        } else {
+            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:key}).get();
+        }
+    }
+
+    function getRandomSentence() {
+        var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        database_id = request[random_int].___id;
+        sentence = textReplacer(request[random_int].text);
+        console.log(request[random_int].key);
+        if (request[random_int].key != "") { key = request[random_int].key; }
+        console.log(random_int, sentence);
+
+        //remove sentence from db
+        game.database().filter({___id:database_id}).remove();
+        console.log(database_id, "removed");
+    }
+
+    var request = [];
     var key = "";
     var sentence = "";
     var database_id = "";
 
     //get sentence from lower nb_player
     for (var i = 0; i <= max_player; i++) {
-        var addind_request = getSentence(false, i.toString(), type.toString())
-        request.push(...addind_request)
+        var addind_request = getSentence(false, i.toString(), type.toString());
+        request.push(...addind_request);
     }
+    
     getRandomSentence()
     console.log("request", request)
-    console.log(color, "type", type, "max_player", max_player, "key", key)
     console.log(color, "type", type, "max_player", max_player, "key", key)
 
     updateHTMLBackgroundColor(color);

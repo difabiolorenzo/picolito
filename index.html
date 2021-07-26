@@ -79,7 +79,7 @@
                 </div>
                 <div id="settings" style="display:none;">
                     <div class="form-check">
-                        <h5 id="text_settings_gameplay">Fonctionnement</h5>
+                        <h5 id="text_settings_gameplay">Fonctionnement Picolo</h5>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_shot_enabled" onclick="game.shot_enabled = this.checked">
                             <label id="text_settings_shot" class="form-check-label">Culs secs</label>
@@ -147,16 +147,6 @@
                             <label id="text_settings_animation" class="form-check-label">Animations</label>
                         </div>
                     </div>
-                    <div class="form-check">
-                        <h5 id="text_settings_information_debug">Debug</h5>
-                        <div>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('default')">/gamemode default</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('silly')">/gamemode silly</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('bar')">/gamemode bar</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('hot')">/gamemode hot</button>
-                            <button class="btn btn-info" onclick="lunchSelectedGamemode('war')">/gamemode war</button>
-                        </div>
-                    </div>
                     <!-- <div class="form-check">
                         <h5>Cookies</h5>
                         <a href="#">Sauvegarder les paramètres</a><br>
@@ -167,6 +157,22 @@
                         <h5 id="text_settings_information_other">Autre</h5>
                         <a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer tous les joueurs</a><br>
                         <a  id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a><br>
+                        <a  id="text_settings_information_signal_bug" href="https://marmelapp.com">marmelapp.com</a><br>
+                        <a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a><br>
+                        <a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a><br>
+                    </div>
+                    <div class="form-check">
+                        <h5 id="text_settings_information_quick_launch">Lancement rapide</h5>
+                        <div>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('default')">/gamemode default</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('silly')">/gamemode silly</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('bar')">/gamemode bar</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('hot')">/gamemode hot</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('war')">/gamemode war</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">/gamemode never_popular</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">/gamemode never_party</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">/gamemode never_hot</button>
+                        </div>
                     </div>
                     <br>
                 </div>
@@ -184,6 +190,7 @@
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
+                <h2 class="text-center" id="text_gamemode_never_title">Picolo</h2><hr>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="default" id="option1" onclick="selectGamemode(this.name);" autocomplete="off" checked>
                   <h3 id="text_gamemode_title_default">Before - 🥴</h3>
@@ -213,6 +220,19 @@
                   <h3 id="text_gamemode_title_war">Guerre - 🌩</h3>
                   <p id="text_gamemode_war_subtitle_0">Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
                   <p id="text_gamemode_war_subtitle_1">Ce soir c'est la guerre!</p>
+                </label><hr>
+                <h2 class="text-center" id="text_gamemode_never_title">Je n'ai jamais</h2><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="never_popular" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_popular">Populaire - ⭐</h3>
+                </label><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="never_hot" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_hot">Coquin & Sexy - 💋</h3>
+                </label><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="never_party" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_party">Fête - 🎉</h3>
                 </label>
               </div>
               <hr>
