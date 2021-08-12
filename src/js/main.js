@@ -13,7 +13,7 @@ function dev_override_settings() {
     displayPage("menu")
     removeAllPlayers()
     generateRandomPlayer(4)
-    launchSelectedGamemode("never_popular")
+    launchSelectedGamemode("card")
 }
 
 function defaultVariables() {
@@ -22,7 +22,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.27.0",
+        picolito_version: "pre-0.28",
         debug_random_player: 0,
     }
 
@@ -75,7 +75,7 @@ function defaultVariables() {
             fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
         },
 
-        sip: { min: 2, max: 5 },
+        sip: { min: 1, max: 4 },
         started: false,
         cycle_id: -1,
         gamemode: "default",
@@ -355,6 +355,16 @@ function initGame(select_team) {
     if (game.gamemode == "war" && select_team == true) {
         displayPage('team_selection');
         updateTeamSelectiontable();
+    } else if (game.gamemode == "dice") {
+        displayPage('game');
+        manageOptionDisplay("dice", true);
+        manageNavDisplay("navigation_arrows", false);
+        manageNavDisplay("players", false);
+    } else if (game.gamemode == "card") {
+        displayPage('game');
+        manageOptionDisplay("card", true);
+        manageNavDisplay("navigation_arrows", false);
+        manageNavDisplay("players", false);
     } else {
         if (game.started == false) {
             game.started = true;
@@ -378,6 +388,14 @@ function exitGame() {
     resetVariables();
     updateHTMLBackgroundColor();
     toggleIngamePlayerList("none");
+
+    manageOptionDisplay("start", false);
+    manageOptionDisplay("replay", false);
+    manageOptionDisplay("dice", false);
+    manageOptionDisplay("card", false);
+    
+    manageNavDisplay("navigation_arrows", true);
+    manageNavDisplay("players", true);
 
     displayPage('menu');
 }
@@ -425,6 +443,10 @@ function manageOptionDisplay(option, display) {
         var selected_option = start_ingame_option;
     } else if (option == "replay") {
         var selected_option = replay_ingame_option;
+    } else if (option == "dice") {
+        var selected_option = dice_ingame_option;
+    } else if (option == "card") {
+        var selected_option = card_ingame_option;
     }
 
     if (display == true) {
@@ -433,6 +455,20 @@ function manageOptionDisplay(option, display) {
     } else if (display == false) {
         ingame_option.style.display = "none"
         selected_option.style.display = "none"
+    }
+}
+
+function manageNavDisplay(navigation_option, display) {
+    if (navigation_option == "navigation_arrows") {
+        var selected_navigation_option = navigation_arrows;
+    } else if (navigation_option == "players") {
+        var selected_navigation_option = text_game_player_menu;
+    }
+
+    if (display == true) {
+        selected_navigation_option.style.display = "inline-flex"
+    } else if (display == false) {
+        selected_navigation_option.style.display = "none"
     }
 }
 

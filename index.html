@@ -159,7 +159,6 @@
                         <a  id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a><br>
                         <a  id="text_settings_information_signal_bug" href="https://marmelapp.com">marmelapp.com</a><br>
                         <a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a><br>
-                        <a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a><br>
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_information_quick_launch">Lancement rapide</h5>
@@ -172,6 +171,8 @@
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">/gamemode never_popular</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">/gamemode never_party</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">/gamemode never_hot</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('dice')">/gamemode dice</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('card')">/gamemode card</button>
                         </div>
                     </div>
                     <br>
@@ -227,12 +228,21 @@
                     <h3 id="text_gamemode_title_never_popular">Populaire - ⭐</h3>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="never_hot" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <input type="radio" name="never_hot" id="option7" onclick="selectGamemode(this.name);" autocomplete="off">
                     <h3 id="text_gamemode_title_never_hot">Coquin & Sexy - 💋</h3>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="never_party" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <input type="radio" name="never_party" id="option8" onclick="selectGamemode(this.name);" autocomplete="off">
                     <h3 id="text_gamemode_title_never_party">Fête - 🎉</h3>
+                </label><hr>
+                <h2 class="text-center" id="text_gamemode_random_title">text.random</h2><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="dice" id="option9" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_dice">Dès - 🎲</h3>
+                </label><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="card" id="option10" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_card">text.card - 🃏</h3>
                 </label>
               </div>
               <hr>
@@ -262,7 +272,7 @@
             <div id="ingame_content">
                 <div class="d-flex" id="ingame_topbar">
                     <button id="text_game_quit_topbar" type="submit" class="btn btn-secondary" onclick="exitGame()">Quitter</button>
-                    <div class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
+                    <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_next_button" onclick="nextSentence(true);">></button>
@@ -283,6 +293,15 @@
                             <p id="text_game_endgame">Fin de partie</p>
                             <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
                             <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>Recommencer</button>
+                        </div>
+                        <div id="dice_ingame_option" style="display:none">
+                            <p class="text-center" onclick="randomDiceUnicode()">
+                                <a class="dice" id="dice_0">⚅</a>
+                                <a class="dice" id="dice_1">⚅</a><br>
+                        </div>
+                        <div id="card_ingame_option" style="display:none">
+                            <p class="text-center" onclick="randomCardUnicode()">
+                                <a class="playing_card" id="card_placeolder">-</a><br>
                         </div>
                     </div>
                     <div id="ingame_player_option" style="display: none;">

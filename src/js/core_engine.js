@@ -52,12 +52,11 @@ function getMinPlayer() {
 function retrieve(sentence_id) {
     //generate or retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
-        
-    if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot") {
-        generateNeverDoneSentences();
-    } else {
-        generatePicoloSentences();
-    }
+        if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot") {
+            generateNeverDoneSentences();
+        } else {
+            generatePicoloSentences();
+        }
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
         displaySentence(sentence_requested.sentence, sentence_requested.color);
@@ -304,3 +303,37 @@ function generatePicoloSentences() {
         game.shot_remaining--;
     }
 }
+
+function randomDiceUnicode() {
+    function randomUnicode() {
+        array = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+        return array[Math.floor(Math.random() * array.length)];
+    }
+    function changeDice(dice) {
+        dice.innerHTML = randomUnicode();
+    }
+
+    var min_timing = 300;
+    var step_timing = 150;
+    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
+    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
+}
+
+function randomCardUnicode() {
+    var card_spade = ["🂡","🂢","🂣","🂤","🂥","🂦","🂧","🂨","🂩","🂪","🂫","🂬","🂭","🂮"];
+    var card_heart = ["🂱","🂲","🂳","🂴","🂵","🂶","🂷","🂸","🂹","🂺","🂻","🂼","🂽","🂾"];
+    var card_club = ["🃑","🃒","🃓","🃔","🃕","🃖","🃗","🃘","🃙","🃚","🃛","🃜","🃝","🃞"];
+    var card_diamond = ["🃁","🃂","🃃","🃄","🃅","🃆","🃇","🃈","🃉","🃊","🃋","🃌","🃍","🃎"];
+    var card_sign = [card_spade, card_heart, card_club, card_diamond];
+
+    var random_sign = card_sign[Math.floor(Math.random()*card_sign.length)]
+    var random_card = random_sign[Math.floor(Math.random()*random_sign.length)]
+    card_placeolder.innerHTML = random_card
+}
+
