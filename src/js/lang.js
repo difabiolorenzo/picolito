@@ -42,6 +42,8 @@ function setLanguageString() {
             settings_min_sip: "Gorgées minimum",
             settings_max_sip: "Gorgées maximum",
             settings_potential_sip: "Potentiels culs secs",
+            text_settings_unlucky_player_3: "Joueur 3 malchanceux",
+            text_settings_unlucky_player_3_percentage: "Pourcentage de malchance",
             settings_display: "Affichage",
             settings_dark_theme: "Mode sombre",
             settings_information_highlight: "Distinction des informations",
@@ -70,7 +72,9 @@ function setLanguageString() {
             gamemode_never_popular: "Populaire - ⭐",
             gamemode_never_hot: "Coquin & Sexy - 💋",
             gamemode_never_party: "Fête - 🎉",
+            gamemode_other: "Autre",
             gamemode_dice: "Dès - 🎲",
+            gamemode_card: "Cartes - 🃏",
             lang_fr: "Français",
             lang_da: "Danois",
             lang_de: "Allemand",
@@ -134,6 +138,8 @@ function setLanguageString() {
             settings_min_sip: "Minimum sip",
             settings_max_sip: "Maximum sip",
             settings_potential_sip: "Potential shots",
+            text_settings_unlucky_player_3: "Unlucky Player 3",
+            text_settings_unlucky_player_3_percentage: "Badluck percentage",
             settings_display: "Display",
             settings_dark_theme: "Dark theme",
             settings_information_highlight: "Information highlight",
@@ -163,7 +169,9 @@ function setLanguageString() {
             gamemode_never_popular: "Popular - ⭐",
             gamemode_never_hot: "Dirty & Sex - 💋",
             gamemode_never_party: "Party - 🎉",
-            gamemode_dice: "Dice - 🎉",
+            gamemode_other: "Other",
+            gamemode_dice: "Dice - 🎲",
+            gamemode_card: "Card - 🃏",
             lang_fr: "French",
             lang_da: "Danish",
             lang_de: "German",
@@ -272,7 +280,7 @@ function updateHTMLLanguageStrings() {
     text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
-    text_settings_information_quick_llaunch.innerHTML = global.current_language_strings.settings_quick_launch;
+    text_settings_information_quick_launch.innerHTML = global.current_language_strings.settings_quick_launch;
     text_settings_information_other.innerHTML = global.current_language_strings.settings_other;
     text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
@@ -301,6 +309,9 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
     text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
+    text_gamemode_other_title.innerHTML = global.current_language_strings.gamemode_other;
+    text_gamemode_title_dice.innerHTML = global.current_language_strings.gamemode_dice;
+    text_gamemode_title_card.innerHTML = global.current_language_strings.gamemode_card;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;

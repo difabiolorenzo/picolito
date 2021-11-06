@@ -23,7 +23,7 @@
     height: 100vh;
 }
 .btn-secondary{ width: 100%; }
-#game {transition: background-color 0.5s ease;background-color: var(--orange);}
+#game {transition: background-color 0.75s ease;background-color: var(--orange);}
 #ingame_content {    
     text-align: center;
     color:white;
@@ -31,6 +31,7 @@
 }
 #ingame_text {
     padding-top: 12%;
+    cursor: pointer;
 }
 
 p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
@@ -43,7 +44,7 @@ p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
 h1#ingame_title {font-weight: 900;}
 
 .animation_text_change {
-    animation: animation_text_change 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: animation_text_change 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 @keyframes animation_text_change {
 0% {opacity: 0;transform: translateX(3vw);}
@@ -152,3 +153,20 @@ div#ingame_option, div#ingame_player_option {
     line-height: 0.5;
     cursor: pointer;
 }
+
+.btn-group-toggle {
+    width: 82.5vw;
+}
+
+h1#gamename {--couleur: 0,0,0;display: flex;justify-content: center;color: #ffb100;text-shadow: 0 1px 0 #b57d00, 
+0 2px 0 #bb8200,
+0 3px 0 #bb8200,
+0 4px 0 #bb8200,
+0 5px 0 #bb8200,
+0 6px 1px rgba(var(--couleur),.1),
+0 0 5px rgba(var(--couleur),.1),
+0 1px 3px rgba(var(--couleur),.3),
+0 3px 5px rgba(var(--couleur),.3),
+0 5px 10px rgba(var(--couleur),.25),
+0 10px 10px rgba(var(--couleur),.2),
+0 20px 20px rgba(var(--couleur),.15);font-size: calc(75vw / 10);font-weight: bold;user-select: none;}

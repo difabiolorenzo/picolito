@@ -1,19 +1,20 @@
 
 // First function called when #body is loaded
 function init() {
+    checkBrowserColorScheme();
     defaultVariables();
     filterVariables();
-    checkBrowserColorScheme();
     setLanguageString();
     global.current_language_strings = language.fr;
 }
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
 function dev_override_settings() {
+    toggleDarkMode(true);
     displayPage("menu")
     removeAllPlayers()
     generateRandomPlayer(4)
-    launchSelectedGamemode("card")
+    toggleSettingsPage()
 }
 
 function defaultVariables() {
@@ -22,7 +23,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "pre-0.28",
+        picolito_version: "0.28",
         debug_random_player: 0,
     }
 
@@ -75,7 +76,7 @@ function defaultVariables() {
             fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
         },
 
-        sip: { min: 1, max: 4 },
+        sip: { min: 1, max: 3 },
         started: false,
         cycle_id: -1,
         gamemode: "default",
@@ -97,6 +98,9 @@ function defaultVariables() {
         virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
 
         social_posting_enabled: false,
+
+        unlucky_player_3: false,
+        unlucky_player_3_weight: 0.2
     }
 
     if (global.dev_mode == true) {
@@ -114,6 +118,8 @@ function defaultVariables() {
     input_sip_max.value = game.sip.max;
     
     game.shot_remaining = game.shot_amount;
+
+    input_unlucky_player_3_settings.value = game.unlucky_player_3
 
     picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
 }
@@ -591,10 +597,23 @@ function textReplacer(text) {
         }
         // change %s by random player
         if (text.charAt(i) == "%" && text.charAt(i+1) == "s") {
-            
-            var random_player_index = Math.floor(Math.random() * player_name_list.length);
-            var random_player = player_name_list[random_player_index];
-            player_name_list.splice(random_player_index,1);
+                
+            if (game.unlucky_player_3 == true && game.player_list.length >= 3) {
+                var random = Math.random();
+                if (random <= game.unlucky_player_3_weight) {
+                    console.log("malchance J3")
+                    var random_player = player_name_list[2];
+                    player_name_list.splice(2,1);
+                } else {
+                    var random_player_index = Math.floor(Math.random() * player_name_list.length);
+                    var random_player = player_name_list[random_player_index];
+                    player_name_list.splice(random_player_index,1);
+                }
+            } else {
+                var random_player_index = Math.floor(Math.random() * player_name_list.length);
+                var random_player = player_name_list[random_player_index];
+                player_name_list.splice(random_player_index,1);
+            }
 
             text = replaceAt(text, i, html_span_player + random_player + html_span_end, 1);
         }
@@ -783,7 +802,7 @@ window.addEventListener("keydown", function(event) {
 function DEBUG_RandomPlayer() {
     global.debug_random_player++
 
-    if (global.debug_random_player == 3) {
+    if (global.debug_random_player == 2) {
         generateRandomPlayer(1)
         global.debug_random_player = 0
     }
