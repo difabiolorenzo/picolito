@@ -154,10 +154,6 @@ div#ingame_option, div#ingame_player_option {
     cursor: pointer;
 }
 
-.btn-group-toggle {
-    width: 82.5vw;
-}
-
 h1#gamename {--couleur: 0,0,0;display: flex;justify-content: center;color: #ffb100;text-shadow: 0 1px 0 #b57d00, 
 0 2px 0 #bb8200,
 0 3px 0 #bb8200,
@@ -170,3 +166,9 @@ h1#gamename {--couleur: 0,0,0;display: flex;justify-content: center;color: #ffb1
 0 5px 10px rgba(var(--couleur),.25),
 0 10px 10px rgba(var(--couleur),.2),
 0 20px 20px rgba(var(--couleur),.15);font-size: calc(75vw / 10);font-weight: bold;user-select: none;}
+
+div#cookie-disclaimer {
+    margin-top: 10px;
+    font-family: monospace;
+    font-size: small;
+}

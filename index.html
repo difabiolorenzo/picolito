@@ -5,6 +5,7 @@
         <link rel="icon" type="image/png" href="./src/img/icon_96.jpg" />
         <title>Picolito</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="./src/css/radium.css">
@@ -33,8 +34,13 @@
             <p><a id="text_prevention_call_text">- ou appeler le </a><i id="text_prevention_number">0 980 980 930</i> <code id="text_prevention_number_modality">de 8h à 2h, appel non surtaxé</code></p>
             <hr>
             
-            <div class="d-flex">
+            <div>
                 <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">Passer</button>
+            </div>
+            <br>
+            <div>
+                <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; updateCookieWarningPanelDisplayed()">
+                <label id="text_warning_panel_displayed" class="form-check-label" >Ne plus afficher</label>
             </div>
             <hr>
             <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
@@ -128,14 +134,14 @@
                             </select>
                         </div>
                         <div>
-                            <input class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
+                            <input disabled class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
                             <label id="text_settings_unlucky_player_3" class="form-check-label">Joueur 3 malchanceux</label>
                         </div>
                         <br>
                         <div class="form-group">
                             <label id="text_settings_unlucky_player_3_percentage" for="slider_unlucky_player_3_weight" class="form-check-label">Pourcentage de malchance</label>
-                            <br><input type="range" min="1" max="100" value="20" class="slider" id="slider_unlucky_player_3_weight" onclick="game.unlucky_player_3_weight = (this.value)/100; porcentage_settings_unlucky_player_3.innerHTML = (this.value) + '%'">
-                            <a id="porcentage_settings_unlucky_player_3">20%</a>
+                            <br><input disabled type="range" min="1" max="100" value="0" class="slider" id="slider_unlucky_player_3_weight" onclick="game.unlucky_player_3_weight = (this.value)/100; porcentage_settings_unlucky_player_3.innerHTML = (this.value) + '%'">
+                            <a id="porcentage_settings_unlucky_player_3">0%</a>
                         </div>
                     </div>
                     <div class="form-check">
@@ -169,22 +175,24 @@
                     <div class="form-check">
                         <h5 id="text_settings_information_quick_launch">Lancement rapide</h5>
                         <div>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('default')">/gamemode default</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('silly')">/gamemode silly</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('bar')">/gamemode bar</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('hot')">/gamemode hot</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('war')">/gamemode war</button>
-                            <br>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">/gamemode never_popular</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">/gamemode never_party</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">/gamemode never_hot</button>
-                            <br>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_popular')">/gamemode truth_or_dare_popular</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_party')">/gamemode truth_or_dare_party</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_hot')">/gamemode truth_or_dare_hot</button>
-                            <br>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('dice')">/gamemode dice</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('card')">/gamemode card</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('default')">default</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('silly')">silly</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('bar')">bar</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('hot')">hot</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('war')">war</button>
+                            <hr>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">never_popular</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">never_party</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">never_hot</button>
+                            <button disabled class="btn btn-warning" onclick="launchSelectedGamemode('never_all')">never_hot</button>
+                            <hr>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_popular')">truth_or_dare_popular</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_party')">truth_or_dare_party</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_hot')">truth_or_dare_hot</button>
+                            <button disabled class="btn btn-warning" onclick="launchSelectedGamemode('truth_or_dare_all')">truth_or_dare_all</button>
+                            <hr>
+                            <!-- <button class="btn btn-info" onclick="launchSelectedGamemode('dice')">dice</button>
+                            <button class="btn btn-info" onclick="launchSelectedGamemode('card')">card</button> -->
                         </div>
                     </div>
                     <br>
@@ -247,11 +255,11 @@
                     <input type="radio" name="never_party" id="option8" onclick="selectGamemode(this.name);" autocomplete="off">
                     <h3 id="text_gamemode_title_never_party">Fête - 🎉</h3>
                 </label><hr>
-                <h2 class="text-center" id="text_gamemode_other_title">Autres</h2><hr>
+                <!-- <h2 class="text-center" id="text_gamemode_other_title">Autres</h2><hr>
                 <label class="btn btn-secondary btn-success">
                     <input type="radio" name="dice" id="option9" onclick="selectGamemode(this.name);" autocomplete="off">
                     <h3 id="text_gamemode_title_dice">Dès - 🎲</h3>
-                </label><hr>
+                </label><hr> -->
                 <!-- <label class="btn btn-secondary btn-success">
                     <input type="radio" name="card" id="option10" onclick="selectGamemode(this.name);" autocomplete="off">
                     <h3 id="text_gamemode_title_card">Cartes - 🃏</h3>

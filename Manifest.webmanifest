@@ -4,7 +4,6 @@
   "theme_color": "#E7BB00",
   "background_color": "#E7BB00",
   "display": "fullscreen",
-  "scope": "https://difabiolorenzo.github.io/picolito/",
   "orientation": "portrait",
   "icons": [
       {
@@ -28,8 +27,6 @@
           "sizes": "512x512"
       }
   ],
-  "start_url": "https://difabiolorenzo.github.io/picolito/",
-  "lang": "",
   "screenshots": [],
   "description": "Version en ligne de l'application Picolo"
 }

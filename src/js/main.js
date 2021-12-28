@@ -6,6 +6,8 @@ function init() {
     filterVariables();
     setLanguageString();
     global.current_language_strings = language.fr;
+
+    retrieveCookie();
 }
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
@@ -23,8 +25,10 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         settings_status: "masked",
-        picolito_version: "0.28",
+        picolito_version: "pre-0.29",
         debug_random_player: 0,
+        warning_panel_displayed: true,
+        cookie_expiration_delay: 60,
     }
 
     game = {
@@ -76,7 +80,7 @@ function defaultVariables() {
             fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
         },
 
-        sip: { min: 1, max: 3 },
+        sip: { min: 1, max: 4 },
         started: false,
         cycle_id: -1,
         gamemode: "default",
@@ -293,6 +297,10 @@ function addPlayer(player_name, html_origin) {
     manu_player_input.value = "";
 
     updatePlayerCount();
+
+    
+    if (html_origin != "cookie") { storePlayerListCookie(); }
+    
 }
 
 function generateRandomPlayer(nb_players) {
@@ -301,11 +309,11 @@ function generateRandomPlayer(nb_players) {
     }
     for (var i = 0; i < nb_players; i++ ) {
         var randomUUID = (randomHex(0xFFFFFFFF));
-        addPlayer("J#"+ (game.player_list.length+1))
+        addPlayer("J#" + randomUUID + "#" + (game.player_list.length+1))
     }
 }
 
-function removePlayer(player_name, html_element_id, location) {
+function removePlayer(player_name, html_element_id) {
     var player_id = getIDFromString(html_element_id)
     //remove button
     document.getElementById("menu_player_button_" + player_id).remove();
@@ -318,6 +326,7 @@ function removePlayer(player_name, html_element_id, location) {
         }
     }
     updatePlayerCount();
+    storePlayerListCookie();
 }
 
 function removeAllPlayers() {
@@ -759,52 +768,88 @@ window.addEventListener("keydown", function(event) {
     }
   }, true);
 
-// function setCookie(cname, cvalue, exdays) {
-//     var d = new Date();
-//     d.setTime(d.getTime() + (exdays*24*60*60*1000));
-//     var expires = "expires="+ d.toUTCString();
-//     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-// }
+function setCookie(cookie_name, cookie_value) {
+    var d = new Date();
+    d.setTime(d.getTime() + ( global.cookie_expiration_delay*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    console.log(cookie_name + "=" + cookie_value + ";" + expires + ";path=/;")
+    document.cookie = cookie_name + "=" + cookie_value + ";" + expires + ";path=/;";
+}
 
-// function getCookie(cname) {
-//     var name = cname + "=";
-//     var decodedCookie = decodeURIComponent(document.cookie);
-//     var ca = decodedCookie.split(';');
-//     for(var i = 0; i <ca.length; i++) {
-//       var c = ca[i];
-//       while (c.charAt(0) == ' ') {
-//         c = c.substring(1);
-//       }
-//       if (c.indexOf(name) == 0) {
-//         return c.substring(name.length, c.length);
-//       }
-//     }
-//     return "";
-// }
+function deleteCookie(cookie_name) {
+    document.cookie = cookie_name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
 
-// function deleteCookie(cname) {
-//     document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-// }
+function getCookie(cookie_name) {
+    var name = cookie_name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
 
-// function deleteAllCookies() {
-//     console.log("player_list cookie deleted")
-//     deleteCookie("player_list")
-//     console.log("settings cookie deleted")
-//     deleteCookie("settings")
-// }
+function modifyCookie(cookie_name, edited_value) {
+    var old_value = getCookie(cookie_name);
+    deleteCookie(cookie_name);
+    setCookie(cookie_name, edited_value);
+}
 
-// function savePlayerList() {
-//     deleteCookie("player_list")
-//     setCookie("player_list", game.player_list)
-//     console.log(getCookie("player_list"))
-// }
+function updateCookieWarningPanelDisplayed() {
+    if (getCookie("warning_panel_displayed") == '') {
+        setCookie("warning_panel_displayed", global.warning_panel_displayed);
+    } else {
+        modifyCookie("warning_panel_displayed", global.warning_panel_displayed)
+    }
+}
+
+function storePlayerListCookie() {
+    if (getCookie("player_list") == '') {
+        setCookie("player_list", game.player_list);
+    } else {
+        modifyCookie("player_list", game.player_list)
+    }
+}
+
+function retrieveCookie() {
+    useWarningPanelCookie();
+    getStoredPlayerListCookie();
+}
+
+function useWarningPanelCookie() {
+    if (getCookie("warning_panel_displayed") == "false") {
+        displayPage("menu");
+        input_warning_panel_displayed.checked = true;
+    }
+}
+
+function getStoredPlayerListCookie() {
+    var stored_players = getCookie("player_list").split(",");
+    for (var i=0; i<stored_players.length; i++) {
+        addPlayer(stored_players[i], "cookie");
+    }
+}
 
 function DEBUG_RandomPlayer() {
-    global.debug_random_player++
+    global.debug_random_player++;
 
-    if (global.debug_random_player == 2) {
+    var gamename_adding = "PICOLITO"
+    for (var i = 0; i<global.debug_random_player;i++) {
+        gamename_adding += "O";
+    }
+    gamename.innerText = gamename_adding;
+
+    if (global.debug_random_player == 4) {
         generateRandomPlayer(1)
         global.debug_random_player = 0
+        gamename.innerText = "PICOLITO";
     }
 }
 
