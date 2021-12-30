@@ -15,6 +15,18 @@ body {
 .btn:hover, .form-control:hover, .list-group-item:hover{
     box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
 }
+.dark_mode .dark_affected .btn:hover, .dark_mode .dark_affected .form-control:hover, .dark_mode .dark_affected .list-group-item:hover{
+    box-shadow: 0 0 10px 0px #ffffff66;
+}
+
+.dark_mode .dark_affected .btn-primary:hover { box-shadow: 0 0 10px 0px var(--primary); }
+.dark_mode .dark_affected .btn-secondary:hover { box-shadow: 0 0 10px 0px var(--secondary); }
+.dark_mode .dark_affected .btn-info:hover { box-shadow: 0 0 10px 0px var(--info); }
+.dark_mode .dark_affected .btn-warning:hover { box-shadow: 0 0 10px 0px var(--warning); }
+.dark_mode .dark_affected .btn-danger:hover { box-shadow: 0 0 10px 0px var(--danger); }
+.dark_mode .dark_affected .btn-light:hover { box-shadow: 0 0 10px 0px var(--light); }
+.dark_mode .dark_affected .btn-dark:hover { box-shadow: 0 0 10px 0px var(--dark); }
+.dark_mode .dark_affected .btn-success:hover { box-shadow: 0 0 10px 0px var(--success); }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-top: .5rem;
@@ -32,7 +44,7 @@ hr {
 .btn-dark:hover, .list-group-item-dark:hover {
     color: white;
     background-color: var(--gray-dark);
-    border-color: var(--gray-dark);
+    border-color: white;
 }
 
 .dark_mode .dark_affected, body.dark_mode{
@@ -41,6 +53,10 @@ hr {
     transition: 0.25s;
 }
 .dark_mode .dark_affected .list-group-item-dark, .dark_mode .dark_affected .btn {
+    color: #ffffff;
+    background-color: #0000;
+}
+.dark_mode .dark_affected input {
     color: #ffffff;
     background-color: #0000;
 }

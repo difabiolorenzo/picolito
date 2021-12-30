@@ -336,4 +336,3 @@ function randomCardUnicode() {
     var random_card = random_sign[Math.floor(Math.random()*random_sign.length)]
     card_placeolder.innerHTML = random_card
 }
-

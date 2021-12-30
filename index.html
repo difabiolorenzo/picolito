@@ -39,7 +39,7 @@
             </div>
             <br>
             <div>
-                <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; updateCookieWarningPanelDisplayed()">
+                <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
                 <label id="text_warning_panel_displayed" class="form-check-label" >Ne plus afficher</label>
             </div>
             <hr>
@@ -85,6 +85,27 @@
                 </div>
                 <div id="settings" style="display:none;">
                     <div class="form-check">
+                        <h5 id="text_settings_display">Affichage</h5>
+                        <div class="form-group">
+                            <label id="text_settings_dark_theme" for="input_dark_mode_settings">Thème</label>
+                            <select class="form-control col-md-1" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
+                                <option id="text_settings_darkmode_system" value="system">Système</option>
+                                <option id="text_settings_darkmode_light" value="bright">Clair</option>
+                                <option id="text_settings_darkmode_dark" value="dark">Sombre</option>
+                            </select>
+                        </div>
+
+                        </select>
+                        <div>
+                            <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
+                            <label id="text_settings_information_highlight" class="form-check-label">Distinction des informations</label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">
+                            <label id="text_settings_animation" class="form-check-label">Animations</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
                         <h5 id="text_settings_gameplay">Fonctionnement Picolo</h5>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_shot_enabled" onclick="game.shot_enabled = this.checked">
@@ -125,52 +146,29 @@
                                 <option>8</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label id="text_settings_potential_sip" for="input_sip_min">Potentiels culs secs</label>
-                            <select class="form-control col-md-1" id="input_sip_min" onchange="changeDownDrinking(this.value)">
+                        <div class="form-group" style="display:none">
+                            <label id="text_settings_potential_sip" for="input_potential_downsip">Potentiels culs secs</label>
+                            <select disabled class="form-control col-md-1" id="input_potential_downsip" onchange="changeDownDrinking(this.value)">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                             </select>
                         </div>
-                        <div>
+                        <div style="display:none">
                             <input disabled class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
                             <label id="text_settings_unlucky_player_3" class="form-check-label">Joueur 3 malchanceux</label>
                         </div>
                         <br>
-                        <div class="form-group">
+                        <div class="form-group" style="display:none">
                             <label id="text_settings_unlucky_player_3_percentage" for="slider_unlucky_player_3_weight" class="form-check-label">Pourcentage de malchance</label>
                             <br><input disabled type="range" min="1" max="100" value="0" class="slider" id="slider_unlucky_player_3_weight" onclick="game.unlucky_player_3_weight = (this.value)/100; porcentage_settings_unlucky_player_3.innerHTML = (this.value) + '%'">
                             <a id="porcentage_settings_unlucky_player_3">0%</a>
                         </div>
                     </div>
                     <div class="form-check">
-                        <h5 id="text_settings_display">Affichage</h5>
-                        <div>
-                            <input class="form-check-input" id="input_dark_mode_settings" type="checkbox" onclick="toggleDarkMode()" >
-                            <label id="text_settings_dark_theme" class="form-check-label">Mode sombre</label>
-                        </div>
-                        <div>
-                            <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
-                            <label id="text_settings_information_highlight" class="form-check-label">Distinction des informations</label>
-                        </div>
-                        <div>
-                            <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">
-                            <label id="text_settings_animation" class="form-check-label">Animations</label>
-                        </div>
-                    </div>
-                    <!-- <div class="form-check">
                         <h5>Cookies</h5>
-                        <a href="#">Sauvegarder les paramètres</a><br>
-                        <a href="#">Sauvegarder les joueurs</a><br>
-                        <a href="#" onclick="deleteAllCookies()">Supprimer les cookies</a><br>
-                    </div> -->
-                    <div class="form-check">
-                        <h5 id="text_settings_information_other">Autre</h5>
-                        <a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer tous les joueurs</a><br>
-                        <a  id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a><br>
-                        <a  id="text_settings_information_signal_bug" href="https://marmelapp.com">marmelapp.com</a><br>
-                        <a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a><br>
+                        <button class="btn btn-info" onclick="storeSettingsCookie()">Sauvegarder les paramètres</button>
+                        <button class="btn btn-info" onclick="deleteAllCookies()">Supprimer les cookies</button>
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_information_quick_launch">Lancement rapide</h5>
@@ -184,16 +182,23 @@
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">never_popular</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">never_party</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">never_hot</button>
-                            <button disabled class="btn btn-warning" onclick="launchSelectedGamemode('never_all')">never_hot</button>
                             <hr>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_popular')">truth_or_dare_popular</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_party')">truth_or_dare_party</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_hot')">truth_or_dare_hot</button>
-                            <button disabled class="btn btn-warning" onclick="launchSelectedGamemode('truth_or_dare_all')">truth_or_dare_all</button>
                             <hr>
                             <!-- <button class="btn btn-info" onclick="launchSelectedGamemode('dice')">dice</button>
                             <button class="btn btn-info" onclick="launchSelectedGamemode('card')">card</button> -->
                         </div>
+                    </div>
+                    <div class="form-check">
+                        <h5 id="text_settings_information_other">Autre</h5>
+                        <p><a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer tous les joueurs</a></p>
+                        <p><a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer les cookies</a></p>
+                        <br>
+                        <p><a  id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a></p>
+                        <p><a  id="text_settings_information_signal_bug" href="https://marmelapp.com">marmelapp.com</a></p>
+                        <p><a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a></p>
                     </div>
                     <br>
                 </div>

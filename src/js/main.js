@@ -6,16 +6,14 @@ function init() {
     filterVariables();
     setLanguageString();
     global.current_language_strings = language.fr;
-
     retrieveCookie();
 }
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
-function dev_override_settings() {
-    toggleDarkMode(true);
+function devOverrideSettings() {
+    
     displayPage("menu")
-    removeAllPlayers()
-    generateRandomPlayer(4)
+    changeDarkModeSettings(true);
     toggleSettingsPage()
 }
 
@@ -24,8 +22,9 @@ function defaultVariables() {
         default_language: true,
         current_language: "fr",
         dev_mode: false,
+        dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "pre-0.29",
+        picolito_version: "0.29-pre2",
         debug_random_player: 0,
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
@@ -108,24 +107,10 @@ function defaultVariables() {
     }
 
     if (global.dev_mode == true) {
-        dev_override_settings()
+        devOverrideSettings()
     }
-
-    input_team_1.value = game.team_1;
-    input_team_2.value = game.team_2;
-
-    input_shot_enabled.checked = game.shot_enabled;
-    input_virus_enabled.checked = game.virus_enabled;
-    input_social_posting_enabled.checked = game.social_posting_enabled;
-
-    input_sip_min.value = game.sip.min;
-    input_sip_max.value = game.sip.max;
     
-    game.shot_remaining = game.shot_amount;
-
-    input_unlucky_player_3_settings.value = game.unlucky_player_3
-
-    picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
+    updateHTMLSettingsByVar()
 }
 
 function resetVariables() {
@@ -146,25 +131,51 @@ function resetVariables() {
     game_cycle_count.innerHTML = "-";
 }
 
+function updateHTMLSettingsByVar() {
+    input_team_1.value = game.team_1;
+    input_team_2.value = game.team_2;
+
+    input_shot_enabled.checked = game.shot_enabled;
+    input_virus_enabled.checked = game.virus_enabled;
+    input_social_posting_enabled.checked = game.social_posting_enabled;
+
+    input_sip_min.value = game.sip.min;
+    input_sip_max.value = game.sip.max;
+    input_potential_downsip = game.shot_amount;
+
+    input_color_display_settings.checked = game.display_color_indicator;
+    input_color_display_animation.checked = game.animation;
+
+    input_dark_mode_settings.value = global.dark_mode;
+    changeDarkModeSettings(global.dark_mode)
+
+    input_unlucky_player_3_settings.value = game.unlucky_player_3
+
+    picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
+}
+
 function checkBrowserColorScheme() {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
-        toggleDarkMode(true);
+        document.body.classList.value = "dark_mode"
     } else {
-        toggleDarkMode(false);
+        document.body.classList.value = "bright_mode"
     }
 }
 
-function toggleDarkMode(value_forced) {
-    document.body.classList.toggle('dark_mode');
-    document.body.classList.toggle('bright_mode');
-    if (document.body.classList[0] == "dark_mode") { input_dark_mode_settings.checked = true}
-
-    if (value_forced == true) {
-        document.body.classList.value = "dark_mode";
-        input_dark_mode_settings.checked = true;
-    } else if (value_forced == false) {
-        document.body.classList.value = "bright_mode";
-        input_dark_mode_settings.checked = false;
+function changeDarkModeSettings(value) {
+    if (value == "system") {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
+            document.body.classList.value = "dark_mode"
+        } else {
+            document.body.classList.value = "bright_mode"
+        }
+        global.dark_mode = "system";
+    } else if (value == "bright") {
+        document.body.classList.value = "bright_mode"
+        global.dark_mode = "bright";
+    } else {
+        document.body.classList.value = "dark_mode"
+        global.dark_mode = "dark";
     }
 }
 
@@ -481,9 +492,9 @@ function manageNavDisplay(navigation_option, display) {
     }
 
     if (display == true) {
-        selected_navigation_option.style.display = "inline-flex"
+        selected_navigation_option.style.display = "inline-flex";
     } else if (display == false) {
-        selected_navigation_option.style.display = "none"
+        selected_navigation_option.style.display = "none";
     }
 }
 
@@ -780,6 +791,12 @@ function deleteCookie(cookie_name) {
     document.cookie = cookie_name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
+function deleteAllCookies() {
+    deleteCookie("warning_panel_displayed")
+        deleteCookie("player_list")
+        deleteCookie("settings")
+}
+
 function getCookie(cookie_name) {
     var name = cookie_name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -802,7 +819,7 @@ function modifyCookie(cookie_name, edited_value) {
     setCookie(cookie_name, edited_value);
 }
 
-function updateCookieWarningPanelDisplayed() {
+function storeWarningPanelDisplayedCookie() {
     if (getCookie("warning_panel_displayed") == '') {
         setCookie("warning_panel_displayed", global.warning_panel_displayed);
     } else {
@@ -818,12 +835,24 @@ function storePlayerListCookie() {
     }
 }
 
-function retrieveCookie() {
-    useWarningPanelCookie();
-    getStoredPlayerListCookie();
+function storeSettingsCookie() {
+    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode]
+    
+    console.log(settings)
+    if (getCookie("settings") == '') {
+        setCookie("settings", settings);
+    } else {
+        modifyCookie("settings", settings)
+    }
 }
 
-function useWarningPanelCookie() {
+function retrieveCookie() {
+    getStoredWarningPanelCookie();
+    getStoredPlayerListCookie();
+    getSettingsCookie()
+}
+
+function getStoredWarningPanelCookie() {
     if (getCookie("warning_panel_displayed") == "false") {
         displayPage("menu");
         input_warning_panel_displayed.checked = true;
@@ -834,6 +863,24 @@ function getStoredPlayerListCookie() {
     var stored_players = getCookie("player_list").split(",");
     for (var i=0; i<stored_players.length; i++) {
         addPlayer(stored_players[i], "cookie");
+    }
+}
+
+function getSettingsCookie() {
+    if (getCookie("settings") != "") {
+        var settings = getCookie("settings").split(",");
+        game.display_color_indicator = JSON.parse(settings[0]);
+        game.animation = JSON.parse(settings[1]);
+    
+        game.shot_enabled = JSON.parse(settings[2]);
+        game.virus_enabled = JSON.parse(settings[3]);
+        game.social_posting_enabled = JSON.parse(settings[4]);
+        game.sip.min = parseInt(settings[5]);
+        game.sip.max = parseInt(settings[6]);
+        game.shot_amount = parseInt(settings[7]);
+        global.dark_mode = settings[8];
+    
+        updateHTMLSettingsByVar();
     }
 }
 
