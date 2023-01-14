@@ -48,7 +48,7 @@ hr {
 }
 
 .dark_mode .dark_affected, body.dark_mode{
-    background-color: #252525;
+    background-color: #252525 !important;
     color: white;
     transition: 0.25s;
 }
@@ -63,4 +63,31 @@ hr {
 
 .dropdown-menu {
     transform: translate(10px, 10px) !important;
+}
+
+input[type=checkbox] {
+    transform: scale(1.33);
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #c7c7c7;
+    border-color: #c7c7c7;
+}
+
+.dark_mode .dark_affected .btn-primary{
+    color: #fff;
+    background-color: none;
+    border-color: #999999;
+}
+
+.dark_mode .dark_affected select{
+    color: #fff;
+    border-color: #999999;
+    background-color: var(--dark_mode_light_gray);
+}
+
+.d-flex {
+    justify-content: center;
 }

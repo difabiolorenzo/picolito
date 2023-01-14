@@ -24,8 +24,9 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.29-pre2",
+        picolito_version: "0.29-pre3",
         debug_random_player: 0,
+        debug_random_player_triggered: false,
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
     }
@@ -319,8 +320,8 @@ function generateRandomPlayer(nb_players) {
         return (Math.random()*hex<<0).toString(16);
     }
     for (var i = 0; i < nb_players; i++ ) {
-        var randomUUID = (randomHex(0xFFFFFFFF));
-        addPlayer("J#" + randomUUID + "#" + (game.player_list.length+1))
+        var randomUUID = (randomHex(0xFFFFF));
+        addPlayer("J" + randomUUID + "#" + (game.player_list.length+1))
     }
 }
 
@@ -493,6 +494,7 @@ function manageNavDisplay(navigation_option, display) {
 
     if (display == true) {
         selected_navigation_option.style.display = "inline-flex";
+        selected_navigation_option.style.justify = "center";
     } else if (display == false) {
         selected_navigation_option.style.display = "none";
     }
@@ -888,14 +890,15 @@ function DEBUG_RandomPlayer() {
     global.debug_random_player++;
 
     var gamename_adding = "PICOLITO"
-    for (var i = 0; i<global.debug_random_player;i++) {
-        gamename_adding += "O";
-    }
     gamename.innerText = gamename_adding;
 
-    if (global.debug_random_player == 4) {
-        generateRandomPlayer(1)
-        global.debug_random_player = 0
+    if (global.debug_random_player == 3) {
+        if (global.debug_random_player_triggered == false) {
+            global.debug_random_player_triggered = true;
+            alert(global.current_language_strings.debug_add_fake_player);
+        }
+        generateRandomPlayer(1);
+        global.debug_random_player = 0;
         gamename.innerText = "PICOLITO";
     }
 }

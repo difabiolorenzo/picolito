@@ -7,7 +7,7 @@
     --picolo_yellow: #E7BB00;
     --picolo_red: #E51000;
     --picolo_blue: #1B586B;
-    --picolo_green: #00B407;
+    --picolo_dark_blue: #093340;--picolo_green: #00B407;
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
     --picolo_team: #ff8844;
@@ -38,6 +38,7 @@ p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
     font-weight: bold;
     font-size: 4.5vh;
     user-select: none;
+    -webkit-user-select:none;
     line-height: 1.75;
 }
 
@@ -47,7 +48,7 @@ h1#ingame_title {font-weight: 900;}
     animation: animation_text_change 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 @keyframes animation_text_change {
-0% {opacity: 0;transform: translateX(3vw);}
+0% {opacity: 0;transform: translateX(5vw);}
 }
 
 div#game {overflow: auto;}
@@ -154,21 +155,72 @@ div#ingame_option, div#ingame_player_option {
     cursor: pointer;
 }
 
-h1#gamename {--couleur: 0,0,0;display: flex;justify-content: center;color: #ffb100;text-shadow: 0 1px 0 #b57d00, 
-0 2px 0 #bb8200,
-0 3px 0 #bb8200,
-0 4px 0 #bb8200,
-0 5px 0 #bb8200,
-0 6px 1px rgba(var(--couleur),.1),
-0 0 5px rgba(var(--couleur),.1),
-0 1px 3px rgba(var(--couleur),.3),
-0 3px 5px rgba(var(--couleur),.3),
-0 5px 10px rgba(var(--couleur),.25),
-0 10px 10px rgba(var(--couleur),.2),
-0 20px 20px rgba(var(--couleur),.15);font-size: calc(75vw / 10);font-weight: bold;user-select: none;}
+h1#gamename {
+    --couleur: 0, 0, 0;
+    --bright: #ffb100;
+    --shade: #bb8200;
+    display: flex;
+    justify-content: center;
+    color: var(--bright);
+    text-shadow: 0 1px 0 var(--shade), 0 2px 0 var(--shade), 0 3px 0 var(--shade), 0 4px 0 var(--shade), 0 5px 0 var(--shade), 0 6px 1px rgba(var(--couleur), .1), 0 0 5px rgba(var(--couleur), .1), 0 1px 3px rgba(var(--couleur), .3), 0 3px 5px rgba(var(--couleur), .3), 0 5px 10px rgba(var(--couleur), .25), 0 10px 10px rgba(var(--couleur), .2), 0 20px 20px rgba(var(--couleur), .15);
+    font-size: calc(10vw);
+    font-weight: bold;
+    user-select: none;
+}
 
 div#cookie-disclaimer {
     margin-top: 10px;
     font-family: monospace;
     font-size: small;
+}
+
+div#disclaimer {
+    background-color: var(--picolo_dark_blue);
+}
+
+div#disclaimer_warning {
+    height: auto;
+    background-color: white;
+    padding: 3vw;
+    border-radius: .25rem;
+}
+
+.dark_mode #disclaimer_warning {
+    background-color: var(--dark_mode_light_gray);
+}
+
+div#disclaimer_warning_validation {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+a#picolito_version {
+    text-decoration: unset;
+    color: unset;
+    position: absolute;
+    display: block;
+    color: white;
+    bottom: 5vw;
+}
+
+div#menu {padding: 3vw;height: auto;}
+
+div#menu_links {
+    display: grid;
+}
+
+div#menu_content {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: .25rem;
+}
+
+body {
+    /* background-color: var(--picolo_blue); */
+}
+
+.dark_mode .dark_affected body {
+    color: white;
+    background-color: #252525 !important;
 }

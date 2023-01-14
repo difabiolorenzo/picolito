@@ -1,6 +1,7 @@
 function setLanguageString() {
     language = {
         fr: {
+            debug_add_fake_player: "Ajout d'un faux joueur.",
             prevention_warning: "Attention",
             prevention_text_0: "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.",
             prevention_text_1: "Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...",
@@ -11,7 +12,7 @@ function setLanguageString() {
             prevention_call_text: "- ou appeler le",
             prevention_number: " 0 980 980 930",
             prevention_number_modality: "de 8h à 2h, appel non surtaxé",
-            prevention_panel: "Volet de prévention",
+            prevention_panel: "Prévention",
             skip: "Passer",
             quit: "Quitter",
             next: "Suivant",
@@ -21,7 +22,6 @@ function setLanguageString() {
             start: "Commencer",
             end_game: "Fin de partie",
             restart: "Recommencer",
-            add_player: "Ajouter un joueur",
             player_singular: "joueur",
             player_plural: "joueurs",
             player_menu: "Joueurs",
@@ -33,8 +33,6 @@ function setLanguageString() {
             team_delete: "Supprimer",
             team_change: "Changer",
             team_add_in_team: "Ajouter à ",
-            links: "Liens",
-            settings: "Paramètres Picolo",
             settings_gameplay: "Fonctionnement",
             settings_shot: "Culs secs",
             settings_virus: "Virus",
@@ -52,7 +50,6 @@ function setLanguageString() {
             settings_other: "Autre",
             settings_delete_all_players: "Supprimer tous les joueurs",
             settings_report_bug: "Signaler un bug",
-            gamemode: "Modes de jeu",
             gamemode_default_title: "Before - 🥴",
             gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
             gamemode_default_subtitle_1: "Soyez prêts, car Picolito ne vous fera pas de cadeaux.",
@@ -91,6 +88,7 @@ function setLanguageString() {
             lang_sv: "Suédois",
         },
         en: {
+            debug_add_fake_player: "Adding fake player.",
             prevention_warning: "Warning",
             prevention_text_0: "Please dring responsibly. By continuig, you agree that you are responsible for any consequences that may result from the use of Picolo / Picolito.",
             prevention_text_1: "Take care of yourself and your friends. Alcohol can liven up your parties but it can also ruin them...",
@@ -107,7 +105,7 @@ function setLanguageString() {
             // prevention_number: " 0 980 980 930",
             prevention_number_modality: "",
             // prevention_number_modality: "de 8h à 2h, appel non surtaxé",
-            prevention_panel: "Warning menu",
+            prevention_panel: "Prevention",
             skip: "Skip",
             quit: "Quit",
             next: "Next",
@@ -117,7 +115,6 @@ function setLanguageString() {
             start: "Start",
             end_game: "Fin de partie",
             restart: "Recommencer",
-            add_player: "Add a player",
             player_singular: "player",
             player_plural: "players",
             player_menu: "Players",
@@ -129,8 +126,6 @@ function setLanguageString() {
             team_delete: "Delete",
             team_change: "Change",
             team_add_in_team: "Add to ",
-            links: "Links",
-            settings: "Picolo Settings",
             settings_gameplay: "Gameplay",
             settings_shot: "Shots",
             settings_virus: "Virus",
@@ -149,7 +144,6 @@ function setLanguageString() {
             settings_other: "Other",
             settings_delete_all_players: "Delete all players",
             settings_report_bug: "Bug detected",
-            gamemode: "Gamemode",
             gamemode_default_title: "Getting Started - 🥴",
             gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
             gamemode_default_subtitle_1: "Get ready, picolo shows no mercy.",
@@ -245,10 +239,7 @@ function updateHTMLLanguageStrings() {
     text_prevention_number_modality.innerHTML = global.current_language_strings.prevention_number_modality;
     text_prevention_skip_button.innerHTML = global.current_language_strings.skip;
     
-    manu_player_input.placeholder = global.current_language_strings.add_player;
-    text_menu_add.innerHTML = global.current_language_strings.add;
     button_menu_links.innerHTML = global.current_language_strings.links;
-    text_settings_gameplay.innerHTML = global.current_language_strings.settings_gameplay;
     text_prevention_panel.innerHTML = global.current_language_strings.prevention_panel;
     button_menu_settings.innerHTML = global.current_language_strings.settings;
     text_menu_add.innerHTML = global.current_language_strings.add;
@@ -268,7 +259,6 @@ function updateHTMLLanguageStrings() {
     // text_menu_lang_ru.innerHTML = global.current_language_strings.lang_ru
     // text_menu_lang_sv.innerHTML = global.current_language_strings.lang_sv
 
-    text_gamemode_menu.innerHTML = global.current_language_strings.gamemode;
     text_settings_gameplay.innerHTML = global.current_language_strings.settings_gameplay;
     text_settings_shot.innerHTML = global.current_language_strings.settings_shot;
     text_settings_virus.innerHTML = global.current_language_strings.settings_virus;
@@ -309,7 +299,6 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
     text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
-    text_gamemode_other_title.innerHTML = global.current_language_strings.gamemode_other;
     text_gamemode_title_dice.innerHTML = global.current_language_strings.gamemode_dice;
     text_gamemode_title_card.innerHTML = global.current_language_strings.gamemode_card;
 

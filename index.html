@@ -23,25 +23,27 @@
     <body onload="init()" class="bright_mode">
         </div>
         <div class="page dark_affected" id="disclaimer">
-            <h2><b id="text_prevention_warning">Attention</b></h2>
-            <hr>
-            <p id="text_prevention_text_0">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
-            <p id="text_prevention_text_1">Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...</p>
-            <p id="text_prevention_text_2">Fixez vos limites sans outre-passer celles des autres.</p>
-            <hr>
-            <p id="text_prevention_text_3">Pour plus d'information sur l'alcool et l'alcoolisme:</p>
-            <p><a id="text_prevention_information_website_text">- rendez vous sur </a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">alcool-info-service.fr</a></p>
-            <p><a id="text_prevention_call_text">- ou appeler le </a><i id="text_prevention_number">0 980 980 930</i> <code id="text_prevention_number_modality">de 8h à 2h, appel non surtaxé</code></p>
-            <hr>
+            <div id="disclaimer_warning">
+                <h2><b id="text_prevention_warning">Attention</b></h2>
+                <hr>
+                <p id="text_prevention_text_0">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
+                <p id="text_prevention_text_1">Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...</p>
+                <p id="text_prevention_text_2">Fixez vos limites sans outre-passer celles des autres.</p>
+                <hr>
+                <p id="text_prevention_text_3">Pour plus d'information sur l'alcool et l'alcoolisme:</p>
+                <p><a id="text_prevention_information_website_text">- rendez vous sur </a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">alcool-info-service.fr</a></p>
+                <p><a id="text_prevention_call_text">- ou appeler le </a><i id="text_prevention_number">0 980 980 930</i> <code id="text_prevention_number_modality">de 8h à 2h, appel non surtaxé</code></p>
+                <hr>
+                <div id="disclaimer_warning_validation">
+                    <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">Passer</button>
+                    <div>
+                        <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
+                        <label id="text_warning_panel_displayed" class="form-check-label" >Ne plus afficher</label>
+                    </div>
+                </div>
+            </div>
             
-            <div>
-                <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">Passer</button>
-            </div>
             <br>
-            <div>
-                <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
-                <label id="text_warning_panel_displayed" class="form-check-label" >Ne plus afficher</label>
-            </div>
             <hr>
             <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
         </div>
@@ -49,38 +51,36 @@
             <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
             <hr>
             <div class="d-flex">
-                <input type="text" class="col-md-11 form-control" pattern="[A-Za-z]" id="manu_player_input" placeholder="Ajouter un joueur">
-                <button id="text_menu_add" class="col-md-1 btn btn-info" onclick="addPlayer(undefined, 'menu')">Ajouter</button>
+                <button id="button_menu_settings" type="submit" class="btn btn-primary btn-menu" onclick="toggleSettingsPage()">⚙</button>
+                <button id="button_menu_links" type="submit" class="btn btn-primary" onclick="toggleSettingsPage()" style="display:none">🌐</button>
+                <input type="text" class="col-md-9 form-control" pattern="[A-Za-z]" id="manu_player_input" placeholder="Ajouter un joueur">
+                <button id="text_menu_add" type="submit" class="btn btn-primary" onclick="addPlayer(undefined, 'menu')">➕</button>
+                <button id="text_gamemode_menu" type="submit" class="btn btn-success" onclick="displayPage('gamemode')">▶</button>
             </div>
             <br>
             <div id="menu_player_list"></div>
-            <hr>
-            <button id="button_menu_settings" type="submit" class="btn btn-success" onclick="toggleSettingsPage()">Paramètres</button>
-            <button id="button_menu_links" type="submit" class="btn btn-success" onclick="toggleSettingsPage()" style="display:none">Liens</button>
-            <button id="text_gamemode_menu" type="submit" class="btn btn-success" onclick="displayPage('gamemode')">Modes de jeu</button>
             <div id="menu_content">
                 <hr>
                 <div id="menu_links">
-                    <ul class="list-group">
-                        <select class="list-group-item list-group-item-dark" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
-                            <option id="text_menu_lang_fr" value="fr">Français</option>
-                            <option id="text_menu_lang_en" value="en">Anglais</option>
-                            <!-- <option id="text_menu_lang_da" value="da">Danois</option>
-                            <option id="text_menu_lang_de" value="de">Allemand</option>
-                            <option id="text_menu_lang_es"value="es">Espagnol</option>
-                            <option id="text_menu_lang_fi" value="fi">Finlandais</option>
-                            <option id="text_menu_lang_it" value="it">Italien</option>
-                            <option id="text_menu_lang_ja" value="ja">Japonais</option>
-                            <option id="text_menu_lang_ko" value="ko">Coréen</option>
-                            <option id="text_menu_lang_nb" value="nb">Novégien</option>
-                            <option id="text_menu_lang_nl" value="nl">Néerlandais</option>
-                            <option id="text_menu_lang_pt" value="pt">Portugais</option>
-                            <option id="text_menu_lang_ru" value="ru">Russe</option>
-                            <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
-                        </select>
-                        <li class="list-group-item list-group-item-dark" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'" role="button">GitHub</li>
-                        <li id="text_prevention_panel" class="list-group-item list-group-item-dark" onclick="displayPage('disclaimer')" role="button">Volet de prévention</li>
-                    </ul>
+                    <select class="list-group-item col-md-12" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
+                        <option id="text_menu_lang_fr" value="fr">Français</option>
+                        <option id="text_menu_lang_en" value="en">Anglais</option>
+                        <!-- <option id="text_menu_lang_da" value="da">Danois</option>
+                        <option id="text_menu_lang_de" value="de">Allemand</option>
+                        <option id="text_menu_lang_es"value="es">Espagnol</option>
+                        <option id="text_menu_lang_fi" value="fi">Finlandais</option>
+                        <option id="text_menu_lang_it" value="it">Italien</option>
+                        <option id="text_menu_lang_ja" value="ja">Japonais</option>
+                        <option id="text_menu_lang_ko" value="ko">Coréen</option>
+                        <option id="text_menu_lang_nb" value="nb">Novégien</option>
+                        <option id="text_menu_lang_nl" value="nl">Néerlandais</option>
+                        <option id="text_menu_lang_pt" value="pt">Portugais</option>
+                        <option id="text_menu_lang_ru" value="ru">Russe</option>
+                        <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
+                    </select>
+                    <a onclick=""></a>
+                    <button id="text_gamemode_menu" type="submit" class="btn btn-info col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
+                    <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">Prévention</button>
                     <br>
                 </div>
                 <div id="settings" style="display:none;">
