@@ -6,6 +6,7 @@ function init() {
     filterVariables();
     setLanguageString();
     global.current_language_strings = language.fr;
+    updateCurrentLanguageString("fr")
     retrieveCookie();
 }
 
@@ -37,8 +38,9 @@ function defaultVariables() {
             type_by_gamemode: {
                 default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
                 hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
-                bar: [1, 2, 4, 17, 18, 19, 20, 21, 22],
+                bar: [1, 2, 4, 16, 17, 18, 19, 20, 21, 22],
                 silly: [1, 2, 3, 4, 6, 14, 23, 24, 25],
+                mix: [1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 20, 21, 25, 23, 24, 25],
                 war: [8, 9, 10, 11, 12, 13]
             },
             // For .default[0], maximum players can be 0, 1, 2, 3 or 4 players (when there is more than 4 players, player count is noted 4)
@@ -275,8 +277,11 @@ function addPlayer(player_name, html_origin) {
     if (player_name == undefined) {
         if (html_origin == "menu") {
             var player_name = manu_player_input.value;
-        } else if (html_origin == "ingame") {
+            if (manu_player_input.value == "") { return; }
+        }
+        if (html_origin == "ingame") {
             var player_name = ingame_player_input.value;
+            if (ingame_player_input.value == "") { return; }
         }
     }
 
@@ -309,7 +314,6 @@ function addPlayer(player_name, html_origin) {
     manu_player_input.value = "";
 
     updatePlayerCount();
-
     
     if (html_origin != "cookie") { storePlayerListCookie(); }
     
@@ -445,6 +449,7 @@ function selectGamemode(selected_gamemode) {
     //this function only to add a console.log and purify HTML
     game.gamemode = selected_gamemode;
     console.log("/gamemode", selected_gamemode);
+    initGame(true);
 }
 
 function manageNavigationButton(button, display) {
@@ -494,7 +499,7 @@ function manageNavDisplay(navigation_option, display) {
 
     if (display == true) {
         selected_navigation_option.style.display = "inline-flex";
-        selected_navigation_option.style.justify = "center";
+        selected_navigation_option.style.justifycontent = "center";
     } else if (display == false) {
         selected_navigation_option.style.display = "none";
     }

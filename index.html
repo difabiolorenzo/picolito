@@ -24,21 +24,21 @@
         </div>
         <div class="page dark_affected" id="disclaimer">
             <div id="disclaimer_warning">
-                <h2><b id="text_prevention_warning">Attention</b></h2>
+                <h2><b id="text_prevention_warning">text_prevention_warning</b></h2>
                 <hr>
-                <p id="text_prevention_text_0">L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.</p>
-                <p id="text_prevention_text_1">Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...</p>
-                <p id="text_prevention_text_2">Fixez vos limites sans outre-passer celles des autres.</p>
+                <p id="text_prevention_text_0">text_prevention_text_0</p>
+                <p id="text_prevention_text_1">text_prevention_text_1</p>
+                <p id="text_prevention_text_2">text_prevention_text_2</p>
                 <hr>
-                <p id="text_prevention_text_3">Pour plus d'information sur l'alcool et l'alcoolisme:</p>
-                <p><a id="text_prevention_information_website_text">- rendez vous sur </a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">alcool-info-service.fr</a></p>
-                <p><a id="text_prevention_call_text">- ou appeler le </a><i id="text_prevention_number">0 980 980 930</i> <code id="text_prevention_number_modality">de 8h à 2h, appel non surtaxé</code></p>
+                <p id="text_prevention_text_3">text_prevention_text_3</p>
+                <p><a id="text_prevention_information_website_text">text_prevention_information_website_text</a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">text_prevention_information_website</a></p>
+                <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
                 <hr>
                 <div id="disclaimer_warning_validation">
-                    <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">Passer</button>
+                    <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">text_prevention_skip_button</button>
                     <div>
                         <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
-                        <label id="text_warning_panel_displayed" class="form-check-label" >Ne plus afficher</label>
+                        <label id="text_warning_panel_displayed" class="form-check-label" >text_warning_panel_displayed</label>
                     </div>
                 </div>
             </div>
@@ -63,8 +63,8 @@
                 <hr>
                 <div id="menu_links">
                     <select class="list-group-item col-md-12" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
-                        <option id="text_menu_lang_fr" value="fr">Français</option>
-                        <option id="text_menu_lang_en" value="en">Anglais</option>
+                        <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
+                        <option id="text_menu_lang_en" value="en">text_menu_lang_en</option>
                         <!-- <option id="text_menu_lang_da" value="da">Danois</option>
                         <option id="text_menu_lang_de" value="de">Allemand</option>
                         <option id="text_menu_lang_es"value="es">Espagnol</option>
@@ -80,48 +80,48 @@
                     </select>
                     <a onclick=""></a>
                     <button id="text_gamemode_menu" type="submit" class="btn btn-info col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
-                    <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">Prévention</button>
+                    <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
                     <br>
                 </div>
                 <div id="settings" style="display:none;">
                     <div class="form-check">
                         <h5 id="text_settings_display">Affichage</h5>
                         <div class="form-group">
-                            <label id="text_settings_dark_theme" for="input_dark_mode_settings">Thème</label>
+                            <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
                             <select class="form-control col-md-1" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
-                                <option id="text_settings_darkmode_system" value="system">Système</option>
-                                <option id="text_settings_darkmode_light" value="bright">Clair</option>
-                                <option id="text_settings_darkmode_dark" value="dark">Sombre</option>
+                                <option id="text_settings_darkmode_system" value="system">text_settings_darkmode_system</option>
+                                <option id="text_settings_darkmode_light" value="bright">text_settings_darkmode_light</option>
+                                <option id="text_settings_darkmode_dark" value="dark">text_settings_darkmode_dark</option>
                             </select>
                         </div>
 
                         </select>
                         <div>
                             <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
-                            <label id="text_settings_information_highlight" class="form-check-label">Distinction des informations</label>
+                            <label id="text_settings_information_highlight" class="form-check-label">text_settings_information_highlight</label>
                         </div>
                         <div>
                             <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">
-                            <label id="text_settings_animation" class="form-check-label">Animations</label>
+                            <label id="text_settings_animation" class="form-check-label">text_settings_animation</label>
                         </div>
                     </div>
                     <div class="form-check">
-                        <h5 id="text_settings_gameplay">Fonctionnement Picolo</h5>
+                        <h5 id="text_settings_gameplay">text_settings_gameplay</h5>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_shot_enabled" onclick="game.shot_enabled = this.checked">
-                            <label id="text_settings_shot" class="form-check-label">Culs secs</label>
+                            <label id="text_settings_shot" class="form-check-label">text_settings_shot</label>
                         </div>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_virus_enabled" onclick="game.virus_enabled = this.checked">
-                            <label id="text_settings_virus" class="form-check-label" >Virus</label>
+                            <label id="text_settings_virus" class="form-check-label" >text_settings_virus</label>
                         </div>
                         <div>
                             <input class="form-check-input" type="checkbox" id="input_social_posting_enabled" onclick="game.social_posting_enabled = this.checked">
-                            <label id="text_settings_social" class="form-check-label" >Phrases sur les réseaux sociaux</label>
+                            <label id="text_settings_social" class="form-check-label" >text_settings_social</label>
                         </div>
                         <br>
                         <div class="form-group">
-                            <label id="text_settings_min_sip" for="input_sip_min">Gorgées minimum</label>
+                            <label id="text_settings_min_sip" for="input_sip_min">text_settings_min_sip</label>
                             <select class="form-control col-md-1" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
                                 <option>1</option>
                                 <option>2</option>
@@ -134,7 +134,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label id="text_settings_max_sip" for="input_sip_max">Gorgées maximum</label>
+                            <label id="text_settings_max_sip" for="input_sip_max">text_settings_max_sip</label>
                             <select class="form-control col-md-1" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
                                 <option>1</option>
                                 <option>2</option>
@@ -147,7 +147,7 @@
                             </select>
                         </div>
                         <div class="form-group" style="display:none">
-                            <label id="text_settings_potential_sip" for="input_potential_downsip">Potentiels culs secs</label>
+                            <label id="text_settings_potential_sip" for="input_potential_downsip">text_settings_potential_sip</label>
                             <select disabled class="form-control col-md-1" id="input_potential_downsip" onchange="changeDownDrinking(this.value)">
                                 <option>1</option>
                                 <option>2</option>
@@ -155,50 +155,27 @@
                             </select>
                         </div>
                         <div style="display:none">
-                            <input disabled class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
-                            <label id="text_settings_unlucky_player_3" class="form-check-label">Joueur 3 malchanceux</label>
+                            <input class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
+                            <label id="text_settings_unlucky_player_3" class="form-check-label">text_settings_unlucky_player_3</label>
                         </div>
                         <br>
-                        <div class="form-group" style="display:none">
-                            <label id="text_settings_unlucky_player_3_percentage" for="slider_unlucky_player_3_weight" class="form-check-label">Pourcentage de malchance</label>
-                            <br><input disabled type="range" min="1" max="100" value="0" class="slider" id="slider_unlucky_player_3_weight" onclick="game.unlucky_player_3_weight = (this.value)/100; porcentage_settings_unlucky_player_3.innerHTML = (this.value) + '%'">
-                            <a id="porcentage_settings_unlucky_player_3">0%</a>
+                        <div style="display:none">
+                            <label class="form-control" id="text_settings_unlucky_player_3_percentage" for="slider_unlucky_player_3_weight" class="form-check-label">text_settings_unlucky_player_3_percentage</label>
+                            <br><input type="number" min="1" max="30" value="16" id="slider_unlucky_player_3_weight" onchange="game.unlucky_player_3_weight = (this.value)/100;">
                         </div>
                     </div>
                     <div class="form-check">
                         <h5>Cookies</h5>
-                        <button class="btn btn-info" onclick="storeSettingsCookie()">Sauvegarder les paramètres</button>
-                        <button class="btn btn-info" onclick="deleteAllCookies()">Supprimer les cookies</button>
-                    </div>
-                    <div class="form-check">
-                        <h5 id="text_settings_information_quick_launch">Lancement rapide</h5>
-                        <div>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('default')">default</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('silly')">silly</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('bar')">bar</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('hot')">hot</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('war')">war</button>
-                            <hr>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_popular')">never_popular</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_party')">never_party</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('never_hot')">never_hot</button>
-                            <hr>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_popular')">truth_or_dare_popular</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_party')">truth_or_dare_party</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('truth_or_dare_hot')">truth_or_dare_hot</button>
-                            <hr>
-                            <!-- <button class="btn btn-info" onclick="launchSelectedGamemode('dice')">dice</button>
-                            <button class="btn btn-info" onclick="launchSelectedGamemode('card')">card</button> -->
-                        </div>
+                        <button id="text_settings_save_settings"class="btn btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
+                        <button id="text_settings_delete_cookies" class="btn btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_information_other">Autre</h5>
-                        <p><a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer tous les joueurs</a></p>
-                        <p><a  id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">Supprimer les cookies</a></p>
+                        <p><a id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">text_settings_information_delete_players</a></p>
                         <br>
-                        <p><a  id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">Signaler un bug</a></p>
-                        <p><a  id="text_settings_information_signal_bug" href="https://marmelapp.com">marmelapp.com</a></p>
-                        <p><a  id="text_settings_information_signal_bug" href="https://psycatgames.com">psycatgames.com</a></p>
+                        <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
+                        <p><a href="https://marmelapp.com">marmelapp.com</a></p>
+                        <p><a href="https://psycatgames.com">psycatgames.com</a></p>
                     </div>
                     <br>
                 </div>
@@ -209,74 +186,75 @@
                 <button id="text_gamemode_back" class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
                 <div class="col-md-6 text-center">
                     <a id="text_gamemode_player_number">0</a>
-                    <a id="text_gamemode_player_singular" style="display:initial">joueur</a>
-                    <a id="text_gamemode_player_plural" style="display:none">joueurs</a>
+                    <a id="text_gamemode_player_singular" style="display:initial">text_gamemode_player_singular</a>
+                    <a id="text_gamemode_player_plural" style="display:none">text_gamemode_player_plural</a>
                 </div>
-                <button id="text_gamemode_next" class="col-md-3 btn btn-success" onclick="initGame(true)">Suivant</button>
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
-                <h2 class="text-center" id="text_gamemode_never_title">Picolo</h2><hr>
+                <h2 class="text-center">Picolo</h2><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="default" id="option1" onclick="selectGamemode(this.name);" autocomplete="off" checked>
-                  <h3 id="text_gamemode_title_default">Before - 🥴</h3>
-                  <p id="text_gamemode_default_subtitle_0">Le mode de jeu parfait pour s'ambiancer en soirées.</p>
-                  <p id="text_gamemode_default_subtitle_1">Soyez prêts, car Picolito ne vous fera pas de cadeaux.</p>
+                  <input type="radio" name="default" id="gamemode_option_default" onclick="selectGamemode(this.name);" autocomplete="off" checked>
+                  <h3 id="text_gamemode_title_default">text_gamemode_title_default</h3>
+                  <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
+                  <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="silly" id="option2" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_silly">On est débiles - 🤪</h3>
-                  <p id="text_gamemode_silly_subtitle_0">Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.</p>
-                  <p id="text_gamemode_silly_subtitle_1">Attention, public averti.</p>
+                  <input type="radio" name="silly" id="gamemode_option_silly" onclick="selectGamemode(this.name);" autocomplete="off">
+                  <h3 id="text_gamemode_title_silly">text_gamemode_title_silly</h3>
+                  <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
+                  <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="bar" id="option3" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_bar">Bar - 🍻</h3>
-                  <p id="text_gamemode_bar_subtitle_0">Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.</p>
-                  <p id="text_gamemode_bar_subtitle_1">Attention, il ne faut pas avoir peur du ridicule.</p>
+                  <input type="radio" name="bar" id="gamemode_option_bar" onclick="selectGamemode(this.name);" autocomplete="off">
+                  <h3 id="text_gamemode_title_bar">text_gamemode_title_bar</h3>
+                  <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
+                  <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="hot" id="option4" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_hot">Caliente - 🍆</h3>
-                  <p id="text_gamemode_hot_subtitle_0">Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.</p>
-                  <p id="text_gamemode_hot_subtitle_1">Est-ce que ça va pécho ce soir?</p>
+                  <input type="radio" name="hot" id="gamemode_option_hot" onclick="selectGamemode(this.name);" autocomplete="off">
+                  <h3 id="text_gamemode_title_hot">text_gamemode_title_hot</h3>
+                  <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
+                  <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="war" id="option5" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_war">Guerre - 🌩</h3>
-                  <p id="text_gamemode_war_subtitle_0">Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...</p>
-                  <p id="text_gamemode_war_subtitle_1">Ce soir c'est la guerre!</p>
-                </label><hr>
-                <h2 class="text-center" id="text_gamemode_never_title">Je n'ai jamais</h2><hr>
-                <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="never_popular" id="option6" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_popular">Populaire - ⭐</h3>
+                  <input type="radio" name="war" id="gamemode_option_war" onclick="selectGamemode(this.name);" autocomplete="off">
+                  <h3 id="text_gamemode_title_war">text_gamemode_title_war</h3>
+                  <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
+                  <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="never_hot" id="option7" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_hot">Coquin & Sexy - 💋</h3>
+                  <input type="radio" name="mix" id="gamemode_option_mix" onclick="selectGamemode(this.name);" autocomplete="off">
+                  <h3 id="text_gamemode_title_mix">text_gamemode_title_mix</h3>
+                  <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
+                  <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
+                </label><hr>
+                <h2 class="text-center" id="text_gamemode_never_title">text_gamemode_never_title</h2><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="never_popular" id="gamemode_option_never_popular" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
                 </label><hr>
                 <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="never_party" id="option8" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_party">Fête - 🎉</h3>
+                    <input type="radio" name="never_hot" id="gamemode_option_never_hot" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h3>
                 </label><hr>
-                <!-- <h2 class="text-center" id="text_gamemode_other_title">Autres</h2><hr>
                 <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="dice" id="option9" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_dice">Dès - 🎲</h3>
-                </label><hr> -->
-                <!-- <label class="btn btn-secondary btn-success">
-                    <input type="radio" name="card" id="option10" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_card">Cartes - 🃏</h3>
-                </label> -->
+                    <input type="radio" name="never_party" id="gamemode_option_never_party" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h3>
+                </label><hr>
+                <label class="btn btn-secondary btn-success">
+                    <input type="radio" name="never_mix" id="gamemode_option_never_mix" onclick="selectGamemode(this.name);" autocomplete="off">
+                    <h3 id="text_gamemode_title_never_mix">text_gamemode_title_never_mix</h3>
+                    <p id="text_gamemode_never_mix_subtitle">text_gamemode_war_subtitle</p>
+                </label><hr>
               </div>
               <hr>
         </div>
         <div class="page dark_affected" id="team_selection" style="display:none">
             <div class="d-flex">
-                <button id="text_team_selection_back" class="col-md-3 btn btn-info" onclick="displayPage('gamemode')">Retour</button>
+                <button id="text_team_selection_back" class="col-md-3 btn btn-info" onclick="displayPage('gamemode')">text_team_selection_back</button>
                 <a class="col-md-6 text-center"></a>
-                <button id="text_team_selection_next" class="col-md-3 btn btn-success" id="button_next_team_selection" onclick="initGame()">Suivant</button>
+                <button id="text_team_selection_next" class="col-md-3 btn btn-success" id="button_next_team_selection" onclick="initGame()">text_team_selection_next</button>
             </div>
             <br>
             <table class="table table-bordered text-center" id="team_selection_table">
@@ -296,13 +274,13 @@
         <div class="page blue" id="game" style="display:none">
             <div id="ingame_content">
                 <div class="d-flex" id="ingame_topbar">
-                    <button id="text_game_quit_topbar" type="submit" class="btn btn-secondary" onclick="exitGame()">Quitter</button>
+                    <button id="text_game_quit_topbar" type="submit" class="btn btn-secondary" onclick="exitGame()">text_game_quit_topbar</button>
                     <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_next_button" onclick="nextSentence(true);">></button>
                     </div>
-                    <button id="text_game_player_menu" type="submit" class="btn btn-secondary" onclick="toggleIngamePlayerList()">Joueurs</button>
+                    <button id="text_game_player_menu" type="submit" class="btn btn-secondary" onclick="toggleIngamePlayerList()">text_game_player_menu</button>
                 </div>
                 <div id="ingame_text" onclick="nextSentence(true); document.getElementById('game_cycle_next_button').innerHTML = '>';">
                     <h1 id="ingame_title"></h1>
@@ -312,12 +290,12 @@
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
                             <p id="text_game_ready">Prêts?</p>
-                            <button id="text_game_start_button" type='submit' class='btn btn-info' onclick='nextSentence()'>Commencer</button>
+                            <button id="text_game_start_button" type='submit' class='btn btn-info' onclick='nextSentence()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">Fin de partie</p>
                             <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
-                            <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>Recommencer</button>
+                            <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
                         </div>
                         <div id="dice_ingame_option" style="display:none">
                             <p class="text-center" onclick="randomDiceUnicode()">
@@ -332,18 +310,18 @@
                     <div id="ingame_player_option" style="display: none;">
                         <div class="d-flex">
                             <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                            <button type="submit" class="btn btn-info" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter</button>
+                            <button type="submit" class="btn btn-info" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_add</button>
                         </div>
                         <br>
                         <div class="d-flex">
-                            <button type="submit" class="btn btn-info" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter à l'équipe #2</button>
-                            <button type="submit" class="btn btn-info" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >Ajouter à l'équipe #2</button>
+                            <button type="submit" class="btn btn-info" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
+                            <button type="submit" class="btn btn-info" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
                         </div>
                         <br>
                         <div id="ingame_player_list"></div>
                         <br>
                         <h3 id="text_choosing_player">Pour les indécis:</h3>
-                        <button type="submit" class="btn btn-info" id="alert_random_player_button" onclick="alertRandomPlayer()">Afficher un joueur aléatoirement</button>
+                        <button type="submit" class="btn btn-info" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button>
                     </div>
                 </div>
                 <div id="sentence_list" style="display: none;"></div>

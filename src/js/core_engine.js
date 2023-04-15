@@ -46,13 +46,12 @@ function getMinPlayer() {
     } else {
         game.max_player_number = game.player_list.length;
     }
-    console.log("min player", game.max_player_number)
 }
 
 function retrieve(sentence_id) {
     //generate or retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
-        if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot") {
+        if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot"|| game.gamemode == "never_mix") {
             generateNeverDoneSentences();
         } else {
             generatePicoloSentences();
@@ -83,6 +82,14 @@ function displaySentence(sentence, color) {
     }
 }
 
+function randomPercentage() {
+    //random percentage
+    while (random_percent == 0 || random_percent == 100 || random_percent == undefined) {
+        var random_percent = Math.floor(Math.random() * 100);
+    }
+    return random_percent;
+}
+
 function getRandomColor() {
     var available_color_probability = [];
     if (game.shot_enabled == true && game.shot_sentence_id_start_min <= game.cycle_id && game.shot_remaining > 0 && game.gamemode != "war") {
@@ -98,10 +105,7 @@ function getRandomColor() {
 
     available_color_probability.sort( function(a, b) { return a[1] - b[1]; } );
 
-    //random percentage
-    while (random_percent == 0 || random_percent == 1 || random_percent == undefined) {
-        var random_percent = Math.round(Math.random() * 100);
-    }
+    var random_percent = randomPercentage();
 
     //filter color probability by random_percent
     var color = "";
@@ -118,10 +122,19 @@ function getRandomColor() {
 }
 
 function getRandomType() {
+    if (game.gamemode == "mix") {
+        var possible_type = ["bar", "default", "hot", "silly"]
+        var percentage = randomPercentage()
+        var gamemode = possible_type[Math.floor(percentage/(100/4))]
+        console.log("MIX GAMEMODE PICK", gamemode)
+    } else {
+        var gamemode = game.gamemode;
+    }
+
     if (game.max_player_number != -1) {
         var type_by_gamemode = [];
         var max_player_number_by_gamemode = [];
-        switch (game.gamemode) {
+        switch (gamemode) {
             case "bar":
                 type_by_gamemode = game.filter.type_by_gamemode.bar;            
                 max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.bar;            
@@ -227,7 +240,7 @@ function generatePicoloSentences() {
     var color = get_random_color_type[0];
     var type = get_random_color_type[1];        // text
     var max_player = game.max_player_number;
-    console.log(get_random_color_type, color, type, max_player);
+    console.log(get_random_color_type, color, "type", type, "max_player", max_player);
 
     function getSentence(use_parent_key, selected_nb_players, selected_type) {
         if (use_parent_key == false) {
@@ -239,15 +252,15 @@ function generatePicoloSentences() {
 
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        console.log("request", request)
         database_id = request[random_int].___id;
+        console.log("random_int", random_int, request[random_int])
         sentence = textReplacer(request[random_int].text);
-        console.log(request[random_int].key);
         if (request[random_int].key != "") { key = request[random_int].key; }
         console.log(random_int, sentence);
 
         //remove sentence from db
         game.database().filter({___id:database_id}).remove();
-        console.log(database_id, "removed");
     }
 
     var request = [];
@@ -259,11 +272,13 @@ function generatePicoloSentences() {
     for (var i = 0; i <= max_player; i++) {
         var addind_request = getSentence(false, i.toString(), type.toString());
         request.push(...addind_request);
+        console.log("JOPNOPOP", addind_request, request, "max_player", max_player, type)
     }
+
+    console.log()
     
     getRandomSentence()
-    console.log("request", request)
-    console.log(color, "type", type, "max_player", max_player, "key", key)
+    console.log(color, "type", type, "max_player", max_player, key)
 
     updateHTMLBackgroundColor(color);
     displaySentence(sentence, color);
@@ -274,6 +289,8 @@ function generatePicoloSentences() {
         sentence = "";
         database_id = "";
         
+        console.log(request)
+
         //get sentence from lower nb_player
         for (var i = 0; i <= max_player; i++) {
             var addind_request = getSentence(true, i.toString(), type.toString())

@@ -91,3 +91,7 @@ input[type=checkbox] {
 .d-flex {
     justify-content: center;
 }
+
+hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item {
+    box-shadow: 0px 1px 1px 0px #00000030;
+}

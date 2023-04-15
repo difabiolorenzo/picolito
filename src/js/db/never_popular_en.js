@@ -861,3 +861,4 @@ var db = TAFFY([{"pack_name":"never_popular","language":"en","text":"Never have 
 {"pack_name":"never_popular","language":"en","text":"Never have I ever written graffiti."},
 {"pack_name":"never_popular","language":"en","text":"Never have I ever written notes on the desk to use during a test."
 }])
+retrieveDB();

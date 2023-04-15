@@ -24,14 +24,17 @@
 }
 .btn-secondary{ width: 100%; }
 #game {transition: background-color 0.75s ease;background-color: var(--orange);}
-#ingame_content {    
+#ingame_content {
     text-align: center;
     color:white;
-    padding: 5vw;
+    padding: 3vw;
 }
 #ingame_text {
-    padding-top: 12%;
     cursor: pointer;
+    /* background-color: #0003; */
+    margin-top: 10%;
+    padding-top: 5vw;
+    padding-bottom: 5vw;
 }
 
 p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
@@ -65,6 +68,7 @@ div#game.purple {background-color: var(--purple);}
 .dark_mode .dark_affected.red #ingame_sentence {color: var(--picolo_red);}
 .dark_mode .dark_affected.yellow #ingame_sentence {color: var(--picolo_yellow);}
 .dark_mode .dark_affected.green #ingame_sentence {color: var(--picolo_green);}
+.dark_mode .dark_affected.purple #ingame_sentence {color: #a700fd;}
 
 .recap_sentences_cell {
     border: 1px solid black;
@@ -131,7 +135,7 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
         transform: rotate(-90deg) translateX(-95vh);
         transform-origin: top left;
         width: 95vh;
-        padding: 11.25vw;
+        padding: 5vw;
     }
     p#ingame_sentence {
         font-size: 3vh;
@@ -143,10 +147,9 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
 div#ingame_option, div#ingame_player_option {
     background-color: #00000026;
     margin-top: 5vh;
-    padding: 5vh;
+    padding: 2.5vh;
     border-radius: 1vh;
     width: 100%;
-    margin: 1vh;
 }
 .dice, .playing_card {
     font-size: 20vw;

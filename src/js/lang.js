@@ -14,10 +14,12 @@ function setLanguageString() {
             prevention_number_modality: "de 8h à 2h, appel non surtaxé",
             prevention_panel: "Prévention",
             skip: "Passer",
+            checkbox: "Ne plus afficher",
             quit: "Quitter",
             next: "Suivant",
             back: "Retour",
             add: "Ajouter",
+            add_player: "Ajouter un joueur",
             ready: "Prêts?",
             start: "Commencer",
             end_game: "Fin de partie",
@@ -44,11 +46,15 @@ function setLanguageString() {
             text_settings_unlucky_player_3_percentage: "Pourcentage de malchance",
             settings_display: "Affichage",
             settings_dark_theme: "Mode sombre",
+            settings_darkmode_system: "Système",
+            settings_darkmode_light: "Clair",
+            settings_darkmode_dark: "Sombre",
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
-            settings_quick_launch: "Lancement rapide",
             settings_other: "Autre",
             settings_delete_all_players: "Supprimer tous les joueurs",
+            settings_delete_all_cookies: "Supprimer tous les cookies",
+            settings_save_settings: "Sauvegarder les paramètres",
             settings_report_bug: "Signaler un bug",
             gamemode_default_title: "Before - 🥴",
             gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
@@ -65,13 +71,16 @@ function setLanguageString() {
             gamemode_war_title: "Guerre - 🌩",
             gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
             gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
+            gamemode_mix_title: "Mix - 🧪",
+            gamemode_mix_subtitle_0: "Melangez!",
+            gamemode_mix_subtitle_1: "Touut!",
             gamemode_never_title: "Je n'ai jamais",
             gamemode_never_popular: "Populaire - ⭐",
             gamemode_never_hot: "Coquin & Sexy - 💋",
             gamemode_never_party: "Fête - 🎉",
+            gamemode_never_mix: "Mix - 🧪",
+            gamemode_war_subtitle: "Je n'ai jamais rien fait.",
             gamemode_other: "Autre",
-            gamemode_dice: "Dès - 🎲",
-            gamemode_card: "Cartes - 🃏",
             lang_fr: "Français",
             lang_da: "Danois",
             lang_de: "Allemand",
@@ -107,14 +116,16 @@ function setLanguageString() {
             // prevention_number_modality: "de 8h à 2h, appel non surtaxé",
             prevention_panel: "Prevention",
             skip: "Skip",
+            checkbox: "Don't remind me",
             quit: "Quit",
             next: "Next",
             back: "Back",
             add: "Add",
+            add_player: "Add player",
             ready: "Ready?",
             start: "Start",
-            end_game: "Fin de partie",
-            restart: "Recommencer",
+            end_game: "End",
+            restart: "Restart",
             player_singular: "player",
             player_plural: "players",
             player_menu: "Players",
@@ -137,12 +148,16 @@ function setLanguageString() {
             text_settings_unlucky_player_3_percentage: "Badluck percentage",
             settings_display: "Display",
             settings_dark_theme: "Dark theme",
+            settings_darkmode_system: "System theme",
+            settings_darkmode_light: "Bright theme",
+            settings_darkmode_dark: "Dark theme",
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
-            settings_quick_launch: "Quick launch",
             settings_debug_display: "Récapitulatif",
             settings_other: "Other",
             settings_delete_all_players: "Delete all players",
+            settings_delete_all_cookies: "Delete all cookies",
+            settings_save_settings: "Save settings",
             settings_report_bug: "Bug detected",
             gamemode_default_title: "Getting Started - 🥴",
             gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
@@ -159,13 +174,16 @@ function setLanguageString() {
             gamemode_war_title: "War - 🌩",
             gamemode_war_subtitle_0: "Friends, come together!",
             gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
+            gamemode_mix_title: "Mix - 🧪",
+            gamemode_war_subtitle_0: "Shuffle!",
+            gamemode_war_subtitle_1: "Everything!",
             gamemode_never_title: "Never I have ever",
             gamemode_never_popular: "Popular - ⭐",
             gamemode_never_hot: "Dirty & Sex - 💋",
             gamemode_never_party: "Party - 🎉",
+            gamemode_never_mix: "Mix - 🧪",
+            gamemode_war_subtitle: "Never done nothing.",
             gamemode_other: "Other",
-            gamemode_dice: "Dice - 🎲",
-            gamemode_card: "Card - 🃏",
             lang_fr: "French",
             lang_da: "Danish",
             lang_de: "German",
@@ -185,6 +203,7 @@ function setLanguageString() {
 }
 
 function updateCurrentLanguageString(lang) {
+    input_language.value = lang
     switch (lang) {
         case "fr":
             global.current_language_strings = language.fr;
@@ -217,7 +236,6 @@ function updateCurrentLanguageString(lang) {
         // case "sv":
         //     break;
         default:
-            console.log("pas fr")
             global.current_language_strings = language.en;
             global.current_language = "en";
             break;
@@ -238,11 +256,9 @@ function updateHTMLLanguageStrings() {
     text_prevention_number.innerHTML = global.current_language_strings.prevention_number;
     text_prevention_number_modality.innerHTML = global.current_language_strings.prevention_number_modality;
     text_prevention_skip_button.innerHTML = global.current_language_strings.skip;
+    text_warning_panel_displayed.innerHTML = global.current_language_strings.checkbox;
     
-    button_menu_links.innerHTML = global.current_language_strings.links;
     text_prevention_panel.innerHTML = global.current_language_strings.prevention_panel;
-    button_menu_settings.innerHTML = global.current_language_strings.settings;
-    text_menu_add.innerHTML = global.current_language_strings.add;
 
     text_menu_lang_fr.innerHTML = global.current_language_strings.lang_fr
     text_menu_lang_en.innerHTML = global.current_language_strings.lang_en
@@ -268,17 +284,20 @@ function updateHTMLLanguageStrings() {
     text_settings_potential_sip.innerHTML = global.current_language_strings.settings_potential_sip;
     text_settings_display.innerHTML = global.current_language_strings.settings_display;
     text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
+    text_settings_darkmode_system.innerHTML = global.current_language_strings.settings_darkmode_system;
+    text_settings_darkmode_light.innerHTML = global.current_language_strings.settings_darkmode_light;
+    text_settings_darkmode_dark.innerHTML = global.current_language_strings.settings_darkmode_dark;
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
-    text_settings_information_quick_launch.innerHTML = global.current_language_strings.settings_quick_launch;
     text_settings_information_other.innerHTML = global.current_language_strings.settings_other;
     text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
+    text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
+    text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
     text_gamemode_player_plural.innerHTML = global.current_language_strings.player_plural;
-    text_gamemode_next.innerHTML = global.current_language_strings.next;
     text_gamemode_title_default.innerHTML = global.current_language_strings.gamemode_default_title;
     text_gamemode_default_subtitle_0.innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
     text_gamemode_default_subtitle_1.innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
@@ -294,13 +313,16 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_war.innerHTML = global.current_language_strings.gamemode_war_title;
     text_gamemode_war_subtitle_0.innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
     text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
+    text_gamemode_title_mix.innerHTML = global.current_language_strings.gamemode_mix_title;
+    text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
+    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
 
     text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
     text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
-    text_gamemode_title_dice.innerHTML = global.current_language_strings.gamemode_dice;
-    text_gamemode_title_card.innerHTML = global.current_language_strings.gamemode_card;
+    text_gamemode_title_never_mix.innerHTML = global.current_language_strings.gamemode_never_mix;
+    text_gamemode_never_mix_subtitle.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;
@@ -314,6 +336,7 @@ function updateHTMLLanguageStrings() {
     text_game_restart.innerHTML = global.current_language_strings.restart;
     ingame_player_add.innerHTML = global.current_language_strings.add
     ingame_player_input.placeholder = global.current_language_strings.add_player;
+    manu_player_input.placeholder = global.current_language_strings.add_player;
     ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
     ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E1";
 
