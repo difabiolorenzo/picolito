@@ -1,37 +1,28 @@
 ## Picolito
 
-Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
-**en développement**
+Version en ligne de [Picolo](http://www.marmelapp.com/picolo) **en développement**
 
-### Différences
+### Prévention
+L'abus d'alcool est dangereux pour la santé. Pour plus d'information sur l'alcool et l'alcoolisme:
+- rendez vous sur [alcool-info-service.fr](https://www.alcool-info-service.fr/)
+- ou appeler le `0 980 980 930` _de 8h à 2h, appel non surtaxé_
 
-** Points Négatifs**
-- Une seule langue (French 🥖)
+En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.
+Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...
+
+### Différences entres les versions
+
 - Impossible d'ajouter des règles personalisées
-- Ne sauvegarde pas les paramètres, les noms de joueurs et les noms des équipes
 
-**Points Positifs**
-- Les modes `Before` (par défaut), `On est débiles`, `Bar`, `Caliente` et `Guerre` sont débloqués
+- Les modes `On est débiles`, `Bar`, `Caliente` et `Guerre` sont débloqués
+- Intégration de `Je n'ai Jamais` aux modes de jeu.
+- Modes `Mix` pour jouer avec les différents type des jeux.
 - Possibilité de naviger entre les phrases déjà sorties (liste et bouton de navigation)
 - Mode sombre (manuel et en fonction du thème du navigateur)
 - Possibilité de désactivé les virus, les culs secs ainsi que les phrases demandant de poster sur les réseaux sociaux
 - Possibilité de changer le nombre de gorgés min. - max.
 - Distinctions des informations (joueurs, nombre de gorgées, équipes)
-
-
-### Prévention
-
-**Version Picolo**
-
-L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo.
-
-**Version Picolito**
-
-L'abus d'alcool est dangereux pour la santé. Prenez soins de vous et de vos ami(e)s. Cet alcool permet d'animer vos soirées cependant il peux aussi la ruiner...
-Merci de ne pas forcer les personnes jouant à ce jeu à boire plus qu'ils ne le peuvent.
-Pour plus d'information sur l'alcool et l'alcoolisme:
-- rendez vous sur [alcool-info-service.fr](https://www.alcool-info-service.fr/)
-- ou appeler le `0 980 980 930` _de 8h à 2h, appel non surtaxé_
+- Sauvegarde les paramètres, les noms de joueurs et les noms des équipes. (Utilisation des cookies)
 
 ### Fonctionnement
 

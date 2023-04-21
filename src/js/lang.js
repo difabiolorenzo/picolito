@@ -5,8 +5,8 @@ function setLanguageString() {
             prevention_warning: "Attention",
             prevention_text_0: "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.",
             prevention_text_1: "Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...",
-            prevention_text_2: "Fixez vos limites sans outre-passer celles des autres.",
-            prevention_text_3: "Pour plus d'information sur l'alcool et l'alcoolisme:",
+            prevention_text_2: "En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo.",
+            prevention_text_3: "L'abus d'alcool est dangereux pour la santé. Pour plus d'information sur l'alcool et l'alcoolisme:",
             prevention_information_website_text: "- rendez vous sur ",
             prevention_information_website: "alcool-info-service.fr",
             prevention_call_text: "- ou appeler le",
@@ -16,6 +16,7 @@ function setLanguageString() {
             skip: "Passer",
             checkbox: "Ne plus afficher",
             quit: "Quitter",
+            close: "Fermer",
             next: "Suivant",
             back: "Retour",
             add: "Ajouter",
@@ -29,7 +30,6 @@ function setLanguageString() {
             player_menu: "Joueurs",
             team_default_name_0: "Equipe 1",
             team_default_name_1: "Equipe 2",
-            text_alert_random_player: "Pour les indécis:",
             alert_random_player: "Afficher un joueur aléatoirement",
             team_select: "Sélectionner",
             team_delete: "Supprimer",
@@ -72,14 +72,15 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
             gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
             gamemode_mix_title: "Mix - 🧪",
-            gamemode_mix_subtitle_0: "Melangez!",
-            gamemode_mix_subtitle_1: "Touut!",
+            gamemode_mix_subtitle_0: "Melangez! Touut!",
+            gamemode_mix_subtitle_1: "Before, On est débiles, Bar & Caliente",
             gamemode_never_title: "Je n'ai jamais",
             gamemode_never_popular: "Populaire - ⭐",
             gamemode_never_hot: "Coquin & Sexy - 💋",
             gamemode_never_party: "Fête - 🎉",
             gamemode_never_mix: "Mix - 🧪",
-            gamemode_war_subtitle: "Je n'ai jamais rien fait.",
+            gamemode_never_mix_subtitle_1: "Je n'ai jamais rien fait.",
+            gamemode_never_mix_subtitle_2: "Populaire, Coquin & Sexy et Fête",
             gamemode_other: "Autre",
             lang_fr: "Français",
             lang_da: "Danois",
@@ -118,6 +119,7 @@ function setLanguageString() {
             skip: "Skip",
             checkbox: "Don't remind me",
             quit: "Quit",
+            close: "Close",
             next: "Next",
             back: "Back",
             add: "Add",
@@ -131,7 +133,6 @@ function setLanguageString() {
             player_menu: "Players",
             team_default_name_0: "Team 1",
             team_default_name_1: "Team 2",
-            text_alert_random_player: "For the undecided:",
             alert_random_player: "Display a player randomly",
             team_select: "Select",
             team_delete: "Delete",
@@ -175,14 +176,15 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Friends, come together!",
             gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
             gamemode_mix_title: "Mix - 🧪",
-            gamemode_war_subtitle_0: "Shuffle!",
-            gamemode_war_subtitle_1: "Everything!",
+            gamemode_war_subtitle_0: "Shuffle! Everythiiiing!",
+            gamemode_war_subtitle_1: "Getting Started, Getting Crazy, Bar, Caliente",
             gamemode_never_title: "Never I have ever",
             gamemode_never_popular: "Popular - ⭐",
             gamemode_never_hot: "Dirty & Sex - 💋",
             gamemode_never_party: "Party - 🎉",
             gamemode_never_mix: "Mix - 🧪",
-            gamemode_war_subtitle: "Never done nothing.",
+            gamemode_never_mix_subtitle_1: "Never done nothing.",
+            gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
             gamemode_other: "Other",
             lang_fr: "French",
             lang_da: "Danish",
@@ -322,7 +324,8 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
     text_gamemode_title_never_mix.innerHTML = global.current_language_strings.gamemode_never_mix;
-    text_gamemode_never_mix_subtitle.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle;
+    text_gamemode_never_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_1;
+    text_gamemode_never_mix_subtitle_2.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_2;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;
@@ -338,9 +341,9 @@ function updateHTMLLanguageStrings() {
     ingame_player_input.placeholder = global.current_language_strings.add_player;
     manu_player_input.placeholder = global.current_language_strings.add_player;
     ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
-    ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E1";
+    ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E2";
 
-    alert_random_player_button.innerHTML = global.current_language_strings.alert_random_player;
-    text_choosing_player.innerHTML = global.current_language_strings.text_alert_random_player;
+    // alert_random_player_button.innerHTML = global.current_language_strings.alert_random_player;
+    close_player_option_ingame.innerHTML = global.current_language_strings.close;
 
 }

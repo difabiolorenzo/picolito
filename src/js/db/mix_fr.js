@@ -1,4 +1,5 @@
-var db = TAFFY([{type:"1",text:"%s, si tu tournes à la bière aromatisée tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
+var db = TAFFY([
+{type:"1",text:"%s, si tu tournes à la bière aromatisée tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, si tu tournes à la pinte tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, si tu tournes au demi (25cl) tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, prends le pire shooter du bar",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},

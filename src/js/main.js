@@ -12,10 +12,10 @@ function init() {
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
 function devOverrideSettings() {
-    
     displayPage("menu")
     changeDarkModeSettings(true);
-    toggleSettingsPage()
+    displayPage('gamemode');
+    selectGamemode("never_mix");
 }
 
 function defaultVariables() {
@@ -25,7 +25,7 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.29-pre3",
+        picolito_version: "0.29",
         debug_random_player: 0,
         debug_random_player_triggered: false,
         warning_panel_displayed: true,
@@ -34,7 +34,7 @@ function defaultVariables() {
 
     game = {
         filter: {
-            // Sentences of type 1 is used in "default", "hot", "bar" and "silly"
+            // Sentences of type 1 is used in "default", "hot", "bar", "mix" and "silly"
             type_by_gamemode: {
                 default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
                 hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
@@ -69,6 +69,7 @@ function defaultVariables() {
 
         // Dummy DB used to pick sentences one by one
         db: {},                                             //Full database for GAMEMODE_LANG.js ; is an TAFFY()
+        // pending_db: [],                                         //Collection of gamemodes sentences
 
         player_list: [],
         max_player_number: -1,
@@ -408,8 +409,13 @@ function initGame(select_team) {
             }
         }
         displayPage('game');
-        manageOptionDisplay("start", true);
+        manageIngameOptionDisplay(true, "start", "block");
     }
+}
+
+function firstSentence() {
+    manageIngameOptionDisplay(false, "start", "none");
+    nextSentence();
 }
 
 function exitGame() {
@@ -418,12 +424,12 @@ function exitGame() {
     updateGameCycle();                                  // reset cycle count
     resetVariables();
     updateHTMLBackgroundColor();
-    toggleIngamePlayerList("none");
 
-    manageOptionDisplay("start", false);
-    manageOptionDisplay("replay", false);
-    manageOptionDisplay("dice", false);
-    manageOptionDisplay("card", false);
+    manageIngameOptionDisplay(false, 'player_option', 'none')
+    manageIngameOptionDisplay(false, 'start', 'none')
+    manageIngameOptionDisplay(false, 'replay', 'none')
+    manageIngameOptionDisplay(false, 'dice', 'none')
+    manageIngameOptionDisplay(false, 'card', 'none')
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
@@ -470,24 +476,42 @@ function manageNavigationButton(button, display) {
     }
 }
 
-function manageOptionDisplay(option, display) {
-    if (option == "start") {
-        var selected_option = start_ingame_option;
-    } else if (option == "replay") {
-        var selected_option = replay_ingame_option;
-    } else if (option == "dice") {
-        var selected_option = dice_ingame_option;
-    } else if (option == "card") {
-        var selected_option = card_ingame_option;
+function manageIngameOptionDisplay(display_option_panel, option_identifier, option_display_value) {
+    var option_status = ingame_option.style.display
+
+    if (display_option_panel == true) {
+        ingame_option.style.display = "flex";
+    } else if (display_option_panel == false) {
+        ingame_option.style.display = "none";
     }
 
-    if (display == true) {
-        ingame_option.style.display = "block"
-        selected_option.style.display = "block"
-    } else if (display == false) {
-        ingame_option.style.display = "none"
-        selected_option.style.display = "none"
+    if (option_identifier != undefined && option_display_value != undefined) {
+        console.log("test")
+        switch(option_identifier) {
+            case "player_option":
+            var selected_option = ingame_player_option;
+                break;
+            case "start":
+            var selected_option = start_ingame_option;
+                break;
+            case "replay":
+            var selected_option = replay_ingame_option;
+                break;
+            case "dice":
+            var selected_option = dice_ingame_option;
+                break;
+            case "card":
+            var selected_option = card_ingame_option;
+                break;
+            default:
+                break;
+        }
+
+        console.log(selected_option)
+        selected_option.style.display = option_display_value;
     }
+
+    console.log(display_option_panel, selected_option, option_identifier, option_display_value)
 }
 
 function manageNavDisplay(navigation_option, display) {
@@ -503,27 +527,6 @@ function manageNavDisplay(navigation_option, display) {
     } else if (display == false) {
         selected_navigation_option.style.display = "none";
     }
-}
-
-function toggleIngamePlayerList(forced_value) {
-    var status = ingame_player_option.style.display
-    if (status == "block") {
-        ingame_player_option.style.display = "none"
-    } else if (status == "none") {
-        ingame_player_option.style.display = "block"
-
-        if (game.gamemode == "war") {
-            ingame_player_add.style.display = "none"
-            ingame_player_team_1.style.display = "block"
-            ingame_player_team_2.style.display = "block"
-        } else {
-            ingame_player_add.style.display = "block"
-            ingame_player_team_1.style.display = "none"
-            ingame_player_team_2.style.display = "none"
-        }
-    }
- 
-    ingame_player_option.style.display = forced_value
 }
 
 function updateGameCycle() {
@@ -549,15 +552,15 @@ function updateGameCycle() {
     }
     //start
     if (game.cycle_id < 0) {
-        manageOptionDisplay("start", true)
+        manageIngameOptionDisplay(true, "start", "block")
     } else {
-        manageOptionDisplay("start", false)
+        manageIngameOptionDisplay(false, "start", "none")
     }
     // retry
     if (game.cycle_id == game.sentence_amount - 1) {
-        manageOptionDisplay("replay", true)
+        manageIngameOptionDisplay(true, "replay", "block")
     } else {
-        manageOptionDisplay("replay", false)
+        manageIngameOptionDisplay(false, "replay", "none")
     }
 }
 
@@ -671,8 +674,6 @@ function displaySentenceList(force_ingame) {
         updateHTMLBackgroundColor("black")
         updateSentenceList()
     }
-
-    toggleIngamePlayerList("none");
 }
 
 function updateSentenceList(mode) {
@@ -912,6 +913,6 @@ function alertRandomPlayer() {
     if (game.player_list.length > 0) {
         var random_int = Math.floor(Math.random() * game.player_list.length);
         var random_player = game.player_list[random_int];
-        alert(random_player);
+        alert_random_player_button.innerHTML = random_player;
     }
 }
