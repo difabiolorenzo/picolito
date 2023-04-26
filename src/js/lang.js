@@ -23,6 +23,7 @@ function setLanguageString() {
             add_player: "Ajouter un joueur",
             ready: "Prêts?",
             start: "Commencer",
+            virus: "VIRUS",
             end_game: "Fin de partie",
             restart: "Recommencer",
             player_singular: "joueur",
@@ -52,6 +53,7 @@ function setLanguageString() {
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
             settings_other: "Autre",
+            settings_cookies: "Cookies",
             settings_delete_all_players: "Supprimer tous les joueurs",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
@@ -126,6 +128,7 @@ function setLanguageString() {
             add_player: "Add player",
             ready: "Ready?",
             start: "Start",
+            virus: "VIRUS",
             end_game: "End",
             restart: "Restart",
             player_singular: "player",
@@ -156,6 +159,7 @@ function setLanguageString() {
             settings_animation: "Animations",
             settings_debug_display: "Récapitulatif",
             settings_other: "Other",
+            settings_cookies: "Cookies",
             settings_delete_all_players: "Delete all players",
             settings_delete_all_cookies: "Delete all cookies",
             settings_save_settings: "Save settings",
@@ -294,6 +298,7 @@ function updateHTMLLanguageStrings() {
     text_settings_information_other.innerHTML = global.current_language_strings.settings_other;
     text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
     text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
+    text_settings_cookies.innerHTML = global.current_language_strings.settings_cookies;
     text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
 

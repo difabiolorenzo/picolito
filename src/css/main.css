@@ -1,10 +1,5 @@
-@font-face {
-    font-family: 'OpenMoji';
-    src: url('../font/OpenMoj10.ttf');
-}
-
-
 :root {
+    --picolito_background: #E7BB00;
     --picolo_yellow: #E7BB00;
     --picolo_red: #E51000;
     --picolo_blue: #1B586B;
@@ -15,19 +10,21 @@
     --picolo_blue_highlight: #0093c1;
     --picolo_green_highlight: #00d508;
     --picolo_dark_blue: #093340;
+
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
     --picolo_team: #ff8844;
     --picolo_player_dark: #6dbbbb;
     --picolo_sip_dark: #d7d78a;
     --picolo_team_dark: #a6582c;
-    --dark_mode_light_gray: #1b1b1b;
+
+    --dark_mode_light_gray: #252525;
     --dark_mode_gray: #101010;
 }
-
 .page {
     padding: 5vw;
     height: 100vh;
+    /* background-color: var(--picolito_background); */
 }
 .btn-secondary{ width: 100%; }
 #game {transition: background-color 0.75s ease;background-color: var(--orange);}
@@ -51,12 +48,13 @@
 
 p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
     font-weight: bold;
-    font-size: x-large;
+    font-size: xx-large;
     user-select: none;
     -webkit-user-select:none;
     line-height: 1.75;
     padding-left: 5vw;
     padding-right: 5vw;
+    text-size-adjust: auto;
 }
 
 #text_game_ready {
@@ -66,13 +64,13 @@ p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
 h1#ingame_title {font-weight: 900;}
 
 .animation_text_change {
-    animation: animation_text_change 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation: animation_text_change 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 @keyframes animation_text_change {
 0% {opacity: 0;transform: translateX(5vw);}
 }
 
-div#game {overflow: hidden;padding: 0; background-color: var(--picolo_blue);}
+div#game {overflow: hidden;padding: 0;background-color: var(--gray-dark);}
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
@@ -156,10 +154,6 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
         padding: 0;
         height: 100vw;
     }
-    #game {
-    }
-    p#ingame_sentence {
-    }
     div#sentence_list {
         height: 30vh;
     }
@@ -204,10 +198,10 @@ h1#gamename {
     justify-content: center;
     color: var(--bright);
     text-shadow: 0 1px 0 var(--shade), 0 2px 0 var(--shade), 0 3px 0 var(--shade), 0 4px 0 var(--shade), 0 5px 0 var(--shade), 0 6px 1px rgba(var(--couleur), .1), 0 0 5px rgba(var(--couleur), .1), 0 1px 3px rgba(var(--couleur), .3), 0 3px 5px rgba(var(--couleur), .3), 0 5px 10px rgba(var(--couleur), .25), 0 10px 10px rgba(var(--couleur), .2), 0 20px 20px rgba(var(--couleur), .15);
-    font-size: calc(8vw);
+    font-size: calc(5vh);
     font-weight: bold;
     user-select: none;
-    animation: logo_appear 0.4s;
+    animation: logo_appear 0.5s;
 }
 
 
@@ -227,18 +221,22 @@ div#cookie-disclaimer {
 }
 
 div#disclaimer {
-    background-color: var(--picolo_dark_blue);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 5vw;
+    background-color: var(--picolito_background);
 }
 
 div#disclaimer_warning {
-    height: auto;
     background-color: white;
-    padding: 3vw;
+    padding: 2.5vw;
     border-radius: .25rem;
     overflow-y: clip;
-    overflow: scroll;
-    height: 80vh;
+    overflow: auto;
+    height: 90%;
 }
 
 .dark_mode #disclaimer_warning {
@@ -247,33 +245,31 @@ div#disclaimer_warning {
 
 div#disclaimer_warning_validation {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+    background-color: white;
+    padding: 1vw;
+    border-radius: .25rem;
+    margin-top: 1vh;
 }
 
 a#picolito_version {
     text-decoration: unset;
     color: unset;
-    position: absolute;
-    display: block;
-    color: white;
     bottom: 5vw;
+    height: 7.5%;
+    padding: 2.5vw;
+    display: flex;
+    align-items: center;
 }
 
-div#menu {padding: 3vw;height: auto;/* background-color: var(--picolo_blue); */height: auto;}
+div#menu {padding: 3vw;height: auto;/* background-color: var(--picolito_background); */height: auto;}
 
-div#menu_links {
-    display: grid;
-}
+div#menu_links { display: grid; }
 
 div#menu_content {
     padding: 1rem;
-    margin-top: 1rem;
     border-radius: .25rem;
-}
-
-body {
-    /* background-color: var(--picolo_blue); */
 }
 
 .dark_mode .dark_affected body {
@@ -287,4 +283,22 @@ div#ingame_topbar {
 }
 
 div#ingame_content {
+}
+
+div#disclaimer {}
+
+div#menu_player_list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div#ingame_information {
+    color: #0000004a;
+    padding: 1vh;
+    transition: 0.25s;
+}
+
+div#ingame_information:hover {
+    color: #000000a6;
+    font-weight: bold;
 }

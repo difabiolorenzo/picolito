@@ -30,8 +30,13 @@ function goToSpecificSentence(position) {
     displaySentenceList(true);
 }
 
-function retrieveDB() {
-    game.database = TAFFY(db().get())
+function convertPendingDBTaffy() {
+    // game.database = TAFFY(game.pending_db)
+    game.database = TAFFY(game.pending_db)
+
+
+
+    // game.pending_db = game.pending_db.concat(
 }
 
 function getMinPlayer() {
@@ -54,32 +59,33 @@ function retrieve(sentence_id) {
         }
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
-        displaySentence(sentence_requested.sentence, sentence_requested.color);
+        displaySentence(sentence_requested.sentence, sentence_requested.color, sentence_requested.pack_name);
         updateGameCycle();
     }
 }
 
-function displaySentence(sentence, color) {
+function displaySentence(sentence, color, pack_name) {
     ingame_sentence.className = ""
     ingame_title.className = ""
+    ingame_gamemode_information.innerHTML = "";
 
     setTimeout(function() {
-
         if (game.animation == true) {
             ingame_sentence.className = "animation_text_change";
             ingame_title.className = "animation_text_change";
         }
-        document.getElementById("ingame_sentence").innerHTML = sentence;}, 0);
+        document.getElementById("ingame_sentence").innerHTML = sentence;
+    }, 0);
     
     if (color == "yellow") {
-        ingame_title.innerText = "VIRUS";
+        ingame_title.innerText = global.current_language_strings.virus;
     } else {
         ingame_title.innerText = "";
     }
+    ingame_gamemode_information.innerHTML = pack_name;
 }
 
 function randomPercentage() {
-    //random percentage
     while (random_percent == 0 || random_percent == 100 || random_percent == undefined) {
         var random_percent = Math.floor(Math.random() * 100);
     }
@@ -122,7 +128,6 @@ function getRandomType() {
         var possible_type = ["bar", "default", "hot", "silly"]
         var percentage = randomPercentage()
         var gamemode = possible_type[Math.floor(percentage/(100/4))]
-        console.log("MIX GAMEMODE PICK", gamemode)
     } else {
         var gamemode = game.gamemode;
     }
@@ -185,7 +190,7 @@ function getRandomType() {
 
         var potential_type = []
         for (var i in color_gamemode_matching_type) {
-            var checking_cg_matching_type = color_gamemode_matching_type[i]
+            var checking_cg_matching_type = color_gamemode_matching_type[i];
             var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type-1];
             if (checking_mp_by_gamemode.length != 0) {
                 for (var j in checking_mp_by_gamemode) {
@@ -199,7 +204,7 @@ function getRandomType() {
         var random_type_index = Math.floor(Math.random() * potential_type.length);
         var selected_type = potential_type[random_type_index];
 
-        return [color, selected_type];
+        return [color, selected_type, potential_type];
     } else {
         getMinPlayer()
         getRandomType()
@@ -212,23 +217,22 @@ function generateNeverDoneSentences() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
         sentence = textReplacer(request[random_int].text);
-        console.log(request[random_int].key)
+        pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
         console.log(random_int, sentence)
 
         //remove sentence from db
         game.database().filter({___id:database_id}).remove();
-        console.log(database_id, "removed")
+        console.log(database_id, "never_done removed")
     }
 
     var request = game.database().get();
     
     getRandomSentence()
-    console.log("key", key, "request", request);
 
     updateHTMLBackgroundColor("purple");
-    displaySentence(sentence, "purple");
-    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple");
+    displaySentence(sentence, "purple", pack_name);
+    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple", pack_name);
 }
 
 function generatePicoloSentences() {
@@ -238,6 +242,23 @@ function generatePicoloSentences() {
     var max_player = game.max_player_number;
     console.log(get_random_color_type, color, "type", type, "max_player", max_player);
 
+    var request = [];
+    var key = "";
+    var sentence = "";
+    var database_id = "";
+    var pack_name = "";
+    var color = ""
+    var type = ""
+    var max_player = game.max_player_number;
+
+    function setVariables() {
+        var get_random_color_type = getRandomType();
+        color = get_random_color_type[0];
+        type = get_random_color_type[1];        // text
+        console.log(get_random_color_type, color, "type", type, "max_player", max_player);
+    }
+    setVariables()
+
     function getSentence(use_parent_key, selected_nb_players, selected_type) {
         if (use_parent_key == false) {
             return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
@@ -246,44 +267,46 @@ function generatePicoloSentences() {
         }
     }
 
+    function requestEveryMinPlayer() {
+        //get sentence from lower nb_player to max_player
+        for (var i=0; i<= max_player; i++) {
+            var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
+            request.push(...addind_request);
+        }
+        if (request.length == 0) {
+            console.log("REPICK TYPE", type)
+            game.filter.empty_type.push(type)
+            alert("REPICK TYPE");
+        }
+    }
+    requestEveryMinPlayer()
+
+
+    
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
-        console.log("request", request)
         database_id = request[random_int].___id;
-        console.log("random_int", random_int, request[random_int])
         sentence = textReplacer(request[random_int].text);
+        pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
-        console.log(random_int, sentence);
+        console.log(random_int, sentence, pack_name);
 
         //remove sentence from db
         game.database().filter({___id:database_id}).remove();
+        console.log(database_id, "picolo removed")
     }
 
-    var request = [];
-    var key = "";
-    var sentence = "";
-    var database_id = "";
-
-    //get sentence from lower nb_player
-    for (var i = 0; i <= max_player; i++) {
-        var addind_request = getSentence(false, i.toString(), type.toString());
-        request.push(...addind_request);
-        console.log("JOPNOPOP", addind_request, request, "max_player", max_player, type)
-    }
-
-    console.log()
-    
     getRandomSentence()
-    console.log(color, "type", type, "max_player", max_player, key)
 
     updateHTMLBackgroundColor(color);
-    displaySentence(sentence, color);
-    addHistoryItem(0, database_id, sentence, key, type, color);
+    displaySentence(sentence, color, pack_name);
+    addHistoryItem(0, database_id, sentence, key, type, color, pack_name);
 
     if (key != "") {
         request = [];
         sentence = "";
         database_id = "";
+        pack_name = "";
         
         console.log(request)
 
@@ -300,18 +323,19 @@ function generatePicoloSentences() {
 
             console.log("game_cycle end virus", random_virus_end)
             console.log(sentence, "key", key, "type", type)
-            addHistoryItem(random_virus_end, database_id, sentence, key, type, color);
+            addHistoryItem(random_virus_end, database_id, sentence, key, type, color, pack_name);
 
             game.virus_established_start = game.cycle_id;
             game.virus_established_end = game.cycle_id + random_virus_end;
 
         } else if (color == "blue" || color == "green" ) {
-            addHistoryItem(1, database_id, sentence, key, type, color);
+            addHistoryItem(1, database_id, sentence, key, type, color, pack_name);
         }
 
     }
 
     //disable down drinking if trigerred
+    //shot_remaining-- if more than 1 down drinking is set
     if (color == "red") {
         game.shot_remaining--;
     }

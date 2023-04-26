@@ -1,4 +1,4 @@
-var db = TAFFY([{type:"1",text:"%s, si tu tournes à la bière aromatisée tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
+game.stored_db.bar_fr = [{type:"1",text:"%s, si tu tournes à la bière aromatisée tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, si tu tournes à la pinte tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, si tu tournes au demi (25cl) tu bois, autrement tu distribues une gorgée",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, prends le pire shooter du bar",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
@@ -447,6 +447,5 @@ var db = TAFFY([{type:"1",text:"%s, si tu tournes à la bière aromatisée tu bo
 {type:"22",text:"%s, dessine un lion gay. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"22",text:"%s, dessine un toboggan volant. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
 {type:"22",text:"%s, dessine une dinde farcie. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"},
-{type:"22",text:"%s, dessine un cheval en érection. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"}
-]);
-retrieveDB();
+{type:"22",text:"%s, dessine un cheval en érection. Fais deviner le dessin à une personne inconnue choisie par le groupe, si elle trouve tu peux distribuer $ gorgées, sinon tu bois",key:"",parent_key:"",pack_name:"bar",language:"fr",nb_players:"1"}];
+game.pending_db = game.pending_db.concat(game.stored_db.bar_fr);

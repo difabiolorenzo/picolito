@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imitate a guy taking a shit or drink $ times",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"1"},
+game.stored_db.silly_en = [{cycle_state:"false",type:"1",text:"%s, imitate a guy taking a shit or drink $ times",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"%s, show us your balls or drink $ times",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"The last person to shout b*tch\u0022 finish your drink!\u0022",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"1",text:"%s arm wrestle %s. The loser drinks $ times. Or if you want to chicken out, you drink $ times",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"2"},
@@ -1079,5 +1079,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, imitate a guy taking a s
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever had a drink-downing contest",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever reached the peak of your creativity while playing heads or tails as a drinking game with a buddy",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever played rock-paper-scissors as a drinking game",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Give out $ sips if you've ever had an alcoholic drink at the end of a night out, knowing very well that it would make you puke",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"25",text:"Give out $ sips if you've ever had an alcoholic drink at the end of a night out, knowing very well that it would make you puke",key:"",parent_key:"",pack_name:"silly",language:"en",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.silly_en);

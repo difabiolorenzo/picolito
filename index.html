@@ -34,19 +34,15 @@
                 <p id="text_prevention_text_3">text_prevention_text_3</p>
                 <p><a id="text_prevention_information_website_text">text_prevention_information_website_text</a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">text_prevention_information_website</a></p>
                 <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
-                <hr>
-                <div id="disclaimer_warning_validation">
-                    <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">text_prevention_skip_button</button>
-                    <div>
-                        <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
-                        <label id="text_warning_panel_displayed" class="form-check-label" >text_warning_panel_displayed</label>
-                    </div>
+            </div>
+            <div id="disclaimer_warning_validation">
+                <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
+                <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">text_prevention_skip_button</button>
+                <div>
+                    <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
+                    <label id="text_warning_panel_displayed" class="form-check-label" >text_warning_panel_displayed</label>
                 </div>
             </div>
-            
-            <br>
-            <hr>
-            <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
@@ -61,7 +57,6 @@
             <br>
             <div id="menu_player_list"></div>
             <div id="menu_content">
-                <hr>
                 <div id="menu_links">
                     <select class="list-group-item col-md-12" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
                         <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
@@ -79,14 +74,12 @@
                         <option id="text_menu_lang_ru" value="ru">Russe</option>
                         <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
                     </select>
-                    <a onclick=""></a>
                     <button id="text_gamemode_menu" type="submit" class="btn btn-info col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
                     <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
-                    <br>
                 </div>
                 <div id="settings" style="display:none;">
                     <div class="form-check">
-                        <h5 id="text_settings_display">Affichage</h5>
+                        <h5 id="text_settings_display">text_settings_display</h5>
                         <div class="form-group">
                             <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
                             <select class="form-control col-md-5" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
@@ -166,15 +159,15 @@
                         </div>
                     </div>
                     <div class="form-check">
-                        <h5>Cookies</h5>
-                        <button id="text_settings_save_settings"class="btn btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
-                        <button id="text_settings_delete_cookies" class="btn btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
+                        <h5 id="text_settings_cookies">Cookies</h5>
+                        <button id="text_settings_save_settings"class="btn col-md-5 btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
+                        <button id="text_settings_delete_cookies" class="btn col-md-5 btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
                     <div class="form-check">
-                        <h5 id="text_settings_information_other">Autre</h5>
+                        <h5 id="text_settings_information_other">text_settings_information_other</h5>
                         <p><a id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">text_settings_information_delete_players</a></p>
-                        <br>
                         <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
+                        <br>
                         <p><a href="https://marmelapp.com">marmelapp.com</a></p>
                         <p><a href="https://psycatgames.com">psycatgames.com</a></p>
                     </div>
@@ -273,7 +266,6 @@
                 </tbody>
             </table>
         </div>
-        <!-- <div class="page blue dark_affected" id="game" style="display:none"> -->
         <div class="page" id="game" style="display:none">
             <div id="game_content">
                 <div id="ingame_topbar" class="d-flex">
@@ -329,7 +321,7 @@
                     <div id="sentence_list" style="display: none;"></div>
                 </div>
 
-                <div id="ingame_information"><a></a></div>
+                <div id="ingame_information"><a id="ingame_gamemode_information"></a></div>
             </div>
         </div>
     </body>

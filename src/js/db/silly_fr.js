@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imite un mec en train de chier ou boit $ gorgées",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"1"},
+game.stored_db.silly_fr = [{cycle_state:"false",type:"1",text:"%s imite un mec en train de chier ou boit $ gorgées",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"%s nous montre ses coui**es ou boit $ gorgées",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"La dernière personne qui crie chienne\u0022 finit son verre !\u0022",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"1",text:"%s, fais un bras de fer avec %s, le joueur qui perd boit $ gorgées. Ou échappe toi et bois $ gorgées",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"2"},
@@ -1080,5 +1080,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s imite un mec en train de 
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà fait un concours de cul-sec",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà atteint ton pic de créativité, en jouant à pile ou face contre un pote en tant que jeu d'alcool",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà joué à Chifoumi en tant que jeu à boire",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Distribue $ gorgées si tu as déjà pris un verre d'alcool en fin de soirée, sachant d'avance que c'est celui qui allait te faire vomir",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"25",text:"Distribue $ gorgées si tu as déjà pris un verre d'alcool en fin de soirée, sachant d'avance que c'est celui qui allait te faire vomir",key:"",parent_key:"",pack_name:"silly",language:"fr",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.silly_fr);

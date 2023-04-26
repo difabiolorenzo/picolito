@@ -1,4 +1,4 @@
-var db = TAFFY([{type:"1",text:"%s, if you're running on flavored beer, you drink. Give out one sip otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
+game.stored_db.bar_en = [{type:"1",text:"%s, if you're running on flavored beer, you drink. Give out one sip otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
 {type:"1",text:"%s, if you're running on a can of beer, drink. Give out one sip otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
 {type:"1",text:"%s, if you're running on a pitcher of beer, you drink. Give out one sip otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
 {type:"1",text:"%s, go take the worst shot in the bar",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
@@ -447,5 +447,5 @@ var db = TAFFY([{type:"1",text:"%s, if you're running on flavored beer, you drin
 {type:"22",text:"%s, draw a gay lion. Make a stranger chosen by the group guess what it is. If this person succeeds, you'll give out $ sips. Drink otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
 {type:"22",text:"%s, draw a flying playground slide. Make a stranger chosen by the group guess what it is. If this person succeeds, you'll give out $ sips. Drink otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
 {type:"22",text:"%s, draw a stuffed turkey. Make a stranger chosen by the group guess what it is. If this person succeeds, you'll give out $ sips. Drink otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"},
-{type:"22",text:"%s, draw a horse with an erection. Make a stranger chosen by the group guess what it is. If this person succeeds, you'll give out $ sips. Drink otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"}]);
-retrieveDB();
+{type:"22",text:"%s, draw a horse with an erection. Make a stranger chosen by the group guess what it is. If this person succeeds, you'll give out $ sips. Drink otherwise",key:"",parent_key:"",pack_name:"bar",language:"en",nb_players:"1"}];
+game.pending_db = game.pending_db.concat(game.stored_db.bar_en);

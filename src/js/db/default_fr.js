@@ -1,4 +1,4 @@
-var db = TAFFY([{type:"1",text:"%s, tu as 5 minutes pour finir ton verre",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"1"},
+game.stored_db.default_fr = [{type:"1",text:"%s, tu as 5 minutes pour finir ton verre",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"1"},
 {type:"1",text:"%s, dis un truc que t'as JAMAIS fait, ceux qui l'ont fait boivent $ gorgées",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"1"},
 {type:"1",text:"Honneur à %s qui distribue $ gorgées",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"1"},
 {type:"1",text:"%s boit $ gorgées",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"1"},
@@ -2544,5 +2544,5 @@ var db = TAFFY([{type:"1",text:"%s, tu as 5 minutes pour finir ton verre",key:""
 {type:"25",text:"Bois $ gorgées si tu as déjà été dans une ville à Spring Break",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
 {type:"25",text:"Bois $ gorgées si tes potes ont déjà réussi à te confisquer ton maillot de bain alors que tu étais dans l'eau",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
 {type:"25",text:"Bois $ gorgées si tu as déjà brûlé tes cours à la fin de l'année",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"},
-{type:"25",text:"Bois $ gorgées si tu as déjà inventé un jeu d'alcool",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"}]);
-retrieveDB();
+{type:"25",text:"Bois $ gorgées si tu as déjà inventé un jeu d'alcool",key:"",parent_key:"",pack_name:"default",language:"fr",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.default_fr);

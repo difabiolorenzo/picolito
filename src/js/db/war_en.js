@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"8",text:"Team %t: What's %s's mother's maiden name? If you're right, the other team drinks $ times. Otherwise, you drink!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"1"},
+game.stored_db.war_en = [{cycle_state:"false",type:"8",text:"Team %t: What's %s's mother's maiden name? If you're right, the other team drinks $ times. Otherwise, you drink!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Team %t: How many people (± 5) has %s had sex with? If you're right, the other team drinks $ times. Otherwise, you drink!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Team %t: How tall (±1 inch) is %s? If you're right, the other team drinks $ times. Otherwise, you drink!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Team %t: In what city was %s born? If you're right, the other team drinks $ times. Otherwise, you drink!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"1"},
@@ -757,5 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Team %t: What's %s's mother'
 {cycle_state:"false",type:"13",text:"Both teams, toast with $ sips!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"The team that has the person with the largest nose in the room, must drink $ times!",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Team %t: Decide who is the most sober out of your team, they have to finish their drink within 2 minutes",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Team %t: Pick two of your teammates to finish their drinks",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"13",text:"Team %t: Pick two of your teammates to finish their drinks",key:"",parent_key:"",pack_name:"war",language:"en",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.war_en);

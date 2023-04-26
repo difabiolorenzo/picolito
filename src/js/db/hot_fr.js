@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, si tu es une fille lèche ton doigt de manière érotique. Si tu es un homme fait un cunni avec 2 doigts de ta main. Et/ou bois $ gorgées",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"1"},
+game.stored_db.hot_fr = [{cycle_state:"false",type:"1",text:"%s, si tu es une fille lèche ton doigt de manière érotique. Si tu es un homme fait un cunni avec 2 doigts de ta main. Et/ou bois $ gorgées",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"%s, fais comme si tu avais un orgasme pendant 5 secondes, et bois $ gorgées",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"Toutes les filles doivent faire dépasser leur string",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"1",text:"%s et %s se font un câlin, et boivent tous deux une gorgée",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"2"},
@@ -756,5 +756,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, si tu es une fille lèch
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà nagé nu dans la mer ou l'océan",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà fait un bain avec un groupe de potes mixte, où tous étaient nus",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà eu des rapports sexuels sur la plage",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà couché avec quelqu'un dans une auberge de jeunesse",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"25",text:"Bois $ gorgées si tu as déjà couché avec quelqu'un dans une auberge de jeunesse",key:"",parent_key:"",pack_name:"hot",language:"fr",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.hot_fr);

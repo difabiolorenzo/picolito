@@ -20,12 +20,12 @@ body {
 
 .dark_mode .dark_affected .btn-primary:hover { box-shadow: 0 0 10px 0px var(--primary); }
 .dark_mode .dark_affected .btn-secondary:hover { box-shadow: 0 0 10px 0px var(--secondary); }
-.dark_mode .dark_affected .btn-info:hover { box-shadow: 0 0 10px 0px var(--info); }
+.dark_mode .dark_affected .btn-info:hover {box-shadow: 0 0 10px 0px var(--info);}
 .dark_mode .dark_affected .btn-warning:hover { box-shadow: 0 0 10px 0px var(--warning); }
 .dark_mode .dark_affected .btn-danger:hover { box-shadow: 0 0 10px 0px var(--danger); }
 .dark_mode .dark_affected .btn-light:hover { box-shadow: 0 0 10px 0px var(--light); }
 .dark_mode .dark_affected .btn-dark:hover { box-shadow: 0 0 10px 0px var(--dark); }
-.dark_mode .dark_affected .btn-success:hover { box-shadow: 0 0 10px 0px var(--success); }
+.dark_mode .dark_affected .btn-success:hover {box-shadow: 0 0 10px 0px var(--success);}
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-top: .5rem;
@@ -47,7 +47,7 @@ hr {
 }
 
 .dark_mode .dark_affected, body.dark_mode{
-    background-color: #252525 !important;
+    background-color: var(--dark_mode_light_gray) !important;
     color: white;
     transition: 0.25s;
 }
@@ -78,7 +78,7 @@ input[type=checkbox] {
 .dark_mode .dark_affected .btn-primary{
     color: #fff;
     background-color: none;
-    border-color: #999999;
+    border-color: #e3e3e3;
 }
 
 .dark_mode .dark_affected select{
@@ -93,4 +93,6 @@ input[type=checkbox] {
 
 hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item {
     box-shadow: 0px 1px 1px 0px #00000030;
+    justify-content: center;
+    align-items: center;
 }

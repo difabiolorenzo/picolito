@@ -1,4 +1,4 @@
-var db = TAFFY([{type:"1",text:"%s, you have 5 minutes to finish your drink",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"1"},
+game.stored_db.default_en = [{type:"1",text:"%s, you have 5 minutes to finish your drink",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"1"},
 {type:"1",text:"%s, say something you have NEVER done. Those who have done it, drink $ times",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"1"},
 {type:"1",text:"%s, give out $ sips",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"1"},
 {type:"1",text:"%s, drink $ times",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"1"},
@@ -2526,6 +2526,5 @@ var db = TAFFY([{type:"1",text:"%s, you have 5 minutes to finish your drink",key
 {type:"25",text:"Drink $ sips if you've ever spent spring break in a city",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"},
 {type:"25",text:"Drink $ sips if your friends have ever managed to run away with your swimming trunks/swimsuit, leaving you in the water",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"},
 {type:"25",text:"Drink $ sips if you've ever burnt your notes at the end of the year",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"},
-{type:"25",text:"Drink $ sips if you've ever made up a drinking game",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"}
-]);
-retrieveDB();
+{type:"25",text:"Drink $ sips if you've ever made up a drinking game",key:"",parent_key:"",pack_name:"default",language:"en",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.default_en);

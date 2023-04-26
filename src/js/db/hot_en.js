@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, if you are a girl, lick your finger in an erotic way. If you are a guy, do a cunniling*s with two fingers. Or finish your drink",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"1"},
+game.stored_db.hot_en = [{cycle_state:"false",type:"1",text:"%s, if you are a girl, lick your finger in an erotic way. If you are a guy, do a cunniling*s with two fingers. Or finish your drink",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"%s, pretend you are having an orgasm for 10 seconds or finish your drink",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"1"},
 {cycle_state:"false",type:"1",text:"Girls, pull up your thongs",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"1",text:"%s and %s, cuddle for the next 5 minutes",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"2"},
@@ -757,5 +757,5 @@ var db = TAFFY([{cycle_state:"false",type:"1",text:"%s, if you are a girl, lick 
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever swum naked in the sea or ocean",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever been swimming with a group of friends, guys and girls, and all of you were naked",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
 {cycle_state:"false",type:"25",text:"Drink $ sips if you've ever had sex on the beach",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"},
-{cycle_state:"false",type:"25",text:"Drink $ sips if you've ever slept with someone in a youth hostel",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"25",text:"Drink $ sips if you've ever slept with someone in a youth hostel",key:"",parent_key:"",pack_name:"hot",language:"en",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.hot_en);

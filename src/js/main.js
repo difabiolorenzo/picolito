@@ -14,8 +14,8 @@ function init() {
 function devOverrideSettings() {
     displayPage("menu")
     changeDarkModeSettings(true);
-    displayPage('gamemode');
-    selectGamemode("never_mix");
+    toggleSettingsPage();
+    selectGamemode("default")
 }
 
 function defaultVariables() {
@@ -25,7 +25,7 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.29",
+        picolito_version: "0.30",
         debug_random_player: 0,
         debug_random_player_triggered: false,
         warning_panel_displayed: true,
@@ -65,11 +65,16 @@ function defaultVariables() {
                 green: 20,
                 yellow: 5
             },
+            empty_type: [] //when all sentences have been picked
         },
 
-        // Dummy DB used to pick sentences one by one
-        db: {},                                             //Full database for GAMEMODE_LANG.js ; is an TAFFY()
-        // pending_db: [],                                         //Collection of gamemodes sentences
+        pending_db: [],
+        stored_db: {},
+
+        multiple_database: {
+            mix: ["default", "hot", "bar", "silly"],
+            never_mix: ["never_popular", "never_hot", "never_party"]
+        },
 
         player_list: [],
         max_player_number: -1,
@@ -79,9 +84,9 @@ function defaultVariables() {
         team_1_player_list: [],
         team_2_player_list: [],
 
-        random_team_name: {
-            fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
-        },
+        // random_team_name: {
+        //     fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
+        // },
 
         sip: { min: 1, max: 4 },
         started: false,
@@ -100,14 +105,11 @@ function defaultVariables() {
 
         virus_enabled: true,
         virus_remaining: 1,                                 // virus can occur X times (still overlap...)
-        virus_end_min: 5,                                   // virus can end after X more sentence_id minimum
-        virus_end_max: 8,                                  // virus can end after X more sentence_id maximum
+        virus_end_min: 3,                                   // virus can end after X more sentence_id minimum
+        virus_end_max: 6,                                  // virus can end after X more sentence_id maximum
         virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
 
-        social_posting_enabled: false,
-
-        unlucky_player_3: false,
-        unlucky_player_3_weight: 0.2
+        social_posting_enabled: false
     }
 
     if (global.dev_mode == true) {
@@ -124,11 +126,13 @@ function resetVariables() {
     game.team_2_player_list = [];
 
     game.started = false;
+    game.filter.empty_type = [];
     game.cycle_id = -1;
     game.gamemode = "default";
     game.virus_remaining = 1;
     game.shot_remaining = game.shot_amount;
     game.database = undefined;
+    game.pending_db = [];
 
     game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
 
@@ -202,7 +206,6 @@ function changeSipSettings(setting, value) {
     //update HTML
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
-    // console.log(`changeSipSettings(${setting}, ${value}) - ${game.sip.min} - ${game.sip.max}`);
 }
 
 function changeDownDrinking(value) {
@@ -275,20 +278,16 @@ function toggleSettingsPage() {
 }
 
 function addPlayer(player_name, html_origin) {
-    if (player_name == undefined) {
-        if (html_origin == "menu") {
-            var player_name = manu_player_input.value;
-            if (manu_player_input.value == "") { return; }
-        }
-        if (html_origin == "ingame") {
-            var player_name = ingame_player_input.value;
-            if (ingame_player_input.value == "") { return; }
-        }
+    if (player_name == undefined && html_origin == "menu") {
+        var player_name = manu_player_input.value;
+        if (manu_player_input.value == "") { return; }
+    } else if (player_name == undefined && html_origin == "ingame") {
+        var player_name = ingame_player_input.value;
+        if (ingame_player_input.value == "") { return; }
     }
 
     if (player_name.length > 0 && player_name.length <= 50) {
-        //prevent name start by spaces
-        var start_by_space = true;
+        var start_by_space = true; //prevent name start by spaces
         for (var i = 0 ; i < player_name.length ; i++) {
             if (player_name.charAt(i) == " ") {
             } else {
@@ -400,20 +399,55 @@ function initGame(select_team) {
     } else {
         if (game.started == false) {
             game.started = true;
-            createScriptElement("./src/js/db/" + game.gamemode + "_" + global.current_language + ".js")
-            if (typeof db === "function") {
-                initGame()
-                retrieveDB()
-                updateGameCycle();
-                displaySentenceList(true);
-            }
+            checkDatabase();
+            // if (typeof db === "function") {
+            //     initGame()
+            //     retrieveDB()
+            //     updateGameCycle();
+            //     displaySentenceList(true);
+            // }
         }
         displayPage('game');
         manageIngameOptionDisplay(true, "start", "block");
     }
 }
 
+function checkDatabase() {
+    if (game.gamemode == "mix") {
+        for (var i=0;i<game.multiple_database.mix.length;i++) {
+            testStoredDatabase(game.multiple_database.mix[i], global.current_language)
+        }
+    } else if (game.gamemode == "never_mix") {
+        for (var i=0;i<game.multiple_database.never_mix.length;i++) {
+            testStoredDatabase(game.multiple_database.never_mix[i], global.current_language)
+        }
+    } else {
+        testStoredDatabase(game.gamemode, global.current_language)
+    }
+
+    function testStoredDatabase(gamemode, lang) {
+        try {
+            if (game.stored_db && game.stored_db[gamemode + "_" + lang]) {
+                // DB exists, concat to pending_db
+                var myObj = game.stored_db[gamemode + "_" + lang];
+                game.pending_db = game.pending_db.concat(game.stored_db[gamemode + "_" + lang])
+            } else {
+                // Calling file gamemode_lang.js
+                createScriptElement("./src/js/db/" + gamemode + "_" + lang + ".js");
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.log("ERREUR DE TYPE: " + error.message);
+                // Ajouter ici la logique de traitement de l'erreur
+            } else {
+                throw error;
+            }
+        }
+    }
+}
+
 function firstSentence() {
+    convertPendingDBTaffy();
     manageIngameOptionDisplay(false, "start", "none");
     nextSentence();
 }
@@ -452,9 +486,8 @@ function restart(gamemode) {
 }
 
 function selectGamemode(selected_gamemode) {
-    //this function only to add a console.log and purify HTML
-    game.gamemode = selected_gamemode;
     console.log("/gamemode", selected_gamemode);
+    game.gamemode = selected_gamemode;
     initGame(true);
 }
 
@@ -486,7 +519,6 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
     }
 
     if (option_identifier != undefined && option_display_value != undefined) {
-        console.log("test")
         switch(option_identifier) {
             case "player_option":
             var selected_option = ingame_player_option;
@@ -506,12 +538,8 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
             default:
                 break;
         }
-
-        console.log(selected_option)
         selected_option.style.display = option_display_value;
     }
-
-    console.log(display_option_panel, selected_option, option_identifier, option_display_value)
 }
 
 function manageNavDisplay(navigation_option, display) {
@@ -564,7 +592,7 @@ function updateGameCycle() {
     }
 }
 
-function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
+function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack_name) {
 
     var offset_sentence_id = (game.cycle_id) + posOffset;
     if (posOffset > 0) {
@@ -581,7 +609,8 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color) {
         sentence: sentence,
         key: key,
         type: type,
-        color : color
+        color : color,
+        pack_name : pack_name
     }
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
@@ -649,7 +678,7 @@ function textReplacer(text) {
         }
         // change %t by team
         if (text.charAt(i) == "%" && text.charAt(i+1) == "t") {
-            if (Math.random() < 0.5 == true) {
+            if (Math.random() < 0.5 == true) { //choose between TEAM 1 and 2
                 text = replaceAt(text, i, html_span_team + game.team_1 + html_span_end, 1);
             } else {
                 text = replaceAt(text, i, html_span_team + game.team_2 + html_span_end, 1);

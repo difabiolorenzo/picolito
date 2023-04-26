@@ -1,4 +1,4 @@
-var db = TAFFY([{cycle_state:"false",type:"8",text:"Équipe %t, question avec $ gorgées en jeu : Quel est le nom de famille maternel de %s ?",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"1"},
+game.stored_db.war_fr = [{cycle_state:"false",type:"8",text:"Équipe %t, question avec $ gorgées en jeu : Quel est le nom de famille maternel de %s ?",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Équipe %t, question avec $ gorgées en jeu : À 5 près, quel est le nombre de conquêtes de %s ?",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Équipe %t, question avec $ gorgées en jeu : À plus ou moins 1cm, quelle est la taille de %s ?",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"1"},
 {cycle_state:"false",type:"8",text:"Équipe %t, question avec $ gorgées en jeu : Quelle est la ville de naissance de %s ?",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"1"},
@@ -788,5 +788,5 @@ var db = TAFFY([{cycle_state:"false",type:"8",text:"Équipe %t, question avec $ 
 {cycle_state:"false",type:"13",text:"Les deux équipes trinquent avec $ gorgées !",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"L'équipe qui contient le joueur avec le plus grand nez boit $ gorgées !",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"0"},
 {cycle_state:"false",type:"13",text:"Equipe %t, élisez parmi vous le puit de l'équipe. Il ou elle finira son verre",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"0"},
-{cycle_state:"false",type:"13",text:"Equipe %t, choisissez deux de vos membres qui finiront leurs verres",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"0"}]);
-retrieveDB();
+{cycle_state:"false",type:"13",text:"Equipe %t, choisissez deux de vos membres qui finiront leurs verres",key:"",parent_key:"",pack_name:"war",language:"fr",nb_players:"0"}];
+game.pending_db = game.pending_db.concat(game.stored_db.war_fr);
