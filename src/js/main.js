@@ -25,7 +25,7 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.30",
+        picolito_version: "0.30.1",
         debug_random_player: 0,
         debug_random_player_triggered: false,
         warning_panel_displayed: true,
@@ -453,6 +453,7 @@ function firstSentence() {
 }
 
 function exitGame() {
+    displaySentenceList(true);  // Force closing of sentence list ingame
     displaySentence("", undefined); // reset HTML sentence display
 
     updateGameCycle();                                  // reset cycle count

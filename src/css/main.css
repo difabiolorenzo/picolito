@@ -232,7 +232,7 @@ div#disclaimer {
 
 div#disclaimer_warning {
     background-color: white;
-    padding: 2.5vw;
+    padding: 5vw;
     border-radius: .25rem;
     overflow-y: clip;
     overflow: auto;
@@ -281,12 +281,6 @@ div#ingame_topbar {
     padding: 3vh;
     /* background-color: lime; */
 }
-
-div#ingame_content {
-}
-
-div#disclaimer {}
-
 div#menu_player_list {
     display: flex;
     flex-wrap: wrap;

@@ -91,27 +91,37 @@
 
                         </select>
                         <div>
-                            <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
-                            <label id="text_settings_information_highlight" class="form-check-label">text_settings_information_highlight</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
+                                <a id="text_settings_information_highlight">text_settings_information_highlight</a>
+                            </label>
                         </div>
                         <div>
-                            <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">
-                            <label id="text_settings_animation" class="form-check-label">text_settings_animation</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">
+                                <a id="text_settings_animation">text_settings_animation</a>
+                            </label>
                         </div>
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_gameplay">text_settings_gameplay</h5>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="input_shot_enabled" onclick="game.shot_enabled = this.checked">
-                            <label id="text_settings_shot" class="form-check-label">text_settings_shot</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_shot_enabled" type="checkbox" checked onclick="game.shot_enabled = this.checked">
+                                <a id="text_settings_shot">text_settings_shot</a>
+                            </label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="input_virus_enabled" onclick="game.virus_enabled = this.checked">
-                            <label id="text_settings_virus" class="form-check-label" >text_settings_virus</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_virus_enabled" type="checkbox" checked onclick="game.virus_enabled = this.checked">
+                                <a id="text_settings_virus">text_settings_virus</a>
+                            </label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="checkbox" id="input_social_posting_enabled" onclick="game.social_posting_enabled = this.checked">
-                            <label id="text_settings_social" class="form-check-label" >text_settings_social</label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_social_posting_enabled" type="checkbox" checked onclick="game.social_posting_enabled = this.checked">
+                                <a id="text_settings_social">text_settings_social</a>
+                            </label>
                         </div>
                         <br>
                         <div class="form-group">
@@ -150,8 +160,8 @@
                         </div>
                         <div style="display:none">
                             <input class="form-check-input" id="input_unlucky_player_3_settings" type="checkbox" onclick="game.unlucky_player_3 = this.checked" >
-                            <label id="text_settings_unlucky_player_3" class="form-check-label">text_settings_unlucky_player_3</label>
-                        </div>
+                            <label id="text_settings_unlucky_player_3" class="form-check-label">text_settings_unlucky_player_3</label> -->
+                        </div> 
                         <br>
                         <div style="display:none">
                             <label class="form-control" id="text_settings_unlucky_player_3_percentage" for="slider_unlucky_player_3_weight" class="form-check-label">text_settings_unlucky_player_3_percentage</label>
@@ -285,12 +295,12 @@
                     </div>
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
-                            <p id="text_game_ready">Prêts?</p>
+                            <p id="text_game_ready">text_game_ready</p>
                             <button id="text_game_start_button" type='submit' class='btn btn-info' onclick='firstSentence()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">Fin de partie</p>
-                            <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">Quitter</button>
+                            <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
                             <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
                         </div>
                         <div id="dice_ingame_option" style="display:none">
