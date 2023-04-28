@@ -253,6 +253,10 @@ div#disclaimer_warning_validation {
     margin-top: 1vh;
 }
 
+.dark_mode div#disclaimer_warning_validation {
+    background-color: var(--dark_mode_gray);
+}
+
 a#picolito_version {
     text-decoration: unset;
     color: unset;

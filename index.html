@@ -39,8 +39,10 @@
                 <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
                 <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">text_prevention_skip_button</button>
                 <div>
-                    <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
-                    <label id="text_warning_panel_displayed" class="form-check-label" >text_warning_panel_displayed</label>
+                    <label class="form-check-label" >
+                        <input type="checkbox" id="input_warning_panel_displayed" onclick="global.warning_panel_displayed = !this.checked; storeWarningPanelDisplayedCookie()">
+                        <a id="text_warning_panel_displayed">text_warning_panel_displayed</a>
+                    </label>
                 </div>
             </div>
         </div>
