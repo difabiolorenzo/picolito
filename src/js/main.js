@@ -12,10 +12,14 @@ function init() {
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
 function devOverrideSettings() {
-    displayPage("menu")
-    changeDarkModeSettings(true);
-    toggleSettingsPage();
-    selectGamemode("default")
+    selectGamemode("weakest_link");
+
+    addPlayer("Ricard")
+    addPlayer("Bertrand")
+    addPlayer("Zoé")
+    addPlayer("Alphonse")
+    displayPage("weakest_link_vote")
+
 }
 
 function defaultVariables() {
@@ -25,7 +29,7 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.30.1",
+        picolito_version: "0.31.0",
         debug_random_player: 0,
         debug_random_player_triggered: false,
         warning_panel_displayed: true,
@@ -109,7 +113,14 @@ function defaultVariables() {
         virus_end_max: 6,                                  // virus can end after X more sentence_id maximum
         virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
 
-        social_posting_enabled: false
+        social_posting_enabled: false,
+
+        weakest_link: {
+            max_chain: 9,
+            chain: 0,
+            alphabetically_ordered_player: [],
+            bank: 0
+        }
     }
 
     if (global.dev_mode == true) {
@@ -137,6 +148,11 @@ function resetVariables() {
     game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
 
     game_cycle_count.innerHTML = "-";
+
+    game.weakest_link.chain = 0;
+    game.weakest_link.alphabetically_ordered_player = [];
+    game.weakest_link.bank = 0;
+    game.weakest_link.player_turn_index = -1;
 }
 
 function updateHTMLSettingsByVar() {
@@ -255,6 +271,7 @@ function displayPage(page) {
     document.getElementById('gamemode').style.display = 'none';
     document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
+    document.getElementById('weakest_link_vote').style.display = 'none';
 
     document.getElementById(page).style.display = 'block';
 }
@@ -396,6 +413,12 @@ function initGame(select_team) {
         manageOptionDisplay("card", true);
         manageNavDisplay("navigation_arrows", false);
         manageNavDisplay("players", false);
+    } else if (game.gamemode == "weakest_link") {
+        checkDatabase();
+        displayPage('game');
+        manageIngameOptionDisplay(true, "weakest_link", true);
+        manageNavDisplay("players", false);
+        manageIngameOptionDisplay(true, "start", "block");
     } else {
         if (game.started == false) {
             game.started = true;
@@ -449,6 +472,7 @@ function checkDatabase() {
 function firstSentence() {
     convertPendingDBTaffy();
     manageIngameOptionDisplay(false, "start", "none");
+    if (game.gamemode == "weakest_link") { initWeakestLink() }
     nextSentence();
 }
 
@@ -465,11 +489,22 @@ function exitGame() {
     manageIngameOptionDisplay(false, 'replay', 'none')
     manageIngameOptionDisplay(false, 'dice', 'none')
     manageIngameOptionDisplay(false, 'card', 'none')
+    manageIngameOptionDisplay(false, 'weakest_link', 'none')
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
 
     displayPage('menu');
+
+    ingame_answer.innerHTML = ""
+}
+
+function resetWeakestLink() {
+    ingame_weakest_link_current_player.style.display = ""
+    ingame_weakest_link_score_sip.innerHTML = "-"
+    ingame_weakest_link_score_bank.innerHTML = "-"
+    ingame_weakest_link_time.innerHTML = "-"
+    ingame_weakest_link_current_player.innerHTML = "-"
 }
 
 function launchSelectedGamemode(selected_gamemode) {
@@ -516,7 +551,12 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
     if (display_option_panel == true) {
         ingame_option.style.display = "flex";
     } else if (display_option_panel == false) {
-        ingame_option.style.display = "none";
+        //only close playeroption if game not started
+        if (game.cycle_id == -1 && option_identifier == "player_option") {
+            ingame_player_option.style.display = "none";
+        } else {
+            ingame_option.style.display = "none";
+        }
     }
 
     if (option_identifier != undefined && option_display_value != undefined) {
@@ -536,6 +576,9 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
             case "card":
             var selected_option = card_ingame_option;
                 break;
+            case "weakest_link":
+                var selected_option = ingame_weakest_link;
+                    break;
             default:
                 break;
         }
@@ -593,7 +636,7 @@ function updateGameCycle() {
     }
 }
 
-function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack_name) {
+function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack_name, answer) {
 
     var offset_sentence_id = (game.cycle_id) + posOffset;
     if (posOffset > 0) {
@@ -611,13 +654,15 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack
         key: key,
         type: type,
         color : color,
-        pack_name : pack_name
+        pack_name : pack_name,
+        answer : answer
     }
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
     } else if (game.sentence_history[offset_sentence_id].sentence == "none") {
         game.sentence_history[offset_sentence_id] = sentence_history_item;
     }
+    console.log(sentence_history_item)
 }
 
 function randomSip() {
@@ -703,6 +748,13 @@ function displaySentenceList(force_ingame) {
         sentence_list.style.display = "block";
         updateHTMLBackgroundColor("black")
         updateSentenceList()
+    }
+}
+
+function tryNextSentence () {
+    if (game.gamemode != "weakest_link") {
+        nextSentence(true);
+        document.getElementById('game_cycle_next_button').innerHTML = '>';
     }
 }
 
@@ -821,7 +873,7 @@ function setCookie(cookie_name, cookie_value) {
     var d = new Date();
     d.setTime(d.getTime() + ( global.cookie_expiration_delay*24*60*60*1000));
     var expires = "expires="+ d.toUTCString();
-    console.log(cookie_name + "=" + cookie_value + ";" + expires + ";path=/;")
+    // console.log(cookie_name + "=" + cookie_value + ";" + expires + ";path=/;")
     document.cookie = cookie_name + "=" + cookie_value + ";" + expires + ";path=/;";
 }
 

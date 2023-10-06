@@ -175,7 +175,9 @@
                         <button id="text_settings_save_settings"class="btn col-md-5 btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
                         <button id="text_settings_delete_cookies" class="btn col-md-5 btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
+                    <br>
                     <div class="form-check">
+                        <p><a id="text_settings_information_delete_players" href="#" onclick="selectGamemode('weakest_link');">Picton Faible (Experiental)</a></p>
                         <h5 id="text_settings_information_other">text_settings_information_other</h5>
                         <p><a id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">text_settings_information_delete_players</a></p>
                         <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
@@ -198,7 +200,7 @@
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
-                <h2 class="text-center">Picolo</h2><hr>
+                <h2 class="text-center">Picolo</h2>
                 <label class="btn btn-secondary btn-success">
                   <input type="radio" name="default" id="gamemode_option_default" onclick="selectGamemode(this.name);" autocomplete="off" checked>
                   <h3 id="text_gamemode_title_default">text_gamemode_title_default</h3>
@@ -253,7 +255,16 @@
                     <h3 id="text_gamemode_title_never_mix">text_gamemode_title_never_mix</h3>
                     <p id="text_gamemode_never_mix_subtitle_1">text_gamemode_war_subtitle_1</p>
                     <p id="text_gamemode_never_mix_subtitle_2">text_gamemode_war_subtitle_2</p>
-                </label><hr>
+                </label>
+                <div id="text_experimental_gamemode" style="display:none">
+                    <hr>
+                    <h2 class="text-center" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h2><hr>
+                    <label class="btn btn-secondary btn-warning">
+                        <input type="radio" name="weakest_link" id="gamemode_option_weakest_link" onclick="selectGamemode(this.name);" autocomplete="off">
+                        <h3 id="text_gamemode_title_weakest_link">text_gamemode_title_weakest_link</h3>
+                        <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
+                    </label><hr>
+                </div>
             </div>
             
               <hr>
@@ -291,9 +302,35 @@
                 </div>
 
                 <div id="ingame_content">
-                    <div id="ingame_text" onclick="nextSentence(true); document.getElementById('game_cycle_next_button').innerHTML = '>';">
+                    <div id="ingame_text" onclick="tryNextSentence()">
                         <h1 id="ingame_title"></h1>
                         <p id="ingame_sentence"></p>
+                        <p id="ingame_answer"></p>
+                    </div>
+                    <div id="ingame_weakest_link">
+                        <div id="ingame_weakest_link_score">
+                            <div class="ingame_weakest_link_text_button_area">
+                                <a id="ingame_weakest_link_score_sip" class="weakest_link_shield_small">-</a>
+                                <a id="ingame_weakest_link_text_sip" class="weakest_link_label">ingame_weakest_link_text_sip</a>
+                            </div>
+                            <div class="ingame_weakest_link_text_button_area">
+                                <a id="ingame_weakest_link_score_bank" class="weakest_link_shield_small">-</a>
+                                <a id="ingame_weakest_link_text_bank" class="weakest_link_label">ingame_weakest_link_text_bank</a>
+                            </div>
+                            <div class="ingame_weakest_link_text_button_area" style="display: none;">
+                                <a id="ingame_weakest_link_time" class="weakest_link_shield_small">0:00</a>
+                                <a id="ingame_weakest_link_text_time" class="weakest_link_label">ingame_weakest_link_text_time</a>
+                            </div>
+                            
+                        </div>
+                        <div id="ingame_weakest_link_players">
+                            <a id="ingame_weakest_link_current_player" class="weakest_link_shield_player">-</a>
+                        </div>
+                        <div id="ingame_weakest_questions_actions">
+                            <a id="ingame_weakest_link_current_button_correct" class="weakest_link_shield_normal" onclick="weakestLinkCorrect()">CORRECT</a>
+                            <a id="ingame_weakest_link_current_button_wrong" class="weakest_link_shield_normal" onclick="weakestLinkWrong()">WRONG</a>
+                            <a id="ingame_weakest_link_current_button_bank" class="weakest_link_shield_normal" onclick="weakestLinkBank()">BANK</a>
+                        </div>
                     </div>
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
@@ -336,5 +373,11 @@
                 <div id="ingame_information"><a id="ingame_gamemode_information"></a></div>
             </div>
         </div>
+
+        
+        <div class="page" id="weakest_link_vote" style="display:none">
+            <a class="weakest_link_shield_player weakest_link_shield_player_voting">-</a>
+        </div>
+        
     </body>
 </html>

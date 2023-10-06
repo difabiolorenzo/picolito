@@ -24,6 +24,11 @@ function setLanguageString() {
             ready: "Prêts?",
             start: "Commencer",
             virus: "VIRUS",
+            weakest_link_sip: "GORGEES",
+            weakest_link_bank: "BANQUE",
+            weakest_link_time: "TEMPS",
+            weakest_link_correct: "CORRECTE",
+            weakest_link_wrong: "INCORRECTE",
             end_game: "Fin de partie",
             restart: "Recommencer",
             player_singular: "joueur",
@@ -83,6 +88,9 @@ function setLanguageString() {
             gamemode_never_mix: "Mix - 🧪",
             gamemode_never_mix_subtitle_1: "Je n'ai jamais rien fait.",
             gamemode_never_mix_subtitle_2: "Populaire, Coquin & Sexy et Fête",
+            gamemode_weakest_link_title:"Maillon Faible",
+            gamemode_title_weakest_link:"Picton Faible",
+            gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir.",
             gamemode_other: "Autre",
             lang_fr: "Français",
             lang_da: "Danois",
@@ -131,6 +139,11 @@ function setLanguageString() {
             virus: "VIRUS",
             end_game: "End",
             restart: "Restart",
+            weakest_link_sip: "SIP",
+            weakest_link_bank: "BANK",
+            weakest_link_time: "TIME",
+            weakest_link_correct: "CORRECT",
+            weakest_link_wrong: "WRONG",
             player_singular: "player",
             player_plural: "players",
             player_menu: "Players",
@@ -189,6 +202,9 @@ function setLanguageString() {
             gamemode_never_mix: "Mix - 🧪",
             gamemode_never_mix_subtitle_1: "Never done nothing.",
             gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
+            gamemode_weakest_link_title:"Weakest Link",
+            gamemode_title_weakest_link:"Weakest Link",
+            gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye",
             gamemode_other: "Other",
             lang_fr: "French",
             lang_da: "Danish",
@@ -322,7 +338,6 @@ function updateHTMLLanguageStrings() {
     text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
     text_gamemode_title_mix.innerHTML = global.current_language_strings.gamemode_mix_title;
     text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
-    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
 
     text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
@@ -331,6 +346,10 @@ function updateHTMLLanguageStrings() {
     text_gamemode_title_never_mix.innerHTML = global.current_language_strings.gamemode_never_mix;
     text_gamemode_never_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_1;
     text_gamemode_never_mix_subtitle_2.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_2;
+
+    text_gamemode_weakest_link_title.innerHTML = global.current_language_strings.gamemode_weakest_link_title
+    text_gamemode_title_weakest_link.innerHTML = global.current_language_strings.gamemode_title_weakest_link
+    text_gamemode_weakest_link_subtitle_1.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;
@@ -350,5 +369,13 @@ function updateHTMLLanguageStrings() {
 
     // alert_random_player_button.innerHTML = global.current_language_strings.alert_random_player;
     close_player_option_ingame.innerHTML = global.current_language_strings.close;
+
+    
+    ingame_weakest_link_text_sip.innerHTML = global.current_language_strings.weakest_link_sip;
+    ingame_weakest_link_text_bank.innerHTML = global.current_language_strings.weakest_link_bank;
+    ingame_weakest_link_text_time.innerHTML = global.current_language_strings.weakest_link_time;
+    ingame_weakest_link_current_button_correct.innerHTML = global.current_language_strings.weakest_link_correct;
+    ingame_weakest_link_current_button_wrong.innerHTML = global.current_language_strings.weakest_link_wrong;
+    ingame_weakest_link_current_button_bank.innerHTML = global.current_language_strings.weakest_link_bank;
 
 }

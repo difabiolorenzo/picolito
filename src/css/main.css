@@ -20,6 +20,8 @@
 
     --dark_mode_light_gray: #252525;
     --dark_mode_gray: #101010;
+
+    --weakest_link: #000046;
 }
 .page {
     padding: 5vw;
@@ -41,12 +43,23 @@
     cursor: pointer;
     /* background-color: #0003; */
     /* margin-top: 10%; */
-    padding-top: 5vw;
-    padding-bottom: 5vw;
+    /* padding-top: 5vw; */
+    /* padding-bottom: 5vw; */
     /* background-color: cyan; */
 }
 
-p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
+div#game.dark_blue #ingame_text {
+    cursor:unset;
+}
+
+div#game.dark_blue #ingame_content {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    margin-top: 12.5vh;
+}
+
+p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame, h1#ingame_title {
     font-weight: bold;
     font-size: xx-large;
     user-select: none;
@@ -55,6 +68,16 @@ p#ingame_sentence, #text_game_ready, #text_game_endgame, h1#ingame_title {
     padding-left: 5vw;
     padding-right: 5vw;
     text-size-adjust: auto;
+}
+
+div#game.dark_blue p#ingame_sentence, div#game.dark_blue p#ingame_answer {
+    font-size: x-large;
+    background-color: #0000004d;
+}
+
+p#ingame_answer {
+    opacity: 0.5;
+    background-color: #0000004d;
 }
 
 #text_game_ready {
@@ -70,13 +93,14 @@ h1#ingame_title {font-weight: 900;}
 0% {opacity: 0;transform: translateX(5vw);}
 }
 
-div#game {overflow: hidden;padding: 0;background-color: var(--gray-dark);}
+div#game {overflow: hidden;padding: 0;background: var(--gray-dark);background-color: var(--gray-dark);}
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark);}
 div#game.purple {background-color: var(--purple);}
+div#game.dark_blue, #weakest_link_vote {background-color: var(--weakest_link);background: rgb(20,26,77);background: linear-gradient(147deg, #0c102d 0%, #215d73 50%, #204b55 75%, #234f5f 150%);transition: 0.25s;}
 
 .dark_mode div#game.dark_affected {background-color: inherit;}
 
@@ -159,7 +183,6 @@ li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
     }
 }
 div#ingame_option {
-    background-color: #000000c7;
     /* opacity: 0.5; */
     /* margin-top: 5vh; */
     /* padding: 2.5vh; */
@@ -174,13 +197,15 @@ div#ingame_option {
     align-content: center;
     justify-content: space-around;
     align-items: center;
+    background-color: #000000bf;
 }
 
 #ingame_player_option, #replay_ingame_option, #start_ingame_option {
     background-color: #000000d9;
     padding: 5vh;
-    border: 1px solid #ffffff4f;
+    border: 1px solid #ffffff80;
     border-radius: .25rem;
+    /* box-shadow: 0px 0 5px 0 white; */
 }
 
 .dice, .playing_card {
@@ -237,6 +262,7 @@ div#disclaimer_warning {
     overflow-y: clip;
     overflow: auto;
     height: 90%;
+    box-shadow: inset 0 -2px 5px 0px;
 }
 
 .dark_mode #disclaimer_warning {
@@ -284,6 +310,7 @@ div#menu_content {
 div#ingame_topbar {
     padding: 3vh;
     /* background-color: lime; */
+    z-index: 64;
 }
 div#menu_player_list {
     display: flex;
@@ -291,7 +318,7 @@ div#menu_player_list {
 }
 
 div#ingame_information {
-    color: #0000004a;
+    color: rgb(0 0 0 / 10%);
     padding: 1vh;
     transition: 0.25s;
 }
@@ -299,4 +326,98 @@ div#ingame_information {
 div#ingame_information:hover {
     color: #000000a6;
     font-weight: bold;
+}
+
+
+div#ingame_weakest_link {
+    padding: 2vh;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+}
+
+div#ingame_weakest_link_players, div#ingame_weakest_link_score {
+    display: flex;
+    flex-direction: column;
+}
+
+div#ingame_weakest_link_players, div#ingame_weakest_questions_actions {
+    width: 20vw;
+}
+
+
+.weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
+    background-color: #72eafa;
+    box-shadow: 0px 3px 0px 0px black;
+    background: rgb(84,153,157);
+    background: linear-gradient(147deg, rgba(84,153,157,1) 0%, rgba(84,153,157,1) 25%, rgba(1,18,21,1) 60%, rgba(64,143,171,1) 80%, rgba(110,238,249,1) 90%, rgba(64,143,171,1) 100%);
+    height: 10vh;
+    width: 10vw;
+    display: flex;
+    border-radius: 50%;
+    border: 2px solid #00000082;
+    align-items: center;
+    justify-content: center;
+    margin: 1vh;
+    font-family: impact;
+    letter-spacing: 1px;
+    user-select: none;
+}
+
+.weakest_link_shield_normal {
+    height: 12.5vh;
+    width: 17vw;
+    border-radius: 50%;
+    margin: 1vh;
+}
+
+.weakest_link_shield_player {
+    height: 20vh;
+    width: 30vw;
+    border-radius: 50%;
+    margin: 1vh;
+}
+
+.dark_blue div#ingame_content {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+div#game.dark_blue div#ingame_topbar {
+    position: absolute;
+}
+
+.dark_blue div#navigation_arrows {
+    display: none !important;
+}
+
+.ingame_weakest_link_text_button_area {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.weakest_link_label {
+    font-weight: bold;
+    margin-left: 1vw;
+}
+
+a#ingame_weakest_link_current_player {
+    font-size: x-large;
+    word-wrap: normal;
+}
+
+.weakest_link_shield_player_voting {
+    display: inline-grid;
+    width: 25vw;
+}
+
+div#weakest_link_vote {
+   display: flex;
+   grid-template-columns: auto auto auto auto;
 }

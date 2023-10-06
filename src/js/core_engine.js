@@ -33,9 +33,6 @@ function goToSpecificSentence(position) {
 function convertPendingDBTaffy() {
     // game.database = TAFFY(game.pending_db)
     game.database = TAFFY(game.pending_db)
-
-
-
     // game.pending_db = game.pending_db.concat(
 }
 
@@ -52,36 +49,78 @@ function getMinPlayer() {
 function retrieve(sentence_id) {
     //generate or retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
-        if (game.gamemode == "never_popular" || game.gamemode == "never_party" || game.gamemode == "never_hot"|| game.gamemode == "never_mix") {
-            generateNeverDoneSentences();
-        } else {
-            generatePicoloSentences();
+        
+        console.log(game.gamemode);
+        switch (game.gamemode) {
+            case "default":
+                generatePicoloSentences();
+                break
+            case "silly":
+                generatePicoloSentences();
+                break
+            case "bar":
+                generatePicoloSentences();
+                break
+            case "hot":
+                generatePicoloSentences();
+                break
+            case "war":
+                generatePicoloSentences();
+                break
+            case "mix":
+                generatePicoloSentences();
+                break
+            case "never_popular":
+                generateNeverDoneSentences();
+                break
+            case "never_party":
+                generateNeverDoneSentences();
+                break
+            case "never_hot":
+                generateNeverDoneSentences();
+                break
+            case "never_mix":
+                generateNeverDoneSentences();
+                break
+            case "weakest_link":
+                generateWeakestLink();
+                break
+            default:
+            break
         }
+
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
-        displaySentence(sentence_requested.sentence, sentence_requested.color, sentence_requested.pack_name);
+        console.log(game.sentence_history[sentence_id])
+        displaySentence(sentence_requested.sentence, sentence_requested.color, sentence_requested.pack_name, sentence_requested.answer);
         updateGameCycle();
     }
 }
 
-function displaySentence(sentence, color, pack_name) {
-    ingame_sentence.className = ""
-    ingame_title.className = ""
+function displaySentence(sentence, color, pack_name, answer) {
+    ingame_sentence.className = "";
+    ingame_answer.className = "";
+    ingame_title.className = "";
     ingame_gamemode_information.innerHTML = "";
 
     setTimeout(function() {
         if (game.animation == true) {
             ingame_sentence.className = "animation_text_change";
             ingame_title.className = "animation_text_change";
+            ingame_answer.className = "animation_text_change";
         }
         document.getElementById("ingame_sentence").innerHTML = sentence;
+        if (color == "dark_blue") {
+            document.getElementById("ingame_answer").innerHTML = answer;
+        }
     }, 0);
-    
+
     if (color == "yellow") {
         ingame_title.innerText = global.current_language_strings.virus;
     } else {
         ingame_title.innerText = "";
     }
+    console.log(answer)
     ingame_gamemode_information.innerHTML = pack_name;
 }
 
@@ -211,29 +250,6 @@ function getRandomType() {
     }
 }
 
-function generateNeverDoneSentences() {
-
-    function getRandomSentence() {
-        var random_int = Math.floor(Math.random() * Math.floor(request.length));
-        database_id = request[random_int].___id;
-        sentence = textReplacer(request[random_int].text);
-        pack_name = request[random_int].pack_name;
-        if (request[random_int].key != "") { key = request[random_int].key; }
-        console.log(random_int, sentence)
-
-        //remove sentence from db
-        game.database().filter({___id:database_id}).remove();
-        console.log(database_id, "never_done removed")
-    }
-
-    var request = game.database().get();
-    
-    getRandomSentence()
-
-    updateHTMLBackgroundColor("purple");
-    displaySentence(sentence, "purple", pack_name);
-    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple", pack_name);
-}
 
 function generatePicoloSentences() {
     var get_random_color_type = getRandomType();
@@ -300,7 +316,7 @@ function generatePicoloSentences() {
 
     updateHTMLBackgroundColor(color);
     displaySentence(sentence, color, pack_name);
-    addHistoryItem(0, database_id, sentence, key, type, color, pack_name);
+    addHistoryItem(0, database_id, sentence, key, type, color, pack_name, undefined);
 
     if (key != "") {
         request = [];
@@ -323,13 +339,13 @@ function generatePicoloSentences() {
 
             console.log("game_cycle end virus", random_virus_end)
             console.log(sentence, "key", key, "type", type)
-            addHistoryItem(random_virus_end, database_id, sentence, key, type, color, pack_name);
+            addHistoryItem(random_virus_end, database_id, sentence, key, type, color, pack_name, undefined);
 
             game.virus_established_start = game.cycle_id;
             game.virus_established_end = game.cycle_id + random_virus_end;
 
         } else if (color == "blue" || color == "green" ) {
-            addHistoryItem(1, database_id, sentence, key, type, color, pack_name);
+            addHistoryItem(1, database_id, sentence, key, type, color, pack_name, undefined);
         }
 
     }
@@ -338,6 +354,114 @@ function generatePicoloSentences() {
     //shot_remaining-- if more than 1 down drinking is set
     if (color == "red") {
         game.shot_remaining--;
+    }
+}
+
+function generateNeverDoneSentences() {
+
+    function getRandomSentence() {
+        var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        database_id = request[random_int].___id;
+        sentence = textReplacer(request[random_int].text);
+        pack_name = request[random_int].pack_name;
+        if (request[random_int].key != "") { key = request[random_int].key; }
+        console.log(random_int, sentence)
+
+        //remove sentence from db
+        game.database().filter({___id:database_id}).remove();
+        console.log(database_id, "never_done removed")
+    }
+
+    var request = game.database().get();
+    
+    getRandomSentence()
+
+    updateHTMLBackgroundColor("purple");
+    displaySentence(sentence, "purple", pack_name);
+    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple", pack_name, undefined);
+}
+
+function generateWeakestLink() {
+    function getRandomSentence() {
+        var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        database_id = request[random_int].___id;
+        sentence = request[random_int].text;
+        answer = request[random_int].answer;
+        pack_name = request[random_int].pack_name;
+        if (request[random_int].key != "") { key = request[random_int].key; }
+        console.log(random_int, sentence, answer)
+
+        //remove sentence from db
+        game.database().filter({___id:database_id}).remove();
+        console.log(database_id, "weakest link removed")
+    }
+
+    var request = game.database().get();
+    
+    getRandomSentence()
+
+    updateHTMLBackgroundColor("dark_blue");
+    displaySentence(sentence, "dark_blue", pack_name, answer);
+    addHistoryItem(0, database_id, sentence, undefined, undefined, "dark_blue", pack_name, answer);
+}
+
+function initWeakestLink() {
+    if (game.player_list.length < 2) {
+            alert("nb player 0-1")
+            manageIngameOptionDisplay(false, 'weakest_link', 'flex')
+            ingame_weakest_link_current_player.style.display = "none"
+    } else {
+        manageIngameOptionDisplay(false, 'weakest_link', 'flex')
+    }
+
+    game.weakest_link.player_turn_index = -1;
+
+    function orderPlayerAlphabetically() {
+        game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
+
+        game.weakest_link.alphabetically_ordered_player.sort(function (a, b) {
+            return a.length - b.length;
+          });
+    }
+    orderPlayerAlphabetically()
+    
+    weakestLinkNextPlayer()
+
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+    ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
+    ingame_weakest_link_time.innerHTML = "0:00";
+}
+
+function weakestLinkCorrect() {
+    game.weakest_link.chain++;
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+    weakestLinkNextPlayer()
+    nextSentence()
+}
+
+function weakestLinkWrong() {
+    game.weakest_link.chain = 0;
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+    weakestLinkNextPlayer()
+    nextSentence()
+}
+
+function weakestLinkBank() {
+    game.weakest_link.bank += game.weakest_link.chain;
+    game.weakest_link.chain = 0
+
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+    ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
+}
+
+function weakestLinkNextPlayer() {
+    if (game.player_list.length >= 2) {
+        if (game.weakest_link.player_turn_index == game.player_list.length-1) {
+            game.weakest_link.player_turn_index = 0;
+        } else {
+            game.weakest_link.player_turn_index++
+            ingame_weakest_link_current_player.innerHTML = game.player_list[game.weakest_link.player_turn_index].toUpperCase();
+        }
     }
 }
 
