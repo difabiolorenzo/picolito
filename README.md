@@ -1,6 +1,6 @@
 ## Picolito
 
-Version en ligne de [Picolo](http://www.marmelapp.com/picolo) **en développement**
+Version en ligne de [Picolo](http://www.marmelapp.com/picolo)
 
 ### Prévention
 L'abus d'alcool est dangereux pour la santé. Pour plus d'information sur l'alcool et l'alcoolisme:
@@ -16,13 +16,13 @@ Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées ce
 
 - Les modes `On est débiles`, `Bar`, `Caliente` et `Guerre` sont débloqués
 - Intégration de `Je n'ai Jamais` aux modes de jeu.
-- Modes `Mix` pour jouer avec les différents type des jeux.
-- Possibilité de naviger entre les phrases déjà sorties (liste et bouton de navigation)
-- Mode sombre (manuel et en fonction du thème du navigateur)
-- Possibilité de désactivé les virus, les culs secs ainsi que les phrases demandant de poster sur les réseaux sociaux
-- Possibilité de changer le nombre de gorgés min. - max.
+- Modes `Mix` pour jouer avec les différents types des jeux.
+- Navigation entres les phrases précedentes.
+- Mode sombre.
+- Possibilité de désactiver les virus, les culs secs et les postes sur les réseaux sociaux.
+- Possibilité de changer le nombre de gorgés minimum et maximum
 - Distinctions des informations (joueurs, nombre de gorgées, équipes)
-- Sauvegarde les paramètres, les noms de joueurs et les noms des équipes. (Utilisation des cookies)
+- Sauvegarde des paramètres, des noms de joueurs et des noms des équipes. (Utilisation des cookies)
 
 ### Fonctionnement
 
@@ -43,4 +43,4 @@ Est un virus appliqué à un ou des joueur(s).
 
 `Rouge`
 Possède arbitrairement **5%** d'apparition.
-Oblige un joueur ou des joueur(s) à finir son verre.
+Oblige un ou des joueur(s) à finir son verre.

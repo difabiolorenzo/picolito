@@ -18,7 +18,7 @@ function devOverrideSettings() {
     addPlayer("Bertrand")
     addPlayer("Zoé")
     addPlayer("Alphonse")
-    displayPage("weakest_link_vote")
+    displayPage("game")
 
 }
 
@@ -29,7 +29,7 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.31.0",
+        picolito_version: "0.31.1",
         debug_random_player: 0,
         debug_random_player_triggered: false,
         warning_panel_displayed: true,
@@ -116,10 +116,11 @@ function defaultVariables() {
         social_posting_enabled: false,
 
         weakest_link: {
-            max_chain: 9,
+            // max_chain: 9,
             chain: 0,
             alphabetically_ordered_player: [],
-            bank: 0
+            bank: 0,
+            time: 60
         }
     }
 
@@ -271,7 +272,6 @@ function displayPage(page) {
     document.getElementById('gamemode').style.display = 'none';
     document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
-    document.getElementById('weakest_link_vote').style.display = 'none';
 
     document.getElementById(page).style.display = 'block';
 }
@@ -433,6 +433,10 @@ function initGame(select_team) {
         displayPage('game');
         manageIngameOptionDisplay(true, "start", "block");
     }
+
+    if (game.gamemode == "weakest_link") {
+        weakestLinkCalcTime()
+    }
 }
 
 function checkDatabase() {
@@ -460,7 +464,7 @@ function checkDatabase() {
             }
         } catch (error) {
             if (error instanceof TypeError) {
-                console.log("ERREUR DE TYPE: " + error.message);
+                console.log(error.message);
                 // Ajouter ici la logique de traitement de l'erreur
             } else {
                 throw error;
@@ -472,7 +476,11 @@ function checkDatabase() {
 function firstSentence() {
     convertPendingDBTaffy();
     manageIngameOptionDisplay(false, "start", "none");
-    if (game.gamemode == "weakest_link") { initWeakestLink() }
+    if (game.gamemode == "weakest_link") { 
+        initWeakestLink() 
+    } else {
+        manageNavDisplay("navigation_arrows", true)
+    }
     nextSentence();
 }
 
@@ -525,6 +533,7 @@ function selectGamemode(selected_gamemode) {
     console.log("/gamemode", selected_gamemode);
     game.gamemode = selected_gamemode;
     initGame(true);
+    manageNavDisplay("navigation_arrows", false)
 }
 
 function manageNavigationButton(button, display) {
@@ -578,7 +587,16 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
                 break;
             case "weakest_link":
                 var selected_option = ingame_weakest_link;
-                    break;
+                break;
+            case "weakest_link_vote":
+                var selected_option = weakest_link_vote_ingame_option;
+                break;
+            case "weakest_link_next_vote":
+                var selected_option = weakest_link_next_vote_ingame_option;
+                break;
+            case "weakest_link_vote_end":
+                var selected_option = weakest_link_vote_end_ingame_option;
+                break;
             default:
                 break;
         }
@@ -854,6 +872,10 @@ function updateTeamSelectionNextButton() {
     } else {
         document.getElementById("button_next_team_selection").disabled = true;
     }
+}
+
+function displayweakestLinkDisplayVote() {
+    displayPage("weakest_link_vote")
 }
 
 window.addEventListener("keydown", function(event) {

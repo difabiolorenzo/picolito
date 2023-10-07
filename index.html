@@ -317,7 +317,7 @@
                                 <a id="ingame_weakest_link_score_bank" class="weakest_link_shield_small">-</a>
                                 <a id="ingame_weakest_link_text_bank" class="weakest_link_label">ingame_weakest_link_text_bank</a>
                             </div>
-                            <div class="ingame_weakest_link_text_button_area" style="display: none;">
+                            <div class="ingame_weakest_link_text_button_area" onclick="weakestLinkDisplayVote()">
                                 <a id="ingame_weakest_link_time" class="weakest_link_shield_small">0:00</a>
                                 <a id="ingame_weakest_link_text_time" class="weakest_link_label">ingame_weakest_link_text_time</a>
                             </div>
@@ -338,9 +338,27 @@
                             <button id="text_game_start_button" type='submit' class='btn btn-info' onclick='firstSentence()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
-                            <p id="text_game_endgame">Fin de partie</p>
+                            <p id="text_game_endgame">text_game_endgame</p>
                             <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
                             <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
+                        </div>
+                        <div id="weakest_link_vote_ingame_option" style="display:none">
+                            <div id="ingame_weakest_link_voting_area">
+                                <p><a id="ingame_weakest_link_current_player_voting">current_player</a><a id="text_weakest_link_current_player_voting"> vote contre</a></p>
+                                <div id="weakest_link_player_ballot">
+                                </div>
+                            </div>  
+                        </div>
+                        <div id="weakest_link_next_vote_ingame_option" style="display:none">
+                            <p><a id="ingame_weakest_link_next_player_voting">next_player</a><a id="text_weakest_link_next_player_prepare_voting"> se prépare pour voter</a></p>
+                            <button id="button_weakest_link_next_vote" type="submit" class="btn btn-info" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
+                        </div>   
+                        <div id="weakest_link_vote_end_ingame_option" style="display:none">
+                            <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> est éliminé.</a></p>
+                            <button type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
+                            <button type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
+                            
+                        </div>   
                         </div>
                         <div id="dice_ingame_option" style="display:none">
                             <p class="text-center" onclick="randomDiceUnicode()">
@@ -372,12 +390,6 @@
 
                 <div id="ingame_information"><a id="ingame_gamemode_information"></a></div>
             </div>
-        </div>
-
-        
-        <div class="page" id="weakest_link_vote" style="display:none">
-            <a class="weakest_link_shield_player weakest_link_shield_player_voting">-</a>
-        </div>
-        
+        </div>        
     </body>
 </html>

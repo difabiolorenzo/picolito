@@ -137,7 +137,7 @@ function setLanguageString() {
             ready: "Ready?",
             start: "Start",
             virus: "VIRUS",
-            end_game: "End",
+            end_game: "Game Over",
             restart: "Restart",
             weakest_link_sip: "SIP",
             weakest_link_bank: "BANK",

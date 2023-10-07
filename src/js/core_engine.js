@@ -416,20 +416,18 @@ function initWeakestLink() {
 
     game.weakest_link.player_turn_index = -1;
 
-    function orderPlayerAlphabetically() {
-        game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
-
-        game.weakest_link.alphabetically_ordered_player.sort(function (a, b) {
-            return a.length - b.length;
-          });
-    }
-    orderPlayerAlphabetically()
+    game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
+    game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.sort()
     
     weakestLinkNextPlayer()
 
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
     ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
-    ingame_weakest_link_time.innerHTML = "0:00";
+
+    game.weakest_link.current_time = game.weakest_link.time;
+    weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
+
+
 }
 
 function weakestLinkCorrect() {
@@ -456,13 +454,82 @@ function weakestLinkBank() {
 
 function weakestLinkNextPlayer() {
     if (game.player_list.length >= 2) {
-        if (game.weakest_link.player_turn_index == game.player_list.length-1) {
+        console.log("game.weakest_link.player_turn_index", game.weakest_link.player_turn_index, game.player_list.length)
+        if (game.weakest_link.player_turn_index+1 == game.player_list.length) {
             game.weakest_link.player_turn_index = 0;
         } else {
             game.weakest_link.player_turn_index++
-            ingame_weakest_link_current_player.innerHTML = game.player_list[game.weakest_link.player_turn_index].toUpperCase();
         }
+        ingame_weakest_link_current_player.innerHTML = game.weakest_link.alphabetically_ordered_player[game.weakest_link.player_turn_index].toUpperCase();
     }
+}
+
+function weakestLinkInitVote() {
+    game.weakest_link.player_vote_index = 0;
+    weakestLinkDisplayNextVote()
+}
+
+function weakestLinkDisplayVote() {
+    function updateBallotList() {
+            weakest_link_player_ballot.innerHTML = ""
+            
+            var ul_head = `<ul class="list-group list-group-flush"></ul>`;
+            var ul_end = "</ul>";
+            var html_inner = "";
+    
+            for (var i in game.weakest_link.alphabetically_ordered_player) {
+                var player_name = game.weakest_link.alphabetically_ordered_player[i]
+                if (i != game.weakest_link.player_vote_index) {
+                    html_inner += `<li class="list-group-item sentence-list" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
+                }
+            }
+            weakest_link_player_ballot.innerHTML = ul_head + html_inner + ul_end;
+    }
+    updateBallotList()
+    manageIngameOptionDisplay(true, "weakest_link_vote", "flex")
+    manageIngameOptionDisplay(true, "weakest_link_next_vote", "none")
+}
+
+function weakestLinkVotePlayer(player_id) {
+    console.log(player_id)
+
+    game.weakest_link.player_vote_index++;
+    if (game.weakest_link.player_vote_index < game.player_list.length) {
+        weakestLinkDisplayNextVote()
+    } else {
+        manageIngameOptionDisplay(true, "weakest_link_vote", "none")
+        manageIngameOptionDisplay(true, "weakest_link_vote_end", "block")
+    }
+}
+
+function weakestLinkDisplayNextVote() {
+    manageIngameOptionDisplay(true, "weakest_link_vote", "none")
+    manageIngameOptionDisplay(true, "weakest_link_next_vote", "block")
+
+    var i = game.weakest_link.player_vote_index
+    ingame_weakest_link_next_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[i]
+}
+
+function weakestLinkEndVoting() {
+    manageIngameOptionDisplay(true, "weakest_link_vote", "none")
+    manageIngameOptionDisplay(true, "weakest_link_vote_finish", "block")
+}
+function weakestLinkChrono() {
+    if (game.weakest_link.current_time == 1) {
+        clearInterval(weakestLinkTimer);
+        // weakestLinkInitVote()
+    }
+    game.weakest_link.current_time--;
+    weakestLinkCalcTime();
+}
+
+function weakestLinkCalcTime() {
+    var min = Math.floor(game.weakest_link.current_time/60)
+    var sec = Math.floor(game.weakest_link.current_time%60)
+    if (sec < 10) {
+        sec = "0" + sec;
+    }
+    ingame_weakest_link_time.innerHTML = min + ":" + sec
 }
 
 function randomDiceUnicode() {
