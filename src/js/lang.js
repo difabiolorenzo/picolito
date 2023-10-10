@@ -29,6 +29,8 @@ function setLanguageString() {
             weakest_link_time: "TEMPS",
             weakest_link_correct: "CORRECTE",
             weakest_link_wrong: "INCORRECTE",
+            weakest_link_prepare_vote: "se prépare à voter.",
+            weakest_link_vote_against: "vote contre",
             end_game: "Fin de partie",
             restart: "Recommencer",
             player_singular: "joueur",
@@ -377,5 +379,10 @@ function updateHTMLLanguageStrings() {
     ingame_weakest_link_current_button_correct.innerHTML = global.current_language_strings.weakest_link_correct;
     ingame_weakest_link_current_button_wrong.innerHTML = global.current_language_strings.weakest_link_wrong;
     ingame_weakest_link_current_button_bank.innerHTML = global.current_language_strings.weakest_link_bank;
+
+    text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
+    button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
+    text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
+    text_game_restart_weakest_link.innerHTML = global.current_language_strings.restart;
 
 }

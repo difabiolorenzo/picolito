@@ -17,6 +17,7 @@
         <script type="text/javascript" src="./src/js/taffy/taffy.js"></script>
 
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
+        <link rel="stylesheet" type="text/css" href="./src/css/main_portrait.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
         <script type="text/javascript" src="./src/js/lang.js"></script>
@@ -78,6 +79,10 @@
                     </select>
                     <button id="text_gamemode_menu" type="submit" class="btn btn-info col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
                     <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
+
+                    <p><button type="submit" class="btn btn-info col-md-12" onclick="selectGamemode('weakest_link')">Maillon Faible (Experiental)</button>
+                    </p>
+                        
                 </div>
                 <div id="settings" style="display:none;">
                     <div class="form-check">
@@ -171,13 +176,22 @@
                         </div>
                     </div>
                     <div class="form-check">
+                        <div class="form-group">
+                            <label id="text_settings_weakest_link_equality" for="input_weakest_link_equality">text_settings_weakest_link_equality</label>
+                            <select disabled class="form-control col-md-5" id="input_weakest_link_equality" onchange="changeWeakestLinkEquality(this.value)">
+                                <option value="strongest_link">strongest_link</option>
+                                <option value="arbitrary">arbitrary</option>
+                                <option value="both">both</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-check">
                         <h5 id="text_settings_cookies">Cookies</h5>
                         <button id="text_settings_save_settings"class="btn col-md-5 btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
                         <button id="text_settings_delete_cookies" class="btn col-md-5 btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
                     <br>
                     <div class="form-check">
-                        <p><a id="text_settings_information_delete_players" href="#" onclick="selectGamemode('weakest_link');">Picton Faible (Experiental)</a></p>
                         <h5 id="text_settings_information_other">text_settings_information_other</h5>
                         <p><a id="text_settings_information_delete_players" href="#" onclick="removeAllPlayers()">text_settings_information_delete_players</a></p>
                         <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
@@ -307,7 +321,7 @@
                         <p id="ingame_sentence"></p>
                         <p id="ingame_answer"></p>
                     </div>
-                    <div id="ingame_weakest_link">
+                    <div id="ingame_weakest_link" style="display:none">
                         <div id="ingame_weakest_link_score">
                             <div class="ingame_weakest_link_text_button_area">
                                 <a id="ingame_weakest_link_score_sip" class="weakest_link_shield_small">-</a>
@@ -317,7 +331,7 @@
                                 <a id="ingame_weakest_link_score_bank" class="weakest_link_shield_small">-</a>
                                 <a id="ingame_weakest_link_text_bank" class="weakest_link_label">ingame_weakest_link_text_bank</a>
                             </div>
-                            <div class="ingame_weakest_link_text_button_area" onclick="weakestLinkDisplayVote()">
+                            <div class="ingame_weakest_link_text_button_area">
                                 <a id="ingame_weakest_link_time" class="weakest_link_shield_small">0:00</a>
                                 <a id="ingame_weakest_link_text_time" class="weakest_link_label">ingame_weakest_link_text_time</a>
                             </div>
@@ -327,9 +341,9 @@
                             <a id="ingame_weakest_link_current_player" class="weakest_link_shield_player">-</a>
                         </div>
                         <div id="ingame_weakest_questions_actions">
-                            <a id="ingame_weakest_link_current_button_correct" class="weakest_link_shield_normal" onclick="weakestLinkCorrect()">CORRECT</a>
-                            <a id="ingame_weakest_link_current_button_wrong" class="weakest_link_shield_normal" onclick="weakestLinkWrong()">WRONG</a>
-                            <a id="ingame_weakest_link_current_button_bank" class="weakest_link_shield_normal" onclick="weakestLinkBank()">BANK</a>
+                            <a id="ingame_weakest_link_current_button_correct" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkCorrect()">CORRECT</a>
+                            <a id="ingame_weakest_link_current_button_wrong" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkWrong()">WRONG</a>
+                            <a id="ingame_weakest_link_current_button_bank" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkBank()">BANK</a>
                         </div>
                     </div>
                     <div id="ingame_option" style="display:none">
@@ -339,35 +353,34 @@
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
-                            <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
-                            <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
+                            <div>
+                                <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
+                                <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
+                            </div>
                         </div>
-                        <div id="weakest_link_vote_ingame_option" style="display:none">
+                        <div id="weakest_link_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
                             <div id="ingame_weakest_link_voting_area">
-                                <p><a id="ingame_weakest_link_current_player_voting">current_player</a><a id="text_weakest_link_current_player_voting"> vote contre</a></p>
-                                <div id="weakest_link_player_ballot">
-                                </div>
+                                <p><a id="ingame_weakest_link_current_player_voting">current_player</a><a> </a><a id="text_weakest_link_current_player_voting">text_weakest_link_current_player_voting</a></p>
+                                <div id="weakest_link_player_vote_ballot"></div>
                             </div>  
                         </div>
-                        <div id="weakest_link_next_vote_ingame_option" style="display:none">
-                            <p><a id="ingame_weakest_link_next_player_voting">next_player</a><a id="text_weakest_link_next_player_prepare_voting"> se prépare pour voter</a></p>
+                        <div id="weakest_link_next_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
+                            <p><a id="ingame_weakest_link_next_player_voting">next_player</a><a> </a><a id="text_weakest_link_next_player_prepare_voting">text_weakest_link_next_player_prepare_voting</a></p>
                             <button id="button_weakest_link_next_vote" type="submit" class="btn btn-info" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
-                        </div>   
-                        <div id="weakest_link_vote_end_ingame_option" style="display:none">
-                            <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> est éliminé.</a></p>
-                            <button type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
-                            <button type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
-                            
-                        </div>   
                         </div>
-                        <div id="dice_ingame_option" style="display:none">
-                            <p class="text-center" onclick="randomDiceUnicode()">
-                                <a class="dice" id="dice_0">⚅</a>
-                                <a class="dice" id="dice_1">⚅</a><br>
-                        </div>
-                        <div id="card_ingame_option" style="display:none">
-                            <p class="text-center" onclick="randomCardUnicode()">
-                                <a class="playing_card" id="card_placeolder">-</a><br>
+                        <div id="weakest_link_vote_end_ingame_option" class="weakest_link_vote_menu" style="display:none">
+                            <div id="weakest_link_vote_result" class="weakest_link_vote_end_ingame_option_side"></div>
+                            <div class="weakest_link_vote_end_ingame_option_side">
+                                <p><a id="ingame_weakest_link_end_analytics_correct">-</a><a> </a><a>bonne(s) réponse(s).</a></p>
+                                <p><a id="ingame_weakest_link_end_analytics_potential_chain">-</a><a> </a><a>pénalité(s) potentielle(s).</a></p>
+                                <p><a id="ingame_weakest_link_end_analytics_errors">-</a><a> </a><a>mauvaise(s) réponse(s).</a></p>
+                                <p><a id="ingame_weakest_link_end_penality_count">-</a><a> </a><a>text_penalité(s) en banque.</a></p>
+                                <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> </a><a>text_est désigné(e) comme le maillon faible. Au reboire.</a></p>
+                                <div>
+                                    <button type='submit' class='btn btn-info' id="text_game_restart_weakest_link" onclick='restart(game.gamemode)'>text_game_restart_weakest_link</button>
+                                </div>
+                            </div>
+                        </div>   
                         </div>
                         <div id="ingame_player_option" style="display: none;">
                             <div class="d-flex">

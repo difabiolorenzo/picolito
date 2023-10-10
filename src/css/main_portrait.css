@@ -1,0 +1,51 @@
+
+@media screen and (orientation:portrait) {
+    #game_content {
+        text-align: center;
+        transform: rotate(-90deg) translateX(-100vh);
+        transform-origin: top left;
+        width: 100vh;
+        padding: 0;
+        height: 100vw;
+    }
+    div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
+        width: 30vh;
+    }
+    div#sentence_list {
+        height: 30vh;
+    }
+    div#game.dark_blue #ingame_content {
+        margin-top: 10vw;
+    }
+    div#ingame_topbar {
+        padding: 3vw;
+    }
+    .weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
+        height: 12.5vw;
+        width: 17vh;
+    }
+    .weakest_link_shield_small {
+        height: 10vw;
+        width: 10vh;
+    }
+
+    div#game.dark_blue, #weakest_link_vote {
+        background: linear-gradient(60deg, #0c102d 0%, #215d73 50%, #204b55 75%, #234f5f 150%);
+    }
+    div#ingame_weakest_link {
+        padding: 2vw;
+    }
+    .weakest_link_shield_player {
+        height: 20vw;
+        width: 30vh;
+        margin: 1vw;
+    }
+    #ingame_player_option, #replay_ingame_option, #start_ingame_option {
+        padding: 5vw;
+    }
+
+    div#weakest_link_vote_result {
+        height: 60vw;
+        margin: 2vw;
+    }
+}

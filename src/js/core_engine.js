@@ -290,7 +290,6 @@ function generatePicoloSentences() {
             request.push(...addind_request);
         }
         if (request.length == 0) {
-            console.log("REPICK TYPE", type)
             game.filter.empty_type.push(type)
             alert("REPICK TYPE");
         }
@@ -415,6 +414,9 @@ function initWeakestLink() {
     }
 
     game.weakest_link.player_turn_index = -1;
+    game.weakest_link.analytics_correct = 0;
+    game.weakest_link.analytics_wrong = 0;
+    game.weakest_link.analytics_potential_chain_lost = 0;
 
     game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
     game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.sort()
@@ -425,21 +427,26 @@ function initWeakestLink() {
     ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
 
     game.weakest_link.current_time = game.weakest_link.time;
-    weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
-
-
+    global.weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
 }
 
 function weakestLinkCorrect() {
     game.weakest_link.chain++;
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
-    weakestLinkNextPlayer()
-    nextSentence()
+
+    game.weakest_link.analytics_correct++;
+
+    weakestLinkNextPlayer();
+    nextSentence();
 }
 
 function weakestLinkWrong() {
+    game.weakest_link.analytics_wrong++;
+    game.weakest_link.analytics_potential_chain_lost += game.weakest_link.chain;
+
     game.weakest_link.chain = 0;
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+
     weakestLinkNextPlayer()
     nextSentence()
 }
@@ -467,11 +474,18 @@ function weakestLinkNextPlayer() {
 function weakestLinkInitVote() {
     game.weakest_link.player_vote_index = 0;
     weakestLinkDisplayNextVote()
+    game.weakest_link.vote = [];
+    
+    game.weakest_link.vote_amount = [];
+    for (var i in game.player_list) {
+        game.weakest_link.vote_amount.push(0)
+    }
 }
 
 function weakestLinkDisplayVote() {
+    ingame_weakest_link_current_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[game.weakest_link.player_vote_index]
     function updateBallotList() {
-            weakest_link_player_ballot.innerHTML = ""
+            weakest_link_player_vote_ballot.innerHTML = ""
             
             var ul_head = `<ul class="list-group list-group-flush"></ul>`;
             var ul_end = "</ul>";
@@ -483,7 +497,7 @@ function weakestLinkDisplayVote() {
                     html_inner += `<li class="list-group-item sentence-list" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
                 }
             }
-            weakest_link_player_ballot.innerHTML = ul_head + html_inner + ul_end;
+            weakest_link_player_vote_ballot.innerHTML = ul_head + html_inner + ul_end;
     }
     updateBallotList()
     manageIngameOptionDisplay(true, "weakest_link_vote", "flex")
@@ -491,33 +505,77 @@ function weakestLinkDisplayVote() {
 }
 
 function weakestLinkVotePlayer(player_id) {
-    console.log(player_id)
+    game.weakest_link.vote.push(player_id);
+    game.weakest_link.vote_amount[player_id]++;
 
     game.weakest_link.player_vote_index++;
     if (game.weakest_link.player_vote_index < game.player_list.length) {
         weakestLinkDisplayNextVote()
     } else {
-        manageIngameOptionDisplay(true, "weakest_link_vote", "none")
-        manageIngameOptionDisplay(true, "weakest_link_vote_end", "block")
+        weakestLinkEndVoting()
     }
 }
 
 function weakestLinkDisplayNextVote() {
     manageIngameOptionDisplay(true, "weakest_link_vote", "none")
-    manageIngameOptionDisplay(true, "weakest_link_next_vote", "block")
+    manageIngameOptionDisplay(true, "weakest_link_next_vote", "flex")
 
     var i = game.weakest_link.player_vote_index
     ingame_weakest_link_next_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[i]
 }
 
 function weakestLinkEndVoting() {
+    function displayVoteResult() {
+        weakest_link_vote_result.innerHTML = ""
+        
+        var ul_head = `<ul class="list-group list-group-flush"></ul>`;
+        var ul_end = "</ul>";
+        var html_inner = "";
+
+        for (var i in game.weakest_link.alphabetically_ordered_player) {
+            var player_name = game.weakest_link.alphabetically_ordered_player[i]
+            var vote_amount = game.weakest_link.vote_amount[i]
+            var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
+            if (i != game.weakest_link.player_vote_index) {
+                html_inner += `<li class="list-group-item player-vote-button"><span class="player_voting">${player_name} (${vote_amount})<a> </a><a id="text_weakest_link_player_vote_against">${global.current_language_strings.weakest_link_vote_against}</a><a> </a></span>${voted_player}</li>`;
+            }
+        }
+        weakest_link_vote_result.innerHTML = ul_head + html_inner + ul_end;
+    }
+    displayVoteResult()
+
+    function determineEliminatedPlayer() {
+        var vote_count = []
+        for (var i = 0; i < game.weakest_link.vote.length; i++) {
+            vote_count.push([i, game.weakest_link.vote_amount[i], game.weakest_link.alphabetically_ordered_player[i]])
+        }
+
+        vote_count.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+        if (vote_count[1][1] == vote_count[0][1]) {
+            console.log("égalité")
+        }
+        ingame_weakest_link_eliminated.innerHTML = vote_count[0][2]
+    }
+    determineEliminatedPlayer()
+
+    ingame_weakest_link_end_analytics_correct.innerHTML = game.weakest_link.analytics_correct
+    ingame_weakest_link_end_analytics_potential_chain.innerHTML = game.weakest_link.analytics_potential_chain_lost
+    ingame_weakest_link_end_analytics_errors.innerHTML = game.weakest_link.analytics_wrong
+    ingame_weakest_link_end_penality_count.innerHTML = game.weakest_link.bank
+
+    if (game.weakest_link.bank == 0) {
+        alert("zero en banque, lancement hasard")
+    }
+
     manageIngameOptionDisplay(true, "weakest_link_vote", "none")
-    manageIngameOptionDisplay(true, "weakest_link_vote_finish", "block")
+    manageIngameOptionDisplay(true, "weakest_link_vote_end", "flex")
 }
 function weakestLinkChrono() {
     if (game.weakest_link.current_time == 1) {
-        clearInterval(weakestLinkTimer);
-        // weakestLinkInitVote()
+        clearInterval(global.weakestLinkTimer);
+        weakestLinkInitVote()
     }
     game.weakest_link.current_time--;
     weakestLinkCalcTime();
@@ -530,37 +588,4 @@ function weakestLinkCalcTime() {
         sec = "0" + sec;
     }
     ingame_weakest_link_time.innerHTML = min + ":" + sec
-}
-
-function randomDiceUnicode() {
-    function randomUnicode() {
-        array = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-        return array[Math.floor(Math.random() * array.length)];
-    }
-    function changeDice(dice) {
-        dice.innerHTML = randomUnicode();
-    }
-
-    var min_timing = 300;
-    var step_timing = 150;
-    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_0) }, Math.floor(Math.random() * step_timing) + min_timing );
-    setTimeout(function(){ changeDice(dice_1) }, Math.floor(Math.random() * step_timing) + min_timing );
-}
-
-function randomCardUnicode() {
-    var card_spade = ["🂡","🂢","🂣","🂤","🂥","🂦","🂧","🂨","🂩","🂪","🂫","🂬","🂭","🂮"];
-    var card_heart = ["🂱","🂲","🂳","🂴","🂵","🂶","🂷","🂸","🂹","🂺","🂻","🂼","🂽","🂾"];
-    var card_club = ["🃑","🃒","🃓","🃔","🃕","🃖","🃗","🃘","🃙","🃚","🃛","🃜","🃝","🃞"];
-    var card_diamond = ["🃁","🃂","🃃","🃄","🃅","🃆","🃇","🃈","🃉","🃊","🃋","🃌","🃍","🃎"];
-    var card_sign = [card_spade, card_heart, card_club, card_diamond];
-
-    var random_sign = card_sign[Math.floor(Math.random()*card_sign.length)]
-    var random_card = random_sign[Math.floor(Math.random()*random_sign.length)]
-    card_placeolder.innerHTML = random_card
 }

@@ -12,13 +12,14 @@ function init() {
 
 // Used when testing to avoid clicking x menus, get 4 players, etc...
 function devOverrideSettings() {
-    selectGamemode("weakest_link");
-
     addPlayer("Ricard")
-    addPlayer("Bertrand")
-    addPlayer("Zoé")
-    addPlayer("Alphonse")
-    displayPage("game")
+    addPlayer("Bertrude")
+    addPlayer("Zolande")
+    addPlayer("Alpipignoux")
+    selectGamemode("weakest_link");
+    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 3}, 250)
+
+    // firstSentence()
 
 }
 
@@ -29,11 +30,10 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.31.1",
-        debug_random_player: 0,
-        debug_random_player_triggered: false,
+        picolito_version: "0.31.2",
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
+        weakestLinkTimer: undefined
     }
 
     game = {
@@ -120,7 +120,9 @@ function defaultVariables() {
             chain: 0,
             alphabetically_ordered_player: [],
             bank: 0,
-            time: 60
+            time: 60,
+            max_sip_given: 5,
+            equality_case: "strongest_link"              //"strongest_link" "arbitrary" "both"
         }
     }
 
@@ -341,8 +343,8 @@ function generateRandomPlayer(nb_players) {
         return (Math.random()*hex<<0).toString(16);
     }
     for (var i = 0; i < nb_players; i++ ) {
-        var randomUUID = (randomHex(0xFFFFF));
-        addPlayer("J" + randomUUID + "#" + (game.player_list.length+1))
+        var randomUUID = (randomHex(0xFF));
+        addPlayer("J" + "#" + (game.player_list.length+1) + "_" + randomUUID)
     }
 }
 
@@ -492,12 +494,16 @@ function exitGame() {
     resetVariables();
     updateHTMLBackgroundColor();
 
+    if (global.weakestLinkTimer != undefined) {
+        clearInterval(global.weakestLinkTimer)
+    }
+
     manageIngameOptionDisplay(false, 'player_option', 'none')
     manageIngameOptionDisplay(false, 'start', 'none')
     manageIngameOptionDisplay(false, 'replay', 'none')
-    manageIngameOptionDisplay(false, 'dice', 'none')
-    manageIngameOptionDisplay(false, 'card', 'none')
     manageIngameOptionDisplay(false, 'weakest_link', 'none')
+    manageIngameOptionDisplay(false, 'weakest_link_next_vote', 'none')
+    manageIngameOptionDisplay(false, 'weakest_link_vote_end', 'none')
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
@@ -578,12 +584,6 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
                 break;
             case "replay":
             var selected_option = replay_ingame_option;
-                break;
-            case "dice":
-            var selected_option = dice_ingame_option;
-                break;
-            case "card":
-            var selected_option = card_ingame_option;
                 break;
             case "weakest_link":
                 var selected_option = ingame_weakest_link;
@@ -789,7 +789,8 @@ function updateSentenceList(mode) {
             var sentence = game.sentence_history[i].sentence;
 
             if (sentence != "none") {
-                html_inner += `<li class="list-group-item sentence-list ${color}" onclick="goToSpecificSentence(${i})">${sentence}</li>`;
+                var sentence_index = parseInt(i)+1;
+                html_inner += `<li class="list-group-item sentence-list ${color}" onclick="goToSpecificSentence(${i})">${sentence_index}. ${sentence}</li>`;
             } else {
                 break;
             }
@@ -997,6 +998,10 @@ function getSettingsCookie() {
 }
 
 function DEBUG_RandomPlayer() {
+    if (global.debug_random_player == undefined) {
+        global.debug_random_player = 0;
+        global.debug_random_player_triggered = true;
+    }
     global.debug_random_player++;
 
     var gamename_adding = "PICOLITO"
@@ -1009,7 +1014,6 @@ function DEBUG_RandomPlayer() {
         }
         generateRandomPlayer(1);
         global.debug_random_player = 0;
-        gamename.innerText = "PICOLITO";
     }
 }
 

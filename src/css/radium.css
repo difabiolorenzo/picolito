@@ -98,4 +98,5 @@ label.form-check-label {
     margin-bottom: 1vh;
     user-select: none;
     -webkit-user-select:none;
+    padding-left: 1.25rem;
 }
