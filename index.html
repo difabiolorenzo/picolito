@@ -369,17 +369,38 @@
                             <button id="button_weakest_link_next_vote" type="submit" class="btn btn-info" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
                         </div>
                         <div id="weakest_link_vote_end_ingame_option" class="weakest_link_vote_menu" style="display:none">
-                            <div id="weakest_link_vote_result" class="weakest_link_vote_end_ingame_option_side"></div>
-                            <div class="weakest_link_vote_end_ingame_option_side">
-                                <p><a id="ingame_weakest_link_end_analytics_correct">-</a><a> </a><a>bonne(s) réponse(s).</a></p>
-                                <p><a id="ingame_weakest_link_end_analytics_potential_chain">-</a><a> </a><a>pénalité(s) potentielle(s).</a></p>
-                                <p><a id="ingame_weakest_link_end_analytics_errors">-</a><a> </a><a>mauvaise(s) réponse(s).</a></p>
-                                <p><a id="ingame_weakest_link_end_penality_count">-</a><a> </a><a>text_penalité(s) en banque.</a></p>
-                                <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> </a><a>text_est désigné(e) comme le maillon faible. Au reboire.</a></p>
-                                <div>
-                                    <button type='submit' class='btn btn-info' id="text_game_restart_weakest_link" onclick='restart(game.gamemode)'>text_game_restart_weakest_link</button>
+                            <div id="weakest_link_vote_end_ingame_content">
+                                <div id="weakest_link_vote_result" class="weakest_link_vote_end_ingame_option_side"></div>
+                                <div class="weakest_link_vote_end_ingame_option_side">
+                                    <div>
+                                        <table id="weakest_link_vote_end_analytics_table">
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_time">text_ingame_weakest_link_analytics_time</td><td id="ingame_weakest_link_end_time" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_correct">text_ingame_weakest_link_analytics_correct_singular</td><td id="ingame_weakest_link_end_analytics_correct" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_potential">text_ingame_weakest_link_analytics_potential_singular</td><td id="ingame_weakest_link_end_analytics_potential_chain" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_wrong">text_ingame_weakest_link_analytics_wrong_singular</td><td id="ingame_weakest_link_end_analytics_errors" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_bank">text_ingame_weakest_link_analytics_bank_singular</td><td id="ingame_weakest_link_end_penality_count" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_strongest_link">strongest_link</td><td id="ingame_weakest_link_end_analytics_strongest_link" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="text_ingame_weakest_link_analytics_weakest_link">weakest_link_(statistiquement)</td><td id="ingame_weakest_link_end_analytics_weakest_link" class="weakest_link_vote_analytics_data"></td>
+                                            </tr>
+                                        </table>
+                                        <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> </a><a id="text_ingame_weakest_link_looser">text_ingame_weakest_link_looser</a></p>
+                                    </div>
                                 </div>
                             </div>
+                                <button type='submit' class='btn btn-info' id="text_game_restart_weakest_link" onclick='restart(game.gamemode)'>text_game_restart_weakest_link</button>
                         </div>   
                         </div>
                         <div id="ingame_player_option" style="display: none;">

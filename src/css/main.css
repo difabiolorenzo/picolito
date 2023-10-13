@@ -45,6 +45,7 @@
 
 div#game.dark_blue #ingame_text {
     cursor:unset;
+    letter-spacing: 1px;
 }
 
 div#game.dark_blue #ingame_content {
@@ -164,7 +165,7 @@ span.span_team {color: var(--picolo_team);}
 
 div#sentence_list {margin: 5vh;overflow: auto;}
 
-li.list-group-item.sentence-list, .player-vote-button {
+li.list-group-item.sentence-list, .player-vote-button, table#weakest_link_vote_end_analytics_table td {
     background-color: var(--dark_mode_light_gray);
     border-color: var(--dark_mode_gray);
     font-size: 120%;
@@ -425,14 +426,20 @@ div#ingame_weakest_link_score {
 }
 
 div#weakest_link_player_vote_ballot {
-    width: 100vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    /* width: 100vw; */
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: center; */
     /* align-items: center; */
     /* overflow: scroll; */
     flex-wrap: nowrap;
     align-content: center;
+    height: 40vh;
+    overflow-y: scroll;
+    overflow-y: auto;
+    margin: 2vh;
+    display: flex;
+    flex-direction: column;
 }
 
 div#ingame_content {
@@ -452,10 +459,11 @@ div#ingame_content {
 
 div#weakest_link_vote_result {
     height: 60vh;
-    overflow: scroll;
-    margin: 2vh;
+    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 
@@ -469,12 +477,47 @@ div#weakest_link_next_vote_ingame_option a, div#ingame_weakest_link_voting_area 
 
 div#weakest_link_vote_end_ingame_option {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
 }
 
 .weakest_link_vote_end_ingame_option_side {
     width: 100vw;
+    text-align: left;
+    padding: 2vw;
+}
+
+#weakest_link_analytics td {
+    background-color: #2b2b2d;
+    padding: 1vw;
+    font-family: monospace;
+    font-size: initial;
+}
+
+table#weakest_link_analytics {
+    width: 100%;
+}
+
+div#weakest_link_vote_end_ingame_content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: nowrap;
+    align-content: center;
+    flex-direction: row;
+    font-size: larger;
+}
+
+table#weakest_link_vote_end_analytics_table td {
+    font-weight: lighter;
+    padding: 1vw;
+    font-family: monospace;
+    font-size: initial;
+}
+
+.weakest_link_vote_analytics_data {
+    font-weight: bold;
+}
+
+.weakest_link_vote_analytics_data {
+    font-weight: bold !important;
+    text-align: center !important;
 }

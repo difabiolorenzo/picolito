@@ -17,7 +17,7 @@ function devOverrideSettings() {
     addPlayer("Zolande")
     addPlayer("Alpipignoux")
     selectGamemode("weakest_link");
-    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 3}, 250)
+    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 5}, 250)
 
     // firstSentence()
 
@@ -30,10 +30,13 @@ function defaultVariables() {
         dev_mode: false,
         dark_mode: "system",
         settings_status: "masked",
-        picolito_version: "0.31.2",
+        picolito_version: "0.31.3",
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
-        weakestLinkTimer: undefined
+        weakestLinkTimer: undefined,
+        audio : {
+            weakest_link_amb_60: undefined
+        }
     }
 
     game = {
@@ -122,7 +125,15 @@ function defaultVariables() {
             bank: 0,
             time: 60,
             max_sip_given: 5,
-            equality_case: "strongest_link"              //"strongest_link" "arbitrary" "both"
+            equality_case: "strongest_link",              //"strongest_link" "arbitrary" "both"
+            player_analytics: {
+                correct: [],
+                wrong: [],
+                bank_times: [],
+                bank_saved: [],
+                bank_lost: [],
+                answer_time: []
+            },
         }
     }
 
@@ -437,6 +448,7 @@ function initGame(select_team) {
     }
 
     if (game.gamemode == "weakest_link") {
+        preloadSound()
         weakestLinkCalcTime()
     }
 }
@@ -479,7 +491,7 @@ function firstSentence() {
     convertPendingDBTaffy();
     manageIngameOptionDisplay(false, "start", "none");
     if (game.gamemode == "weakest_link") { 
-        initWeakestLink() 
+        initWeakestLink()
     } else {
         manageNavDisplay("navigation_arrows", true)
     }
@@ -497,6 +509,7 @@ function exitGame() {
     if (global.weakestLinkTimer != undefined) {
         clearInterval(global.weakestLinkTimer)
     }
+    stopsound()
 
     manageIngameOptionDisplay(false, 'player_option', 'none')
     manageIngameOptionDisplay(false, 'start', 'none')
@@ -536,7 +549,7 @@ function restart(gamemode) {
 }
 
 function selectGamemode(selected_gamemode) {
-    console.log("/gamemode", selected_gamemode);
+    // console.log("/gamemode", selected_gamemode);
     game.gamemode = selected_gamemode;
     initGame(true);
     manageNavDisplay("navigation_arrows", false)
@@ -680,7 +693,6 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack
     } else if (game.sentence_history[offset_sentence_id].sentence == "none") {
         game.sentence_history[offset_sentence_id] = sentence_history_item;
     }
-    console.log(sentence_history_item)
 }
 
 function randomSip() {
@@ -1023,4 +1035,18 @@ function alertRandomPlayer() {
         var random_player = game.player_list[random_int];
         alert_random_player_button.innerHTML = random_player;
     }
+}
+
+function preloadSound() {
+    global.audio.weakest_link_amb_60 = new Audio('./src/audio/weakest_link_question_amb_60.mp3');
+    global.audio.weakest_link_amb_60.loop = false;
+}
+
+function playsound() {
+    global.audio.weakest_link_amb_60.currentTime = 0;
+    global.audio.weakest_link_amb_60.play(); 
+}
+
+function stopsound() {
+    global.audio.weakest_link_amb_60.pause(); 
 }

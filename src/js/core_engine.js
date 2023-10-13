@@ -49,8 +49,6 @@ function getMinPlayer() {
 function retrieve(sentence_id) {
     //generate or retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
-        
-        console.log(game.gamemode);
         switch (game.gamemode) {
             case "default":
                 generatePicoloSentences();
@@ -120,7 +118,6 @@ function displaySentence(sentence, color, pack_name, answer) {
     } else {
         ingame_title.innerText = "";
     }
-    console.log(answer)
     ingame_gamemode_information.innerHTML = pack_name;
 }
 
@@ -388,11 +385,11 @@ function generateWeakestLink() {
         answer = request[random_int].answer;
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
-        console.log(random_int, sentence, answer)
+        // console.log(random_int, sentence, answer)
 
         //remove sentence from db
         game.database().filter({___id:database_id}).remove();
-        console.log(database_id, "weakest link removed")
+        // console.log(database_id, "weakest link removed")
     }
 
     var request = game.database().get();
@@ -418,6 +415,27 @@ function initWeakestLink() {
     game.weakest_link.analytics_wrong = 0;
     game.weakest_link.analytics_potential_chain_lost = 0;
 
+    game.weakest_link.player_analytics.correct = [];
+    game.weakest_link.player_analytics.wrong = [];
+    game.weakest_link.player_analytics.bank_times = [];
+    game.weakest_link.player_analytics.bank_saved = [];
+    game.weakest_link.player_analytics.bank_lost = [];
+    game.weakest_link.player_analytics.answer_time = [];
+    for (var i in game.player_list) {
+        game.weakest_link.player_analytics.correct.push(0)
+        game.weakest_link.player_analytics.wrong.push(0)
+        game.weakest_link.player_analytics.bank_times.push(0)
+        game.weakest_link.player_analytics.bank_saved.push(0)
+        game.weakest_link.player_analytics.bank_lost.push(0)
+        game.weakest_link.player_analytics.answer_time.push([])
+    }
+
+    ingame_weakest_link_end_time.innerHTML = weakestLinkCalcTime(game.weakest_link.time, true)
+    if (game.weakest_link.time == 60) { playsound() }
+    
+    // date to compare how fast first question is awnsered
+    game.weakest_link.time_game_started = new Date();
+
     game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
     game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.sort()
     
@@ -432,26 +450,37 @@ function initWeakestLink() {
 
 function weakestLinkCorrect() {
     game.weakest_link.chain++;
+
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
 
     game.weakest_link.analytics_correct++;
+    game.weakest_link.player_analytics.correct[game.weakest_link.player_turn_index]++;
+
+    weakestLinkTimestampStep()
 
     weakestLinkNextPlayer();
     nextSentence();
 }
 
 function weakestLinkWrong() {
+    //todo supp analytics_wrong pour une somme global en fin de jeu
     game.weakest_link.analytics_wrong++;
+    game.weakest_link.player_analytics.wrong[game.weakest_link.player_turn_index]++;
     game.weakest_link.analytics_potential_chain_lost += game.weakest_link.chain;
 
     game.weakest_link.chain = 0;
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+
+    weakestLinkTimestampStep()
 
     weakestLinkNextPlayer()
     nextSentence()
 }
 
 function weakestLinkBank() {
+    game.weakest_link.player_analytics.bank_saved[game.weakest_link.player_turn_index] += game.weakest_link.chain;
+    game.weakest_link.player_analytics.bank_times[game.weakest_link.player_turn_index]++;
+    
     game.weakest_link.bank += game.weakest_link.chain;
     game.weakest_link.chain = 0
 
@@ -459,9 +488,39 @@ function weakestLinkBank() {
     ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
 }
 
+function weakestLinkTimestampStep() {
+    if (game.player_list.length > 2) {
+        function compareTimestamp(date_1, date_2) {
+            var diff_time = Math.abs(date_2 - date_1);
+    
+            return diff_time;
+    
+            // const date1 = new Date('7/13/2010');
+            // const date2 = new Date('12/15/2010');
+            // const diffTime = Math.abs(date2 - date1);
+            // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            // console.log(diffTime + " milliseconds");
+            // console.log(diffDays + " days");
+        }
+        
+        var timestamp = new Date()
+        game.sentence_history[game.cycle_id].timestamp = timestamp
+    
+        if (game.cycle_id > 0) {
+            console.log(game.cycle_id)
+            var previous_sentence_timestamp = game.sentence_history[game.cycle_id-1].timestamp
+            var diff_time_calculated = compareTimestamp(previous_sentence_timestamp, timestamp)
+            game.weakest_link.player_analytics.answer_time[game.weakest_link.player_turn_index].push(diff_time_calculated)
+        } else {
+            var diff_time_calculated = compareTimestamp(game.weakest_link.time_game_started, timestamp)
+            game.weakest_link.player_analytics.answer_time[game.weakest_link.player_turn_index].push(diff_time_calculated)
+        }
+        console.log(diff_time_calculated)
+    }
+}
+
 function weakestLinkNextPlayer() {
     if (game.player_list.length >= 2) {
-        console.log("game.weakest_link.player_turn_index", game.weakest_link.player_turn_index, game.player_list.length)
         if (game.weakest_link.player_turn_index+1 == game.player_list.length) {
             game.weakest_link.player_turn_index = 0;
         } else {
@@ -545,6 +604,13 @@ function weakestLinkEndVoting() {
     displayVoteResult()
 
     function determineEliminatedPlayer() {
+        var average_answer_time = []
+        for (var i = 0; i < game.weakest_link.vote.length; i++) {
+            var player_array = game.weakest_link.player_analytics.answer_time[i]
+            var average = player_array => player_array.reduce((a, b) => a + b) / player_array.length;
+            average_answer_time.push(average)
+        }
+
         var vote_count = []
         for (var i = 0; i < game.weakest_link.vote.length; i++) {
             vote_count.push([i, game.weakest_link.vote_amount[i], game.weakest_link.alphabetically_ordered_player[i]])
@@ -556,7 +622,8 @@ function weakestLinkEndVoting() {
         if (vote_count[1][1] == vote_count[0][1]) {
             console.log("égalité")
         }
-        ingame_weakest_link_eliminated.innerHTML = vote_count[0][2]
+        game.weakest_link.weakest_link = vote_count[0][2];
+        ingame_weakest_link_eliminated.innerHTML = game.weakest_link.weakest_link
     }
     determineEliminatedPlayer()
 
@@ -566,8 +633,11 @@ function weakestLinkEndVoting() {
     ingame_weakest_link_end_penality_count.innerHTML = game.weakest_link.bank
 
     if (game.weakest_link.bank == 0) {
-        alert("zero en banque, lancement hasard")
+        alert.log("zero en banque, hasard?")
     }
+
+    console.log(text_ingame_weakest_link_analytics_strongest_link,
+        text_ingame_weakest_link_analytics_weakest_link == game.weakest_link.weakest_link)
 
     manageIngameOptionDisplay(true, "weakest_link_vote", "none")
     manageIngameOptionDisplay(true, "weakest_link_vote_end", "flex")
@@ -575,17 +645,29 @@ function weakestLinkEndVoting() {
 function weakestLinkChrono() {
     if (game.weakest_link.current_time == 1) {
         clearInterval(global.weakestLinkTimer);
-        weakestLinkInitVote()
+        if (game.player_list.length > 2 ) {
+            weakestLinkInitVote()
+        } else {
+            manageIngameOptionDisplay(true, 'replay', 'block')
+        }
     }
     game.weakest_link.current_time--;
     weakestLinkCalcTime();
 }
 
-function weakestLinkCalcTime() {
-    var min = Math.floor(game.weakest_link.current_time/60)
-    var sec = Math.floor(game.weakest_link.current_time%60)
+function weakestLinkCalcTime(time, returnFunc) {
+    if (time == undefined) {
+        var time = game.weakest_link.current_time
+    }
+
+    var min = Math.floor(time/60)
+    var sec = Math.floor(time%60)
     if (sec < 10) {
         sec = "0" + sec;
     }
     ingame_weakest_link_time.innerHTML = min + ":" + sec
+
+    if (returnFunc == true) {
+        return min + ":" + sec;
+    }
 }

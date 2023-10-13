@@ -380,6 +380,13 @@ function updateHTMLLanguageStrings() {
     ingame_weakest_link_current_button_wrong.innerHTML = global.current_language_strings.weakest_link_wrong;
     ingame_weakest_link_current_button_bank.innerHTML = global.current_language_strings.weakest_link_bank;
 
+    text_ingame_weakest_link_analytics_time.innerHTML = "Temps";
+    text_ingame_weakest_link_analytics_correct.innerHTML = "Bonnes réponses";
+    text_ingame_weakest_link_analytics_potential.innerHTML = "Bonnes réponses potentielles";
+    text_ingame_weakest_link_analytics_wrong.innerHTML = "Mauvaise réponses";
+    text_ingame_weakest_link_analytics_bank.innerHTML = "Banque";
+    text_ingame_weakest_link_looser.innerHTML = "est désigné(e) comme le maillon faible. Au reboire.";
+
     text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
     button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
     text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
