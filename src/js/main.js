@@ -15,10 +15,10 @@ function devOverrideSettings() {
     addPlayer("Bertrude")
     addPlayer("Zolande")
     addPlayer("Alpipignoux")
-    game.weakest_link.time = 2
+    
     selectGamemode("weakest_link");
 
-    setTimeout(function() {firstSentence()}, 250)
+    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 2}, 250)
 
 }
 
@@ -28,7 +28,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.4",
+        picolito_version: "0.31.5",
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
         weakestLinkTimer: undefined,
@@ -396,16 +396,6 @@ function initGame(select_team) {
     if (game.gamemode == "war" && select_team == true) {
         displayPage('team_selection');
         updateTeamSelectiontable();
-    } else if (game.gamemode == "dice") {
-        displayPage('game');
-        manageOptionDisplay("dice", true);
-        manageNavDisplay("navigation_arrows", false);
-        manageNavDisplay("players", false);
-    } else if (game.gamemode == "card") {
-        displayPage('game');
-        manageOptionDisplay("card", true);
-        manageNavDisplay("navigation_arrows", false);
-        manageNavDisplay("players", false);
     } else if (game.gamemode == "weakest_link") {
         checkDatabase();
         displayPage('game');

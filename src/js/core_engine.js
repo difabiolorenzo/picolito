@@ -596,14 +596,25 @@ function weakestLinkEndVoting() {
 
     function determineEliminatedPlayer() {
         var vote_count = []
+        var most_voted_player = []
         for (var i = 0; i < game.weakest_link.vote.length; i++) {
             vote_count.push([i, game.weakest_link.vote_amount[i], game.weakest_link.alphabetically_ordered_player[i]])
         }
         vote_count.sort(function(a, b) {
             return b[1] - a[1];
         });
-        if (vote_count[1][1] == vote_count[0][1]) {
+        most_voted_player.push(vote_count[0]);
+
+        for (var i=1; i < vote_count.length; i++) {
+            if (vote_count[i][1] === vote_count[0][1]) {
+                most_voted_player.push(vote_count[i]);
+            } else {
+                break;
+            }
+        }
+        if (most_voted_player.length > 1) {
             console.log("égalité")
+            console.log(most_voted_player)
         }
         game.weakest_link.weakest_link = vote_count[0][2];
         ingame_weakest_link_eliminated.innerHTML = game.weakest_link.weakest_link
@@ -632,7 +643,7 @@ function weakestLinkEndVoting() {
                 html_inner += '<li class="list-group-item player-vote-button">'
                 html_inner += `<p><span class="player_voting">${player_name}<a> </a><a id="text_weakest_link_player_vote_against">${global.current_language_strings.weakest_link_vote_against}</a><a> </a></span>${voted_player}</p>`;
                 if (vote_amount > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_wheat">${vote_amount}</span> votes contre ${player_name}</p>`;}
-                html_inner += `<p class="player_analytics">Temps de réponse moyen: <span class="player_analytics_wheat">${average_anwser_time}</span> sec.</p>`;
+                if (average_anwser_time > 0) {html_inner += `<p class="player_analytics">Temps de réponse moyen: <span class="player_analytics_wheat">${average_anwser_time}</span> sec.</p>`;}
                 if (correct > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_green">${correct}</span> bonne(s) réponse(s)</p>`;}
                 if (wrong > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_gold">${wrong}</span> mauvaise(s) réponse(s)>/p>`;}
                 if (bank_saved > 0) {html_inner += `<p class="player_analytics">Sauve <span class="player_analytics_green">${bank_saved}</span> gorgées en banque</p>`;}

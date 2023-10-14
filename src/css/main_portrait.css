@@ -61,4 +61,7 @@
     div#disclaimer_warning_validation {
         height: 10vh;
     }
+    div#weakest_link_player_vote_ballot {
+        height: 60vw;
+    }
 }
