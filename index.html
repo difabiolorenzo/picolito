@@ -25,7 +25,7 @@
     <body onload="init()" class="bright_mode">
         </div>
         <div class="page dark_affected" id="disclaimer">
-            <div id="disclaimer_warning">
+            <div id="disclaimer_warning" class="disclaimer_section">
                 <h2><b id="text_prevention_warning">text_prevention_warning</b></h2>
                 <hr>
                 <p id="text_prevention_text_0">text_prevention_text_0</p>
@@ -36,7 +36,7 @@
                 <p><a id="text_prevention_information_website_text">text_prevention_information_website_text</a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">text_prevention_information_website</a></p>
                 <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
             </div>
-            <div id="disclaimer_warning_validation">
+            <div id="disclaimer_warning_validation" class="disclaimer_section">
                 <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
                 <button id="text_prevention_skip_button" class="btn btn-success" onclick="displayPage('menu')">text_prevention_skip_button</button>
                 <div>
@@ -49,13 +49,10 @@
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
-            <hr>
             <div class="d-flex">
-                <button id="button_menu_settings" type="submit" class="btn btn-primary btn-menu" onclick="toggleSettingsPage()">⚙</button>
-                <button id="button_menu_links" type="submit" class="btn btn-primary" onclick="toggleSettingsPage()" style="display:none">🌐</button>
                 <input type="text" class="col-md-9 form-control" pattern="[A-Za-z]" id="manu_player_input" placeholder="Ajouter un joueur">
-                <button id="text_menu_add" type="submit" class="btn btn-primary" onclick="addPlayer(undefined, 'menu')">➕</button>
-                <button id="text_gamemode_menu" type="submit" class="btn btn-success" onclick="displayPage('gamemode')">▶</button>
+                <button id="text_menu_add" type="input" class="nostyle-button" onclick="addPlayer(undefined, 'menu')"><img class="svg" src="./src/img/user-plus-svgrepo-com.svg"></img></button>
+                <button id="text_gamemode_menu" type="input" class="nostyle-button" onclick="displayPage('gamemode')"><img class="svg" src="./src/img/arrow-right-svgrepo-com.svg"></img></button>
             </div>
             <br>
             <div id="menu_player_list"></div>
@@ -77,14 +74,14 @@
                         <option id="text_menu_lang_ru" value="ru">Russe</option>
                         <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
                     </select>
-                    <button id="text_gamemode_menu" type="submit" class="btn btn-info col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
-                    <button id="text_prevention_panel" type="submit" class="btn btn-info col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
-
-                    <p><button type="submit" class="btn btn-info col-md-12" onclick="selectGamemode('weakest_link')">Maillon Faible (Experiental)</button>
+                    <button id="text_gamemode_menu" type="submit" class="btn btn-warning col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
+                    <button id="text_prevention_panel" type="submit" class="btn btn-warning col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
+                    <br>
+                    <p><button type="submit" class="btn btn-warning col-md-12" onclick="selectGamemode('weakest_link')">Maillon Faible (Experiental)</button>
                     </p>
                         
                 </div>
-                <div id="settings" style="display:none;">
+                <div id="settings">
                     <div class="form-check">
                         <h5 id="text_settings_display">text_settings_display</h5>
                         <div class="form-group">
@@ -187,8 +184,8 @@
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_cookies">Cookies</h5>
-                        <button id="text_settings_save_settings"class="btn col-md-5 btn-info" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
-                        <button id="text_settings_delete_cookies" class="btn col-md-5 btn-info" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
+                        <button id="text_settings_save_settings"class="btn col-md-5 btn-warning" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
+                        <button id="text_settings_delete_cookies" class="btn col-md-5 btn-warning" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
                     <br>
                     <div class="form-check">
@@ -205,7 +202,7 @@
         </div>
         <div class="page dark_affected" id="gamemode" style="display:none">
             <div class="d-flex" id="gamemode_topbar">
-                <button id="text_gamemode_back" class="col-md-3 btn btn-info" onclick="displayPage('menu')">Retour</button>
+                <button id="text_gamemode_back" class="col-md-3 btn btn-warning" onclick="displayPage('menu')">Retour</button>
                 <div class="col-md-6 text-center">
                     <a id="text_gamemode_player_number">0</a>
                     <a id="text_gamemode_player_singular" style="display:initial">text_gamemode_player_singular</a>
@@ -270,7 +267,7 @@
                     <p id="text_gamemode_never_mix_subtitle_1">text_gamemode_war_subtitle_1</p>
                     <p id="text_gamemode_never_mix_subtitle_2">text_gamemode_war_subtitle_2</p>
                 </label>
-                <div id="text_experimental_gamemode" style="display:none">
+                <div id="text_experimental_gamemode">
                     <hr>
                     <h2 class="text-center" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h2><hr>
                     <label class="btn btn-secondary btn-warning">
@@ -285,7 +282,7 @@
         </div>
         <div class="page dark_affected" id="team_selection" style="display:none">
             <div class="d-flex">
-                <button id="text_team_selection_back" class="col-md-3 btn btn-info" onclick="displayPage('gamemode')">text_team_selection_back</button>
+                <button id="text_team_selection_back" class="col-md-3 btn btn-warning" onclick="displayPage('gamemode')">text_team_selection_back</button>
                 <a class="col-md-6 text-center"></a>
                 <button id="text_team_selection_next" class="col-md-3 btn btn-success" id="button_next_team_selection" onclick="initGame()">text_team_selection_next</button>
             </div>
@@ -349,13 +346,13 @@
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
                             <p id="text_game_ready">text_game_ready</p>
-                            <button id="text_game_start_button" type='submit' class='btn btn-info' onclick='firstSentence()'>text_game_start_button</button>
+                            <button id="text_game_start_button" type='submit' class='btn btn-warning' onclick='firstSentence()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
                             <div>
-                                <button id="text_game_quit" type="submit" class="btn btn-info" onclick="exitGame()">text_game_quit</button>
-                                <button id="text_game_restart" type='submit' class='btn btn-info' onclick='restart(game.gamemode)'>text_game_restart</button>
+                                <button id="text_game_quit" type="submit" class="btn btn-warning" onclick="exitGame()">text_game_quit</button>
+                                <button id="text_game_restart" type='submit' class='btn btn-warning' onclick='restart(game.gamemode)'>text_game_restart</button>
                             </div>
                         </div>
                         <div id="weakest_link_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
@@ -366,56 +363,54 @@
                         </div>
                         <div id="weakest_link_next_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
                             <p><a id="ingame_weakest_link_next_player_voting">next_player</a><a> </a><a id="text_weakest_link_next_player_prepare_voting">text_weakest_link_next_player_prepare_voting</a></p>
-                            <button id="button_weakest_link_next_vote" type="submit" class="btn btn-info" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
+                            <button id="button_weakest_link_next_vote" type="submit" class="btn btn-warning" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
                         </div>
                         <div id="weakest_link_vote_end_ingame_option" class="weakest_link_vote_menu" style="display:none">
                             <div id="weakest_link_vote_end_ingame_content">
                                 <div id="weakest_link_vote_result" class="weakest_link_vote_end_ingame_option_side"></div>
                                 <div class="weakest_link_vote_end_ingame_option_side">
-                                    <div>
-                                        <table id="weakest_link_vote_end_analytics_table">
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_time">text_ingame_weakest_link_analytics_time</td><td id="ingame_weakest_link_end_time" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_correct">text_ingame_weakest_link_analytics_correct_singular</td><td id="ingame_weakest_link_end_analytics_correct" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_potential">text_ingame_weakest_link_analytics_potential_singular</td><td id="ingame_weakest_link_end_analytics_potential_chain" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_wrong">text_ingame_weakest_link_analytics_wrong_singular</td><td id="ingame_weakest_link_end_analytics_errors" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_bank">text_ingame_weakest_link_analytics_bank_singular</td><td id="ingame_weakest_link_end_penality_count" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_strongest_link">strongest_link</td><td id="ingame_weakest_link_end_analytics_strongest_link" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="text_ingame_weakest_link_analytics_weakest_link">weakest_link_(statistiquement)</td><td id="ingame_weakest_link_end_analytics_weakest_link" class="weakest_link_vote_analytics_data"></td>
-                                            </tr>
-                                        </table>
-                                        <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> </a><a id="text_ingame_weakest_link_looser">text_ingame_weakest_link_looser</a></p>
-                                    </div>
+                                    <table id="weakest_link_vote_end_analytics_table">
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_time">text_ingame_weakest_link_analytics_time</td><td id="ingame_weakest_link_end_time" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_correct">text_ingame_weakest_link_analytics_correct_singular</td><td id="ingame_weakest_link_end_analytics_correct" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_potential">text_ingame_weakest_link_analytics_potential_singular</td><td id="ingame_weakest_link_end_analytics_potential_chain" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_wrong">text_ingame_weakest_link_analytics_wrong_singular</td><td id="ingame_weakest_link_end_analytics_errors" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_bank">text_ingame_weakest_link_analytics_bank_singular</td><td id="ingame_weakest_link_end_penality_count" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_strongest_link">strongest_link</td><td id="ingame_weakest_link_end_analytics_strongest_link" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="text_ingame_weakest_link_analytics_weakest_link">weakest_link_(statistiquement)</td><td id="ingame_weakest_link_end_analytics_weakest_link" class="weakest_link_vote_analytics_data"></td>
+                                        </tr>
+                                    </table>
+                                    <p><a id="ingame_weakest_link_eliminated">player_eliminated</a><a> </a><a id="text_ingame_weakest_link_looser">text_ingame_weakest_link_looser</a></p>
                                 </div>
                             </div>
-                                <button type='submit' class='btn btn-info' id="text_game_restart_weakest_link" onclick='restart(game.gamemode)'>text_game_restart_weakest_link</button>
+                                <button type='submit' class='btn btn-warning' id="text_game_restart_weakest_link" onclick='restart(game.gamemode)'>text_game_restart_weakest_link</button>
                         </div>   
                         </div>
                         <div id="ingame_player_option" style="display: none;">
                             <div class="d-flex">
                                 <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                                <button type="submit" class="btn btn-info" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
+                                <button type="submit" class="btn btn-warning" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
                             </div>
                             <div class="d-flex">
-                                <button type="submit" class="btn btn-info" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
-                                <button type="submit" class="btn btn-info" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
+                                <button type="submit" class="btn btn-warning" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
+                                <button type="submit" class="btn btn-warning" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
                             </div>
                             <br>
                             <div id="ingame_player_list"></div>
                             <br>
-                            <!-- <button type="submit" class="btn btn-info" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
+                            <!-- <button type="submit" class="btn btn-warning" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
                             <button type="submit" class="btn btn-secondary" id="close_player_option_ingame" onclick="manageIngameOptionDisplay(false, 'player_option', 'none');">close_player_option_ingame</button>
                         </div>
                     </div>

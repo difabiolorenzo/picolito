@@ -414,20 +414,22 @@ function initWeakestLink() {
     game.weakest_link.analytics_correct = 0;
     game.weakest_link.analytics_wrong = 0;
     game.weakest_link.analytics_potential_chain_lost = 0;
+    
+    game.weakest_link.vote = []
 
     game.weakest_link.player_analytics.correct = [];
     game.weakest_link.player_analytics.wrong = [];
-    game.weakest_link.player_analytics.bank_times = [];
     game.weakest_link.player_analytics.bank_saved = [];
-    game.weakest_link.player_analytics.bank_lost = [];
+    game.weakest_link.player_analytics.potential_bank_lost = [];
     game.weakest_link.player_analytics.answer_time = [];
+    game.weakest_link.player_analytics.avegarge_answer_time = [];
+
     for (var i in game.player_list) {
         game.weakest_link.player_analytics.correct.push(0)
         game.weakest_link.player_analytics.wrong.push(0)
-        game.weakest_link.player_analytics.bank_times.push(0)
         game.weakest_link.player_analytics.bank_saved.push(0)
-        game.weakest_link.player_analytics.bank_lost.push(0)
-        game.weakest_link.player_analytics.answer_time.push([])
+        game.weakest_link.player_analytics.potential_bank_lost.push(0)
+        game.weakest_link.player_analytics.answer_time.push([0])
     }
 
     ingame_weakest_link_end_time.innerHTML = weakestLinkCalcTime(game.weakest_link.time, true)
@@ -466,6 +468,7 @@ function weakestLinkWrong() {
     //todo supp analytics_wrong pour une somme global en fin de jeu
     game.weakest_link.analytics_wrong++;
     game.weakest_link.player_analytics.wrong[game.weakest_link.player_turn_index]++;
+    game.weakest_link.player_analytics.potential_bank_lost[game.weakest_link.player_turn_index] += game.weakest_link.chain;
     game.weakest_link.analytics_potential_chain_lost += game.weakest_link.chain;
 
     game.weakest_link.chain = 0;
@@ -479,7 +482,6 @@ function weakestLinkWrong() {
 
 function weakestLinkBank() {
     game.weakest_link.player_analytics.bank_saved[game.weakest_link.player_turn_index] += game.weakest_link.chain;
-    game.weakest_link.player_analytics.bank_times[game.weakest_link.player_turn_index]++;
     
     game.weakest_link.bank += game.weakest_link.chain;
     game.weakest_link.chain = 0
@@ -584,38 +586,19 @@ function weakestLinkDisplayNextVote() {
 }
 
 function weakestLinkEndVoting() {
-    function displayVoteResult() {
-        weakest_link_vote_result.innerHTML = ""
-        
-        var ul_head = `<ul class="list-group list-group-flush"></ul>`;
-        var ul_end = "</ul>";
-        var html_inner = "";
-
-        for (var i in game.weakest_link.alphabetically_ordered_player) {
-            var player_name = game.weakest_link.alphabetically_ordered_player[i]
-            var vote_amount = game.weakest_link.vote_amount[i]
-            var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
-            if (i != game.weakest_link.player_vote_index) {
-                html_inner += `<li class="list-group-item player-vote-button"><span class="player_voting">${player_name} (${vote_amount})<a> </a><a id="text_weakest_link_player_vote_against">${global.current_language_strings.weakest_link_vote_against}</a><a> </a></span>${voted_player}</li>`;
-            }
-        }
-        weakest_link_vote_result.innerHTML = ul_head + html_inner + ul_end;
+    //avegarge_answer_time
+    for (var i = 0; i < game.weakest_link.vote.length; i++) {
+        var player_array = game.weakest_link.player_analytics.answer_time[i]
+        var average = player_array.reduce((a, b) => a + b) / player_array.length;
+        game.weakest_link.player_analytics.avegarge_answer_time.push(average)
+        console.log(average)
     }
-    displayVoteResult()
 
     function determineEliminatedPlayer() {
-        var average_answer_time = []
-        for (var i = 0; i < game.weakest_link.vote.length; i++) {
-            var player_array = game.weakest_link.player_analytics.answer_time[i]
-            var average = player_array => player_array.reduce((a, b) => a + b) / player_array.length;
-            average_answer_time.push(average)
-        }
-
         var vote_count = []
         for (var i = 0; i < game.weakest_link.vote.length; i++) {
             vote_count.push([i, game.weakest_link.vote_amount[i], game.weakest_link.alphabetically_ordered_player[i]])
         }
-
         vote_count.sort(function(a, b) {
             return b[1] - a[1];
         });
@@ -627,13 +610,47 @@ function weakestLinkEndVoting() {
     }
     determineEliminatedPlayer()
 
+    function displayVoteResult() {
+        weakest_link_vote_result.innerHTML = ""
+        
+        var ul_head = `<ul class="list-group list-group-flush"></ul>`;
+        var ul_end = "</ul>";
+        var html_inner = "";
+
+        for (var i in game.weakest_link.alphabetically_ordered_player) {
+            var player_name = game.weakest_link.alphabetically_ordered_player[i]
+            var vote_amount = game.weakest_link.vote_amount[i]
+            var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
+            var raw_average_anwser_time = game.weakest_link.player_analytics.avegarge_answer_time[i]
+            var average_anwser_time = (raw_average_anwser_time-(raw_average_anwser_time%10)) / 1000;
+            var potential_bank_lost = game.weakest_link.player_analytics.potential_bank_lost[i];
+            var bank_saved = game.weakest_link.player_analytics.bank_saved[i];
+            var correct = game.weakest_link.player_analytics.correct[i];
+            var wrong = game.weakest_link.player_analytics.wrong[i];
+
+            if (i != game.weakest_link.player_vote_index) {
+                html_inner += '<li class="list-group-item player-vote-button">'
+                html_inner += `<p><span class="player_voting">${player_name}<a> </a><a id="text_weakest_link_player_vote_against">${global.current_language_strings.weakest_link_vote_against}</a><a> </a></span>${voted_player}</p>`;
+                if (vote_amount > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_wheat">${vote_amount}</span> votes contre ${player_name}</p>`;}
+                html_inner += `<p class="player_analytics">Temps de réponse moyen: <span class="player_analytics_wheat">${average_anwser_time}</span> sec.</p>`;
+                if (correct > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_green">${correct}</span> bonne(s) réponse(s)</p>`;}
+                if (wrong > 0) {html_inner += `<p class="player_analytics"><span class="player_analytics_gold">${wrong}</span> mauvaise(s) réponse(s)>/p>`;}
+                if (bank_saved > 0) {html_inner += `<p class="player_analytics">Sauve <span class="player_analytics_green">${bank_saved}</span> gorgées en banque</p>`;}
+                if (potential_bank_lost > 0) {html_inner += `<p class="player_analytics">Fait perdre <span class="player_analytics_gold">${potential_bank_lost}</span> gorgées potentielles en banque</p>`;}
+                html_inner += `</li>`;
+            }
+        }
+        weakest_link_vote_result.innerHTML = ul_head + html_inner + ul_end;
+    }
+    displayVoteResult()
+
     ingame_weakest_link_end_analytics_correct.innerHTML = game.weakest_link.analytics_correct
     ingame_weakest_link_end_analytics_potential_chain.innerHTML = game.weakest_link.analytics_potential_chain_lost
     ingame_weakest_link_end_analytics_errors.innerHTML = game.weakest_link.analytics_wrong
     ingame_weakest_link_end_penality_count.innerHTML = game.weakest_link.bank
 
     if (game.weakest_link.bank == 0) {
-        alert.log("zero en banque, hasard?")
+        alert("zero en banque, hasard?")
     }
 
     console.log(text_ingame_weakest_link_analytics_strongest_link,

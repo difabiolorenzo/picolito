@@ -2,7 +2,7 @@
     --purple: #5c0090;
 }
 
-.btn, .form-control, .list-group, .list-group-item{
+.btn, .form-control, .list-group, .list-group-item, img.svg{
     border-radius: .125rem;
     margin-left: 1px;
     margin-right: 1px;
@@ -17,7 +17,7 @@
 
 .dark_mode .dark_affected .btn-primary:hover { box-shadow: 0 0 10px 0px var(--primary); }
 .dark_mode .dark_affected .btn-secondary:hover { box-shadow: 0 0 10px 0px var(--secondary); }
-.dark_mode .dark_affected .btn-info:hover {box-shadow: 0 0 10px 0px var(--info);}
+.dark_mode .dark_affected .btn-warning:hover {box-shadow: 0 0 10px 0px var(--info);}
 .dark_mode .dark_affected .btn-warning:hover { box-shadow: 0 0 10px 0px var(--warning); }
 .dark_mode .dark_affected .btn-danger:hover { box-shadow: 0 0 10px 0px var(--danger); }
 .dark_mode .dark_affected .btn-light:hover { box-shadow: 0 0 10px 0px var(--light); }
@@ -57,6 +57,10 @@ hr {
     background-color: #0000;
 }
 
+.dark_mode .dark_affected img.svg {
+    filter: invert(1);
+    border: 1px solid rgb(43 43 43);
+}
 .dropdown-menu {
     transform: translate(10px, 10px) !important;
 }
@@ -88,7 +92,7 @@ input[type=checkbox] {
     justify-content: center;
 }
 
-hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item {
+hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item, img.svg {
     box-shadow: 0px 1px 1px 0px #00000030;
     justify-content: center;
     align-items: center;

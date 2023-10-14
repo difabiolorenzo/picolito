@@ -8,6 +8,16 @@
         padding: 0;
         height: 100vw;
     }
+    div#disclaimer {
+        padding: 5vw;
+    }
+    h1#gamename {
+        font-size: calc(5vh);
+        padding:2vh;
+    }
+    div#menu {
+        padding: 3vw;
+    }
     div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
         width: 30vh;
     }
@@ -45,7 +55,10 @@
     }
 
     div#weakest_link_vote_result {
-        height: 60vw;
+        height: 75vw;
         margin: 2vw;
+    }
+    div#disclaimer_warning_validation {
+        height: 10vh;
     }
 }

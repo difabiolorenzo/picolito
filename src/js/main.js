@@ -10,16 +10,15 @@ function init() {
     retrieveCookie();
 }
 
-// Used when testing to avoid clicking x menus, get 4 players, etc...
 function devOverrideSettings() {
     addPlayer("Ricard")
     addPlayer("Bertrude")
     addPlayer("Zolande")
     addPlayer("Alpipignoux")
+    game.weakest_link.time = 2
     selectGamemode("weakest_link");
-    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 5}, 250)
 
-    // firstSentence()
+    setTimeout(function() {firstSentence()}, 250)
 
 }
 
@@ -29,8 +28,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        settings_status: "masked",
-        picolito_version: "0.31.3",
+        picolito_version: "0.31.4",
         warning_panel_displayed: true,
         cookie_expiration_delay: 60,
         weakestLinkTimer: undefined,
@@ -129,10 +127,10 @@ function defaultVariables() {
             player_analytics: {
                 correct: [],
                 wrong: [],
-                bank_times: [],
                 bank_saved: [],
-                bank_lost: [],
-                answer_time: []
+                potential_bank_lost: [],
+                answer_time: [],
+                avegarge_answer_time: []
             },
         }
     }
@@ -287,24 +285,6 @@ function displayPage(page) {
     document.getElementById('game').style.display = 'none';
 
     document.getElementById(page).style.display = 'block';
-}
-
-function toggleSettingsPage() {
-    if (global.settings_status == "masked") {
-        global.settings_status = "visible";
-
-        document.getElementById("button_menu_settings").style.display = "none";
-        document.getElementById("button_menu_links").style.display = "initial";
-        document.getElementById("menu_links").style.display = "none";
-        document.getElementById("settings").style.display = "initial";
-    } else {
-        global.settings_status = "masked";
-        
-        document.getElementById("button_menu_settings").style.display = "initial";
-        document.getElementById("button_menu_links").style.display = "none";
-        document.getElementById("menu_links").style.display = "initial";
-        document.getElementById("settings").style.display = "none";
-    }
 }
 
 function addPlayer(player_name, html_origin) {
@@ -549,10 +529,13 @@ function restart(gamemode) {
 }
 
 function selectGamemode(selected_gamemode) {
-    // console.log("/gamemode", selected_gamemode);
-    game.gamemode = selected_gamemode;
-    initGame(true);
-    manageNavDisplay("navigation_arrows", false)
+    if (selected_gamemode == "weakest_link" && game.player_list.length <= 2) {
+        alert(global.current_language_strings.weakest_link_minimum_requierement)
+    } else {
+        game.gamemode = selected_gamemode;
+        initGame(true);
+        manageNavDisplay("navigation_arrows", false)
+    }
 }
 
 function manageNavigationButton(button, display) {
@@ -566,7 +549,7 @@ function manageNavigationButton(button, display) {
 
     if (display == true) {
         selected_button.disabled = false;
-        selected_button.className = "btn btn-secondary btn-info";
+        selected_button.className = "btn btn-secondary btn-warning";
     } else if (display == false) {
         selected_button.disabled = true;
         selected_button.className = "btn btn-secondary";
