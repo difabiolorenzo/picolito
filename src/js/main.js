@@ -18,8 +18,19 @@ function devOverrideSettings() {
     
     selectGamemode("weakest_link");
 
-    setTimeout(function() {firstSentence(); game.weakest_link.current_time = 2}, 250)
+    // game.weakest_link.stop_at_max_chain = true;
+    // setTimeout(function() {firstSentence();}, 50)
+    // setTimeout(function() {game.weakest_link.current_time = 0;}, 150)
 
+    // setTimeout(function() {
+    //     weakestLinkDisplayVote();
+    // }, 1100);
+    
+    // setTimeout(function() {
+    //     game.weakest_link.vote_count = [2, 1, 0, 0];
+    //     game.weakest_link.player_vote_index = 3;
+    //     weakestLinkVotePlayer(2)
+    // }, 1200);
 }
 
 function defaultVariables() {
@@ -28,12 +39,12 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.5",
-        warning_panel_displayed: true,
+        picolito_version: "0.31.6",
         cookie_expiration_delay: 60,
         weakestLinkTimer: undefined,
         audio : {
-            weakest_link_amb_60: undefined
+            weakest_link_amb_60: undefined,
+            weakest_link_amb_end: undefined
         }
     }
 
@@ -117,13 +128,14 @@ function defaultVariables() {
         social_posting_enabled: false,
 
         weakest_link: {
-            // max_chain: 9,
+            stop_at_max_chain: false, 
+            max_chain: 3,
+            tie_behaviour: "both", //strongest_link, arbitrary, both, weakest
             chain: 0,
             alphabetically_ordered_player: [],
             bank: 0,
             time: 60,
             max_sip_given: 5,
-            equality_case: "strongest_link",              //"strongest_link" "arbitrary" "both"
             player_analytics: {
                 correct: [],
                 wrong: [],
@@ -134,11 +146,7 @@ function defaultVariables() {
             },
         }
     }
-
-    if (global.dev_mode == true) {
-        devOverrideSettings()
-    }
-    
+    if (global.dev_mode == true) { devOverrideSettings() }
     updateHTMLSettingsByVar()
 }
 
@@ -168,6 +176,7 @@ function resetVariables() {
 }
 
 function updateHTMLSettingsByVar() {
+
     input_team_1.value = game.team_1;
     input_team_2.value = game.team_2;
 
@@ -187,7 +196,13 @@ function updateHTMLSettingsByVar() {
 
     input_unlucky_player_3_settings.value = game.unlucky_player_3
 
+    input_weakest_link_tie.value = game.weakest_link.tie_behaviour
+
     picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
+
+    if (global.remind_warning_panel == false) {
+        displayPage('menu')
+    }
 }
 
 function checkBrowserColorScheme() {
@@ -241,6 +256,11 @@ function changeDownDrinking(value) {
     game.shot_remaining = parseInt(value);
 }
 
+function changeWeakestLinkTieBehaviour(value) {
+    game.weakest_link.tie_behaviour = value;
+    input_weakest_link_tie.value = value;
+}
+
 function createScriptElement(script_src) {
     var headTag = document.getElementsByTagName("head").item(0);
     var scriptTag = document.createElement("script");
@@ -284,7 +304,12 @@ function displayPage(page) {
     document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
 
-    document.getElementById(page).style.display = 'block';
+
+    if (page == "disclaimer") {
+        document.getElementById(page).style.display = 'flex';
+    } else {
+        document.getElementById(page).style.display = 'block';
+    }
 }
 
 function addPlayer(player_name, html_origin) {
@@ -334,7 +359,7 @@ function generateRandomPlayer(nb_players) {
         return (Math.random()*hex<<0).toString(16);
     }
     for (var i = 0; i < nb_players; i++ ) {
-        var randomUUID = (randomHex(0xFF));
+        var randomUUID = (randomHex(0xFFFF));
         addPlayer("J" + "#" + (game.player_list.length+1) + "_" + randomUUID)
     }
 }
@@ -400,8 +425,10 @@ function initGame(select_team) {
         checkDatabase();
         displayPage('game');
         manageIngameOptionDisplay(true, "weakest_link", true);
-        manageNavDisplay("players", false);
         manageIngameOptionDisplay(true, "start", "block");
+        manageNavDisplay("players", false);
+        preloadSound("weakest_link")
+        weakestLinkCalcTime()
     } else {
         if (game.started == false) {
             game.started = true;
@@ -415,11 +442,8 @@ function initGame(select_team) {
         }
         displayPage('game');
         manageIngameOptionDisplay(true, "start", "block");
-    }
-
-    if (game.gamemode == "weakest_link") {
-        preloadSound()
-        weakestLinkCalcTime()
+        manageNavDisplay("quit",true)
+        manageNavDisplay("restart",false)
     }
 }
 
@@ -469,6 +493,11 @@ function firstSentence() {
 }
 
 function exitGame() {
+    if (game.gamemode == "weakest_link") { stopsound("weakest_link_amb_60") }
+
+    if (global.weakestLinkTimer != undefined) {
+        clearInterval(global.weakestLinkTimer)
+    }
     displaySentenceList(true);  // Force closing of sentence list ingame
     displaySentence("", undefined); // reset HTML sentence display
 
@@ -476,20 +505,17 @@ function exitGame() {
     resetVariables();
     updateHTMLBackgroundColor();
 
-    if (global.weakestLinkTimer != undefined) {
-        clearInterval(global.weakestLinkTimer)
-    }
-    stopsound()
-
     manageIngameOptionDisplay(false, 'player_option', 'none')
     manageIngameOptionDisplay(false, 'start', 'none')
     manageIngameOptionDisplay(false, 'replay', 'none')
     manageIngameOptionDisplay(false, 'weakest_link', 'none')
+    manageIngameOptionDisplay(false, 'weakest_link_vote', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_next_vote', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_vote_end', 'none')
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
+    manageNavDisplay("restart",false)
 
     displayPage('menu');
 
@@ -591,10 +617,21 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
 }
 
 function manageNavDisplay(navigation_option, display) {
-    if (navigation_option == "navigation_arrows") {
-        var selected_navigation_option = navigation_arrows;
-    } else if (navigation_option == "players") {
-        var selected_navigation_option = text_game_player_menu;
+    switch(navigation_option) {
+        case "navigation_arrows":
+            var selected_navigation_option = navigation_arrows;
+            break;
+        case "players":
+            var selected_navigation_option = text_game_player_menu;
+            break;
+        case "quit":
+            var selected_navigation_option = text_game_quit_topbar;
+            break;
+        case "restart":
+            var selected_navigation_option = text_game_restart_topbar;
+            break;
+        default:
+            break;
     }
 
     if (display == true) {
@@ -890,9 +927,8 @@ function deleteCookie(cookie_name) {
 }
 
 function deleteAllCookies() {
-    deleteCookie("warning_panel_displayed")
-        deleteCookie("player_list")
-        deleteCookie("settings")
+    deleteCookie("player_list")
+    deleteCookie("settings")
 }
 
 function getCookie(cookie_name) {
@@ -912,17 +948,8 @@ function getCookie(cookie_name) {
 }
 
 function modifyCookie(cookie_name, edited_value) {
-    var old_value = getCookie(cookie_name);
     deleteCookie(cookie_name);
     setCookie(cookie_name, edited_value);
-}
-
-function storeWarningPanelDisplayedCookie() {
-    if (getCookie("warning_panel_displayed") == '') {
-        setCookie("warning_panel_displayed", global.warning_panel_displayed);
-    } else {
-        modifyCookie("warning_panel_displayed", global.warning_panel_displayed)
-    }
 }
 
 function storePlayerListCookie() {
@@ -934,27 +961,17 @@ function storePlayerListCookie() {
 }
 
 function storeSettingsCookie() {
-    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode]
-    
-    console.log(settings)
-    if (getCookie("settings") == '') {
-        setCookie("settings", settings);
-    } else {
-        modifyCookie("settings", settings)
-    }
+    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour]
+
+    if (getCookie("settings") == '') { setCookie("settings", settings); 
+    } else { modifyCookie("settings", settings) }
+
+    console.log(getCookie("settings"))
 }
 
 function retrieveCookie() {
-    getStoredWarningPanelCookie();
     getStoredPlayerListCookie();
     getSettingsCookie()
-}
-
-function getStoredWarningPanelCookie() {
-    if (getCookie("warning_panel_displayed") == "false") {
-        displayPage("menu");
-        input_warning_panel_displayed.checked = true;
-    }
 }
 
 function getStoredPlayerListCookie() {
@@ -977,7 +994,10 @@ function getSettingsCookie() {
         game.sip.max = parseInt(settings[6]);
         game.shot_amount = parseInt(settings[7]);
         global.dark_mode = settings[8];
-    
+        global.accept_cookie = parseBoolean(settings[9]);
+        global.remind_warning_panel = parseBoolean(settings[10]);
+        game.weakest_link.tie_behaviour = settings[11];
+
         updateHTMLSettingsByVar();
     }
 }
@@ -989,9 +1009,6 @@ function DEBUG_RandomPlayer() {
     }
     global.debug_random_player++;
 
-    var gamename_adding = "PICOLITO"
-    gamename.innerText = gamename_adding;
-
     if (global.debug_random_player == 3) {
         if (global.debug_random_player_triggered == false) {
             global.debug_random_player_triggered = true;
@@ -1002,6 +1019,10 @@ function DEBUG_RandomPlayer() {
     }
 }
 
+function parseBoolean(value) {
+    return bool_value = value == 'true';
+}
+
 function alertRandomPlayer() {
     if (game.player_list.length > 0) {
         var random_int = Math.floor(Math.random() * game.player_list.length);
@@ -1010,16 +1031,70 @@ function alertRandomPlayer() {
     }
 }
 
-function preloadSound() {
-    global.audio.weakest_link_amb_60 = new Audio('./src/audio/weakest_link_question_amb_60.mp3');
-    global.audio.weakest_link_amb_60.loop = false;
+function preloadSound(specific) {
+    if (specific == "all" || specific == "weakest_link") {
+        global.audio.weakest_link_amb_60 = new Audio('./src/audio/weakest_link_question_amb_60.mp3');
+        global.audio.weakest_link_amb_60.loop = false;
+        global.audio.weakest_link_amb_end = new Audio('./src/audio/weakest_link_question_amb_end.mp3');
+        global.audio.weakest_link_amb_end.loop = false;
+    }
 }
 
-function playsound() {
-    global.audio.weakest_link_amb_60.currentTime = 0;
-    global.audio.weakest_link_amb_60.play(); 
+function playsound(sound) {
+    switch (sound) {
+        case "weakest_link_amb_60":
+            global.audio.weakest_link_amb_60.currentTime = 0;
+            global.audio.weakest_link_amb_60.play(); 
+        break; 
+        case "weakest_link_amb_end":
+            global.audio.weakest_link_amb_end.currentTime = 0;
+            global.audio.weakest_link_amb_end.play(); 
+        break; 
+        default:
+        break;
+    }  
 }
 
-function stopsound() {
+function stopsound(sound) {
     global.audio.weakest_link_amb_60.pause(); 
+    switch (sound) {
+        case "weakest_link_amb_60":
+            global.audio.weakest_link_amb_60.pause();  
+        break; 
+        case "weakest_link_amb_end":
+            global.audio.weakest_link_amb_60.pause(); 
+        break; 
+        default:
+        break;
+    }  
+}
+
+function DEBUG_add5sec() {
+    if (global.dev_mode == true) {
+        var current_time_player = global.audio.weakest_link_amb_60.currentTime;
+        var current_time = game.weakest_link.current_time;
+    
+        if ((current_time - 5) > 5) {
+            global.audio.weakest_link_amb_60.currentTime = current_time_player + 5;
+            game.weakest_link.current_time = current_time - 5;
+        }
+    
+        weakestLinkCalcTime();
+    }
+}
+
+function manageHergeBTChoice(cookie_choice, remind_me_later) {
+    if (cookie_choice == true) {
+        console.log("Cookie accepté")
+        global.accept_cookie = true;
+        global.remind_warning_panel = true;
+        if (remind_me_later == false) {
+            console.log("Ne plus afficher")
+            global.remind_warning_panel = false;
+        }
+        storeSettingsCookie()
+    }
+    
+    displayPage('menu')
+    getCookie("settings")
 }

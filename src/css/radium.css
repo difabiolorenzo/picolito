@@ -99,8 +99,13 @@ hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-grou
 }
 
 label.form-check-label {
-    margin-bottom: 1vh;
+    /* margin-bottom: 1vh; */
     user-select: none;
     -webkit-user-select:none;
     padding-left: 1.25rem;
 }
+
+h6 {
+    margin-top: 2rem;
+}
+.form-check {margin-top: 2vh;margin-bottom: 2vw;}

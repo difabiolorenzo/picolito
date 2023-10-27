@@ -45,7 +45,6 @@
 
 div#game.dark_blue #ingame_text {
     cursor:unset;
-    letter-spacing: 1px;
 }
 
 div#game.dark_blue #ingame_content {
@@ -89,14 +88,14 @@ h1#ingame_title {font-weight: 900;}
 0% {opacity: 0;transform: translateX(5vw);}
 }
 
-div#game {overflow: hidden;padding: 0;background: var(--gray-dark);background-color: var(--gray-dark);}
+div#game {overflow: hidden;padding: 0;background: var(--gray-dark);background-color: var(--gray-dark);width: 100vw;}
 div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark);}
 div#game.purple {background-color: var(--purple);}
-div#game.dark_blue {
+div#game.dark_blue, #weakest_link_vote_end_ingame_option {
     background-color: var(--weakest_link);
     background: rgb(20,26,77);
     background: linear-gradient(147deg, #0c102d 0%, #215d73 50%, #204b55 75%, #234f5f 150%);
@@ -165,7 +164,7 @@ span.span_team {color: var(--picolo_team);}
 
 div#sentence_list {margin: 5vh;overflow: auto;}
 
-li.list-group-item.sentence-list, .player-vote-button, table#weakest_link_vote_end_analytics_table td {
+li.list-group-item.sentence-list, .player-vote-button, .player-recap-vote, table#weakest_link_vote_end_analytics_table td {
     background-color: var(--dark_mode_light_gray);
     border-color: var(--dark_mode_gray);
     font-size: 120%;
@@ -242,15 +241,15 @@ div#disclaimer {
     justify-content: space-between;
     padding: 5vh;
     background-color: var(--picolito_background);
+    position: fixed;
 }
 
 div#disclaimer_warning {
     background-color: white;
-    padding: 5vw;
+    padding: 2.5vw;
     border-radius: .25rem;
     overflow-y: clip;
     overflow: auto;
-    box-shadow: inset 0 -2px 5px 0px;
 }
 
 .dark_mode #disclaimer_warning {
@@ -259,13 +258,13 @@ div#disclaimer_warning {
 
 div#disclaimer_warning_validation {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background-color: white;
     padding: 1vw;
     border-radius: .25rem;
     margin-top: 1vh;
-    height: 7.5vw;
+    height: 12.5vh;
 }
 
 .dark_mode div#disclaimer_warning_validation {
@@ -273,13 +272,14 @@ div#disclaimer_warning_validation {
 }
 
 a#picolito_version {
-    text-decoration: unset;
+    text-decoration: underline;
     color: unset;
     bottom: 5vw;
     height: 7.5%;
     padding: 2.5vw;
     display: flex;
     align-items: center;
+    font-size: larger;
 }
 
 div#menu {padding: 3vh;height: auto;/* background-color: var(--picolito_background); */height: auto;}
@@ -338,9 +338,17 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
 
 .weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
     background-color: #72eafa;
+    --color_1: #54999d;
+    --color_2: #011215;
+    --color_3: #408fab;
+    --color_4: #6eeef9;
+    background: linear-gradient(147deg, var(--color_1) 0%,
+    var(--color_1) 25%,
+    var(--color_2) 60%,
+    var(--color_3) 80%,
+    var(--color_4) 90%,
+    var(--color_3) 100%);
     box-shadow: 0px 3px 0px 0px black;
-    background: rgb(84,153,157);
-    background: linear-gradient(147deg, rgba(84,153,157,1) 0%, rgba(84,153,157,1) 25%, rgba(1,18,21,1) 60%, rgba(64,143,171,1) 80%, rgba(110,238,249,1) 90%, rgba(64,143,171,1) 100%);
     height: 10vh;
     width: 10vw;
     display: flex;
@@ -351,6 +359,7 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
     margin: 1vh;
     font-family: impact;
     user-select: none;
+    transition: .25s;
 }
 
 .weakest_link_shield_normal {
@@ -422,7 +431,7 @@ div#ingame_weakest_link_score {
 div#weakest_link_player_vote_ballot {
     flex-wrap: nowrap;
     align-content: center;
-    height: 60vh;
+    max-height: 60vh;
     overflow-y: auto;
     margin: 2vh;
     display: flex;
@@ -437,7 +446,7 @@ div#ingame_content {
 }
 
 .weakest_link_vote_menu {
-    height: 100%;
+    height: 100vh;
     width: 100%;
     align-items: center;
     flex-direction: column;
@@ -445,12 +454,13 @@ div#ingame_content {
 }
 
 div#weakest_link_vote_result {
-    height: 75vh;
-    overflow-y: scroll;
-    overflow-y: auto;
     display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: overlay;
+    height: 45vh;
+    padding-bottom: 1vh;
 }
 
 
@@ -462,14 +472,14 @@ div#weakest_link_next_vote_ingame_option a, div#ingame_weakest_link_voting_area 
     font-size: xx-large;
 }
 
-div#weakest_link_vote_end_ingame_option {}
-
-.weakest_link_vote_end_ingame_option_side {
-    width: 100vw;
-    text-align: left;
-    margin: 2vw;
+div#weakest_link_vote_end_ingame_option {
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 1vw;
 }
 
 #weakest_link_analytics td {
@@ -483,29 +493,21 @@ table#weakest_link_analytics {
     width: 100%;
 }
 
-div#weakest_link_vote_end_ingame_content {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    flex-wrap: nowrap;
-    align-content: center;
-    flex-direction: row;
-    font-size: larger;
-}
-
 table#weakest_link_vote_end_analytics_table td {
+    padding: 0.75vw;
+    font-size: larger;
+    border: 1px solid grey;
+    background-color: unset;
+    text-align: center;
     font-weight: lighter;
-    padding: 1vw;
-    font-family: monospace;
-    font-size: initial;
 }
 
 .weakest_link_vote_analytics_data {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .weakest_link_vote_analytics_data {
-    font-weight: bold !important;
+    /* font-weight: bold !important; */
     text-align: center !important;
 }
 
@@ -530,27 +532,100 @@ button.nostyle-button {
 }
 
 p.player_analytics {
-    font-size: small;
+    font-size: medium;
     color: grey;
     margin: .25rem;
+    text-wrap: wrap;
+    border-top: 1px solid;
+    padding-top: 1vh;
 }
 
-span.player_analytics_wheat {
-    color: wheat;
+.player_analytics_wheat { color: wheat;}
+.player_analytics_green { color: greenyellow;}
+.player_analytics_red, .list-group-item player-vote-button { color: indianred; }
+.player_analytics_orange {color: orange;font-weight: bold;}
+td#ingame_weakest_link_end_penality_count {font-weight: bold;}
+
+meter.player_analytics_meter {
+    width: 100%;
 }
 
-span.player_analytics_green {
-    color: greenyellow;
+div#ingame_weakest_link_voting_area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
-span.player_analytics_gold {
-    color: indianred;
+#weakest_link_vote_end_ingame_option_side {
+    font-size: small;
 }
 
-td#ingame_weakest_link_end_penality_count {
-    font-weight: bold !;
+div#herge_bt_buttons {
+    display: flex;
+    flex-direction: column;
 }
 
-.list-group-item player-vote-button {
-    color: red;
+button > #herge_bt_buttons {
+    color:  red;
+}
+
+table#weakest_link_vote_end_analytics_table {
+    background-color: var(--dark_mode_light_gray);
+    width: 100%;
+}
+
+.player-recap-vote {
+    min-width: 35vw;
+    max-width: 35vw;
+    height: 100%;
+    overflow-y: overlay;
+    margin-left: 1vw;
+    border-radius: .5rem;
+    padding-bottom: 1vw;
+}
+#weakest_link_vote_end_analytics_table td {
+    padding: 0vw;
+}
+
+.weakest_link_button:active, .weakest_link_shield_button_small:active {
+    
+    --color_1: #b63535;
+    --color_2: #2c0303;
+    --color_3: #7c2c2c;
+    --color_4: #d85252;
+    background: var(--color_1);
+    background: linear-gradient(147deg, var(--color_1) 0%,
+    var(--color_1) 25%,
+    var(--color_2) 60%,
+    var(--color_3) 80%,
+    var(--color_4) 90%,
+    var(--color_3) 100%);
+    transform: scale(0.9);
+}
+
+.changing_weakest_link_player {
+    animation: 0.5s cubic-bezier(0.65, 0.05, 0.36, 1) changing_player_name_shield;
+}
+
+@keyframes changing_player_name_shield {
+    50% {
+        transform: scaleX(0) scale(0.9);
+    }
+  }
+
+p > table#weakest_link_vote_end_analytics_table {}
+
+p .weakest_link_vote_end_ingame_option_side {
+}
+
+p.no-margin {
+    margin: 0;
+}
+
+p#weakest_link_loser_text_placeholder {
+    font-weight: bold;
+}
+
+button#text_weakest_link_vote_quit {
 }

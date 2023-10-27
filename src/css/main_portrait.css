@@ -50,18 +50,34 @@
         width: 30vh;
         margin: 1vw;
     }
-    #ingame_player_option, #replay_ingame_option, #start_ingame_option {
+    /* #ingame_player_option, #replay_ingame_option, #start_ingame_option {
         padding: 5vw;
     }
-
-    div#weakest_link_vote_result {
-        height: 75vw;
-        margin: 2vw;
-    }
     div#disclaimer_warning_validation {
-        height: 10vh;
+        height: 7.5vh;
     }
     div#weakest_link_player_vote_ballot {
         height: 60vw;
-    }
+    } */
+    
+div#weakest_link_vote_end_ingame_option {
+    padding: 1vh;
+    height: 100vw;
+    width: 100vh;
+}
+
+div#weakest_link_vote_result {
+    width: 100vh;
+    height: 45vw;
+}
+
+li.list-group-item.player-recap-vote {
+    min-width: 40vh;
+    max-width: 50vh;
+    margin-left: 1vh;
+}
+
+table#weakest_link_vote_end_analytics_table td {
+    padding: 0.75vh;
+}
 }

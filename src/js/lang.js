@@ -12,9 +12,12 @@ function setLanguageString() {
             prevention_call_text: "- ou appeler le",
             prevention_number: " 0 980 980 930",
             prevention_number_modality: "de 8h à 2h, appel non surtaxé",
+            herge_bt: "Ce site utilise des cookies, il ne collecte aucune donnée personnelle. Les données utilisées sont uniquement des données d'utilisation et locales, tel que la liste des joueurs et les paramètres.",
             prevention_panel: "Prévention",
             skip: "Passer",
-            checkbox: "Ne plus afficher",
+            herge_bt_deny: "Refuser",
+            herge_bt_accept: "Accepter",
+            herge_bt_accept_dont_remind: "Ne plus afficher",
             quit: "Quitter",
             close: "Fermer",
             next: "Suivant",
@@ -54,6 +57,7 @@ function setLanguageString() {
             text_settings_unlucky_player_3: "Joueur 3 malchanceux",
             text_settings_unlucky_player_3_percentage: "Pourcentage de malchance",
             settings_display: "Affichage",
+            settings_language: "Langue",
             settings_dark_theme: "Mode sombre",
             settings_darkmode_system: "Système",
             settings_darkmode_light: "Clair",
@@ -66,6 +70,12 @@ function setLanguageString() {
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
             settings_report_bug: "Signaler un bug",
+            settings_weakest_link: "Maillon Faible",
+            settings_weakest_link_tie: "Perdant en cas d'égalité au vote",
+            settings_weakest_link_tie_strongest_link: "Le Maillon Fort décide",
+            settings_weakest_link_tie_arbitrary: "Arbitrairement",
+            settings_weakest_link_tie_both: "Les votés égalitaires sont tous perdants",
+            settings_weakest_link_tie_weakest: "Les statistiques donnent le perdant",
             gamemode_default_title: "Before - 🥴",
             gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
             gamemode_default_subtitle_1: "Soyez prêts, car Picolito ne vous fera pas de cadeaux.",
@@ -128,9 +138,12 @@ function setLanguageString() {
             // prevention_number: " 0 980 980 930",
             prevention_number_modality: "",
             // prevention_number_modality: "de 8h à 2h, appel non surtaxé",
+            herge_bt: "This site uses cookies, it does not collect any personal data. The data used is only usage and local data, such as player list and settings." ,
             prevention_panel: "Prevention",
             skip: "Skip",
-            checkbox: "Don't remind me",
+            herge_bt_deny: "Refuser",
+            herge_bt_accept: "Accepter",
+            herge_bt_accept_dont_remind: "Don't remind me",
             quit: "Quit",
             close: "Close",
             next: "Next",
@@ -166,6 +179,7 @@ function setLanguageString() {
             team_change: "Change",
             team_add_in_team: "Add to ",
             settings_gameplay: "Gameplay",
+            settings_language: "Language",
             settings_shot: "Shots",
             settings_virus: "Virus",
             settings_social_posting: "Posts on socials",
@@ -181,13 +195,19 @@ function setLanguageString() {
             settings_darkmode_dark: "Dark theme",
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
-            settings_debug_display: "Récapitulatif",
+            settings_debug_display: "Recap",
             settings_other: "Other",
             settings_cookies: "Cookies",
             settings_delete_all_players: "Delete all players",
             settings_delete_all_cookies: "Delete all cookies",
             settings_save_settings: "Save settings",
             settings_report_bug: "Bug detected",
+            settings_weakest_link: "Weakest Link",
+            settings_weakest_link_tie: "Loser in the event of a tie vote",
+            settings_weakest_link_tie_strongest_link: "The Strongest Link decides",
+            settings_weakest_link_tie_arbitrary: "Arbitrarily",
+            settings_weakest_link_tie_both: "Equal votes are all losers",
+            settings_weakest_link_tie_weakest: "Statistics show the loser",
             gamemode_default_title: "Getting Started - 🥴",
             gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
             gamemode_default_subtitle_1: "Get ready, picolo shows no mercy.",
@@ -277,7 +297,12 @@ function updateCurrentLanguageString(lang) {
     updateHTMLLanguageStrings()
 }
 
-function updateHTMLLanguageStrings() {   
+function updateHTMLLanguageStrings() {
+    text_herge_bt.innerHTML = global.current_language_strings.herge_bt;
+    herge_bt_deny.innerHTML = global.current_language_strings.herge_bt_deny;
+    herge_bt_accept.innerHTML = global.current_language_strings.herge_bt_accept;
+    herge_bt_accept_dont_remind.innerHTML = global.current_language_strings.herge_bt_accept_dont_remind;
+
     text_prevention_warning.innerHTML = global.current_language_strings.prevention_warning;
     text_prevention_text_0.innerHTML = global.current_language_strings.prevention_text_0;
     text_prevention_text_1.innerHTML = global.current_language_strings.prevention_text_1;
@@ -288,8 +313,6 @@ function updateHTMLLanguageStrings() {
     text_prevention_call_text.innerHTML = global.current_language_strings.prevention_call_text;
     text_prevention_number.innerHTML = global.current_language_strings.prevention_number;
     text_prevention_number_modality.innerHTML = global.current_language_strings.prevention_number_modality;
-    text_prevention_skip_button.innerHTML = global.current_language_strings.skip;
-    text_warning_panel_displayed.innerHTML = global.current_language_strings.checkbox;
     
     text_prevention_panel.innerHTML = global.current_language_strings.prevention_panel;
 
@@ -316,6 +339,7 @@ function updateHTMLLanguageStrings() {
     text_settings_max_sip.innerHTML = global.current_language_strings.settings_max_sip;
     text_settings_potential_sip.innerHTML = global.current_language_strings.settings_potential_sip;
     text_settings_display.innerHTML = global.current_language_strings.settings_display;
+    text_settings_language.innerHTML = global.current_language_strings.settings_language;
     text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
     text_settings_darkmode_system.innerHTML = global.current_language_strings.settings_darkmode_system;
     text_settings_darkmode_light.innerHTML = global.current_language_strings.settings_darkmode_light;
@@ -328,6 +352,13 @@ function updateHTMLLanguageStrings() {
     text_settings_cookies.innerHTML = global.current_language_strings.settings_cookies;
     text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
+
+    text_settings_weakest_link.innerHTML = global.current_language_strings.settings_weakest_link;
+    text_settings_weakest_link_tie.innerHTML = global.current_language_strings.settings_weakest_link_tie;
+    text_settings_weakest_link_tie_strongest_link.innerHTML = global.current_language_strings.settings_weakest_link_tie_strongest_link;
+    text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
+    text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
+    text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
@@ -372,6 +403,7 @@ function updateHTMLLanguageStrings() {
     text_game_endgame.innerHTML = global.current_language_strings.end_game;
     text_game_quit.innerHTML = global.current_language_strings.quit;
     text_game_restart.innerHTML = global.current_language_strings.restart;
+    text_game_restart_topbar.innerHTML = global.current_language_strings.restart;
     ingame_player_add.innerHTML = global.current_language_strings.add
     ingame_player_input.placeholder = global.current_language_strings.add_player;
     manu_player_input.placeholder = global.current_language_strings.add_player;
@@ -389,16 +421,9 @@ function updateHTMLLanguageStrings() {
     ingame_weakest_link_current_button_wrong.innerHTML = global.current_language_strings.weakest_link_wrong;
     ingame_weakest_link_current_button_bank.innerHTML = global.current_language_strings.weakest_link_bank;
 
-    text_ingame_weakest_link_analytics_time.innerHTML = "Temps";
-    text_ingame_weakest_link_analytics_correct.innerHTML = "Bonnes réponses";
-    text_ingame_weakest_link_analytics_potential.innerHTML = "Bonnes réponses potentielles";
-    text_ingame_weakest_link_analytics_wrong.innerHTML = "Mauvaise réponses";
-    text_ingame_weakest_link_analytics_bank.innerHTML = "Banque";
-    text_ingame_weakest_link_looser.innerHTML = "est désigné(e) comme le maillon faible. Au reboire.";
-
     text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
     button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
     text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
-    text_game_restart_weakest_link.innerHTML = global.current_language_strings.restart;
+
 
 }
