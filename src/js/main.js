@@ -39,7 +39,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.6",
+        picolito_version: "0.31.7",
         cookie_expiration_delay: 60,
         weakestLinkTimer: undefined,
         audio : {
@@ -130,7 +130,7 @@ function defaultVariables() {
         weakest_link: {
             stop_at_max_chain: false, 
             max_chain: 3,
-            tie_behaviour: "both", //strongest_link, arbitrary, both, weakest
+            tie_behaviour: "weakest", //strongest_link, arbitrary, both, weakest
             chain: 0,
             alphabetically_ordered_player: [],
             bank: 0,

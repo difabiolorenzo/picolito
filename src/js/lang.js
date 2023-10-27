@@ -2,7 +2,7 @@ function setLanguageString() {
     language = {
         fr: {
             debug_add_fake_player: "Ajout d'un faux joueur.",
-            prevention_warning: "Attention",
+            prevention_warning: "Prévention",
             prevention_text_0: "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.",
             prevention_text_1: "Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...",
             prevention_text_2: "En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo.",
@@ -122,7 +122,7 @@ function setLanguageString() {
         },
         en: {
             debug_add_fake_player: "Adding fake player.",
-            prevention_warning: "Warning",
+            prevention_warning: "Safety",
             prevention_text_0: "Please dring responsibly. By continuig, you agree that you are responsible for any consequences that may result from the use of Picolo / Picolito.",
             prevention_text_1: "Take care of yourself and your friends. Alcohol can liven up your parties but it can also ruin them...",
             prevention_text_2: "Set your limits without overstepping those of others.",
