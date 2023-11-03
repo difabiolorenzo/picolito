@@ -4,9 +4,8 @@
 
 .btn, .form-control, .list-group, .list-group-item, img.svg{
     border-radius: .125rem;
-    margin-left: 1px;
-    margin-right: 1px;
     transition: 0.25s;
+    margin: 2px;
 }
 .btn:hover, .form-control:hover, .list-group-item:hover{
     box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
@@ -109,3 +108,26 @@ h6 {
     margin-top: 2rem;
 }
 .form-check {margin-top: 2vh;margin-bottom: 2vw;}
+
+label {
+}
+
+.alert {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.card-header {
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+.card h5 {
+    padding: .2rem;
+    margin: 0;
+}
+
+.card-title H5 {
+    font-weight: bold;
+}

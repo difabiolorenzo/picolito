@@ -22,7 +22,7 @@
         width: 30vh;
     }
     div#sentence_list {
-        height: 30vh;
+        height: 60vw;
     }
     div#game.dark_blue #ingame_content {
         margin-top: 10vw;

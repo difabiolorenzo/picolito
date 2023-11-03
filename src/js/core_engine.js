@@ -117,7 +117,10 @@ function displaySentence(sentence, color, pack_name, answer) {
     } else {
         ingame_title.innerText = "";
     }
-    ingame_gamemode_information.innerHTML = pack_name;
+
+    if (game.gamemode == "mix" || game.gamemode == "never_mix") {
+        ingame_gamemode_information.innerHTML = pack_name;
+    }
 }
 
 function randomPercentage() {
@@ -279,21 +282,16 @@ function generatePicoloSentences() {
         }
     }
 
-    function requestEveryMinPlayer() {
-        //get sentence from lower nb_player to max_player
-        for (var i=0; i<= max_player; i++) {
-            var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
-            request.push(...addind_request);
-        }
-        if (request.length == 0) {
-            game.filter.empty_type.push(type)
-            alert("REPICK TYPE");
-        }
+    //get sentence from lower nb_player to max_player
+    for (var i=0; i<= max_player; i++) {
+        var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
+        request.push(...addind_request);
     }
-    requestEveryMinPlayer()
+    if (request.length == 0) {
+        game.filter.empty_type.push(type)
+        alert("REPICK TYPE");
+    }
 
-
-    
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
@@ -308,7 +306,6 @@ function generatePicoloSentences() {
     }
 
     getRandomSentence()
-
     updateHTMLBackgroundColor(color);
     displaySentence(sentence, color, pack_name);
     addHistoryItem(0, database_id, sentence, key, type, color, pack_name, undefined);
@@ -353,7 +350,6 @@ function generatePicoloSentences() {
 }
 
 function generateNeverDoneSentences() {
-
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
@@ -366,11 +362,9 @@ function generateNeverDoneSentences() {
         game.database().filter({___id:database_id}).remove();
         console.log(database_id, "never_done removed")
     }
-
     var request = game.database().get();
     
     getRandomSentence()
-
     updateHTMLBackgroundColor("purple");
     displaySentence(sentence, "purple", pack_name);
     addHistoryItem(0, database_id, sentence, undefined, undefined, "purple", pack_name, undefined);
@@ -384,11 +378,9 @@ function generateWeakestLink() {
         answer = request[random_int].answer;
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
-        // console.log(random_int, sentence, answer)
 
         //remove sentence from db
         game.database().filter({___id:database_id}).remove();
-        // console.log(database_id, "weakest link removed")
     }
 
     var request = game.database().get();
@@ -401,12 +393,16 @@ function generateWeakestLink() {
 }
 
 function initWeakestLink() {
-// LA PLUPART DES REFENCES A DES IDENTIFIANT POUR GERER LES JOUEURS NE REFLETE PAS game.player_list
-// MAIS UNE VERSION DES IDENTIFIANTS TRIER ALPHABETIQUEMENT
+// LA PLUPART DES REFENCES A DES IDENTIFIANTS POUR GERER LES JOUEURS NE REFLETENT PAS game.player_list
+// MAIS UNE VERSION DES IDENTIFIANTS TRIES ALPHABETIQUEMENT
 // EXEMPLE : game.player_list = ["Be", "Re", "Ar"]
 // LES IDENTIFIANTS UTILISER SERONT 0 POUR DESIGNER "Ar", 1 pour "Be", 2 pour "Re" (RESPECTIVEMENT 2, 0 et 1)
 // SOLUTION game.player_list[game.weakest_link.player_id_alphabetically_sorted[x]]
 
+    ingame_weakest_link_current_player.style.display = ""
+    ingame_weakest_link_score_sip.innerHTML = "-"
+    ingame_weakest_link_score_bank.innerHTML = "-"
+    ingame_weakest_link_current_player.innerHTML = "-";
 
     if (game.player_list.length < 2) {
             alert("nb player 0-1")
@@ -438,9 +434,6 @@ function initWeakestLink() {
         game.weakest_link.player_analytics.potential_bank_lost.push(0)
         game.weakest_link.player_analytics.answer_time.push([0])
     }
-
-    weakestLinkChrono()
-    if (game.weakest_link.time == 60) { playsound("weakest_link_amb_60") }
     
     // date to compare how fast first question is awnsered
     game.weakest_link.time_game_started = new Date();
@@ -454,8 +447,13 @@ function initWeakestLink() {
 
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
     ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
-
+    
     game.weakest_link.current_time = game.weakest_link.time;
+
+    weakestLinkCalcTime();
+    weakestLinkChrono()
+    if (game.weakest_link.time == 60) { playsound("weakest_link_amb_60") }
+
     global.weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
 }
 
@@ -484,7 +482,6 @@ function weakestLinkWrong() {
     ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
 
     weakestLinkTimestampStep()
-
     weakestLinkNextPlayer()
     nextSentence()
 }
@@ -508,15 +505,7 @@ function weakestLinkTimestampStep() {
     if (game.player_list.length > 2) {
         function compareTimestamp(date_1, date_2) {
             var diff_time = Math.abs(date_2 - date_1);
-    
             return diff_time;
-    
-            // const date1 = new Date('7/13/2010');
-            // const date2 = new Date('12/15/2010');
-            // const diffTime = Math.abs(date2 - date1);
-            // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            // console.log(diffTime + " milliseconds");
-            // console.log(diffDays + " days");
         }
         
         var timestamp = new Date()
@@ -570,18 +559,16 @@ function weakestLinkDisplayVote() {
     ingame_weakest_link_current_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[game.weakest_link.player_vote_index]
     function updateBallotList() {
             weakest_link_player_vote_ballot.innerHTML = ""
-            
-            var ul_head = `<ul class="list-group list-group-flush"></ul>`;
-            var ul_end = "</ul>";
+            var ul_head = "";
             var html_inner = "";
     
             for (var i in game.weakest_link.alphabetically_ordered_player) {
                 var player_name = game.weakest_link.alphabetically_ordered_player[i]
                 if (i != game.weakest_link.player_vote_index) {
-                    html_inner += `<li class="list-group-item sentence-list" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
+                    html_inner += `<li class="list-group-item sentence-list weakest-link-vote-button" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
                 }
             }
-            weakest_link_player_vote_ballot.innerHTML = ul_head + html_inner + ul_end;
+            weakest_link_player_vote_ballot.innerHTML = ul_head + html_inner + "</ul>";
     }
     updateBallotList()
     manageIngameOptionDisplay(true, "weakest_link_vote", "flex")
@@ -612,7 +599,6 @@ function weakestLinkEndVoting() {
     manageNavDisplay("quit",false);
     manageNavDisplay("restart",false);
 
-    game.weakest_link.vote_count = [0, 7, 7, 7] //DEBUG
     var highest_vote = 0;
     var most_voted_player = []; //player_id
     var tie = undefined;
@@ -675,8 +661,7 @@ function weakestLinkEndVoting() {
     console.log(game.weakest_link.alphabetically_ordered_player[game.weakest_link.strongest_link_id], game.weakest_link.strongest_link_id, "strongest")
     
     // each player stats
-    var ul_head = `<ul class="list-group list-group-flush"></ul>`;
-    var ul_end = "</ul>";
+    var ul_head = "";
     var vote_result_innerHTML = "";
 
     for (var i in game.weakest_link.alphabetically_ordered_player) {
@@ -707,7 +692,7 @@ function weakestLinkEndVoting() {
         if (potential_bank_lost > 0) {vote_result_innerHTML += `<p class="player_analytics">Fait perdre <span class="player_analytics_red">${potential_bank_lost}</span> gorgées potentielles en banque</p>`;}
         vote_result_innerHTML += `</li>`;
     }
-    weakest_link_vote_result.innerHTML =  ul_head + vote_result_innerHTML + ul_end; 
+    weakest_link_vote_result.innerHTML =  ul_head + vote_result_innerHTML + "</ul>"; 
 
     weakest_link_vote_end_analytics_table.innerHTML = ""
     analytics_table_innerHTML = `<tr>

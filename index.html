@@ -45,8 +45,18 @@
                 <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
             </div>
             <div id="disclaimer_warning_validation" class="disclaimer_section">
-                <a id="picolito_version" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
+                <a id="picolito_version_safety" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
             </div>
+        </div>
+        <div class="page dark_affected" id="extract" style="display:none;">
+            <button type="input" class="btn btn-warning" onclick="iniTriviaData(5)">Ajouter(5)</button>
+            <button type="input" class="btn btn-warning" onclick="iniTriviaData(10)">Ajouter(10)</button>
+            <button type="input" class="btn btn-warning" onclick="iniTriviaData(50)">Ajouter(50)</button>
+            <button type="input" class="btn btn-info" onclick="copyTriviaTable()">Copier Table</button>
+            <table id="opentdb_table">
+                <thead><th>category</th><th>type</th><th>difficulty</th><th>question</th><th>correct_answer</th><th>incorrect_answers</th></thead>
+                <tbody id="opentdb_table_body"></tbody>
+            </table>
         </div>
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
@@ -58,21 +68,12 @@
             <br>
             <div id="menu_player_list"></div>
             <div id="menu_content">
-                <div id="menu_links">
-                    
-                    <button id="text_gamemode_menu" type="submit" class="btn btn-warning col-md-12" onclick="window.location.href = 'https://github.com/difabiolorenzo/picolito'">GitHub</button>
-                    <button id="text_prevention_panel" type="submit" class="btn btn-warning col-md-12" onclick="displayPage('disclaimer')">text_prevention_panel</button>
-                    <br>
-                    <p><button type="submit" class="btn btn-warning col-md-12" onclick="selectGamemode('weakest_link')">Maillon Faible (Experiental)</button>
-                    </p>
-                        
-                </div>
                 <div id="settings">
                     <div class="form-check">
                         <h5 id="text_settings_display">text_settings_display</h5>
                         <h5 id="text_settings_language">text_settings_language</h5>
                         <div class="form-group">
-                            <select class="list-group-item col-md-12" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
+                            <select class="list-group-item col-md-4" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
                                 <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
                                 <option id="text_menu_lang_en" value="en">text_menu_lang_en</option>
                                 <!-- <option id="text_menu_lang_da" value="da">Danois</option>
@@ -185,22 +186,44 @@
                                 <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
+                            <select class="form-control col-md-5" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
+                                <option value="none" id="input_weakest_link_max_chain_none">none</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
+                            <a id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</a>
+                        </label>
                     </div>
                     <div class="form-check">
                         <h5 id="text_settings_cookies">Cookies</h5>
                         <button id="text_settings_save_settings"class="btn col-md-5 btn-warning" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
                         <button id="text_settings_delete_cookies" class="btn col-md-5 btn-warning" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
-                    <div class="form-check">
-                        <h5 id="text_settings_information_other">text_settings_information_other</h5>
-                        <button id="text_settings_information_delete_players"class="btn col-md-5 btn-warning" onclick="removeAllPlayers()">text_settings_information_delete_players</button>
-                        <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
-                        <br>
-                        <p><a href="https://marmelapp.com">marmelapp.com</a></p>
-                        <p><a href="https://psycatgames.com">psycatgames.com</a></p>
-                    </div>
-                    <br>
                 </div>
+                <div class="form-check">
+                    <h5 id="text_settings_others">text_settings_others</h5>
+                    <button id="text_settings_information_delete_players"class="btn col-md-5 btn-warning" onclick="removeAllPlayers()">text_settings_information_delete_players</button>
+                    <button id="text_prevention_panel"class="btn col-md-5 btn-warning" onclick="displayPage('disclaimer')">text_prevention_panel</button>
+                    <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
+                    <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
+                </div>
+                <div class="form-check">
+                    <h5 id="text_settings_credits">text_settings_credits</h5>
+                    <p><a href="https://marmelapp.com">marmelapp.com</a></p>
+                    <p><a href="https://psycatgames.com">psycatgames.com</a></p>
+                </div>
+                <a id="picolito_version_menu" href="https://github.com/difabiolorenzo/picolito/commits/master">Picolito</a>
             </div>
         </div>
         <div class="page dark_affected" id="gamemode" style="display:none">
@@ -214,74 +237,84 @@
             </div>
             <hr>
             <div class="btn-group-toggle" data-toggle="buttons">
-                <h2 class="text-center">Picolo</h2>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="default" id="gamemode_option_default" onclick="selectGamemode(this.name);" autocomplete="off" checked>
-                  <h3 id="text_gamemode_title_default">text_gamemode_title_default</h3>
-                  <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
-                  <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
-                </label><hr>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="silly" id="gamemode_option_silly" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_silly">text_gamemode_title_silly</h3>
-                  <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
-                  <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
-                </label><hr>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="bar" id="gamemode_option_bar" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_bar">text_gamemode_title_bar</h3>
-                  <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
-                  <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
-                </label><hr>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="hot" id="gamemode_option_hot" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_hot">text_gamemode_title_hot</h3>
-                  <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
-                  <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
-                </label><hr>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="war" id="gamemode_option_war" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_war">text_gamemode_title_war</h3>
-                  <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
-                  <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
-                </label><hr>
-                <label class="btn btn-secondary btn-success">
-                  <input type="radio" name="mix" id="gamemode_option_mix" onclick="selectGamemode(this.name);" autocomplete="off">
-                  <h3 id="text_gamemode_title_mix">text_gamemode_title_mix</h3>
-                  <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
-                  <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
-                </label><hr>
-                <h2 class="text-center" id="text_gamemode_never_title">text_gamemode_never_title</h2><hr>
-                <label class="btn btn-secondary btn-warning">
-                    <input type="radio" name="never_popular" id="gamemode_option_never_popular" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
-                </label><hr>
-                <label class="btn btn-secondary btn-warning">
-                    <input type="radio" name="never_hot" id="gamemode_option_never_hot" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h3>
-                </label><hr>
-                <label class="btn btn-secondary btn-warning">
-                    <input type="radio" name="never_party" id="gamemode_option_never_party" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h3>
-                </label><hr>
-                <label class="btn btn-secondary btn-warning">
-                    <input type="radio" name="never_mix" id="gamemode_option_never_mix" onclick="selectGamemode(this.name);" autocomplete="off">
-                    <h3 id="text_gamemode_title_never_mix">text_gamemode_title_never_mix</h3>
-                    <p id="text_gamemode_never_mix_subtitle_1">text_gamemode_war_subtitle_1</p>
-                    <p id="text_gamemode_never_mix_subtitle_2">text_gamemode_war_subtitle_2</p>
-                </label>
-                <div id="text_experimental_gamemode">
-                    <hr>
-                    <h2 class="text-center" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h2><hr>
-                    <label class="btn btn-secondary btn-warning">
-                        <input type="radio" name="weakest_link" id="gamemode_option_weakest_link" onclick="selectGamemode(this.name);" autocomplete="off">
-                        <h3 id="text_gamemode_title_weakest_link">text_gamemode_title_weakest_link</h3>
-                        <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
-                    </label><hr>
+                <div id="accordion">
+                    <div class="card">
+                      <div class="btn card-title btn-warning" id="picolito_gamemode_collapse_header" onclick="$('#picolito_gamemode_collapse').collapse('toggle')">
+                        <h5 class="mb-0">Picolo</h5>
+                      </div>
+                      <div id="picolito_gamemode_collapse" class="collapse" aria-labelledby="picolito_gamemode_collapse_header" data-parent="#accordion">
+                        <div class="card-body">
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_default">text_gamemode_title_default</h3>
+                                <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
+                                <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_silly" value="silly" onclick="selectGamemode(this.value);" >
+                                <h5 id="text_gamemode_title_silly">text_gamemode_title_silly</h3>
+                                <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
+                                <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_bar" value="bar" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_bar">text_gamemode_title_bar</h3>
+                                <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
+                                <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_hot" value="hot" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_hot">text_gamemode_title_hot</h3>
+                                <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
+                                <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_war">text_gamemode_title_war</h3>
+                                <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
+                                <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_mix" value="mix" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_mix">text_gamemode_title_mix</h3>
+                                <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
+                                <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
+                              </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="btn card-title btn-warning" id="never_gamemode_collapse_header" onclick="$('#never_gamemode_collapse').collapse('toggle')">
+                        <h5 class="mb-0" id="text_gamemode_never_title">text_gamemode_never_title</h5>
+                      </div>
+                      <div id="never_gamemode_collapse" class="collapse" aria-labelledby="never_gamemode_collapse_header" data-parent="#accordion">
+                        <div class="card-body">
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h3>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h3>
+                            </button>
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_never_mix" value="never_mix" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_never_mix">text_gamemode_title_never_mix</h3>
+                                <p id="text_gamemode_never_mix_subtitle_1">text_gamemode_war_subtitle_1</p>
+                                <p id="text_gamemode_never_mix_subtitle_2">text_gamemode_war_subtitle_2</p>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="btn card-title btn-warning" id="weakest_link_gamemode_collapse_header" onclick="$('#weakest_link_gamemode_collapse').collapse('toggle')">
+                        <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
+                      </div>
+                      <div id="weakest_link_gamemode_collapse" class="collapse" aria-labelledby="weakest_link_gamemode_collapse_header" data-parent="#accordion">
+                        <div class="card-body">
+                            <button class="btn btn-secondary btn-warning" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                                <h5 id="text_gamemode_title_weakest_link">text_gamemode_title_weakest_link</h3>
+                                <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
-            
-              <hr>
         </div>
         <div class="page dark_affected" id="team_selection" style="display:none">
             <div class="d-flex">

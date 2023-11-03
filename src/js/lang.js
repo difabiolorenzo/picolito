@@ -13,7 +13,7 @@ function setLanguageString() {
             prevention_number: " 0 980 980 930",
             prevention_number_modality: "de 8h à 2h, appel non surtaxé",
             herge_bt: "Ce site utilise des cookies, il ne collecte aucune donnée personnelle. Les données utilisées sont uniquement des données d'utilisation et locales, tel que la liste des joueurs et les paramètres.",
-            prevention_panel: "Prévention",
+            prevention_panel: "Prévention & Cookies",
             skip: "Passer",
             herge_bt_deny: "Refuser",
             herge_bt_accept: "Accepter",
@@ -64,7 +64,7 @@ function setLanguageString() {
             settings_darkmode_dark: "Sombre",
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
-            settings_other: "Autre",
+            settings_others: "Autres",
             settings_cookies: "Cookies",
             settings_delete_all_players: "Supprimer tous les joueurs",
             settings_delete_all_cookies: "Supprimer tous les cookies",
@@ -92,7 +92,7 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
             gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
             gamemode_mix_title: "Mix - 🧪",
-            gamemode_mix_subtitle_0: "Melangez! Touut!",
+            gamemode_mix_subtitle_0: "Melangez Touut! Picolito... est là.",
             gamemode_mix_subtitle_1: "Before, On est débiles, Bar & Caliente",
             gamemode_never_title: "Je n'ai jamais",
             gamemode_never_popular: "Populaire - ⭐",
@@ -139,7 +139,7 @@ function setLanguageString() {
             prevention_number_modality: "",
             // prevention_number_modality: "de 8h à 2h, appel non surtaxé",
             herge_bt: "This site uses cookies, it does not collect any personal data. The data used is only usage and local data, such as player list and settings." ,
-            prevention_panel: "Prevention",
+            prevention_panel: "Safety & Cookies",
             skip: "Skip",
             herge_bt_deny: "Refuser",
             herge_bt_accept: "Accepter",
@@ -196,7 +196,7 @@ function setLanguageString() {
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
             settings_debug_display: "Recap",
-            settings_other: "Other",
+            settings_others: "Other",
             settings_cookies: "Cookies",
             settings_delete_all_players: "Delete all players",
             settings_delete_all_cookies: "Delete all cookies",
@@ -224,7 +224,7 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Friends, come together!",
             gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
             gamemode_mix_title: "Mix - 🧪",
-            gamemode_war_subtitle_0: "Shuffle! Everythiiiing!",
+            gamemode_war_subtitle_0: "Shuffle Everythiiiing! Picolito... is here.",
             gamemode_war_subtitle_1: "Getting Started, Getting Crazy, Bar, Caliente",
             gamemode_never_title: "Never I have ever",
             gamemode_never_popular: "Popular - ⭐",
@@ -346,7 +346,7 @@ function updateHTMLLanguageStrings() {
     text_settings_darkmode_dark.innerHTML = global.current_language_strings.settings_darkmode_dark;
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
-    text_settings_information_other.innerHTML = global.current_language_strings.settings_other;
+    text_settings_others.innerHTML = global.current_language_strings.settings_others;
     text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
     text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
     text_settings_cookies.innerHTML = global.current_language_strings.settings_cookies;
@@ -359,6 +359,9 @@ function updateHTMLLanguageStrings() {
     text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
+    text_input_weakest_link_soundtrack.innerHTML = "Bande son Maillon Faible"
+    text_settings_weakest_link_max_chain.innerHTML = "Limite de la chaine de bonne réponse"
+    input_weakest_link_max_chain_none.innerHTML = "Pas de maximum"
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
@@ -380,6 +383,7 @@ function updateHTMLLanguageStrings() {
     text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
     text_gamemode_title_mix.innerHTML = global.current_language_strings.gamemode_mix_title;
     text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
+    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
 
     text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;

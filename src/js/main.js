@@ -15,8 +15,11 @@ function devOverrideSettings() {
     addPlayer("Bertrude")
     addPlayer("Zolande")
     addPlayer("Alpipignoux")
+
+    // displayPage('extract')
+    displayPage('menu')
     
-    selectGamemode("weakest_link");
+    // selectGamemode("weakest_link");
 
     // game.weakest_link.stop_at_max_chain = true;
     // setTimeout(function() {firstSentence();}, 50)
@@ -39,13 +42,14 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.7",
+        picolito_version: "0.31.8",
         cookie_expiration_delay: 60,
         weakestLinkTimer: undefined,
         audio : {
             weakest_link_amb_60: undefined,
             weakest_link_amb_end: undefined
-        }
+        },
+        audio_enabled: true
     }
 
     game = {
@@ -128,14 +132,13 @@ function defaultVariables() {
         social_posting_enabled: false,
 
         weakest_link: {
-            stop_at_max_chain: false, 
-            max_chain: 3,
+            stop_at_max_chain: true, 
+            max_chain: 6,
             tie_behaviour: "weakest", //strongest_link, arbitrary, both, weakest
             chain: 0,
             alphabetically_ordered_player: [],
             bank: 0,
             time: 60,
-            max_sip_given: 5,
             player_analytics: {
                 correct: [],
                 wrong: [],
@@ -197,8 +200,15 @@ function updateHTMLSettingsByVar() {
     input_unlucky_player_3_settings.value = game.unlucky_player_3
 
     input_weakest_link_tie.value = game.weakest_link.tie_behaviour
+    if (game.weakest_link.stop_at_max_chain == false) {
+        input_weakest_link_max_chain.value = "none"
+    } else {
+        input_weakest_link_max_chain.value = game.weakest_link.max_chain
+    }
+    input_weakest_link_soundtrack.checked = global.audio_enabled
 
-    picolito_version.innerHTML = `Picolito ${global.picolito_version}`;
+    picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
+    picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
 
     if (global.remind_warning_panel == false) {
         displayPage('menu')
@@ -261,6 +271,15 @@ function changeWeakestLinkTieBehaviour(value) {
     input_weakest_link_tie.value = value;
 }
 
+function changeWeakestLinkMaxChain(value) {
+    if (value == "none") {
+        game.weakest_link.stop_at_max_chain = false;
+    } else {
+        game.weakest_link.stop_at_max_chain = true;
+        game.weakest_link.max_chain = parseInt(value);
+    }
+}
+
 function createScriptElement(script_src) {
     var headTag = document.getElementsByTagName("head").item(0);
     var scriptTag = document.createElement("script");
@@ -303,6 +322,7 @@ function displayPage(page) {
     document.getElementById('gamemode').style.display = 'none';
     document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
+    document.getElementById('extract').style.display = 'none';
 
 
     if (page == "disclaimer") {
@@ -494,10 +514,8 @@ function firstSentence() {
 
 function exitGame() {
     if (game.gamemode == "weakest_link") { stopsound("weakest_link_amb_60") }
+    if (global.weakestLinkTimer != undefined) { clearInterval(global.weakestLinkTimer) }
 
-    if (global.weakestLinkTimer != undefined) {
-        clearInterval(global.weakestLinkTimer)
-    }
     displaySentenceList(true);  // Force closing of sentence list ingame
     displaySentence("", undefined); // reset HTML sentence display
 
@@ -520,14 +538,6 @@ function exitGame() {
     displayPage('menu');
 
     ingame_answer.innerHTML = ""
-}
-
-function resetWeakestLink() {
-    ingame_weakest_link_current_player.style.display = ""
-    ingame_weakest_link_score_sip.innerHTML = "-"
-    ingame_weakest_link_score_bank.innerHTML = "-"
-    ingame_weakest_link_time.innerHTML = "-"
-    ingame_weakest_link_current_player.innerHTML = "-"
 }
 
 function launchSelectedGamemode(selected_gamemode) {
@@ -802,8 +812,7 @@ function updateSentenceList(mode) {
     if (mode == "clear") {
         sentence_list.innerHTML = ""
     } else {
-        var ul_head = `<ul class="list-group list-group-flush"></ul>`;
-        var ul_end = "</ul>";
+        var ul_head = "";
         var html_inner = "";
 
         for (var i in game.sentence_history) {
@@ -817,7 +826,7 @@ function updateSentenceList(mode) {
                 break;
             }
         }
-        sentence_list.innerHTML = ul_head + html_inner + ul_end;
+        sentence_list.innerHTML = ul_head + html_inner + "</ul>";
     }
 }
 
@@ -961,7 +970,7 @@ function storePlayerListCookie() {
 }
 
 function storeSettingsCookie() {
-    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour]
+    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour, global.audio_enabled, game.weakest_link.stop_at_max_chain, game.weakest_link.max_chain]
 
     if (getCookie("settings") == '') { setCookie("settings", settings); 
     } else { modifyCookie("settings", settings) }
@@ -997,6 +1006,9 @@ function getSettingsCookie() {
         global.accept_cookie = parseBoolean(settings[9]);
         global.remind_warning_panel = parseBoolean(settings[10]);
         game.weakest_link.tie_behaviour = settings[11];
+        global.audio_enabled = settings[12];
+        game.weakest_link.stop_at_max_chain = settings[14];
+        game.weakest_link.max_chain = settings[15];
 
         updateHTMLSettingsByVar();
     }
@@ -1032,41 +1044,47 @@ function alertRandomPlayer() {
 }
 
 function preloadSound(specific) {
-    if (specific == "all" || specific == "weakest_link") {
-        global.audio.weakest_link_amb_60 = new Audio('./src/audio/weakest_link_question_amb_60.mp3');
-        global.audio.weakest_link_amb_60.loop = false;
-        global.audio.weakest_link_amb_end = new Audio('./src/audio/weakest_link_question_amb_end.mp3');
-        global.audio.weakest_link_amb_end.loop = false;
+    if (global.audio_enabled == true) {
+        if (specific == "all" || specific == "weakest_link") {
+            global.audio.weakest_link_amb_60 = new Audio('./src/audio/weakest_link_question_amb_60.mp3');
+            global.audio.weakest_link_amb_60.loop = false;
+            global.audio.weakest_link_amb_end = new Audio('./src/audio/weakest_link_question_amb_end.mp3');
+            global.audio.weakest_link_amb_end.loop = false;
+        }
     }
 }
 
 function playsound(sound) {
-    switch (sound) {
-        case "weakest_link_amb_60":
-            global.audio.weakest_link_amb_60.currentTime = 0;
-            global.audio.weakest_link_amb_60.play(); 
-        break; 
-        case "weakest_link_amb_end":
-            global.audio.weakest_link_amb_end.currentTime = 0;
-            global.audio.weakest_link_amb_end.play(); 
-        break; 
-        default:
-        break;
-    }  
+    if (global.audio_enabled == true) {
+        switch (sound) {
+            case "weakest_link_amb_60":
+                global.audio.weakest_link_amb_60.currentTime = 0;
+                global.audio.weakest_link_amb_60.play(); 
+            break; 
+            case "weakest_link_amb_end":
+                global.audio.weakest_link_amb_end.currentTime = 0;
+                global.audio.weakest_link_amb_end.play(); 
+            break; 
+            default:
+            break;
+        }
+    }
 }
 
 function stopsound(sound) {
-    global.audio.weakest_link_amb_60.pause(); 
-    switch (sound) {
-        case "weakest_link_amb_60":
-            global.audio.weakest_link_amb_60.pause();  
-        break; 
-        case "weakest_link_amb_end":
-            global.audio.weakest_link_amb_60.pause(); 
-        break; 
-        default:
-        break;
-    }  
+    if (global.audio_enabled == true) {
+        global.audio.weakest_link_amb_60.pause(); 
+        switch (sound) {
+            case "weakest_link_amb_60":
+                global.audio.weakest_link_amb_60.pause();  
+            break; 
+            case "weakest_link_amb_end":
+                global.audio.weakest_link_amb_60.pause(); 
+            break; 
+            default:
+            break;
+        } 
+    } 
 }
 
 function DEBUG_add5sec() {
@@ -1097,4 +1115,73 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     
     displayPage('menu')
     getCookie("settings")
+}
+
+function copyTriviaTable() {
+    var urlField = document.querySelector('#opentdb_table');
+    var range = document.createRange();  
+    range.selectNode(urlField);
+    window.getSelection().addRange(range);
+    
+    document.execCommand('copy');
+}
+
+function iniTriviaData(nb) {
+    game.weakest_link.database_opentdb = []
+    getTriviaData(nb).then(data => {
+        var object = data
+        console.log(object)
+        game.weakest_link.database_opentdb = data
+        displayTriviaData()
+    });
+}
+
+function displayTriviaData() {
+    var extractHTML = ""
+    for (var i in game.weakest_link.database_opentdb) {
+        var object = game.weakest_link.database_opentdb[i]
+        extractHTML += `<tr><td>${object.category}</td><td>type</td><td>${object.difficulty}</td><td>${object.question}</td><td>${object.correct_answer}</td><td>${object.incorrect_answers}</td>`
+    }
+    document.getElementById("opentdb_table_body").innerHTML += extractHTML
+
+    // {
+    //     "category": "General Knowledge",
+    //     "type": "boolean",
+    //     "difficulty": "medium",
+    //     "question": "The US emergency hotline is 911 because of the September 11th terrorist attacks.",
+    //     "correct_answer": "False",
+    //     "incorrect_answers": ["True"]
+    // }
+}
+
+async function getTriviaData(questionCount) {
+    // Vérifiez si le nombre de questions est dans la plage autorisée
+    if (questionCount < 1 || questionCount > 50) {
+        console.error('Le nombre de questions doit être compris entre 1 et 50.');
+        return;
+    }
+
+    // Construisez l'URL avec le nombre de questions
+    const url = `https://opentdb.com/api.php?amount=${questionCount}&category=9`;
+
+    try {
+        // Faites une requête à l'API
+        const response = await fetch(url);
+
+        // Vérifiez si la requête a réussi
+        if (!response.ok) {
+            console.error('Erreur lors de la récupération des données:', response.status);
+            return;
+        }
+
+        // Convertissez la réponse en JSON
+        const data = await response.json();
+
+        // Affichez les résultats dans la console
+        console.log(data.results);
+        return data.results;
+        
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error);
+    }
 }
