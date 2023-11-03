@@ -40,7 +40,7 @@ function defaultVariables() {
     global = {
         default_language: true,
         current_language: "fr",
-        dev_mode: true,
+        dev_mode: false,
         dark_mode: "system",
         picolito_version: "0.31.9",
         cookie_expiration_delay: 60,
