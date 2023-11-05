@@ -9,24 +9,29 @@
       {
           "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_48.jpg",
           "type": "image/png",
-          "sizes": "48x48"
+          "sizes": "48x48",
+          "purpose": "any maskable"
       },
       {
           "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_96.jpg",
           "type": "image/png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "purpose": "any maskable"
       },
       {
           "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_192.jpg",
           "type": "image/png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "purpose": "any maskable"
       },
       {
           "src": "https://difabiolorenzo.github.io/picolito/src/img/icon_512.jpg",
           "type": "image/png",
-          "sizes": "512x512"
+          "sizes": "512x512",
+          "purpose": "any maskable"
       }
   ],
   "screenshots": [],
+  "start_url": "index.html",
   "description": "Version en ligne et modifiée de Picolo"
 }

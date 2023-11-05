@@ -11,19 +11,23 @@ function init() {
 }
 
 function devOverrideSettings() {
-    addPlayer("Ricard")
-    addPlayer("Bertrude")
-    addPlayer("Zolande")
-    addPlayer("Alpipignoux")
+    gamename.innerHTML = global.picolito_version
+    addPlayer("Ricard", "cookie")
+    addPlayer("Bertrude", "cookie")
+    addPlayer("Zolande", "cookie")
+    addPlayer("Alpipignoux", "cookie")
 
     // displayPage('extract')
     displayPage('menu')
+    
+    // global.audio_enabled = false
+    // game.weakest_link.hide_answer = false
     
     // selectGamemode("weakest_link");
 
     // game.weakest_link.stop_at_max_chain = true;
     // setTimeout(function() {firstSentence();}, 50)
-    // setTimeout(function() {game.weakest_link.current_time = 0;}, 150)
+    // setTimeout(function() {game.weakest_link.current_time = 4;}, 150)
 
     // setTimeout(function() {
     //     weakestLinkDisplayVote();
@@ -42,8 +46,8 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.9",
-        cookie_expiration_delay: 60,
+        picolito_version: "0.31.10",
+        cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
             weakest_link_amb_60: undefined,
@@ -147,6 +151,7 @@ function defaultVariables() {
                 answer_time: [],
                 avegarge_answer_time: []
             },
+            hide_answer: false
         }
     }
     if (global.dev_mode == true) { devOverrideSettings() }
@@ -197,15 +202,15 @@ function updateHTMLSettingsByVar() {
     input_dark_mode_settings.value = global.dark_mode;
     changeDarkModeSettings(global.dark_mode)
 
-    input_unlucky_player_3_settings.value = game.unlucky_player_3
-
     input_weakest_link_tie.value = game.weakest_link.tie_behaviour
+
     if (game.weakest_link.stop_at_max_chain == false) {
         input_weakest_link_max_chain.value = "none"
     } else {
         input_weakest_link_max_chain.value = game.weakest_link.max_chain
     }
     input_weakest_link_soundtrack.checked = global.audio_enabled
+    input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer
 
     picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
@@ -288,6 +293,7 @@ function createScriptElement(script_src) {
 }
  
 function hopper(array, nature) {
+    console.log("hopper")
     var probability = [];
     for (var i in array) {
         if (array[i][0] == nature) {
@@ -350,8 +356,8 @@ function addPlayer(player_name, html_origin) {
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
-                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-danger" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name} ✖ <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-warning" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-warning" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
 
                     game.player_list.push(player_name);
                 }
@@ -400,13 +406,6 @@ function removePlayer(player_name, html_element_id) {
     storePlayerListCookie();
 }
 
-function removeAllPlayers() {
-    menu_player_list.innerHTML = "";
-    ingame_player_list.innerHTML = "";
-    game.player_list = [];
-    updatePlayerCount();
-}
-
 function updatePlayerCount() {
     if (game.player_list.length > 1) {
         text_gamemode_player_singular.style.display = "none"
@@ -446,7 +445,9 @@ function initGame(select_team) {
         displayPage('game');
         manageIngameOptionDisplay(true, "weakest_link", true);
         manageIngameOptionDisplay(true, "start", "block");
+        manageIngameOptionDisplay(true, "weakest_link_rule", "block");
         manageNavDisplay("players", false);
+        manageNavDisplay("restart", false);
         preloadSound("weakest_link")
         weakestLinkCalcTime()
     } else {
@@ -549,9 +550,9 @@ function launchSelectedGamemode(selected_gamemode) {
     }
 }
 
-function restart(gamemode) {
+function restart() {
     exitGame();
-    launchSelectedGamemode(gamemode);
+    launchSelectedGamemode(game.gamemode);
 }
 
 function selectGamemode(selected_gamemode) {
@@ -618,6 +619,9 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
                 break;
             case "weakest_link_vote_end":
                 var selected_option = weakest_link_vote_end_ingame_option;
+                break;
+            case "weakest_link_rule":
+                var selected_option = weakest_link_rule;
                 break;
             default:
                 break;
@@ -752,24 +756,9 @@ function textReplacer(text) {
         }
         // change %s by random player
         if (text.charAt(i) == "%" && text.charAt(i+1) == "s") {
-                
-            if (game.unlucky_player_3 == true && game.player_list.length >= 3) {
-                var random = Math.random();
-                if (random <= game.unlucky_player_3_weight) {
-                    console.log("malchance J3")
-                    var random_player = player_name_list[2];
-                    player_name_list.splice(2,1);
-                } else {
-                    var random_player_index = Math.floor(Math.random() * player_name_list.length);
-                    var random_player = player_name_list[random_player_index];
-                    player_name_list.splice(random_player_index,1);
-                }
-            } else {
-                var random_player_index = Math.floor(Math.random() * player_name_list.length);
-                var random_player = player_name_list[random_player_index];
-                player_name_list.splice(random_player_index,1);
-            }
-
+            var random_player_index = Math.floor(Math.random() * player_name_list.length);
+            var random_player = player_name_list[random_player_index];
+            player_name_list.splice(random_player_index,1);
             text = replaceAt(text, i, html_span_player + random_player + html_span_end, 1);
         }
         // change %t by team
@@ -970,7 +959,7 @@ function storePlayerListCookie() {
 }
 
 function storeSettingsCookie() {
-    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour, global.audio_enabled, game.weakest_link.stop_at_max_chain, game.weakest_link.max_chain]
+    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour, global.audio_enabled, game.weakest_link.stop_at_max_chain, game.weakest_link.max_chain, game.weakest_link.hide_answer]
 
     if (getCookie("settings") == '') { setCookie("settings", settings); 
     } else { modifyCookie("settings", settings) }
@@ -1007,8 +996,9 @@ function getSettingsCookie() {
         global.remind_warning_panel = parseBoolean(settings[10]);
         game.weakest_link.tie_behaviour = settings[11];
         global.audio_enabled = settings[12];
-        game.weakest_link.stop_at_max_chain = settings[14];
-        game.weakest_link.max_chain = settings[15];
+        game.weakest_link.stop_at_max_chain = settings[13];
+        game.weakest_link.max_chain = settings[14];
+        game.weakest_link.hide_answer = settings[15];
 
         updateHTMLSettingsByVar();
     }
@@ -1116,6 +1106,13 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     displayPage('menu')
     getCookie("settings")
 }
+
+window.addEventListener('beforeunload', function (e) {
+    // Cancel the event
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+  });
 
 function copyTriviaTable() {
     var urlField = document.querySelector('#opentdb_table');

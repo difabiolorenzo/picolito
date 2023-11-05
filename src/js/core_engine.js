@@ -105,6 +105,9 @@ function displaySentence(sentence, color, pack_name, answer) {
             ingame_sentence.className = "animation_text_change";
             ingame_title.className = "animation_text_change";
             ingame_answer.className = "animation_text_change";
+            if (game.weakest_link.hide_answer == true) {
+                ingame_answer.className += " answer-hided";
+            }
         }
         document.getElementById("ingame_sentence").innerHTML = sentence;
         if (color == "dark_blue") {
@@ -217,7 +220,7 @@ function getRandomType() {
         for (var i in type_by_gamemode) {
             for (var j in type_by_color) {
                 if (type_by_gamemode[i] == type_by_color[j]) {
-                    if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {         
+                    if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {
                         console.log(`SOCIAL POSTING DISABLED`)
                     } else {
                         color_gamemode_matching_type.push(type_by_gamemode[i]);
@@ -590,6 +593,7 @@ function weakestLinkVotePlayer(player_id) {
 function weakestLinkDisplayNextVote() {
     manageIngameOptionDisplay(true, "weakest_link_vote", "none")
     manageIngameOptionDisplay(true, "weakest_link_next_vote", "flex")
+    manageIngameOptionDisplay(true, "weakest_link_rule", "none");
 
     var i = game.weakest_link.player_vote_index
     ingame_weakest_link_next_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[i]
@@ -656,7 +660,9 @@ function weakestLinkEndVoting() {
     }
 
     //determ who's strongest link
-    if (game.weakest_link.tie_behaviour == "weakest") { player_ratio_sorted[game.weakest_link.weakest_link_id].pop() }
+    if (game.weakest_link.tie_behaviour == "weakest") { 
+        console.log(player_ratio_sorted, game.weakest_link.weakest_link_id)
+            player_ratio_sorted[game.weakest_link.weakest_link_id].pop() }
     game.weakest_link.strongest_link_id = player_ratio_sorted.sort(sortPlayerStrongest)[0][0]
     console.log(game.weakest_link.alphabetically_ordered_player[game.weakest_link.strongest_link_id], game.weakest_link.strongest_link_id, "strongest")
     

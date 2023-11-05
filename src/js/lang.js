@@ -23,7 +23,7 @@ function setLanguageString() {
             next: "Suivant",
             back: "Retour",
             add: "Ajouter",
-            add_player: "Ajouter un joueur",
+            enter_player_name: "Entrer le nom du joueur",
             ready: "Prêts?",
             start: "Commencer",
             virus: "VIRUS",
@@ -53,9 +53,6 @@ function setLanguageString() {
             settings_social_posting: "Publication sur les réseaux sociaux",
             settings_min_sip: "Gorgées minimum",
             settings_max_sip: "Gorgées maximum",
-            settings_potential_sip: "Potentiels culs secs",
-            text_settings_unlucky_player_3: "Joueur 3 malchanceux",
-            text_settings_unlucky_player_3_percentage: "Pourcentage de malchance",
             settings_display: "Affichage",
             settings_language: "Langue",
             settings_dark_theme: "Mode sombre",
@@ -66,7 +63,6 @@ function setLanguageString() {
             settings_animation: "Animations",
             settings_others: "Autres",
             settings_cookies: "Cookies",
-            settings_delete_all_players: "Supprimer tous les joueurs",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
             settings_report_bug: "Signaler un bug",
@@ -76,6 +72,7 @@ function setLanguageString() {
             settings_weakest_link_tie_arbitrary: "Arbitrairement",
             settings_weakest_link_tie_both: "Les votés égalitaires sont tous perdants",
             settings_weakest_link_tie_weakest: "Les statistiques donnent le perdant",
+            gamemode: "Mode de jeu",
             gamemode_default_title: "Before - 🥴",
             gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
             gamemode_default_subtitle_1: "Soyez prêts, car Picolito ne vous fera pas de cadeaux.",
@@ -149,7 +146,7 @@ function setLanguageString() {
             next: "Next",
             back: "Back",
             add: "Add",
-            add_player: "Add player",
+            enter_player_name: "Enter player name",
             ready: "Ready?",
             start: "Start",
             virus: "VIRUS",
@@ -185,9 +182,6 @@ function setLanguageString() {
             settings_social_posting: "Posts on socials",
             settings_min_sip: "Minimum sip",
             settings_max_sip: "Maximum sip",
-            settings_potential_sip: "Potential shots",
-            text_settings_unlucky_player_3: "Unlucky Player 3",
-            text_settings_unlucky_player_3_percentage: "Badluck percentage",
             settings_display: "Display",
             settings_dark_theme: "Dark theme",
             settings_darkmode_system: "System theme",
@@ -198,7 +192,6 @@ function setLanguageString() {
             settings_debug_display: "Recap",
             settings_others: "Other",
             settings_cookies: "Cookies",
-            settings_delete_all_players: "Delete all players",
             settings_delete_all_cookies: "Delete all cookies",
             settings_save_settings: "Save settings",
             settings_report_bug: "Bug detected",
@@ -208,6 +201,7 @@ function setLanguageString() {
             settings_weakest_link_tie_arbitrary: "Arbitrarily",
             settings_weakest_link_tie_both: "Equal votes are all losers",
             settings_weakest_link_tie_weakest: "Statistics show the loser",
+            gamemode: "Gamemode",
             gamemode_default_title: "Getting Started - 🥴",
             gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
             gamemode_default_subtitle_1: "Get ready, picolo shows no mercy.",
@@ -337,7 +331,6 @@ function updateHTMLLanguageStrings() {
     text_settings_social.innerHTML = global.current_language_strings.settings_social_posting;
     text_settings_min_sip.innerHTML = global.current_language_strings.settings_min_sip;
     text_settings_max_sip.innerHTML = global.current_language_strings.settings_max_sip;
-    text_settings_potential_sip.innerHTML = global.current_language_strings.settings_potential_sip;
     text_settings_display.innerHTML = global.current_language_strings.settings_display;
     text_settings_language.innerHTML = global.current_language_strings.settings_language;
     text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
@@ -347,7 +340,6 @@ function updateHTMLLanguageStrings() {
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
     text_settings_others.innerHTML = global.current_language_strings.settings_others;
-    text_settings_information_delete_players.innerHTML = global.current_language_strings.settings_delete_all_players;
     text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
     text_settings_cookies.innerHTML = global.current_language_strings.settings_cookies;
     text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
@@ -359,9 +351,11 @@ function updateHTMLLanguageStrings() {
     text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
-    text_input_weakest_link_soundtrack.innerHTML = "Bande son Maillon Faible"
+    text_input_weakest_link_soundtrack.innerHTML = "Bande son"
     text_settings_weakest_link_max_chain.innerHTML = "Limite de la chaine de bonne réponse"
     input_weakest_link_max_chain_none.innerHTML = "Pas de maximum"
+    text_input_weakest_hide_answer.innerHTML = "Faire apparaitre la réponse progressivement"
+    text_settings_credits.innerHTML = "Credits"
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
@@ -409,8 +403,17 @@ function updateHTMLLanguageStrings() {
     text_game_restart.innerHTML = global.current_language_strings.restart;
     text_game_restart_topbar.innerHTML = global.current_language_strings.restart;
     ingame_player_add.innerHTML = global.current_language_strings.add
-    ingame_player_input.placeholder = global.current_language_strings.add_player;
-    manu_player_input.placeholder = global.current_language_strings.add_player;
+    ingame_player_input.placeholder = global.current_language_strings.enter_player_name;
+    manu_player_input.placeholder = global.current_language_strings.enter_player_name;
+    manu_player_input.title = global.current_language_strings.enter_player_name;
+    text_menu_add.title = global.current_language_strings.add;
+    text_weakest_link_rule_header.innerHTML = "Maillon Faible";
+    text_weakest_link_rule_1.innerHTML = "Les joueurs doivent répondre consecutivement et correctement à des questions pendant 60s."
+    text_weakest_link_rule_3.innerHTML = "Une seule mauvaise réponse fait tomber la chaine à 0, pour sauver la chaine, il est possible de dire \"banque\" après son nom mais avant la question."
+    text_weakest_link_rule_2.innerHTML = "À la fin, les joueurs votent contre le maillon faible qui se verra remettre le nombre de questions en banque."
+    text_weakest_link_rule_4.innerHTML = "Prêts? Vous avez une minute pour jouer au maillon faible."
+
+    text_gamemode_menu.title = global.current_language_strings.gamemode;
     ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
     ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E2";
 
