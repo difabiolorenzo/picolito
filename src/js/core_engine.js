@@ -3,7 +3,7 @@ function nextSentence(close_sentence_list) {
         game.cycle_id++;
         retrieve(game.cycle_id);
 
-        updateHTMLBackgroundColor();
+        updateGameBackgroundColor();
         updateGameCycle();
         
         if (close_sentence_list == true) {
@@ -25,7 +25,7 @@ function goToSpecificSentence(position) {
     game.cycle_id = position;
     
     updateGameCycle();
-    updateHTMLBackgroundColor();
+    updateGameBackgroundColor();
     retrieve(position);
     displaySentenceList(true);
 }
@@ -309,7 +309,7 @@ function generatePicoloSentences() {
     }
 
     getRandomSentence()
-    updateHTMLBackgroundColor(color);
+    updateGameBackgroundColor(color);
     displaySentence(sentence, color, pack_name);
     addHistoryItem(0, database_id, sentence, key, type, color, pack_name, undefined);
 
@@ -368,9 +368,9 @@ function generateNeverDoneSentences() {
     var request = game.database().get();
     
     getRandomSentence()
-    updateHTMLBackgroundColor("purple");
-    displaySentence(sentence, "purple", pack_name);
-    addHistoryItem(0, database_id, sentence, undefined, undefined, "purple", pack_name, undefined);
+    updateGameBackgroundColor("never_done");
+    displaySentence(sentence, "never_done", pack_name);
+    addHistoryItem(0, database_id, sentence, undefined, undefined, "never_done", pack_name, undefined);
 }
 
 function generateWeakestLink() {
@@ -390,7 +390,7 @@ function generateWeakestLink() {
     
     getRandomSentence()
 
-    updateHTMLBackgroundColor("dark_blue");
+    updateGameBackgroundColor("dark_blue");
     displaySentence(sentence, "dark_blue", pack_name, answer);
     addHistoryItem(0, database_id, sentence, undefined, undefined, "dark_blue", pack_name, answer);
 }

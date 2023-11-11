@@ -4,7 +4,6 @@
     --picolo_red: #E51000;
     --picolo_blue: #1B586B;
     --picolo_green: #00B407;
-    --picolo_purple: #a700fd;
     --picolo_yellow_highlight: #E7BB00;
     --picolo_red_highlight: #E51000;
     --picolo_blue_highlight: #0093c1;
@@ -22,6 +21,13 @@
     --dark_mode_gray: #101010;
 
     --weakest_link: #000046;
+
+    --never_done: #5c0090;
+
+    --password: #120000;
+    --password-red: #b30000;
+    --password-yellow: #eede04;
+    --password-shake-distance: 1vw;
 }
 .page {
     padding: 5vw;
@@ -37,7 +43,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 #ingame_text {
     cursor: pointer;
@@ -94,7 +100,8 @@ div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark);}
-div#game.purple {background-color: var(--purple);}
+div#game.never_done {background-color: var(--never_done);}
+div#game.password {background-color: var(--password);}
 div#game.dark_blue, #weakest_link_vote_end_ingame_option {
     background-color: var(--weakest_link);
     background: rgb(20,26,77);
@@ -114,7 +121,7 @@ div#game.dark_blue, #weakest_link_vote_end_ingame_option {
 .dark_mode .dark_affected.red #ingame_sentence {color: var(--picolo_red);}
 .dark_mode .dark_affected.yellow #ingame_sentence {color: var(--picolo_yellow);}
 .dark_mode .dark_affected.green #ingame_sentence {color: var(--picolo_green_highlight);}
-.dark_mode .dark_affected.purple #ingame_sentence {color: var(--picolo_purple);}
+.dark_mode .dark_affected.never_done #ingame_sentence {color: var(--picolo_never_done);}
 
 .recap_sentences_cell {
     border: 1px solid black;
@@ -192,9 +199,10 @@ div#ingame_option {
     justify-content: space-around;
     align-items: center;
     background-color: #0d0f10;
+    flex-direction: column-reverse;
 }
 
-#ingame_player_option, #replay_ingame_option, #start_ingame_option {
+#ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule {
     background-color: #000000d9;
     padding: 5vh;
     border: 1px solid #ffffff80;
@@ -297,6 +305,8 @@ div#menu_content {height: 100%;}
 div#ingame_topbar {
     padding: 3vh;
     z-index: 64;
+    transition: 0.25s;
+    background-color: #0000001a;
 }
 div#menu_player_list {
     display: flex;
@@ -432,10 +442,6 @@ div#ingame_weakest_questions_actions {
     justify-content: flex-end;
 }
 
-div#ingame_weakest_link_score {
-    /* z-index: 1; */
-}
-
 div#weakest_link_player_vote_ballot {
     flex-wrap: nowrap;
     align-content: center;
@@ -450,6 +456,7 @@ div#ingame_content {
     height: 100%;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -508,10 +515,6 @@ table#weakest_link_vote_end_analytics_table td {
     background-color: unset;
     text-align: center;
     font-weight: lighter;
-}
-
-.weakest_link_vote_analytics_data {
-    /* font-weight: bold; */
 }
 
 .weakest_link_vote_analytics_data {
@@ -643,6 +646,8 @@ a#picolito_version_menu {
     text-align: center;
     display: block;
     color: black;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .answer-hided {
@@ -663,4 +668,163 @@ body {
 div#weakest_link_rule {
     text-align: justify;
     padding: 1em;
+}
+
+div#password_ingame_content {
+    width: 100%;
+}
+
+div#ingame_password {
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+div#password_controls {
+    width: 100%;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+}
+
+div#password_ingame_display {
+    /* justify-content: center; */
+    /* margin: 0.75em; */
+    /* border-radius: 20px; */
+    /* background-color: black; */
+    /* font-weight: bold; */
+    /* letter-spacing: 3px; */
+    /* border: 3px solid #b30000; */
+    /* text-shadow: 0 0 20px red; */
+    /* height: 10vw; */
+    /* align-items: center; */
+    /* transition: 0.25s; */
+    font-size: xx-large;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+span.word_indicator {
+    width: 3vh;
+    height: 3vh;
+    background-color: var(--gray-dark);
+    /* margin: 0.25em; */
+    border-radius: 100%;
+    /* box-shadow: inset -1px -1px 3px black; */
+    /* display: inline-block; */
+    margin: 1vw;
+}
+
+span.word_indicator.correct {background-color: #41c40d;/* box-shadow: inset -1px -5px 10px 0px black; */}
+span.word_indicator.pass {
+    background-color: orange;
+    animation: 0.25s cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-shake;}
+span.word_indicator.disabled {
+    background-color: #c40d0d;
+    animation: 0.25s cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-shake;
+}
+
+@keyframes animation-word-indicator-shake {
+    20% {
+        transform: translateX(var(--password-shake-distance));
+    }
+    40% {
+        transform: translateX(calc(var(--password-shake-distance) * -1));
+    }
+    60% {
+        transform: translateX(var(--password-shake-distance));
+    }
+    80% {
+        transform: translateX(calc(var(--password-shake-distance) * -1));
+    }
+}
+
+div#password_ingame_status {
+    /* height: 7.5vh; */
+    /* border-radius: 10px; */
+    /* border: 3px solid #777777; */
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    width: min-content;
+}
+
+div#password_ingame_recap {
+    width: 50%;
+}
+
+div#password_ingame_content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.password-button {
+    width: 100vw;
+    border-radius: 5px;
+    color: white;
+    padding: 1vh 1vw 1vh 1vw;
+    font-weight: bold;
+    transition: 0.25s;
+    border: 3px solid var(--gray);
+    background: linear-gradient(135deg, #000000, #494949);
+    /* text-shadow: 0 0 20px #575757; */
+    height: 7.5vh;
+}
+
+.password-button:hover {
+    color:white;
+}
+
+.password-shield {
+    justify-content: center;
+    margin: 1vw;
+    border-radius: 20px;
+    background-color: black;
+    font-weight: bold;
+    letter-spacing: 3px;
+    border: 3px solid var(--password-red);
+    text-shadow: 0 0 20px red;
+    /* height: 10vw; */
+    align-items: center;
+    transition: 0.25s;
+}
+
+div#password_recap {
+    flex-direction: column;
+    align-items: flex-start;
+    height: 70vh;
+    overflow: auto;
+    padding-right: 1vw;
+}
+
+.recap_word {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 1.25vh 5vw;
+    font-size: x-large;
+    margin: 0.25vh 0 0.25vh 0;
+}
+
+.password-changing-word {
+    animation: 0.5s cubic-bezier(0.65, 0.05, 0.36, 1) animation-password-changing-word;
+}
+
+@keyframes animation-password-changing-word {
+    25% {
+        
+        border-color: var(--password-yellow);
+    }
+    50% {
+        transform: scaleX(0) scale(1);
+    }
+    75% {
+        border-color: var(--password-yellow);
+    }
 }

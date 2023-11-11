@@ -25,6 +25,7 @@
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 hr {
@@ -108,7 +109,7 @@ label.form-check-label {
 h6 {
     margin-top: 2rem;
 }
-.form-check {margin-top: 2vh;margin-bottom: 2vw;}
+.form-check {margin-top: 2vh;margin-bottom: 2vw;padding-right: 1.25rem;}
 
 label {
 }

@@ -19,25 +19,7 @@ function devOverrideSettings() {
 
     // displayPage('extract')
     displayPage('menu')
-    
-    // global.audio_enabled = false
-    // game.weakest_link.hide_answer = false
-    
-    // selectGamemode("weakest_link");
-
-    // game.weakest_link.stop_at_max_chain = true;
-    // setTimeout(function() {firstSentence();}, 50)
-    // setTimeout(function() {game.weakest_link.current_time = 4;}, 150)
-
-    // setTimeout(function() {
-    //     weakestLinkDisplayVote();
-    // }, 1100);
-    
-    // setTimeout(function() {
-    //     game.weakest_link.vote_count = [2, 1, 0, 0];
-    //     game.weakest_link.player_vote_index = 3;
-    //     weakestLinkVotePlayer(2)
-    // }, 1200);
+    // selectGamemode("password");
 }
 
 function defaultVariables() {
@@ -46,14 +28,15 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.31.10",
+        picolito_version: "0.32",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
             weakest_link_amb_60: undefined,
             weakest_link_amb_end: undefined
         },
-        audio_enabled: true
+        audio_enabled: true,
+        landscape_game_rotation: true
     }
 
     game = {
@@ -108,10 +91,6 @@ function defaultVariables() {
         team_1_player_list: [],
         team_2_player_list: [],
 
-        // random_team_name: {
-        //     fr: ["les Pastis", "les Binouses", "les 8·6", "les Brindillettes", "les Pinards", "les Poivrots", "les Gnôles", "les Pochards", "les Pictons", "les Bibines", "les Lichettes", "les Vinasses", "les Soulards", "les Allumés", "les Soiffard", "les Avaloirs", "les Vitriols", "les Bandeurs", "les Berlingots", "les Bistouquettes", "les Chagattes", "les Queues", "les Braquemards", "les Engins", "les Burnes", "les Limeurs", "les Tringlés", "les Croupions", "les Bougres", "les Inverti"],
-        // },
-
         sip: { min: 1, max: 4 },
         started: false,
         cycle_id: -1,
@@ -152,6 +131,13 @@ function defaultVariables() {
                 avegarge_answer_time: []
             },
             hide_answer: false
+        },
+        password: {
+            currentIndex: -1,
+            word_to_find_left: undefined,
+            word_status: [],
+            word_to_find_amount: 5,
+            words: [] // Array to store the fetched words
         }
     }
     if (global.dev_mode == true) { devOverrideSettings() }
@@ -159,7 +145,7 @@ function defaultVariables() {
 }
 
 function resetVariables() {
-    game.db = {};                                             //All database
+    game.db = {};
 
     game.team_1_player_list = [];
     game.team_2_player_list = [];
@@ -167,13 +153,12 @@ function resetVariables() {
     game.started = false;
     game.filter.empty_type = [];
     game.cycle_id = -1;
-    game.gamemode = "default";
     game.virus_remaining = 1;
     game.shot_remaining = game.shot_amount;
     game.database = undefined;
     game.pending_db = [];
 
-    game.sentence_history = [];                               //sentence_history_item = { sentence,key,type,nature }
+    game.sentence_history = [];
 
     game_cycle_count.innerHTML = "-";
 
@@ -423,7 +408,7 @@ function getIDFromString(text) {
     return text.substr(text.length - 1, 1);
 }
 
-function updateHTMLBackgroundColor(forced_color) {
+function updateGameBackgroundColor(forced_color) {
     if (forced_color != undefined) {
         document.getElementById("game").className = "page dark_affected " + forced_color;
     } else {
@@ -435,7 +420,11 @@ function updateHTMLBackgroundColor(forced_color) {
     }
 }
 
-function initGame(select_team) {
+function initGame(select_team, direct_launch) {
+    // à convertir en switch?
+
+    manageingameDisplayRotation("landscape")
+
     getMinPlayer()
     if (game.gamemode == "war" && select_team == true) {
         displayPage('team_selection');
@@ -450,21 +439,27 @@ function initGame(select_team) {
         manageNavDisplay("restart", false);
         preloadSound("weakest_link")
         weakestLinkCalcTime()
+        if (direct_launch == true) { startGame() }
+    } else if (game.gamemode == "password") {
+        manageingameDisplayRotation("portrait")
+        displayPage('game');
+        manageIngameOptionDisplay(true, "password", true);
+        manageIngameOptionDisplay(true, "start", "block");
+        manageIngameOptionDisplay(true, "password_rule", "block");
+        manageNavDisplay("players", false);
+        manageNavDisplay("restart", false);
+        manageNavDisplay("navigation_arrows", false);
+        if (direct_launch == true) { startGame() }
     } else {
         if (game.started == false) {
             game.started = true;
             checkDatabase();
-            // if (typeof db === "function") {
-            //     initGame()
-            //     retrieveDB()
-            //     updateGameCycle();
-            //     displaySentenceList(true);
-            // }
         }
         displayPage('game');
         manageIngameOptionDisplay(true, "start", "block");
         manageNavDisplay("quit",true)
         manageNavDisplay("restart",false)
+        if (direct_launch == true) { startGame() }
     }
 }
 
@@ -502,15 +497,25 @@ function checkDatabase() {
     }
 }
 
-function firstSentence() {
-    convertPendingDBTaffy();
-    manageIngameOptionDisplay(false, "start", "none");
-    if (game.gamemode == "weakest_link") { 
-        initWeakestLink()
+function startGame() {
+    if (game.gamemode != "password") {
+        convertPendingDBTaffy();
+        if (game.gamemode == "weakest_link") { 
+            initWeakestLink()
+        } else {
+            manageNavDisplay("navigation_arrows", true)
+        }
+        nextSentence();
     } else {
-        manageNavDisplay("navigation_arrows", true)
+        if (window.navigator.onLine == true) {
+            initPassword()
+        } else {
+            alert("Une connexion internet est nécessaire.")
+            return;
+        }
     }
-    nextSentence();
+
+    manageIngameOptionDisplay(false, "start", "none");
 }
 
 function exitGame() {
@@ -522,7 +527,7 @@ function exitGame() {
 
     updateGameCycle();                                  // reset cycle count
     resetVariables();
-    updateHTMLBackgroundColor();
+    updateGameBackgroundColor();
 
     manageIngameOptionDisplay(false, 'player_option', 'none')
     manageIngameOptionDisplay(false, 'start', 'none')
@@ -531,6 +536,10 @@ function exitGame() {
     manageIngameOptionDisplay(false, 'weakest_link_vote', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_next_vote', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_vote_end', 'none')
+    manageIngameOptionDisplay(false, 'weakest_link_rule', 'none')
+    manageIngameOptionDisplay(true, "password", 'none');
+    manageIngameOptionDisplay(true, "password_rule", 'none');
+    manageIngameOptionDisplay(true, "password_recap", 'none');
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
@@ -541,26 +550,17 @@ function exitGame() {
     ingame_answer.innerHTML = ""
 }
 
-function launchSelectedGamemode(selected_gamemode) {
-    selectGamemode(selected_gamemode);
-    if (selected_gamemode == "war") {
-        initGame(true);
-    } else {
-        initGame();
-    }
-}
-
-function restart() {
+function restartGame() {
     exitGame();
-    launchSelectedGamemode(game.gamemode);
+    selectGamemode(game.gamemode, true);
 }
 
-function selectGamemode(selected_gamemode) {
+function selectGamemode(selected_gamemode, direct_launch) {
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 2) {
         alert(global.current_language_strings.weakest_link_minimum_requierement)
     } else {
         game.gamemode = selected_gamemode;
-        initGame(true);
+        initGame(true, direct_launch);
         manageNavDisplay("navigation_arrows", false)
     }
 }
@@ -623,6 +623,15 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
             case "weakest_link_rule":
                 var selected_option = weakest_link_rule;
                 break;
+            case "password":
+                var selected_option = ingame_password;
+                break;
+            case "password_rule":
+                var selected_option = password_rule;
+                break;
+            case "password_recap":
+                var selected_option = password_recap;
+                break;
             default:
                 break;
         }
@@ -653,6 +662,15 @@ function manageNavDisplay(navigation_option, display) {
         selected_navigation_option.style.justifycontent = "center";
     } else if (display == false) {
         selected_navigation_option.style.display = "none";
+    }
+}
+
+function manageingameDisplayRotation(value) {
+    game_content.classList.remove("landscape-in-portrait");
+    if (value == "landscape") {
+        game_content.classList.add("landscape-in-portrait");
+    } else if (value == "portrait") {
+        game_content.classList.remove("landscape-in-portrait");
     }
 }
 
@@ -781,11 +799,11 @@ function displaySentenceList(force_ingame) {
     if (force_ingame == true || ingame_text.style.display == "none") {
         ingame_text.style.display = "block";
         sentence_list.style.display = "none";
-        updateHTMLBackgroundColor()
+        updateGameBackgroundColor()
     } else {
         ingame_text.style.display = "none";
         sentence_list.style.display = "block";
-        updateHTMLBackgroundColor("black")
+        updateGameBackgroundColor("black")
         updateSentenceList()
     }
 }

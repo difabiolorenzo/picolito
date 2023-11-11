@@ -51,3 +51,8 @@ Le but est de former une chaîne de bonnes réponses consécutives (6 par défau
 C'est la personne dont le prénom est le premier dans l'ordre alphabétique qui débute la manche. Lorsque la personne répond correctement à la question posée, l'animateur dit « Correct ! ». Si le joueur ne trouve pas ou réponds incorrectement la chaine retombe à 0.
 Néanmoins, les candidats peuvent dire « Banque ! » après que leur prénom a été prononcé mais avant qu'une question ne leur soit posée, le nombre de bonne réponses est alors mis en banque.
 Après la fin de chaque manche, les joueurs vote pour la personne dite "maillon faible".
+
+### Mot de Passe ###
+Les joueurs doivent deviner les mots affichés en s'aidant d'autre mots suggérés par un autre joueur.
+Les mots composés, de même famille, qui commencent pareil et les mimes sont interdits.
+- Fonctionne grace au site [trouve-mot.fr](https://trouve-mot.fr/) de [Brice Eliasse](https://brice-eliasse.com/)

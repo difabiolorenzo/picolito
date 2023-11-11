@@ -21,6 +21,7 @@
         <link rel="stylesheet" type="text/css" href="./src/css/main_portrait.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/core_engine.js"></script>
+        <script type="text/javascript" src="./src/js/password.js"></script>
         <script type="text/javascript" src="./src/js/lang.js"></script>
     </head>
     <body onload="init()" class="bright_mode">
@@ -36,14 +37,16 @@
                     </div>
                 </div>
                 <hr>
-                <h2><b id="text_prevention_warning">text_prevention_warning</b></h2>
-                <p id="text_prevention_text_0">text_prevention_text_0</p>
-                <p id="text_prevention_text_1">text_prevention_text_1</p>
-                <p id="text_prevention_text_2">text_prevention_text_2</p>
-                <br>
-                <p id="text_prevention_text_3">text_prevention_text_3</p>
-                <p><a id="text_prevention_information_website_text">text_prevention_information_website_text</a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">text_prevention_information_website</a></p>
-                <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
+                <div>
+                    <h2><b id="text_prevention_warning">text_prevention_warning</b></h2>
+                    <p id="text_prevention_text_0">text_prevention_text_0</p>
+                    <p id="text_prevention_text_1">text_prevention_text_1</p>
+                    <p id="text_prevention_text_2">text_prevention_text_2</p>
+                    <br>
+                    <p id="text_prevention_text_3">text_prevention_text_3</p>
+                    <p><a id="text_prevention_information_website_text">text_prevention_information_website_text</a><a href="https://www.alcool-info-service.fr/" id="text_prevention_information_website">text_prevention_information_website</a></p>
+                    <p><a id="text_prevention_call_text">text_prevention_call_text</a><i id="text_prevention_number">text_prevention_number</i> <code id="text_prevention_number_modality">text_prevention_number_modality</code></p>
+                </div>
             </div>
             <div id="disclaimer_warning_validation" class="disclaimer_section">
                 <a id="picolito_version_safety" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
@@ -70,7 +73,7 @@
             <div id="menu_content">
                 <div id="settings">
                     <div class="form-check">
-                        <h5 id="text_settings_display">text_settings_display</h5>
+                        <h4 id="text_settings_display">text_settings_display</h4>
                         <h5 id="text_settings_language">text_settings_language</h5>
                         <div class="form-group">
                             <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
@@ -113,7 +116,7 @@
                         </div>
                     </div>
                     <div class="form-check">
-                        <h5 id="text_settings_gameplay">text_settings_gameplay</h5>
+                        <h4 id="text_settings_gameplay">text_settings_gameplay</h4>
                         <div class="form-group">
                             <label class="form-check-label">
                                 <input class="form-check-input" id="input_shot_enabled" type="checkbox" checked onclick="game.shot_enabled = this.checked">
@@ -194,24 +197,61 @@
                                 <a id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</a>
                             </label>
                         </div>
+                        <!-- <h6 id="text_settings_password">text_settings_password</h6> -->
+                        <!-- <div class="form-group">
+                            <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
+                            <select disabled class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
+                                <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
+                                <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
+                                <option id="text_settings_weakest_link_tie_both" value="both">both</option>
+                                <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
+                            <select class="form-control col-md-6" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
+                                <option value="none" id="input_weakest_link_max_chain_none">none</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
+                                <a id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</a>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
+                                <a id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</a>
+                            </label>
+                        </div> -->
                         
                     </div>
                     <div class="form-check">
-                        <h5 id="text_settings_cookies">Cookies</h5>
+                        <h4 id="text_settings_cookies">Cookies</h4>
                         <button id="text_settings_save_settings"class="btn col-md-5 btn-warning" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
                         <button id="text_settings_delete_cookies" class="btn col-md-5 btn-warning" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     </div>
                 </div>
                 <div class="form-check">
-                    <h5 id="text_settings_others">text_settings_others</h5>
+                    <h4 id="text_settings_others">text_settings_others</h4>
                     <button id="text_prevention_panel"class="btn col-md-5 btn-warning" onclick="displayPage('disclaimer')">text_prevention_panel</button>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
                 </div>
                 <div class="form-check">
-                    <h5 id="text_settings_credits">text_settings_credits</h5>
+                    <h4 id="text_settings_credits">text_settings_credits</h4>
                     <p><a href="https://marmelapp.com">marmelapp.com</a></p>
                     <p><a href="https://psycatgames.com">psycatgames.com</a></p>
+                    <p><a href="https://trouve-mot.fr/">trouve-mot.fr</a></p>
                 </div>
                 <a id="picolito_version_menu" href="https://github.com/difabiolorenzo/picolito/commits/master">Picolito</a>
             </div>
@@ -229,7 +269,7 @@
             <div class="btn-group-toggle" data-toggle="buttons">
                 <div class="card">
                     <div class="btn card-title btn-warning" id="picolito_gamemode_collapse_header" onclick="$('#picolito_gamemode_collapse').collapse('toggle')">
-                    <h5 class="mb-0">Picolo</h5>
+                    <h5 id="text_gamemode_picolo_title" class="mb-0">text_gamemode_picolo_title</h5>
                     </div>
                     <div id="picolito_gamemode_collapse" class="collapse" aria-labelledby="picolito_gamemode_collapse_header" data-parent="#accordion">
                     <div class="card-body">
@@ -290,17 +330,16 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="btn card-title btn-warning" id="weakest_link_gamemode_collapse_header" onclick="$('#weakest_link_gamemode_collapse').collapse('toggle')">
-                    <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
-                    </div>
-                    <div id="weakest_link_gamemode_collapse" class="collapse" aria-labelledby="weakest_link_gamemode_collapse_header" data-parent="#accordion">
-                    <div class="card-body">
-                        <button class="btn btn-secondary btn-warning" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
-                            <h5 id="text_gamemode_title_weakest_link">text_gamemode_title_weakest_link</h3>
-                            <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
-                        </button>
-                    </div>
-                    </div>
+                    <button class="btn card-title btn-warning" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                        <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
+                        <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
+                    </button>
+                </div>
+                <div class="card">
+                    <button class="btn card-title btn-warning" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
+                        <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
+                        <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
+                    </button>
                 </div>
             </div>
         </div>
@@ -325,10 +364,10 @@
             </table>
         </div>
         <div class="page" id="game" style="display:none">
-            <div id="game_content">
+            <div id="game_content"class="landscape-in-portrait">
                 <div id="ingame_topbar" class="d-flex">
                     <button id="text_game_quit_topbar" type="submit" class="btn btn-secondary" onclick="exitGame()">text_game_quit_topbar</button>
-                    <button id="text_game_restart_topbar" type="submit" class="btn btn-warning" onclick="restart()">text_game_restart_topbar</button>
+                    <button id="text_game_restart_topbar" type="submit" class="btn btn-warning" onclick="restartGame()">text_game_restart_topbar</button>
                     <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
                         <button disabled type="button" class="btn btn-secondary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
@@ -368,16 +407,27 @@
                             <a id="ingame_weakest_link_current_button_bank" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkBank()">BANK</a>
                         </div>
                     </div>
+                    <div id="ingame_password" style="display:none">
+                        <div id="password_ingame_content">
+                            <div id="password_ingame_status" class="password-shield">...</div>
+                            <div id="password_ingame_display" class="password-shield">...</div>
+                        </div>
+                        <div id="password_controls">
+                            <button id="button_password_invalidate" class=" btn password-button" onclick="passwordInvalidate()">button_password_invalidate</button>
+                            <button id="button_password_pass" class=" btn password-button" onclick="passwordPass()">button_password_pass</button>
+                            <button id="button_password_validate" class=" btn password-button" onclick="passwordValidate()">button_password_validate</button>
+                        </div>
+                    </div>
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
                             <p id="text_game_ready">text_game_ready</p>
-                            <button id="text_game_start_button" type='submit' class='btn btn-warning' onclick='firstSentence()'>text_game_start_button</button>
+                            <button id="text_game_start_button" type='submit' class='btn btn-warning' onclick='startGame()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
                             <div>
                                 <button id="text_game_quit" type="submit" class="btn btn-warning" onclick="exitGame()">text_game_quit</button>
-                                <button id="text_game_restart" type='submit' class='btn btn-warning' onclick='restart()'>text_game_restart</button>
+                                <button id="text_game_restart" type='submit' class='btn btn-warning' onclick='restartGame()'>text_game_restart</button>
                             </div>
                         </div>
                         <div id="weakest_link_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
@@ -403,6 +453,13 @@
                             <p id="text_weakest_link_rule_2">text_weakest_link_rule_2</p>
                             <p id="text_weakest_link_rule_3">text_weakest_link_rule_3</p>
                             <p id="text_weakest_link_rule_4">text_weakest_link_rule_4</p>
+                        </div>
+                        <div id="password_rule" style="display:none">
+                            <h3 id="text_password_rule_header">password</h3>
+                            <p id="text_password_rule_1">text_password_rule_1</p>
+                            <p id="text_password_rule_2">text_password_rule_2</p>
+                        </div>
+                        <div id="password_recap" style="display:none">
                         </div>
                         <div id="ingame_player_option" style="display: none;">
                             <div class="d-flex">

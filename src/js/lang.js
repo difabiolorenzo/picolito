@@ -72,7 +72,13 @@ function setLanguageString() {
             settings_weakest_link_tie_arbitrary: "Arbitrairement",
             settings_weakest_link_tie_both: "Les votés égalitaires sont tous perdants",
             settings_weakest_link_tie_weakest: "Les statistiques donnent le perdant",
+            settings_weakest_link_soundtrack: "Bande son",
+            settings_weakest_link_max_chain: "Limite de la chaine de bonne réponse",
+            settings_weakest_link_max_chain_none: "Pas de maximum",
+            settings_weakest_hide_answer: "Faire apparaitre la réponse progressivement",
+            settings_credits: "Credits",
             gamemode: "Mode de jeu",
+            gamemode_picolo_title: "Picolo",
             gamemode_default_title: "Before - 🥴",
             gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
             gamemode_default_subtitle_1: "Soyez prêts, car Picolito ne vous fera pas de cadeaux.",
@@ -98,9 +104,24 @@ function setLanguageString() {
             gamemode_never_mix: "Mix - 🧪",
             gamemode_never_mix_subtitle_1: "Je n'ai jamais rien fait.",
             gamemode_never_mix_subtitle_2: "Populaire, Coquin & Sexy et Fête",
-            gamemode_weakest_link_title:"Maillon Faible (en dev)",
-            gamemode_title_weakest_link:"Picton Faible",
+            gamemode_weakest_link_title:"Maillon Faible 🔗",
             gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir.",
+            gamemode_title_password:"Mot de passe💡",
+            gamemode_password_subtitle_1:"Un mot peut en cacher un autre",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
+
+            weakest_link_rule_header: "Maillon Faible",
+            weakest_link_rule_1: "Les joueurs doivent répondre consecutivement et correctement à des questions pendant 60s.",
+            weakest_link_rule_3: "Une seule mauvaise réponse fait tomber la chaine à 0, pour sauver la chaine, il est possible de dire \"banque\" après son nom mais avant la question.",
+            weakest_link_rule_2: "À la fin, les joueurs votent contre le maillon faible qui se verra remettre le nombre de questions en banque.",
+            weakest_link_rule_4: "Prêts? Vous avez une minute pour jouer au maillon faible.",
+            password_rule_header: "Mot de passe",
+            password_rule_1: "Les joueurs doivent deviner les mots affichés en s'aidant d'autre mots suggérés par un autre joueur.",
+            password_rule_2: "Les mots composés, de même famille, qui commencent pareil et les mimes sont interdits.",
+
+            password_invalidate: "Invalider",
+            password_pass: "Passer",
+            password_validate: "Valider",
+            
             gamemode_other: "Autre",
             lang_fr: "Français",
             lang_da: "Danois",
@@ -201,7 +222,13 @@ function setLanguageString() {
             settings_weakest_link_tie_arbitrary: "Arbitrarily",
             settings_weakest_link_tie_both: "Equal votes are all losers",
             settings_weakest_link_tie_weakest: "Statistics show the loser",
+            settings_weakest_link_soundtrack: "Music",
+            settings_weakest_link_max_chain: "Limit correct awnser chain",
+            settings_weakest_link_max_chain_none: "No maximum",
+            settings_weakest_hide_answer: "Display progressively",
+            settings_credits: "Credits",
             gamemode: "Gamemode",
+            gamemode_picolo_title: "Picolo",
             gamemode_default_title: "Getting Started - 🥴",
             gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
             gamemode_default_subtitle_1: "Get ready, picolo shows no mercy.",
@@ -227,9 +254,24 @@ function setLanguageString() {
             gamemode_never_mix: "Mix - 🧪",
             gamemode_never_mix_subtitle_1: "Never done nothing.",
             gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
-            gamemode_weakest_link_title:"Weakest Link (in dev)",
-            gamemode_title_weakest_link:"Weakest Link",
+            gamemode_weakest_link_title:"Weakest Link 🔗",
             gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye",
+            gamemode_title_password:"Password 💡",
+            gamemode_password_subtitle_1:"One word can hide another",
+
+            weakest_link_rule_header: "Weakest Link",
+            weakest_link_rule_1: "Players answer questions consecutively and correctly for 60s.",
+            weakest_link_rule_3: "A single wrong answer drops the chain to 0, to save the chain, it is possible to say \"bank\" after your name but before the question.",
+            weakest_link_rule_2: "At the end, players vote against the weakest link who will be given the number of questions in the bank.",
+            weakest_link_rule_4: "Ready? Let's play The Weakest Link",
+            password_rule_header: "Password",
+            password_rule_1: "Players guess the words displayed with the help of other words suggested by another player.",
+            password_rule_2: "Composed words, from the same family, which start the same and mimes are prohibited",
+
+            password_invalidate: "Invalidate",
+            password_pass: "Pass",
+            password_validate: "Validate",
+
             gamemode_other: "Other",
             lang_fr: "French",
             lang_da: "Danish",
@@ -351,15 +393,17 @@ function updateHTMLLanguageStrings() {
     text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
-    text_input_weakest_link_soundtrack.innerHTML = "Bande son"
-    text_settings_weakest_link_max_chain.innerHTML = "Limite de la chaine de bonne réponse"
-    input_weakest_link_max_chain_none.innerHTML = "Pas de maximum"
-    text_input_weakest_hide_answer.innerHTML = "Faire apparaitre la réponse progressivement"
-    text_settings_credits.innerHTML = "Credits"
+    // text_settings_password.innerHTML = "Mot de passe";
+    text_input_weakest_link_soundtrack.innerHTML = global.current_language_strings.settings_weakest_link_soundtrack
+    text_settings_weakest_link_max_chain.innerHTML = global.current_language_strings.settings_weakest_link_max_chain
+    input_weakest_link_max_chain_none.innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none
+    text_input_weakest_hide_answer.innerHTML = global.current_language_strings.settings_weakest_hide_answer
+    text_settings_credits.innerHTML = global.current_language_strings.settings_credits
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
     text_gamemode_player_plural.innerHTML = global.current_language_strings.player_plural;
+    text_gamemode_picolo_title.innerHTML = global.current_language_strings.gamemode_picolo_title;
     text_gamemode_title_default.innerHTML = global.current_language_strings.gamemode_default_title;
     text_gamemode_default_subtitle_0.innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
     text_gamemode_default_subtitle_1.innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
@@ -388,8 +432,10 @@ function updateHTMLLanguageStrings() {
     text_gamemode_never_mix_subtitle_2.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_2;
 
     text_gamemode_weakest_link_title.innerHTML = global.current_language_strings.gamemode_weakest_link_title
-    text_gamemode_title_weakest_link.innerHTML = global.current_language_strings.gamemode_title_weakest_link
     text_gamemode_weakest_link_subtitle_1.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1
+
+    text_gamemode_title_password.innerHTML = global.current_language_strings.gamemode_title_password;
+    text_gamemode_password_subtitle_1.innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;
@@ -407,11 +453,16 @@ function updateHTMLLanguageStrings() {
     manu_player_input.placeholder = global.current_language_strings.enter_player_name;
     manu_player_input.title = global.current_language_strings.enter_player_name;
     text_menu_add.title = global.current_language_strings.add;
-    text_weakest_link_rule_header.innerHTML = "Maillon Faible";
-    text_weakest_link_rule_1.innerHTML = "Les joueurs doivent répondre consecutivement et correctement à des questions pendant 60s."
-    text_weakest_link_rule_3.innerHTML = "Une seule mauvaise réponse fait tomber la chaine à 0, pour sauver la chaine, il est possible de dire \"banque\" après son nom mais avant la question."
-    text_weakest_link_rule_2.innerHTML = "À la fin, les joueurs votent contre le maillon faible qui se verra remettre le nombre de questions en banque."
-    text_weakest_link_rule_4.innerHTML = "Prêts? Vous avez une minute pour jouer au maillon faible."
+    
+    text_weakest_link_rule_header.innerHTML = global.current_language_strings.weakest_link_rule_header;
+    text_weakest_link_rule_1.innerHTML = global.current_language_strings.weakest_link_rule_1;
+    text_weakest_link_rule_3.innerHTML = global.current_language_strings.weakest_link_rule_3;
+    text_weakest_link_rule_2.innerHTML = global.current_language_strings.weakest_link_rule_2;
+    text_weakest_link_rule_4.innerHTML = global.current_language_strings.weakest_link_rule_4;
+
+    text_password_rule_header.innerHTML = global.current_language_strings.password_rule_header;
+    text_password_rule_1.innerHTML = global.current_language_strings.password_rule_1;
+    text_password_rule_2.innerHTML = global.current_language_strings.password_rule_2;
 
     text_gamemode_menu.title = global.current_language_strings.gamemode;
     ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
@@ -431,6 +482,10 @@ function updateHTMLLanguageStrings() {
     text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
     button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
     text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
+
+    button_password_invalidate.innerHTML = global.current_language_strings.password_invalidate;
+    button_password_pass.innerHTML = global.current_language_strings.password_pass;
+    button_password_validate.innerHTML = global.current_language_strings.password_validate;
 
 
 }
