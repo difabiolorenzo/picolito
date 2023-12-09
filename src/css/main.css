@@ -31,6 +31,7 @@
 }
 .page {
     padding: 5vw;
+    width: 100vw;
     height: 100vh;
     /* background-color: var(--picolito_background); */
 }
@@ -43,7 +44,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 #ingame_text {
     cursor: pointer;
@@ -55,9 +56,10 @@ div#game.dark_blue #ingame_text {
 
 div#game.dark_blue #ingame_content {
     display: flex;
-    justify-content: center;
-    align-content: space-between;
-    margin-top: 12.5vh;
+    margin-top: 15vh;
+    justify-content: flex-start;
+    align-content: space-around;
+    align-items: stretch;
 }
 
 p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame, h1#ingame_title {
@@ -304,7 +306,7 @@ div#menu_content {height: 100%;}
 
 div#ingame_topbar {
     padding: 3vh;
-    z-index: 64;
+    z-index: 1;
     transition: 0.25s;
     background-color: #0000001a;
 }
@@ -445,7 +447,7 @@ div#ingame_weakest_questions_actions {
 div#weakest_link_player_vote_ballot {
     flex-wrap: nowrap;
     align-content: center;
-    max-height: 60vh;
+    max-height: 32vh;
     overflow-y: auto;
     margin: 2vh;
     display: flex;
@@ -455,9 +457,9 @@ div#weakest_link_player_vote_ballot {
 div#ingame_content {
     height: 100%;
     display: flex;
-    align-items: center;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .weakest_link_vote_menu {
@@ -562,10 +564,10 @@ meter.player_analytics_meter {
 }
 
 div#ingame_weakest_link_voting_area {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
+    /* height: 100%; */
     justify-content: center;
-    height: 100%;
 }
 
 #weakest_link_vote_end_ingame_option_side {
@@ -827,4 +829,8 @@ div#password_recap {
     75% {
         border-color: var(--password-yellow);
     }
+}
+
+div#ingame_weakest_link_voting_area {
+    display: flex;
 }
