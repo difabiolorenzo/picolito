@@ -65,8 +65,10 @@
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 onclick="DEBUG_RandomPlayer()" id="gamename">PICOLITO</h1>
             <div class="d-flex">
-                <input id="manu_player_input" type="text" class="col-md-9 form-control" pattern="[A-Za-z]">
-                <button id="text_menu_add" type="input" class="nostyle-button" onclick="addPlayer(undefined, 'menu')"><img class="svg" alt="" src="./src/img/user-plus-svgrepo-com.svg"></img></button>
+                <form class="d-flex justify-content-start" action="javascript:void(0);">
+                    <input id="manu_player_input" type="text" class="col-md-9 form-control" pattern="[A-Za-z]">
+                    <button id="text_menu_add" type="submit" class="nostyle-button" onclick="addPlayer(undefined, 'menu')"><img class="svg" alt="" src="./src/img/user-plus-svgrepo-com.svg"></img></button>
+                </form>
                 <button id="text_gamemode_menu" type="input" class="nostyle-button" onclick="displayPage('gamemode')"><img class="svg" src="./src/img/arrow-right-svgrepo-com.svg"></img></button>
             </div>
             <div id="menu_player_list"></div>
@@ -234,6 +236,22 @@
                             </label>
                         </div> -->
                         
+                        <h6 id="text_settings_password">text_settings_password</h6>
+                        <div class="form-group">
+                            <label id="text_settings_password_amount" for="select_settings_password_amount">text_settings_password_amount</label>
+                            <select class="form-control col-md-6" id="select_settings_password_amount" onchange="game.password.word_to_find_amount = this.value">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-check">
                         <h4 id="text_settings_cookies">Cookies</h4>

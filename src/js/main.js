@@ -28,7 +28,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "system",
-        picolito_version: "0.32.1",
+        picolito_version: "0.32.2",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
@@ -169,7 +169,6 @@ function resetVariables() {
 }
 
 function updateHTMLSettingsByVar() {
-
     input_team_1.value = game.team_1;
     input_team_2.value = game.team_2;
 
@@ -197,6 +196,7 @@ function updateHTMLSettingsByVar() {
     input_weakest_link_soundtrack.checked = global.audio_enabled
     input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer
 
+    select_settings_password_amount.value = game.password.word_to_find_amount;
     picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
 
@@ -510,7 +510,7 @@ function startGame() {
         if (window.navigator.onLine == true) {
             initPassword()
         } else {
-            alert("Une connexion internet est nécessaire.")
+            alert(global.current_language_strings.password_internet_requierement)
             return;
         }
     }
@@ -556,7 +556,7 @@ function restartGame() {
 }
 
 function selectGamemode(selected_gamemode, direct_launch) {
-    if (selected_gamemode == "weakest_link" && game.player_list.length <= 2) {
+    if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
         alert(global.current_language_strings.weakest_link_minimum_requierement)
     } else {
         game.gamemode = selected_gamemode;
@@ -977,12 +977,31 @@ function storePlayerListCookie() {
 }
 
 function storeSettingsCookie() {
-    var settings = [game.display_color_indicator, game.animation, game.shot_enabled, game.virus_enabled, game.social_posting_enabled, game.sip.min, game.sip.max, game.shot_amount, global.dark_mode, global.accept_cookie, global.remind_warning_panel, game.weakest_link.tie_behaviour, global.audio_enabled, game.weakest_link.stop_at_max_chain, game.weakest_link.max_chain, game.weakest_link.hide_answer]
+    var settings = [
+        game.display_color_indicator,
+        game.animation,
+        game.shot_enabled,
+        game.virus_enabled,
+        game.social_posting_enabled,
+        game.sip.min,
+        game.sip.max,
+        game.shot_amount,
+        global.dark_mode,
+        global.accept_cookie,
+        global.remind_warning_panel,
+        game.weakest_link.tie_behaviour,
+        global.audio_enabled,
+        game.weakest_link.stop_at_max_chain,
+        game.weakest_link.max_chain,
+        game.weakest_link.hide_answer,
+        game.password.word_to_find_amount
+    ]
 
-    if (getCookie("settings") == '') { setCookie("settings", settings); 
-    } else { modifyCookie("settings", settings) }
-
-    console.log(getCookie("settings"))
+    if (getCookie("settings") == '') {
+        setCookie("settings", settings);
+    } else {
+        modifyCookie("settings", settings)
+    }
 }
 
 function retrieveCookie() {
@@ -1017,6 +1036,7 @@ function getSettingsCookie() {
         game.weakest_link.stop_at_max_chain = settings[13];
         game.weakest_link.max_chain = settings[14];
         game.weakest_link.hide_answer = settings[15];
+        game.password.word_to_find_amount = settings[16];
 
         updateHTMLSettingsByVar();
     }
@@ -1111,11 +1131,11 @@ function DEBUG_add5sec() {
 
 function manageHergeBTChoice(cookie_choice, remind_me_later) {
     if (cookie_choice == true) {
-        console.log("Cookie accepté")
+        // console.log("Cookie accepté")
         global.accept_cookie = true;
         global.remind_warning_panel = true;
         if (remind_me_later == false) {
-            console.log("Ne plus afficher")
+            // console.log("Ne plus afficher")
             global.remind_warning_panel = false;
         }
         storeSettingsCookie()
@@ -1125,12 +1145,13 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     getCookie("settings")
 }
 
+// Prevent reload
 window.addEventListener('beforeunload', function (e) {
     // Cancel the event
     e.preventDefault();
     // Chrome requires returnValue to be set
     e.returnValue = '';
-  });
+});
 
 function copyTriviaTable() {
     var urlField = document.querySelector('#opentdb_table');

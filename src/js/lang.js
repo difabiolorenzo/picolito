@@ -34,7 +34,8 @@ function setLanguageString() {
             weakest_link_wrong: "INCORRECTE",
             weakest_link_prepare_vote: "se prépare à voter.",
             weakest_link_vote_against: "vote contre",
-            weakest_link_minimum_requierement: "Impossible de lancer le Maillon Faible, 3 joueurs minimum.",
+            weakest_link_minimum_requierement: "Impossible de lancer le Maillon Faible, 4 joueurs minimum.",
+            password_internet_requierement: "Une connexion internet est nécessaire.",
             end_game: "Fin de partie",
             restart: "Recommencer",
             player_singular: "joueur",
@@ -76,6 +77,8 @@ function setLanguageString() {
             settings_weakest_link_max_chain: "Limite de la chaine de bonne réponse",
             settings_weakest_link_max_chain_none: "Pas de maximum",
             settings_weakest_hide_answer: "Faire apparaitre la réponse progressivement",
+            settings_password: "Mot de passe",
+            settings_password_amount: "Nombre de mot à faire deviner",
             settings_credits: "Credits",
             gamemode: "Mode de jeu",
             gamemode_picolo_title: "Picolo",
@@ -178,7 +181,8 @@ function setLanguageString() {
             weakest_link_wrong: "INCORRECT",
             weakest_link_prepare_vote: "will vote.",
             weakest_link_vote_against: "vote against",
-            weakest_link_minimum_requierement: "Weakest Link require 3 players at least.",
+            weakest_link_minimum_requierement: "Weakest Link require 4 players at least.",
+            password_internet_requierement: "Internet connexion is requiered.",
             end_game: "Game Over",
             restart: "Restart",
             weakest_link_sip: "SIP",
@@ -226,6 +230,8 @@ function setLanguageString() {
             settings_weakest_link_max_chain: "Limit correct awnser chain",
             settings_weakest_link_max_chain_none: "No maximum",
             settings_weakest_hide_answer: "Display progressively",
+            settings_password: "Password",
+            settings_password_amount: "Number of words to be guessed",
             settings_credits: "Credits",
             gamemode: "Gamemode",
             gamemode_picolo_title: "Picolo",
@@ -393,6 +399,8 @@ function updateHTMLLanguageStrings() {
     text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
+    text_settings_password.innerHTML = global.current_language_strings.settings_password
+    text_settings_password_amount.innerHTML = global.current_language_strings.settings_password_amount
     // text_settings_password.innerHTML = "Mot de passe";
     text_input_weakest_link_soundtrack.innerHTML = global.current_language_strings.settings_weakest_link_soundtrack
     text_settings_weakest_link_max_chain.innerHTML = global.current_language_strings.settings_weakest_link_max_chain

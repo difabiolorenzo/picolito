@@ -251,12 +251,12 @@ div#disclaimer {
     flex-wrap: nowrap;
     justify-content: space-between;
     padding: 5vh;
-    background-color: var(--picolito_background);
+    /* background-color: var(--picolito_background); */
     position: fixed;
 }
 
 div#disclaimer_warning {
-    background-color: white;
+    /* background-color: white; */
     padding: 2.5vw;
     border-radius: .25rem;
     overflow-y: clip;
@@ -271,7 +271,6 @@ div#disclaimer_warning_validation {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
     padding: 1vw;
     border-radius: .25rem;
     margin-top: 1vh;
@@ -293,7 +292,7 @@ a#picolito_version {
     font-size: larger;
 }
 
-div#menu {padding: 3vh;height: auto;/* background-color: var(--picolito_background); */height: auto;}
+div#menu {padding: 3vh;height: auto;/* background-color: var(--picolo_dark_blue); *//* color: white; */height: auto;}
 
 div#menu_links {align-items: center;flex-direction: row;flex-wrap: wrap;justify-content: center;}
 

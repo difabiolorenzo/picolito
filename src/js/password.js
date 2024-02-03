@@ -2,7 +2,6 @@ function initPassword() {
     game.password.word_index = -1;
     game.password.word_to_find_left = undefined;
     game.password.word_status = [];
-    game.password.word_to_find_amount = 5;
     game.password.words = [];
 
     manageIngameOptionDisplay(false, 'password', 'flex')
@@ -56,7 +55,6 @@ async function initializeWords() {
         game.password.word_status.push(0)
         password_ingame_status.innerHTML += "<span class='word_indicator'></span>"
     }
-
     
     console.log("words", game.password.words)
 }
