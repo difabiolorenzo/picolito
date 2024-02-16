@@ -95,6 +95,9 @@
                                 <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
                             </select>
                         </div>
+                    </div>
+                    <div class="form-check">
+                        <h4 id="text_settings_gameplay">text_settings_gameplay</h4>
                         <div class="form-group">
                             <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
                             <select class="form-control col-md-6" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
@@ -103,7 +106,6 @@
                                 <option id="text_settings_darkmode_dark" value="dark">text_settings_darkmode_dark</option>
                             </select>
                         </div>
-                        </select>
                         <div class="form-group">
                             <label class="form-check-label">
                                 <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
@@ -116,9 +118,6 @@
                                 <a id="text_settings_animation">text_settings_animation</a>
                             </label>
                         </div>
-                    </div>
-                    <div class="form-check">
-                        <h4 id="text_settings_gameplay">text_settings_gameplay</h4>
                         <div class="form-group">
                             <label class="form-check-label">
                                 <input class="form-check-input" id="input_shot_enabled" type="checkbox" checked onclick="game.shot_enabled = this.checked">

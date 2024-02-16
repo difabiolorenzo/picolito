@@ -290,8 +290,10 @@ function generatePicoloSentences() {
         var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
         request.push(...addind_request);
     }
+    console.log(request)
     if (request.length == 0) {
         game.filter.empty_type.push(type)
+        return;
         alert("REPICK TYPE");
     }
 

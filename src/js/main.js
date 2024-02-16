@@ -24,19 +24,17 @@ function devOverrideSettings() {
 
 function defaultVariables() {
     global = {
-        default_language: true,
         current_language: "fr",
         dev_mode: false,
-        dark_mode: "system",
-        picolito_version: "0.32.2",
+        dark_mode: "bright",
+        picolito_version: "0.32.3",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
             weakest_link_amb_60: undefined,
             weakest_link_amb_end: undefined
         },
-        audio_enabled: true,
-        landscape_game_rotation: true
+        audio_enabled: true
     }
 
     game = {
@@ -561,7 +559,7 @@ function selectGamemode(selected_gamemode, direct_launch) {
     } else {
         game.gamemode = selected_gamemode;
         initGame(true, direct_launch);
-        manageNavDisplay("navigation_arrows", false)
+        manageNavDisplay("navigation_arrows", true)
     }
 }
 
@@ -1131,7 +1129,6 @@ function DEBUG_add5sec() {
 
 function manageHergeBTChoice(cookie_choice, remind_me_later) {
     if (cookie_choice == true) {
-        // console.log("Cookie accepté")
         global.accept_cookie = true;
         global.remind_warning_panel = true;
         if (remind_me_later == false) {
