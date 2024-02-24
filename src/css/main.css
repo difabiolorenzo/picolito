@@ -9,22 +9,17 @@
     --picolo_blue_highlight: #0093c1;
     --picolo_green_highlight: #00d508;
     --picolo_dark_blue: #093340;
-
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
     --picolo_team: #ff8844;
     --picolo_player_dark: #6dbbbb;
     --picolo_sip_dark: #d7d78a;
     --picolo_team_dark: #a6582c;
-
     --dark_mode_light_gray: #252525;
     --dark_mode_gray: #101010;
-
     --weakest_link: #000046;
-
     --never_done: #5c0090;
-
-    --password: #120000;
+    --password: #180000;
     --password-red: #b30000;
     --password-yellow: #eede04;
     --password-shake-distance: 1vw;
@@ -35,7 +30,7 @@
     height: 100vh;
     /* background-color: var(--picolito_background); */
 }
-.btn-secondary{ width: 100%; }
+.card-body .btn{width: 100%;}
 #game {transition: background-color 0.75s ease;background-color: var(--orange);}
 #game_content {
     text-align: center;
@@ -718,16 +713,21 @@ span.word_indicator {
     /* box-shadow: inset -1px -1px 3px black; */
     /* display: inline-block; */
     margin: 1vw;
+    transition: 0.25s;
 }
 
-span.word_indicator.correct {background-color: #41c40d;/* box-shadow: inset -1px -5px 10px 0px black; */}
 span.word_indicator.pass {
     background-color: orange;
-    animation: 0.25s cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-shake;}
+    animation: 0.5s infinite alternate cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-pass-pending;
+}
 span.word_indicator.disabled {
     background-color: #c40d0d;
-    animation: 0.25s cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-shake;
+    animation: 0.25s ease-in-out animation-word-indicator-shake;
 }
+span.word_indicator.highlighted {
+    outline: 4px solid #f1f1f1;
+}
+span.word_indicator.correct {background-color: #41c40d;/* box-shadow: inset -1px -5px 10px 0px black; */}
 
 @keyframes animation-word-indicator-shake {
     20% {
@@ -744,6 +744,15 @@ span.word_indicator.disabled {
     }
 }
 
+@keyframes animation-word-indicator-pass-pending {
+    0% {
+        background-color: #ffa500bd;
+    }
+    100% {
+        background-color: #ffa50054;
+    }
+}
+
 div#password_ingame_status {
     /* height: 7.5vh; */
     /* border-radius: 10px; */
@@ -751,7 +760,8 @@ div#password_ingame_status {
     display: flex;
     /* justify-content: center; */
     /* align-items: center; */
-    width: min-content;
+    /* width: min-content; */
+    flex-wrap: wrap;
 }
 
 div#password_ingame_recap {
@@ -832,4 +842,9 @@ div#password_recap {
 
 div#ingame_weakest_link_voting_area {
     display: flex;
+}
+
+.card#settings-card:not(:has(#picolito_settings_collapse.collapse.show, #picolito_settings_collapse.collapsing)) {
+    /* border: 0px solid transparent; */
+    display: none;
 }

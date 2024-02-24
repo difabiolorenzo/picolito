@@ -1,5 +1,4 @@
 function initPassword() {
-    game.password.word_index = -1;
     game.password.word_to_find_left = undefined;
     game.password.word_status = [];
     game.password.words = [];
@@ -15,7 +14,6 @@ function initPassword() {
 
     password_ingame_status.innerHTML = "..."
     password_ingame_display.innerHTML = "..."
-    password_ingame_display.classList.remove("password-changing-word");
 
     initializeWords();
 }
@@ -28,7 +26,7 @@ async function fetchWords() {
         const data = await response.json();
         var word_arr = [];
         for (var i=0; i<data.length; i++) {
-            word_arr.push(data[i].name.toUpperCase())
+            word_arr.push([data[i].name.toUpperCase()])
         }
         if (word_arr.length > 0) {
             button_password_invalidate.disabled = false;
@@ -44,19 +42,65 @@ async function fetchWords() {
 
 async function initializeWords() {
     game.password.words = await fetchWords();
-    game.password.word_index = -1;
-    game.password.word_to_find_left = game.password.words.length;
-
-    passwordGenerateWordList();
-
     password_ingame_status.innerHTML = "";
     game.password.word_status = [];
+    game.password.word_to_find = [];
+
     for (var i=0; i<game.password.words.length; i++) {
         game.password.word_status.push(0)
+        game.password.word_to_find.push([game.password.words[i][0], i])   //words = [["MOT1", 0],["MOT2", 1]...]
         password_ingame_status.innerHTML += "<span class='word_indicator'></span>"
     }
+    console.log("word_to_find", game.password.word_to_find)
+
+    passwordDisplayNextWord()
+}
+
+function passwordGenerateWordList() {
+    if (game.password.word_to_find.length > 0) {
+        password_ingame_display.innerHTML = game.password.words[game.password.word_to_find[0][0]];
+    }  
+}
+
+function passwordValidate() {
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
+
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("correct")
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("pass");
+    game.password.word_status[game.password.word_to_find[0][1]] = 1;
+    game.password.word_to_find.shift()
+    passwordDisplayNextWord()   
+}
+
+function passwordInvalidate() {
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
     
-    console.log("words", game.password.words)
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("disabled")
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("pass");
+    game.password.word_status[game.password.word_to_find[0][1]] = 2;
+    game.password.word_to_find.shift()
+    passwordDisplayNextWord()
+}
+
+function passwordPass() {
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
+
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("pass")
+    game.password.word_status[game.password.word_to_find[0][1]] = 3;
+    game.password.word_to_find.push([game.password.word_to_find[0][0],game.password.word_to_find[0][1]])
+    game.password.word_to_find.shift()
+    passwordDisplayNextWord()
+}
+
+function passwordDisplayNextWord() {
+    if (game.password.word_to_find.length == 0) {
+        displayRecap();
+    } else {
+        password_ingame_display.classList.remove("password-changing-word");
+        setTimeout(function() { password_ingame_display.classList.add("password-changing-word"); }, 1);
+        setTimeout(function() { password_ingame_display.innerHTML = game.password.word_to_find[0][0]; }, 250)
+        password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("highlighted")
+    }
 }
 
 function displayRecap() {
@@ -80,58 +124,4 @@ function displayRecap() {
     }
     manageIngameOptionDisplay(true, 'password_recap', 'block')
     manageNavDisplay("restart",true)
-}
-
-function passwordGenerateWordList() {
-    game.password.word_index++;
-    if (game.password.word_index == 0) {
-        button_password_validate.style.display = "inline-block";
-        button_password_pass.style.display = "inline-block";
-        button_password_invalidate.style.display = "inline-block";
-        
-        password_ingame_display.style.display = "flex";
-        password_ingame_status.style.display = "flex";
-    }
-    if (game.password.word_index > game.password.words.length) {
-        password_ingame_display.innerHTML = "..."
-        initializeWords();
-        return;
-    }
-    password_ingame_display.innerHTML = game.password.words[game.password.word_index];
-}
-
-function passwordValidate() {
-    password_ingame_status.childNodes[game.password.word_index].classList.add("correct")
-    game.password.word_status[game.password.word_index] = 1;
-    game.password.word_to_find_left--;
-    passwordUnlockWord()
-}
-
-function passwordPass() {
-    password_ingame_status.childNodes[game.password.word_index].classList.add("pass")
-    game.password.word_status[game.password.word_index] = 3;
-    passwordUnlockWord()
-}
-
-function passwordInvalidate() {
-    password_ingame_status.childNodes[game.password.word_index].classList.add("disabled")
-    game.password.word_status[game.password.word_index] = 2;
-    game.password.word_to_find_left--;
-    passwordUnlockWord()
-}
-
-function passwordUnlockWord() {
-    password_ingame_display.classList.remove("password-changing-word");
-    setTimeout(function() { password_ingame_display.classList.add("password-changing-word"); }, 1);
-    setTimeout(function() { password_ingame_display.innerHTML = game.password.words[game.password.word_index]; }, 250)
-    
-    if (game.password.words.length == game.password.word_index+1) {
-        if (game.password.word_to_find_left == 0) {
-            displayRecap();
-        } else {
-            console.log("display word passed", game.password.word_status, game.password.words)
-            displayRecap();
-        }
-    }
-    game.password.word_index++;
 }

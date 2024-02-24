@@ -48,7 +48,9 @@ function setLanguageString() {
             team_delete: "Supprimer",
             team_change: "Changer",
             team_add_in_team: "Ajouter à ",
+            settings: "Paramètres",
             settings_gameplay: "Fonctionnement",
+            settings_picolo: "Picolo",
             settings_shot: "Culs secs",
             settings_virus: "Virus",
             settings_social_posting: "Publication sur les réseaux sociaux",
@@ -108,7 +110,7 @@ function setLanguageString() {
             gamemode_never_mix_subtitle_1: "Je n'ai jamais rien fait.",
             gamemode_never_mix_subtitle_2: "Populaire, Coquin & Sexy et Fête",
             gamemode_weakest_link_title:"Maillon Faible 🔗",
-            gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir.",
+            gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir. (4 joueurs min.)",
             gamemode_title_password:"Mot de passe💡",
             gamemode_password_subtitle_1:"Un mot peut en cacher un autre",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
 
@@ -200,7 +202,9 @@ function setLanguageString() {
             team_delete: "Delete",
             team_change: "Change",
             team_add_in_team: "Add to ",
+            settings: "Settings",
             settings_gameplay: "Gameplay",
+            settings_picolo: "Picolo",
             settings_language: "Language",
             settings_shot: "Shots",
             settings_virus: "Virus",
@@ -261,7 +265,7 @@ function setLanguageString() {
             gamemode_never_mix_subtitle_1: "Never done nothing.",
             gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
             gamemode_weakest_link_title:"Weakest Link 🔗",
-            gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye",
+            gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye. (4 players min.)",
             gamemode_title_password:"Password 💡",
             gamemode_password_subtitle_1:"One word can hide another",
 
@@ -373,7 +377,9 @@ function updateHTMLLanguageStrings() {
     // text_menu_lang_ru.innerHTML = global.current_language_strings.lang_ru
     // text_menu_lang_sv.innerHTML = global.current_language_strings.lang_sv
 
+    picolito_settings_collapse_header.innerHTML = global.current_language_strings.settings;
     text_settings_gameplay.innerHTML = global.current_language_strings.settings_gameplay;
+    text_settings_picolo.innerHTML = global.current_language_strings.settings_picolo;
     text_settings_shot.innerHTML = global.current_language_strings.settings_shot;
     text_settings_virus.innerHTML = global.current_language_strings.settings_virus;
     text_settings_social.innerHTML = global.current_language_strings.settings_social_posting;
@@ -409,8 +415,6 @@ function updateHTMLLanguageStrings() {
     text_settings_credits.innerHTML = global.current_language_strings.settings_credits
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
-    text_gamemode_player_singular.innerHTML = global.current_language_strings.player_singular;
-    text_gamemode_player_plural.innerHTML = global.current_language_strings.player_plural;
     text_gamemode_picolo_title.innerHTML = global.current_language_strings.gamemode_picolo_title;
     text_gamemode_title_default.innerHTML = global.current_language_strings.gamemode_default_title;
     text_gamemode_default_subtitle_0.innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
@@ -494,6 +498,5 @@ function updateHTMLLanguageStrings() {
     button_password_invalidate.innerHTML = global.current_language_strings.password_invalidate;
     button_password_pass.innerHTML = global.current_language_strings.password_pass;
     button_password_validate.innerHTML = global.current_language_strings.password_validate;
-
 
 }

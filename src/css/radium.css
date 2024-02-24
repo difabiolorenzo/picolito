@@ -1,5 +1,6 @@
 :root {
     --purple: #5c0090;
+    --bs-gray: #495057;
 }
 
 .btn, .form-control, .list-group, .list-group-item, img.svg{
@@ -7,7 +8,7 @@
     transition: 0.25s;
     margin: 2px;
 }
-.btn:hover, .form-control:hover, .list-group-item:hover{
+.btn:hover, .form-control:hover, .list-group-item:hover, .nostyle-button:hover{
     box-shadow: 0 4px 18px 0 rgb(0 0 0 / 20%);
 }
 .dark_mode .dark_affected .btn:hover, .dark_mode .dark_affected .form-control:hover, .dark_mode .dark_affected .list-group-item:hover{
@@ -107,7 +108,7 @@ label.form-check-label {
 }
 
 h6 {
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 .form-check {margin-top: 2vh;margin-bottom: 2vw;padding-right: 1.25rem;}
 
@@ -126,7 +127,7 @@ label {
 }
 
 .card h5 {
-    padding: .2rem;
+    padding: 0.2rem;
     margin: 0;
 }
 
@@ -134,10 +135,11 @@ label {
     font-weight: bold;
 }
 
-.card-body {padding: .75rem;}
+.card-body {padding: .75rem;background-color: #0000000d;}
 
 .card {
     padding: 2px;
+    transition: 0.5s;
 }
 
 .list-group-item {
@@ -159,3 +161,35 @@ a {
 }
 
 body.bright_mode {}
+
+form.d-flex.justify-content-start {}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-secondary {.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+};
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary {
+    background-color: var(--bs-gray);
+    border-color: var(--bs-gray);
+}
+
+select {
+    cursor: pointer;
+}

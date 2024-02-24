@@ -45,7 +45,7 @@ Est un virus appliqué à un ou des joueur(s).
 Possède arbitrairement **5%** d'apparition.
 Oblige un ou des joueur(s) à finir son verre.
 
-### Maillon Faible (en dev)
+### Maillon Faible
 
 Le but est de former une chaîne de bonnes réponses consécutives (6 par défault) durant le temps de la manche (60 secondes).
 C'est la personne dont le prénom est le premier dans l'ordre alphabétique qui débute la manche. Lorsque la personne répond correctement à la question posée, l'animateur dit « Correct ! ». Si le joueur ne trouve pas ou réponds incorrectement la chaine retombe à 0.
