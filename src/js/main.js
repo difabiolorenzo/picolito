@@ -30,7 +30,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.2",
+        picolito_version: "0.33.3",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
@@ -198,6 +198,8 @@ function updateHTMLSettingsByVar() {
     input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer
 
     select_settings_password_amount.value = game.password.word_to_find_amount;
+    select_settings_password_style.value = game.password.style;
+    
     picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
 
