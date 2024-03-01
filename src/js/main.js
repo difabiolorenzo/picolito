@@ -30,7 +30,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.1",
+        picolito_version: "0.33.2",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {

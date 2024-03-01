@@ -8,12 +8,11 @@ function initPassword() {
     manageIngameOptionDisplay(false, 'password_recap', 'none')
     
     if (game.password.style == "2009") {
-        updateGameBackgroundColor("password_2009");
+        // updateGameBackgroundColor("password_2009");
     } else if (game.password.style == "2016") {
-        updateGameBackgroundColor("password_2016");
+    updateGameBackgroundColor("password_2016");
     }
     
-
     button_password_invalidate.disabled = true;
     button_password_pass.disabled = true;
     button_password_validate.disabled = true;
@@ -33,6 +32,11 @@ async function fetchWords() {
         var word_arr = [];
         for (var i=0; i<data.length; i++) {
             word_arr.push([data[i].name.toUpperCase()])
+        }
+        if (word_arr.length > 0) {
+            button_password_invalidate.disabled = false;
+            button_password_pass.disabled = false;
+            button_password_validate.disabled = false;
         }
         return word_arr;
     } catch (error) {
@@ -55,12 +59,6 @@ async function initializeWords() {
     console.log("word_to_find", game.password.word_to_find)
 
     passwordDisplayNextWord()
-
-    if (word_arr.length > 0) {
-        button_password_invalidate.disabled = false;
-        button_password_pass.disabled = false;
-        button_password_validate.disabled = false;
-    }
 }
 
 function passwordGenerateWordList() {
