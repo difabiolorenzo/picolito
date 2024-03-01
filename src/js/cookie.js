@@ -62,7 +62,8 @@ function storeSettingsCookie() {
         game.weakest_link.stop_at_max_chain,
         game.weakest_link.max_chain,
         game.weakest_link.hide_answer,
-        game.password.word_to_find_amount
+        game.password.word_to_find_amount,
+        game.password.style
     ]
 
     if (getCookie("settings") == '') {
@@ -108,4 +109,8 @@ function getSettingsCookie() {
 
         updateHTMLSettingsByVar();
     }
+}
+
+function DEBUG_cookies_list() {
+
 }

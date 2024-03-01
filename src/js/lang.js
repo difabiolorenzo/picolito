@@ -6,7 +6,7 @@ function setLanguageString() {
             prevention_text_0: "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.",
             prevention_text_1: "Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...",
             prevention_text_2: "En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo.",
-            prevention_text_3: "L'abus d'alcool est dangereux pour la santé. Pour plus d'information sur l'alcool et l'alcoolisme:",
+            prevention_text_3: "Pour plus d'information sur l'alcool et l'alcoolisme:",
             prevention_information_website_text: "- rendez vous sur ",
             prevention_information_website: "alcool-info-service.fr",
             prevention_call_text: "- ou appeler le",
@@ -49,14 +49,13 @@ function setLanguageString() {
             team_change: "Changer",
             team_add_in_team: "Ajouter à ",
             settings: "Paramètres",
-            settings_gameplay: "Fonctionnement",
             settings_picolo: "Picolo",
             settings_shot: "Culs secs",
             settings_virus: "Virus",
             settings_social_posting: "Publication sur les réseaux sociaux",
             settings_min_sip: "Gorgées minimum",
             settings_max_sip: "Gorgées maximum",
-            settings_display: "Affichage",
+            settings_display: "Affichage (Picolito & Je n'ai jamais)",
             settings_language: "Langue",
             settings_dark_theme: "Mode sombre",
             settings_darkmode_system: "Système",
@@ -65,7 +64,6 @@ function setLanguageString() {
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
             settings_others: "Autres",
-            settings_cookies: "Cookies",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
             settings_report_bug: "Signaler un bug",
@@ -81,6 +79,7 @@ function setLanguageString() {
             settings_weakest_hide_answer: "Faire apparaitre la réponse progressivement",
             settings_password: "Mot de passe",
             settings_password_amount: "Nombre de mot à faire deviner",
+            settings_password_style: "Style",
             settings_credits: "Credits",
             gamemode: "Mode de jeu",
             gamemode_picolo_title: "Picolo",
@@ -203,7 +202,6 @@ function setLanguageString() {
             team_change: "Change",
             team_add_in_team: "Add to ",
             settings: "Settings",
-            settings_gameplay: "Gameplay",
             settings_picolo: "Picolo",
             settings_language: "Language",
             settings_shot: "Shots",
@@ -211,7 +209,7 @@ function setLanguageString() {
             settings_social_posting: "Posts on socials",
             settings_min_sip: "Minimum sip",
             settings_max_sip: "Maximum sip",
-            settings_display: "Display",
+            settings_display: "Display (Picolito & Never Have I Ever)",
             settings_dark_theme: "Dark theme",
             settings_darkmode_system: "System theme",
             settings_darkmode_light: "Bright theme",
@@ -220,7 +218,6 @@ function setLanguageString() {
             settings_animation: "Animations",
             settings_debug_display: "Recap",
             settings_others: "Other",
-            settings_cookies: "Cookies",
             settings_delete_all_cookies: "Delete all cookies",
             settings_save_settings: "Save settings",
             settings_report_bug: "Bug detected",
@@ -236,6 +233,7 @@ function setLanguageString() {
             settings_weakest_hide_answer: "Display progressively",
             settings_password: "Password",
             settings_password_amount: "Number of words to be guessed",
+            settings_password_style: "Style",
             settings_credits: "Credits",
             gamemode: "Gamemode",
             gamemode_picolo_title: "Picolo",
@@ -262,7 +260,7 @@ function setLanguageString() {
             gamemode_never_hot: "Dirty & Sex - 💋",
             gamemode_never_party: "Party - 🎉",
             gamemode_never_mix: "Mix - 🧪",
-            gamemode_never_mix_subtitle_1: "Never done nothing.",
+            gamemode_never_mix_subtitle_1: "Never Have I Ever.",
             gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
             gamemode_weakest_link_title:"Weakest Link 🔗",
             gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye. (4 players min.)",
@@ -378,7 +376,6 @@ function updateHTMLLanguageStrings() {
     // text_menu_lang_sv.innerHTML = global.current_language_strings.lang_sv
 
     picolito_settings_collapse_header.innerHTML = global.current_language_strings.settings;
-    text_settings_gameplay.innerHTML = global.current_language_strings.settings_gameplay;
     text_settings_picolo.innerHTML = global.current_language_strings.settings_picolo;
     text_settings_shot.innerHTML = global.current_language_strings.settings_shot;
     text_settings_virus.innerHTML = global.current_language_strings.settings_virus;
@@ -395,7 +392,6 @@ function updateHTMLLanguageStrings() {
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
     text_settings_others.innerHTML = global.current_language_strings.settings_others;
     text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
-    text_settings_cookies.innerHTML = global.current_language_strings.settings_cookies;
     text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
     text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
 
@@ -405,14 +401,15 @@ function updateHTMLLanguageStrings() {
     text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
-    text_settings_password.innerHTML = global.current_language_strings.settings_password
-    text_settings_password_amount.innerHTML = global.current_language_strings.settings_password_amount
+    text_settings_password.innerHTML = global.current_language_strings.settings_password;
+    text_settings_password_amount.innerHTML = global.current_language_strings.settings_password_amount;
+    text_settings_password_style.innerHTML = global.current_language_strings.settings_password_style;
     // text_settings_password.innerHTML = "Mot de passe";
-    text_input_weakest_link_soundtrack.innerHTML = global.current_language_strings.settings_weakest_link_soundtrack
-    text_settings_weakest_link_max_chain.innerHTML = global.current_language_strings.settings_weakest_link_max_chain
-    input_weakest_link_max_chain_none.innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none
-    text_input_weakest_hide_answer.innerHTML = global.current_language_strings.settings_weakest_hide_answer
-    text_settings_credits.innerHTML = global.current_language_strings.settings_credits
+    text_input_weakest_link_soundtrack.innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
+    text_settings_weakest_link_max_chain.innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
+    input_weakest_link_max_chain_none.innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
+    text_input_weakest_hide_answer.innerHTML = global.current_language_strings.settings_weakest_hide_answer;
+    text_settings_credits.innerHTML = global.current_language_strings.settings_credits;
 
     text_gamemode_back.innerHTML = global.current_language_strings.back;
     text_gamemode_picolo_title.innerHTML = global.current_language_strings.gamemode_picolo_title;
@@ -443,8 +440,8 @@ function updateHTMLLanguageStrings() {
     text_gamemode_never_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_1;
     text_gamemode_never_mix_subtitle_2.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_2;
 
-    text_gamemode_weakest_link_title.innerHTML = global.current_language_strings.gamemode_weakest_link_title
-    text_gamemode_weakest_link_subtitle_1.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1
+    text_gamemode_weakest_link_title.innerHTML = global.current_language_strings.gamemode_weakest_link_title;
+    text_gamemode_weakest_link_subtitle_1.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1;
 
     text_gamemode_title_password.innerHTML = global.current_language_strings.gamemode_title_password;
     text_gamemode_password_subtitle_1.innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
@@ -460,7 +457,7 @@ function updateHTMLLanguageStrings() {
     text_game_quit.innerHTML = global.current_language_strings.quit;
     text_game_restart.innerHTML = global.current_language_strings.restart;
     text_game_restart_topbar.innerHTML = global.current_language_strings.restart;
-    ingame_player_add.innerHTML = global.current_language_strings.add
+    ingame_player_add.innerHTML = global.current_language_strings.add;
     ingame_player_input.placeholder = global.current_language_strings.enter_player_name;
     manu_player_input.placeholder = global.current_language_strings.enter_player_name;
     manu_player_input.title = global.current_language_strings.enter_player_name;

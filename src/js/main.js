@@ -13,7 +13,7 @@ function init() {
 }
 
 function devOverrideSettings() {
-    gamename.innerHTML = global.picolito_version
+    gamename.innerHTML = global.picolito_version;
     // addPlayer("Ricard", "cookie")
     // addPlayer("Bertrude", "cookie")
     // addPlayer("Zolande", "cookie")
@@ -30,7 +30,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.0",
+        picolito_version: "0.33.1",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
@@ -138,7 +138,8 @@ function defaultVariables() {
             word_to_find_left: undefined,
             word_status: [],
             word_to_find_amount: 5,
-            words: [] // Array to store the fetched words
+            words: [], // Array to store the fetched words
+            style: 2016
         }
     }
     updateHTMLSettingsByVar()
@@ -324,6 +325,11 @@ function displayPage(page) {
 }
 
 function addPlayer(player_name, html_origin) {
+    if (manu_player_input.value == "scipio" && html_origin == "menu") {
+        manu_player_input.value = "";
+        DEBUG_carthage();
+        return;
+    }
     if (player_name == undefined && html_origin == "menu") {
         var player_name = manu_player_input.value;
         if (manu_player_input.value == "") { return; }
@@ -341,8 +347,8 @@ function addPlayer(player_name, html_origin) {
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-warning" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
-                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-warning" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
 
                     game.player_list.push(player_name);
                 }
@@ -881,8 +887,8 @@ function changeTeam(html_id, team) {
 
     leaveTeam(player_name)
 
-    var change_team_1_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_change +`</button></td>`
-    var change_team_2_button = `<td><button class="btn btn-warning" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_change +`</button></td>`
+    var change_team_1_button = `<td><button class="btn btn-primary" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_change +`</button></td>`
+    var change_team_2_button = `<td><button class="btn btn-primary" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_change +`</button></td>`
 
     if (team == "team_1") {
         html_id.children[1].innerHTML = `✅`;
@@ -999,7 +1005,7 @@ function stopsound(sound) {
     } 
 }
 
-function DEBUG_add5sec() {
+function DEBUG_weakestlink_add5sec() {
     if (global.dev_mode == true) {
         var current_time_player = global.audio.weakest_link_amb_60.currentTime;
         var current_time = game.weakest_link.current_time;
@@ -1103,4 +1109,10 @@ async function getTriviaData(questionCount) {
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
     }
+}
+
+function DEBUG_carthage() {
+    alert("Bienvenue à carthage")
+    gamename.innerHTML = global.picolito_version;
+    global.dev_mode = true;
 }

@@ -322,7 +322,7 @@ function initWeakestLink() {
             </tr>
             <tr>
                 <td colspan="5"><p id="weakest_link_loser_text_placeholder" class="no-margin"></p></td>
-                <td><button id="text_weakest_link_vote_quit" type="submit" class="btn btn-warning" onclick="exitGame()">Quitter</button></p></td>
+                <td><button id="text_weakest_link_vote_quit" type="submit" class="btn btn-primary" onclick="exitGame()">Quitter</button></p></td>
             </tr>`;
         weakest_link_vote_end_analytics_table.innerHTML = analytics_table_innerHTML
     

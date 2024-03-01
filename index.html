@@ -32,9 +32,9 @@
                 <div>
                     <p id="text_herge_bt">herge_bt</p>
                     <div id="herge_bt_buttons">
-                        <button id="herge_bt_deny" class="btn btn-warning" onclick="manageHergeBTChoice(false, true)">herge_bt_deny</button>
-                        <button id="herge_bt_accept" class="btn btn-warning" onclick="manageHergeBTChoice(true, true)">herge_bt_accept</button>
-                        <button id="herge_bt_accept_dont_remind" class="btn btn-warning" onclick="manageHergeBTChoice(true, false)">herge_bt_accept</button>
+                        <button id="herge_bt_deny" class="btn btn-primary" onclick="manageHergeBTChoice(false, true)">herge_bt_deny</button>
+                        <button id="herge_bt_accept" class="btn btn-primary" onclick="manageHergeBTChoice(true, true)">herge_bt_accept</button>
+                        <button id="herge_bt_accept_dont_remind" class="btn btn-primary" onclick="manageHergeBTChoice(true, false)">herge_bt_accept</button>
                     </div>
                 </div>
                 <hr>
@@ -54,9 +54,9 @@
             </div>
         </div>
         <div class="page dark_affected" id="extract" style="display:none;">
-            <button type="input" class="btn btn-warning" onclick="iniTriviaData(5)">Ajouter(5)</button>
-            <button type="input" class="btn btn-warning" onclick="iniTriviaData(10)">Ajouter(10)</button>
-            <button type="input" class="btn btn-warning" onclick="iniTriviaData(50)">Ajouter(50)</button>
+            <button type="input" class="btn btn-primary" onclick="iniTriviaData(5)">Ajouter(5)</button>
+            <button type="input" class="btn btn-primary" onclick="iniTriviaData(10)">Ajouter(10)</button>
+            <button type="input" class="btn btn-primary" onclick="iniTriviaData(50)">Ajouter(50)</button>
             <button type="input" class="btn btn-info" onclick="copyTriviaTable()">Copier Table</button>
             <table id="opentdb_table">
                 <thead><th>category</th><th>type</th><th>difficulty</th><th>question</th><th>correct_answer</th><th>incorrect_answers</th></thead>
@@ -68,15 +68,18 @@
             <div class="d-flex">
                 <form class="d-flex justify-content-start" action="javascript:void(0);">
                     <input id="manu_player_input" type="text" class="col-md-9 form-control" pattern="[A-Za-z]">
-                    <button id="text_menu_add" type="submit" class="nostyle-button" onclick="addPlayer(undefined, 'menu')"><img class="svg" alt="" src="./src/img/user-plus-svgrepo-com.svg"></img></button>
-                    <button id="text_gamemode_menu" type="input" class="nostyle-button" onclick="displayPage('gamemode')"><img class="svg" src="./src/img/arrow-right-svgrepo-com.svg"></img></button>
+                    <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(undefined, 'menu')">
+                        <img class="svg" src="./src/img/user-plus-svgrepo-com.svg"></img>
+                    </button>
+                    <button id="text_gamemode_menu" class="btn btn-primary" onclick="displayPage('gamemode')">
+                        <img class="svg" src="./src/img/arrow-right-svgrepo-com.svg"></img>
+                    </button>
                 </form>
             </div>
             <div id="menu_player_list"></div>
             <div id="menu_content">
                 <div id="settings">
                     <div class="form-check">
-                        <h4 id="text_settings_display">text_settings_display</h4>
                         <h5 id="text_settings_language">text_settings_language</h5>
                         <div class="form-group">
                             <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
@@ -99,14 +102,14 @@
                     </div>
                     <div id="button-group-toggle-settings" class="btn-group-toggle" data-toggle="buttons">
                         <div class="form-check">
-                            <button class="btn card-title btn-warning" id="picolito_settings_collapse_header" 
+                            <button class="btn card-title btn-primary" id="picolito_settings_collapse_header" 
                             onclick="$('#picolito_settings_collapse').collapse('toggle')">picolito_settings_collapse_header</button>
                         </div>
                         <div id="settings-card" class="card">
                             <div id="picolito_settings_collapse" class="collapse" aria-labelledby="picolito_settings_collapse_header" data-parent="#accordion">
                                 <div class="card-body">
                                     <div class="form-check">
-                                        <h4 id="text_settings_gameplay">text_settings_gameplay</h4>
+                                        <h6 id="text_settings_display">text_settings_display</h6>
                                         <div class="form-group">
                                             <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
                                             <select class="form-control col-md-6" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
@@ -157,6 +160,8 @@
                                                 <option>6</option>
                                                 <option>7</option>
                                                 <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -170,6 +175,8 @@
                                                 <option>6</option>
                                                 <option>7</option>
                                                 <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
                                             </select>
                                         </div>
                                         <h6 id="text_settings_weakest_link">text_settings_weakest_link</h6>
@@ -194,6 +201,8 @@
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -261,20 +270,24 @@
                                                 <option value="10">10</option>
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label id="text_settings_password_style" for="select_settings_password_style">text_settings_password_style</label>
+                                            <select class="form-control col-md-6" id="select_settings_password_style" onchange="game.password.style = this.value">
+                                                <option value="2009">2009</option>
+                                                <option value="2016">2016</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-check">
-                        <h4 id="text_settings_cookies">Cookies</h4>
-                        <button id="text_settings_save_settings"class="btn col-md-5 btn-warning" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
-                        <button id="text_settings_delete_cookies" class="btn col-md-5 btn-warning" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
-                    </div>
                 </div>
                 <div class="form-check">
                     <h4 id="text_settings_others">text_settings_others</h4>
-                    <button id="text_prevention_panel"class="btn col-md-5 btn-warning" onclick="displayPage('disclaimer')">text_prevention_panel</button>
+                    <button id="text_prevention_panel"class="btn btn-primary" onclick="displayPage('disclaimer')">text_prevention_panel</button>
+                    <button id="text_settings_save_settings"class="btn btn-primary" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
+                    <button id="text_settings_delete_cookies" class="btn btn-primary" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
                 </div>
@@ -289,45 +302,45 @@
         </div>
         <div class="page dark_affected" id="gamemode" style="display:none">
             <div id="gamemode_topbar">
-                <button id="text_gamemode_back" class="col-md-3 btn btn-warning" onclick="displayPage('menu')">Retour</button>
-                <div class="col-md-6 text-center">
+                <button id="text_gamemode_back" class="col-md-3 btn btn-primary" onclick="displayPage('menu')">Retour</button>
+                <div class="col-md-12 text-center">
                     <a id="text_gamemode_player_number">-</a>
                 </div>
             </div>
             <hr>
             <div id="button-group-toggle" class="btn-group-toggle" data-toggle="buttons">
                 <div class="card">
-                    <button class="btn card-title btn-warning" id="picolito_gamemode_collapse_header" onclick="$('#picolito_gamemode_collapse').collapse('toggle')">
+                    <button class="btn card-title btn-primary" id="picolito_gamemode_collapse_header" onclick="$('#picolito_gamemode_collapse').collapse('toggle')">
                         <h5 id="text_gamemode_picolo_title" class="mb-0">text_gamemode_picolo_title</h5>
                     </button>
                     <div id="picolito_gamemode_collapse" class="collapse" aria-labelledby="picolito_gamemode_collapse_header" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-warning" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">
+                            <button class="btn btn-primary" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">
                                 <h5 id="text_gamemode_title_default">text_gamemode_title_default</h3>
                                 <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
                                 <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
                             </button>
-                            <button class="btn btn-warning" id="gamemode_option_silly" value="silly" onclick="selectGamemode(this.value);" >
+                            <button class="btn btn-secondary" id="gamemode_option_silly" value="silly" onclick="selectGamemode(this.value);" >
                                 <h5 id="text_gamemode_title_silly">text_gamemode_title_silly</h3>
                                 <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
                                 <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
                             </button>
-                            <button class="btn btn-warning" id="gamemode_option_bar" value="bar" onclick="selectGamemode(this.value);">
+                            <button class="btn btn-secondary" id="gamemode_option_bar" value="bar" onclick="selectGamemode(this.value);">
                                 <h5 id="text_gamemode_title_bar">text_gamemode_title_bar</h3>
                                 <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
                                 <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
                             </button>
-                            <button class="btn btn-warning" id="gamemode_option_hot" value="hot" onclick="selectGamemode(this.value);">
+                            <button class="btn btn-secondary" id="gamemode_option_hot" value="hot" onclick="selectGamemode(this.value);">
                                 <h5 id="text_gamemode_title_hot">text_gamemode_title_hot</h3>
                                 <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
                                 <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
                             </button>
-                            <button class="btn btn-warning" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
+                            <button class="btn btn-secondary" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
                                 <h5 id="text_gamemode_title_war">text_gamemode_title_war</h3>
                                 <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
                                 <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
                             </button>
-                            <button class="btn btn-warning" id="gamemode_option_mix" value="mix" onclick="selectGamemode(this.value);">
+                            <button class="btn btn-secondary" id="gamemode_option_mix" value="mix" onclick="selectGamemode(this.value);">
                                 <h5 id="text_gamemode_title_mix">text_gamemode_title_mix</h3>
                                 <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
                                 <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
@@ -336,21 +349,21 @@
                     </div>
                 </div>
                 <div class="card">
-                    <button class="btn card-title btn-warning" id="never_gamemode_collapse_header" onclick="$('#never_gamemode_collapse').collapse('toggle')">
+                    <button class="btn card-title btn-primary" id="never_gamemode_collapse_header" onclick="$('#never_gamemode_collapse').collapse('toggle')">
                         <h5 class="mb-0" id="text_gamemode_never_title">text_gamemode_never_title</h5>
                     </button>
                     <div id="never_gamemode_collapse" class="collapse" aria-labelledby="never_gamemode_collapse_header" data-parent="#accordion">
                     <div class="card-body">
-                        <button class="btn btn-warning" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">
+                        <button class="btn btn-secondary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">
                             <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
                         </button>
-                        <button class="btn btn-warning" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">
+                        <button class="btn btn-secondary" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">
                             <h5 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h3>
                         </button>
-                        <button class="btn btn-warning" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">
+                        <button class="btn btn-secondary" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">
                             <h5 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h3>
                         </button>
-                        <button class="btn btn-warning" id="gamemode_option_never_mix" value="never_mix" onclick="selectGamemode(this.value);">
+                        <button class="btn btn-secondary" id="gamemode_option_never_mix" value="never_mix" onclick="selectGamemode(this.value);">
                             <h5 id="text_gamemode_title_never_mix">text_gamemode_title_never_mix</h3>
                             <p id="text_gamemode_never_mix_subtitle_1">text_gamemode_war_subtitle_1</p>
                             <p id="text_gamemode_never_mix_subtitle_2">text_gamemode_war_subtitle_2</p>
@@ -359,13 +372,14 @@
                     </div>
                 </div>
                 <div class="card">
-                    <button class="btn card-title btn-warning" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                    <button class="btn card-title btn-primary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
                         <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                         <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
+                        <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
                     </button>
                 </div>
                 <div class="card">
-                    <button class="btn card-title btn-warning" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
+                    <button class="btn card-title btn-primary" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
                         <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
                         <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
                     </button>
@@ -374,7 +388,7 @@
         </div>
         <div class="page dark_affected" id="team_selection" style="display:none">
             <div class="d-flex">
-                <button id="text_team_selection_back" class="col-md-3 btn btn-warning" onclick="displayPage('gamemode')">text_team_selection_back</button>
+                <button id="text_team_selection_back" class="col-md-3 btn btn-primary" onclick="displayPage('gamemode')">text_team_selection_back</button>
                 <a class="col-md-6 text-center"></a>
                 <button id="text_team_selection_next" class="col-md-3 btn btn-success" id="button_next_team_selection" onclick="initGame()">text_team_selection_next</button>
             </div>
@@ -395,14 +409,14 @@
         <div class="page" id="game" style="display:none">
             <div id="game_content"class="landscape-in-portrait">
                 <div id="ingame_topbar" class="d-flex">
-                    <button id="text_game_quit_topbar" type="submit" class="btn btn-warning" onclick="exitGame()">text_game_quit_topbar</button>
-                    <button id="text_game_restart_topbar" type="submit" class="btn btn-warning" onclick="restartGame()">text_game_restart_topbar</button>
+                    <button id="text_game_quit_topbar" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit_topbar</button>
+                    <button id="text_game_restart_topbar" type="submit" class="btn btn-primary" onclick="restartGame()">text_game_restart_topbar</button>
                     <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
-                        <button disabled type="button" class="btn btn-warning" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
-                        <button disabled type="button" class="btn btn-warning" id="game_cycle_count" onclick="displaySentenceList()">-</button>
-                        <button disabled type="button" class="btn btn-warning" id="game_cycle_next_button" onclick="nextSentence(true);">></button>
+                        <button disabled type="button" class="btn btn-primary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
+                        <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
+                        <button disabled type="button" class="btn btn-primary" id="game_cycle_next_button" onclick="nextSentence(true);">></button>
                     </div>
-                    <button id="text_game_player_menu" type="submit" class="btn btn-warning" onclick="manageIngameOptionDisplay(true, 'player_option', 'block');">text_game_player_menu</button>
+                    <button id="text_game_player_menu" type="submit" class="btn btn-primary" onclick="manageIngameOptionDisplay(true, 'player_option', 'block');">text_game_player_menu</button>
                 </div>
 
                 <div id="ingame_content">
@@ -421,7 +435,7 @@
                                 <a id="ingame_weakest_link_score_bank" class="weakest_link_shield_small">-</a>
                                 <a id="ingame_weakest_link_text_bank" class="weakest_link_label">ingame_weakest_link_text_bank</a>
                             </div>
-                            <div class="ingame_weakest_link_text_button_area" onclick="DEBUG_add5sec()">
+                            <div class="ingame_weakest_link_text_button_area" onclick="DEBUG_weakestlink_add5sec()">
                                 <a id="ingame_weakest_link_time" class="weakest_link_shield_small weakest_link_shield_button_small">0:00</a>
                                 <a id="ingame_weakest_link_text_time" class="weakest_link_label">ingame_weakest_link_text_time</a>
                             </div>
@@ -450,13 +464,13 @@
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
                             <p id="text_game_ready">text_game_ready</p>
-                            <button id="text_game_start_button" type='submit' class='btn btn-warning' onclick='startGame()'>text_game_start_button</button>
+                            <button id="text_game_start_button" type='submit' class='btn btn-primary' onclick='startGame()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
                             <div>
-                                <button id="text_game_quit" type="submit" class="btn btn-warning" onclick="exitGame()">text_game_quit</button>
-                                <button id="text_game_restart" type='submit' class='btn btn-warning' onclick='restartGame()'>text_game_restart</button>
+                                <button id="text_game_quit" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit</button>
+                                <button id="text_game_restart" type='submit' class='btn btn-primary' onclick='restartGame()'>text_game_restart</button>
                             </div>
                         </div>
                         <div id="weakest_link_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
@@ -467,7 +481,7 @@
                         </div>
                         <div id="weakest_link_next_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
                             <p><a id="ingame_weakest_link_next_player_voting">next_player</a><a> </a><a id="text_weakest_link_next_player_prepare_voting">text_weakest_link_next_player_prepare_voting</a></p>
-                            <button id="button_weakest_link_next_vote" type="submit" class="btn btn-warning" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
+                            <button id="button_weakest_link_next_vote" type="submit" class="btn btn-primary" onclick="weakestLinkDisplayVote()">button_weakest_link_next_vote</button>
                         </div>
                         <div id="weakest_link_vote_end_ingame_option" class="weakest_link_vote_menu" style="display:none">
                             <div id="weakest_link_vote_result" class="weakest_link_vote_end_ingame_option_side"></div>
@@ -493,16 +507,16 @@
                         <div id="ingame_player_option" style="display: none;">
                             <div class="d-flex">
                                 <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                                <button type="submit" class="btn btn-warning" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
+                                <button type="submit" class="btn btn-primary" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
                             </div>
                             <div class="d-flex">
-                                <button type="submit" class="btn btn-warning" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
-                                <button type="submit" class="btn btn-warning" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
+                                <button type="submit" class="btn btn-primary" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
+                                <button type="submit" class="btn btn-primary" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
                             </div>
                             <br>
                             <div id="ingame_player_list"></div>
                             <br>
-                            <!-- <button type="submit" class="btn btn-warning" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
+                            <!-- <button type="submit" class="btn btn-primary" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
                             <button type="submit" class="btn btn-secondary" id="close_player_option_ingame" onclick="manageIngameOptionDisplay(false, 'player_option', 'none');">close_player_option_ingame</button>
                         </div>
                     </div>

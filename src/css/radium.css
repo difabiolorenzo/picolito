@@ -17,8 +17,8 @@
 
 .dark_mode .dark_affected .btn-primary:hover { box-shadow: 0 0 10px 0px var(--primary); }
 .dark_mode .dark_affected .btn-secondary:hover { box-shadow: 0 0 10px 0px var(--secondary); }
-.dark_mode .dark_affected .btn-warning:hover {box-shadow: 0 0 10px 0px var(--info);}
-.dark_mode .dark_affected .btn-warning:hover { box-shadow: 0 0 10px 0px var(--warning); }
+.dark_mode .dark_affected .btn-primary:hover {box-shadow: 0 0 10px 0px var(--info);}
+.dark_mode .dark_affected .btn-primary:hover { box-shadow: 0 0 10px 0px var(--warning); }
 .dark_mode .dark_affected .btn-danger:hover { box-shadow: 0 0 10px 0px var(--danger); }
 .dark_mode .dark_affected .btn-light:hover { box-shadow: 0 0 10px 0px var(--light); }
 .dark_mode .dark_affected .btn-dark:hover { box-shadow: 0 0 10px 0px var(--dark); }
@@ -61,7 +61,7 @@ hr {
 
 .dark_mode .dark_affected img.svg {
     filter: invert(1);
-    border: 1px solid rgb(43 43 43);
+    /* border: 1px solid rgb(43 43 43); */
 }
 .dropdown-menu {
     transform: translate(10px, 10px) !important;
@@ -72,12 +72,19 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
-.btn-primary {
-    /* color: #000; */
-    background-color: #0089ff;
-    /* border-color: #c7c7c7; */
+.btn-primary, .btn-primary:focus, .btn-primary:active, .btn-primary:hover {
+    color: #000;
+    background-color: var(--picolito-primary);
+    border-color: var(--picolito-primary);
 }
-
+.btn-primary:hover {
+    box-shadow: 0 0 0 1px #000000;
+}
+.btn-primary:active, .btn-primary:focus {
+    background-color: var(--picolito-primary);
+    border-color: var(--picolito-primary-shade);
+    box-shadow: 0 0 0 0.25rem var(--picolito-primary-boxshadow-border);
+}
 .dark_mode .dark_affected .btn-primary{
     color: #fff;
     background-color: none;
@@ -94,7 +101,7 @@ input[type=checkbox] {
     justify-content: center;
 }
 
-hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item, img.svg {
+hr, .btn, div#ingame_option, div#ingame_player_option, .form-control, .list-group, .list-group-item {
     box-shadow: 0px 1px 4px 0px #00000030;
     justify-content: center;
     align-items: center;
@@ -111,9 +118,6 @@ h6 {
     margin-top: 3rem;
 }
 .form-check {margin-top: 2vh;margin-bottom: 2vw;padding-right: 1.25rem;}
-
-label {
-}
 
 .alert {
     margin-top: .5rem;
@@ -135,7 +139,7 @@ label {
     font-weight: bold;
 }
 
-.card-body {padding: .75rem;background-color: #0000000d;}
+.card-body {padding: .75rem;/* background-color: #0000000d; */}
 
 .card {
     padding: 2px;
@@ -160,10 +164,6 @@ a {
     color: #0060c7;
 }
 
-body.bright_mode {}
-
-form.d-flex.justify-content-start {}
-
 .form-check-input:checked {
     background-color: #0d6efd;
     border-color: #0d6efd;
@@ -175,11 +175,7 @@ form.d-flex.justify-content-start {}
     justify-content: center;
 }
 
-.btn-secondary {.btn-secondary {
-    color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
-};
+.btn-secondary {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
