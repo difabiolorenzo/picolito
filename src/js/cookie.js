@@ -19,7 +19,7 @@ function getCookie(cookie_name) {
     var name = cookie_name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for(var i in ca) {
       var c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
@@ -48,12 +48,12 @@ function storeSettingsCookie() {
     var settings = [
         game.display_color_indicator,
         game.animation,
-        game.shot_enabled,
+        game.chug_enabled,
         game.virus_enabled,
         game.social_posting_enabled,
         game.sip.min,
         game.sip.max,
-        game.shot_amount,
+        game.chug_amount,
         global.dark_mode,
         global.accept_cookie,
         global.remind_warning_panel,
@@ -75,42 +75,71 @@ function storeSettingsCookie() {
 
 function retrieveCookie() {
     getStoredPlayerListCookie();
-    getSettingsCookie()
+    setSettingsValuesByCookies();
 }
 
 function getStoredPlayerListCookie() {
     var stored_players = getCookie("player_list").split(",");
-    for (var i=0; i<stored_players.length; i++) {
+    for (var i = 0; i < stored_players.length; i++) {
         addPlayer(stored_players[i], "cookie");
     }
 }
 
-function getSettingsCookie() {
+function setSettingsValuesByCookies() {
     if (getCookie("settings") != "") {
-        var settings = getCookie("settings").split(",");
-        game.display_color_indicator = JSON.parse(settings[0]);
-        game.animation = JSON.parse(settings[1]);
-    
-        game.shot_enabled = JSON.parse(settings[2]);
-        game.virus_enabled = JSON.parse(settings[3]);
-        game.social_posting_enabled = JSON.parse(settings[4]);
-        game.sip.min = parseInt(settings[5]);
-        game.sip.max = parseInt(settings[6]);
-        game.shot_amount = parseInt(settings[7]);
-        global.dark_mode = settings[8];
-        global.accept_cookie = parseBoolean(settings[9]);
-        global.remind_warning_panel = parseBoolean(settings[10]);
-        game.weakest_link.tie_behaviour = settings[11];
-        global.audio_enabled = settings[12];
-        game.weakest_link.stop_at_max_chain = settings[13];
-        game.weakest_link.max_chain = settings[14];
-        game.weakest_link.hide_answer = settings[15];
-        game.password.word_to_find_amount = settings[16];
+        var cookie_settings_value = getCookie("settings").split(",");
+        global.cookie_settings_value = cookie_settings_value;
+
+        game.display_color_indicator = JSON.parse(cookie_settings_value[0]);
+        game.animation = JSON.parse(cookie_settings_value[1]);
+        game.chug_enabled = JSON.parse(cookie_settings_value[2]);
+        game.virus_enabled = JSON.parse(cookie_settings_value[3]);
+        game.social_posting_enabled = JSON.parse(cookie_settings_value[4]);
+        game.sip.min = parseInt(cookie_settings_value[5]);
+        game.sip.max = parseInt(cookie_settings_value[6]);
+        game.chug_amount = parseInt(cookie_settings_value[7]);
+        global.dark_mode = cookie_settings_value[8];
+        global.accept_cookie = parseBoolean(cookie_settings_value[9]);
+        global.remind_warning_panel = parseBoolean(cookie_settings_value[10]);
+        game.weakest_link.tie_behaviour = cookie_settings_value[11];
+        global.audio_enabled = cookie_settings_value[12];
+        game.weakest_link.stop_at_max_chain = cookie_settings_value[13];
+        game.weakest_link.max_chain = cookie_settings_value[14];
+        game.weakest_link.hide_answer = cookie_settings_value[15];
+        game.password.word_to_find_amount = cookie_settings_value[16];
+        game.password.style = cookie_settings_value[17];
 
         updateHTMLSettingsByVar();
     }
 }
 
-function DEBUG_cookies_list() {
+function displayCookieList() {
+    var settings_name = [
+        "game.display_color_indicator",
+        "game.animation",
+        "game.chug_enabled",
+        "game.virus_enabled",
+        "game.social_posting_enabled",
+        "game.sip.min",
+        "game.sip.max",
+        "game.chug_amount",
+        "global.dark_mode",
+        "global.accept_cookie",
+        "global.remind_warning_panel",
+        "game.weakest_link.tie_behaviour",
+        "global.audio_enabled",
+        "game.weakest_link.stop_at_max_chain",
+        "game.weakest_link.max_chain",
+        "game.weakest_link.hide_answer",
+        "game.password.word_to_find_amount",
+        "game.password.style"
+    ];
 
+    global.cookie_settings_value = getCookie("settings").split(",");
+    var html_content = "";
+    for (var i = 0; i < global.cookie_settings_value.length; i++) {
+        html_content += "<p><code>" + settings_name[i] + " : <span class=\"cookie_var\">" + global.cookie_settings_value[i] + "<span></code></p>"
+    }
+
+    herge_bt_display_cookies_placeholder.innerHTML = html_content;
 }

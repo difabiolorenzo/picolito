@@ -102,7 +102,7 @@ div#game.yellow {background-color: var(--picolo_yellow);}
 div#game.red {background-color: var(--picolo_red);}
 div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
-div#game.black {background-color: var(--dark);}
+div#game.black {background-color: var(--dark_mode_light_gray);}
 div#game.never_done {background-color: var(--never-done);}
 div#game.password_2009 {background-color: var(--password_2009);}
 div#game.password_2016 {background-color: var(--password_2009_shade_1);background-image: linear-gradient(180deg, var(--password_2016_shade_1), var(--password_2016_shade_2));}
@@ -176,12 +176,11 @@ span.span_team {color: var(--picolo_team);}
 div#sentence_list {margin: 5vh;overflow: auto;height: 70vh;}
 
 li.list-group-item.sentence-list, .player-vote-button, .player-recap-vote, table#weakest_link_vote_end_analytics_table td {
-    background-color: var(--dark_mode_light_gray);
-    border-color: var(--dark_mode_gray);
-    font-size: 120%;
+    background-color: var(--dark_mode_gray);
     font-weight: 700;
     text-align: left;
     cursor: pointer;
+    color: wheat;
 }
 li.list-group-item.sentence-list, .player-vote-button {
     font-size: 100%;
@@ -206,7 +205,7 @@ div#ingame_option {
     flex-direction: column-reverse;
 }
 
-#ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule {
+#ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule, #weakest_link_rule {
     background-color: #000000d9;
     padding: 5vh;
     border: 1px solid #ffffff80;
@@ -215,7 +214,7 @@ div#ingame_option {
     margin: 5vh;
 }
 
-h1#gamename {
+.gamename, .gamename_contrasted {
     --couleur: 0, 0, 0;
     --bright: #ffb100;
     --shade: #bb8200;
@@ -223,17 +222,23 @@ h1#gamename {
     justify-content: center;
     color: var(--bright);
     text-shadow: 0 1px 0 var(--shade), 0 2px 0 var(--shade), 0 3px 0 var(--shade), 0 4px 0 var(--shade), 0 5px 0 var(--shade), 0 6px 1px rgba(var(--couleur), .1), 0 0 5px rgba(var(--couleur), .1), 0 1px 3px rgba(var(--couleur), .3), 0 3px 5px rgba(var(--couleur), .3), 0 5px 10px rgba(var(--couleur), .25), 0 10px 10px rgba(var(--couleur), .2), 0 5px 5px rgba(var(--couleur), .15);
-    font-size: calc(5vw);
+    font-size: 5vw;
     padding:2vw;
     font-weight: bold;
     user-select: none;
-    animation: logo_appear 0.5s;
+    animation: logo_appear 0.75s;
+}
+
+.gamename_contrasted {
+    color: #855c00;
+    text-shadow: 0 0 2px;
+    animation: none;
 }
 
 
 @keyframes logo_appear {
     0% {
-        transform: scale3d(0.8, 0.7, 1);
+        transform: scale3d(0.9, 0.7, 1);
     }
     100% {
         transform: scale3d(1, 1, 1);
@@ -314,11 +319,15 @@ div#ingame_topbar {
     z-index: 1;
     transition: 0.25s;
     background-color: #0000001a;
+    display: block;
 }
 div#menu_player_list {
     display: flex;
-    flex-wrap: wrap;
-    padding: 1.25rem;
+    margin: 1.25rem;
+    /* flex-direction: column; */
+    /* max-height: 20vh; */
+    /* overflow: scroll; */
+    /* height: 100%; */
     justify-content: center;
 }
 
@@ -374,6 +383,8 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
     font-family: impact;
     user-select: none;
     transition: .25s;
+    color: white;
+    text-decoration-line: none;
 }
 
 .weakest_link_shield_normal {
@@ -423,6 +434,8 @@ div#game.dark_blue div#ingame_topbar {
 .weakest_link_label {
     font-weight: bold;
     margin-left: 1vw;
+    color: white;
+    text-decoration: none;
 }
 
 a#ingame_weakest_link_current_player {
@@ -819,7 +832,7 @@ div#game.password_2016 .password-shield {
     border: 1px solid var(--password_2016_shield_2);
     background-color: var(--password_2016_shield_1);
     background-image: linear-gradient(var(--password_2016_shield_1), var(--password_2016_shield_2) 75%);
-    box-shadow: 0px 3px 2px 0px #00000080;
+    box-shadow: 0px 5px 0px 0px #00000080;
 }
 
 div#password_recap {
@@ -868,4 +881,37 @@ div#ingame_weakest_link_voting_area {
 #search-button svg {
   width: 25px;
   height: 25px;
+}
+
+div#herge_bt_display_cookies_placeholder {
+    max-height: 30vh;
+    overflow: scroll;
+    border: 1px solid #8a8a8a;
+}
+
+span.cookie_var {
+    color: #005ccb;
+    font-weight: bold;
+}
+
+div#landing {
+    background-color: var(--picolito-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+    flex-direction: column;
+}
+div#landing img {
+    width:10rem;
+    height:10rem;
+}
+
+.fadout-landing {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+    transition-delay: 1s;
 }

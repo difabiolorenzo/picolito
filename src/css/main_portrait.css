@@ -11,8 +11,8 @@
     div#disclaimer {
         padding: 5vw;
     }
-    h1#gamename {
-        font-size: calc(5vh);
+    .gamename, .gamename_contrasted {
+        font-size: 5vh;
         padding:2vh;
     }
     div#menu {
@@ -33,6 +33,7 @@
     .weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
         height: 12.5vw;
         width: 17vh;
+        text-decoration: auto;
     }
     .weakest_link_shield_small {
         height: 10vw;
@@ -51,7 +52,7 @@
         margin: 1vw;
     }
     #ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule {
-        padding: 5vw;
+        padding: 4vw;
     }
     #game_content.landscape-in-portrait #ingame_option {
         flex-direction: row !important;

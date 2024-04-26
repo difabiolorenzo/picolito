@@ -115,7 +115,7 @@ label.form-check-label {
 }
 
 h6 {
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 .form-check {margin-top: 2vh;margin-bottom: 2vw;padding-right: 1.25rem;}
 
@@ -164,13 +164,11 @@ a {
     color: #0060c7;
 }
 
-.form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+.dark_blue a {
+    color:white;
 }
 
 .text-center {
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -188,4 +186,14 @@ a {
 
 select {
     cursor: pointer;
+}
+
+code {
+    color: var(--bs-red);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: black;
+    background-color: var(--picolito-primary);
+    border-color: var(--picolito-primary);
 }

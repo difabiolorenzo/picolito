@@ -135,7 +135,7 @@ function randomPercentage() {
 
 function getRandomColor() {
     var available_color_probability = [];
-    if (game.shot_enabled == true && game.shot_sentence_id_start_min <= game.cycle_id && game.shot_remaining > 0 && game.gamemode != "war") {
+    if (game.chug_enabled == true && game.chug_sentence_id_start_min <= game.cycle_id && game.chug_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
     if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
@@ -217,8 +217,8 @@ function getRandomType() {
         }
 
         var color_gamemode_matching_type = []
-        for (var i in type_by_gamemode) {
-            for (var j in type_by_color) {
+        for (var i = 0; i < type_by_gamemode.length; i++) {
+            for (var j = 0; i < type_by_color.length; i++) {
                 if (type_by_gamemode[i] == type_by_color[j]) {
                     if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {
                         console.log(`SOCIAL POSTING DISABLED`)
@@ -230,11 +230,11 @@ function getRandomType() {
         }
 
         var potential_type = []
-        for (var i in color_gamemode_matching_type) {
+        for (var i = 0; i < color_gamemode_matching_type.length; i++) {
             var checking_cg_matching_type = color_gamemode_matching_type[i];
             var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type-1];
             if (checking_mp_by_gamemode.length != 0) {
-                for (var j in checking_mp_by_gamemode) {
+                for (var j = 0; i < checking_mp_by_gamemode.length; i++) {
                     if (checking_mp_by_gamemode[j] <= game.max_player_number) {
                         potential_type.push(checking_cg_matching_type)
                     }
@@ -268,13 +268,10 @@ function generatePicoloSentences() {
     var type = ""
     var max_player = game.max_player_number;
 
-    function setVariables() {
-        var get_random_color_type = getRandomType();
-        color = get_random_color_type[0];
-        type = get_random_color_type[1];        // text
-        console.log(get_random_color_type, color, "type", type, "max_player", max_player);
-    }
-    setVariables()
+    var get_random_color_type = getRandomType();
+    color = get_random_color_type[0];
+    type = get_random_color_type[1];        // text
+    console.log(get_random_color_type, color, "type", type, "max_player", max_player);
 
     function getSentence(use_parent_key, selected_nb_players, selected_type) {
         if (use_parent_key == false) {
@@ -289,16 +286,16 @@ function generatePicoloSentences() {
         var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
         request.push(...addind_request);
     }
-    console.log(request)
     if (request.length == 0) {
         game.filter.empty_type.push(type)
-        // alert("REPICK TYPE");
+        console.log("REPICK TYPE");
         return;
     }
 
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
+        console.log(request[random_int].text);
         sentence = textReplacer(request[random_int].text);
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
@@ -346,10 +343,9 @@ function generatePicoloSentences() {
 
     }
 
-    //disable down drinking if trigerred
-    //shot_remaining-- if more than 1 down drinking is set
+    // Remove one remaining chug
     if (color == "red") {
-        game.shot_remaining--;
+        game.chug_remaining--;
     }
 }
 

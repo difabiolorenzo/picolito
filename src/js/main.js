@@ -1,28 +1,24 @@
-
 // First function called when #body is loaded
 function init() {
     checkBrowserColorScheme();
     defaultVariables();
-    filterVariables();
     setLanguageString();
-    global.current_language_strings = language.fr;
     updateCurrentLanguageString("fr")
+    filterVariables();
     retrieveCookie();
-
     if (global.dev_mode == true) { devOverrideSettings() }
+    hideLandingPage()
 }
 
 function devOverrideSettings() {
-    gamename.innerHTML = global.picolito_version;
-    // addPlayer("Ricard", "cookie")
-    // addPlayer("Bertrude", "cookie")
-    // addPlayer("Zolande", "cookie")
-    // addPlayer("Alpipignoux", "cookie")
+    document.getElementById("gamename_menu").innerHTML = global.picolito_version;
+    addPlayer("Ricard", "cookie");
+    addPlayer("Bertrude", "cookie");
+    addPlayer("Zolande", "cookie");
+    addPlayer("Alpipignoux", "cookie");
 
-    // displayPage('extract')
-    displayPage('menu')
-    // selectGamemode("password");
-    // startGame();
+    displayPage("gamemode")
+    global.display_landing_page_delay = 0;
 }
 
 function defaultVariables() {
@@ -30,14 +26,17 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.3",
+        picolito_version: "0.33.4",
         cookie_expiration_delay: 30,
         weakestLinkTimer: undefined,
         audio : {
             weakest_link_amb_60: undefined,
             weakest_link_amb_end: undefined
         },
-        audio_enabled: true
+        audio_enabled: true,
+        cookie_settings_value : [],
+        display_landing_page_delay : 1500,
+        use_cache_storage: false
     }
 
     game = {
@@ -100,18 +99,18 @@ function defaultVariables() {
         display_color_indicator: true,
         animation: true,
 
-        sentence_history: [],                               //sentence_history_item = { sentence,key,type,nature }
+        sentence_history: [],   //sentence_history_item = { sentence,key,type,nature }
         sentence_amount: 50,
 
-        shot_enabled: true,
-        shot_amount: 1,
-        shot_sentence_id_start_min: 10,            // shot start to appear after sentence_id X
+        chug_enabled: true,
+        chug_amount: 1,
+        chug_sentence_id_start_min: 10, // chug start to appear after sentence_id X
 
         virus_enabled: true,
-        virus_remaining: 1,                                 // virus can occur X times (still overlap...)
-        virus_end_min: 3,                                   // virus can end after X more sentence_id minimum
-        virus_end_max: 6,                                  // virus can end after X more sentence_id maximum
-        virus_sentence_id_start_min: 5,                     // virus start to appear after sentence_id X
+        virus_remaining: 1, // virus can occur X times (still overlap...)
+        virus_end_min: 3,   // virus can end after X more sentence_id minimum
+        virus_end_max: 6,   // virus can end after X more sentence_id maximum
+        virus_sentence_id_start_min: 5, // virus start to appear after sentence_id X
 
         social_posting_enabled: false,
 
@@ -155,7 +154,7 @@ function resetVariables() {
     game.filter.empty_type = [];
     game.cycle_id = -1;
     game.virus_remaining = 1;
-    game.shot_remaining = game.shot_amount;
+    game.chug_remaining = game.chug_amount;
     game.database = undefined;
     game.pending_db = [];
 
@@ -173,13 +172,13 @@ function updateHTMLSettingsByVar() {
     input_team_1.value = game.team_1;
     input_team_2.value = game.team_2;
 
-    input_shot_enabled.checked = game.shot_enabled;
+    input_chug_enabled.checked = game.chug_enabled;
     input_virus_enabled.checked = game.virus_enabled;
     input_social_posting_enabled.checked = game.social_posting_enabled;
 
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
-    input_potential_downsip = game.shot_amount;
+    input_potential_chug = game.chug_amount;
 
     input_color_display_settings.checked = game.display_color_indicator;
     input_color_display_animation.checked = game.animation;
@@ -187,15 +186,15 @@ function updateHTMLSettingsByVar() {
     input_dark_mode_settings.value = global.dark_mode;
     changeDarkModeSettings(global.dark_mode)
 
-    input_weakest_link_tie.value = game.weakest_link.tie_behaviour
+    input_weakest_link_tie.value = game.weakest_link.tie_behaviour;
 
     if (game.weakest_link.stop_at_max_chain == false) {
-        input_weakest_link_max_chain.value = "none"
+        input_weakest_link_max_chain.value = "none";
     } else {
-        input_weakest_link_max_chain.value = game.weakest_link.max_chain
+        input_weakest_link_max_chain.value = game.weakest_link.max_chain;
     }
-    input_weakest_link_soundtrack.checked = global.audio_enabled
-    input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer
+    input_weakest_link_soundtrack.checked = global.audio_enabled;
+    input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer;
 
     select_settings_password_amount.value = game.password.word_to_find_amount;
     select_settings_password_style.value = game.password.style;
@@ -204,31 +203,46 @@ function updateHTMLSettingsByVar() {
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
 
     if (global.remind_warning_panel == false) {
-        displayPage('menu')
+        displayPage('menu');
+    } else {
+        displayPage('disclaimer');
+    }    
+}
+
+function hideLandingPage() {
+    document.getElementById("landing").classList.add("fadout-landing");
+    if (global.display_landing_page_delay > 0 ) {
+        setTimeout(function() {
+            document.getElementById('landing').style.display = 'none';
+        }, (global.display_landing_page_delay));
+    } else {
+        document.getElementById('landing').style.display = 'none';
     }
 }
 
-function checkBrowserColorScheme() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
-        document.body.classList.value = "dark_mode"
+function checkBrowserColorScheme(force_bright) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches == true || force_bright == false) {
+        document.body.classList.value = "dark_mode";
     } else {
-        document.body.classList.value = "bright_mode"
+        document.body.classList.value = "bright_mode";
     }
+
+
 }
 
 function changeDarkModeSettings(value) {
     if (value == "system") {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches == true) {
-            document.body.classList.value = "dark_mode"
+            document.body.classList.value = "dark_mode";
         } else {
-            document.body.classList.value = "bright_mode"
+            document.body.classList.value = "bright_mode";
         }
         global.dark_mode = "system";
     } else if (value == "bright") {
-        document.body.classList.value = "bright_mode"
+        document.body.classList.value = "bright_mode";
         global.dark_mode = "bright";
     } else {
-        document.body.classList.value = "dark_mode"
+        document.body.classList.value = "dark_mode";
         global.dark_mode = "dark";
     }
 }
@@ -255,8 +269,8 @@ function changeSipSettings(setting, value) {
 }
 
 function changeDownDrinking(value) {
-    game.shot_amount = parseInt(value);
-    game.shot_remaining = parseInt(value);
+    game.chug_amount = parseInt(value);
+    game.chug_remaining = parseInt(value);
 }
 
 function changeWeakestLinkTieBehaviour(value) {
@@ -279,24 +293,23 @@ function createScriptElement(script_src) {
     scriptTag.src = script_src;
     headTag.appendChild(scriptTag);
 }
- 
+
 function hopper(array, nature) {
-    console.log("hopper")
     var probability = [];
-    for (var i in array) {
+    for (var i = 0; i < array.length; i++) {
         if (array[i][0] == nature) {
             probability = array[i][1];
             array.splice(i, 1);
         }
     }
     
-    for (var i in array) {
+    for (var i = 0; i < array.length; i++) {
         array[i][1] = array[i][1] + (probability / array.length);
     }
 }
 
 function filterVariables() {
-    if (game.shot_enabled == false) {
+    if (game.chug_enabled == false) {
         //delete and share red probability into others colors
         hopper(game.type_by_color, "red");
     }
@@ -307,17 +320,17 @@ function filterVariables() {
 }
 
 function replaceAt(string, index, replace, length) {
-    return string.substring(0, index) + replace + string.substring(index+length + 1);
+    return string.substring(0, index) + replace + string.substring((index+length)+1);
 }
 
 function displayPage(page) {
+    // document.getElementById('landing').style.display = 'none';
     document.getElementById('disclaimer').style.display = 'none';
     document.getElementById('menu').style.display = 'none';
     document.getElementById('gamemode').style.display = 'none';
     document.getElementById('team_selection').style.display = 'none';
     document.getElementById('game').style.display = 'none';
     document.getElementById('extract').style.display = 'none';
-
 
     if (page == "disclaimer") {
         document.getElementById(page).style.display = 'flex';
@@ -327,9 +340,14 @@ function displayPage(page) {
 }
 
 function addPlayer(player_name, html_origin) {
-    if (manu_player_input.value == "scipio" && html_origin == "menu") {
+    if ((manu_player_input.value == "scipio" || manu_player_input.value == "SCIPIO") && html_origin == "menu") {
         manu_player_input.value = "";
-        DEBUG_carthage();
+        DEBUG_carthage(true);
+        return;
+    }
+    if ((manu_player_input.value == "terre" || manu_player_input.value == "TERRE") && html_origin == "menu") {
+        manu_player_input.value = "";
+        DEBUG_carthage(false);
         return;
     }
     if (player_name == undefined && html_origin == "menu") {
@@ -342,15 +360,15 @@ function addPlayer(player_name, html_origin) {
 
     if (player_name.length > 0 && player_name.length <= 50) {
         var start_by_space = true; //prevent name start by spaces
-        for (var i = 0 ; i < player_name.length ; i++) {
+        for (var i = 0; i < player_name.length; i++) {
             if (player_name.charAt(i) == " ") {
             } else {
                 start_by_space = false;
                 player_name = player_name.substr(i, player_name.length-i);
                 if (player_name.length != 0) {
                     //add button with player name
-                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
-                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
+                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}</button>`;
+                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}</button>`;
 
                     game.player_list.push(player_name);
                 }
@@ -373,16 +391,6 @@ function addPlayer(player_name, html_origin) {
     
 }
 
-function generateRandomPlayer(nb_players) {
-    function randomHex(hex) {
-        return (Math.random()*hex<<0).toString(16);
-    }
-    for (var i = 0; i < nb_players; i++ ) {
-        var randomUUID = (randomHex(0xFFFF));
-        addPlayer("J" + "#" + (game.player_list.length+1) + "_" + randomUUID)
-    }
-}
-
 function removePlayer(player_name, html_element_id) {
     var player_id = getIDFromString(html_element_id)
     //remove button
@@ -390,7 +398,7 @@ function removePlayer(player_name, html_element_id) {
     document.getElementById("ingame_player_button_" + player_id).remove();
 
     leaveTeam(game.player_list[player_id])
-    for (var i in game.player_list) {
+    for (var i = 0; i < game.player_list.length; i++) {
         if (player_name == game.player_list[i]) {
             game.player_list.splice(i, 1)
         }
@@ -420,7 +428,12 @@ function updateGameBackgroundColor(forced_color) {
         if (game.sentence_history.length == 0) {
             document.getElementById("game").className = "page blue"
         } else {
-            document.getElementById("game").className = "page dark_affected " + game.sentence_history[game.cycle_id].color;
+            if (game.sentence_history[game.cycle_id].color == undefined) {
+                var color = "blue";
+            } else {
+                var color = game.sentence_history[game.cycle_id].color;
+            }
+            document.getElementById("game").className = "page dark_affected " + color;
         }
     }
 }
@@ -432,8 +445,10 @@ function initGame(select_team, direct_launch) {
 
     getMinPlayer()
     if (game.gamemode == "war" && select_team == true) {
-        displayPage('team_selection');
-        updateTeamSelectiontable();
+        if (game.player_list.length >= 2) {
+            displayPage('team_selection');
+            updateTeamSelectionTable();
+        }
     } else if (game.gamemode == "weakest_link") {
         checkDatabase();
         displayPage('game');
@@ -471,11 +486,11 @@ function initGame(select_team, direct_launch) {
 
 function checkDatabase() {
     if (game.gamemode == "mix") {
-        for (var i=0;i<game.multiple_database.mix.length;i++) {
+        for (var i = 0; i < game.multiple_database.mix.length; i++) {
             testStoredDatabase(game.multiple_database.mix[i], global.current_language)
         }
     } else if (game.gamemode == "never_mix") {
-        for (var i=0;i<game.multiple_database.never_mix.length;i++) {
+        for (var i = 0; i < game.multiple_database.never_mix.length; i++) {
             testStoredDatabase(game.multiple_database.never_mix[i], global.current_language)
         }
     } else {
@@ -549,11 +564,12 @@ function exitGame() {
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
-    manageNavDisplay("restart",false)
+    manageNavDisplay("restart",false);
 
-    displayPage('menu');
+    displayPage('gamemode');
 
-    ingame_answer.innerHTML = ""
+    ingame_answer.innerHTML = "";
+    document.getElementById("text_team_selection_next").disabled = true;
 }
 
 function restartGame() {
@@ -563,11 +579,14 @@ function restartGame() {
 
 function selectGamemode(selected_gamemode, direct_launch) {
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
-        alert(global.current_language_strings.weakest_link_minimum_requierement)
+        alert(global.current_language_strings.weakest_link_minimum_requierement);
     } else {
+        if (selected_gamemode == "password") {
+            passwordWordAmountRefreshOption();
+        }
         game.gamemode = selected_gamemode;
         initGame(true, direct_launch);
-        manageNavDisplay("navigation_arrows", false)
+        manageNavDisplay("navigation_arrows", false);
     }
 }
 
@@ -752,7 +771,6 @@ function randomSip() {
 }
 
 function textReplacer(text) {
-
     if (game.display_color_indicator == true) {
         var html_span_sip = "<span class=\"span_sip\">";
         var html_span_player = "<span class=\"span_player\">";
@@ -765,16 +783,13 @@ function textReplacer(text) {
         var html_span_end = "";
     }
 
-
     // retrieve all player name
     var player_name_list = [];
-    for (var i = 0 ; i < game.player_list.length ; i++) { player_name_list.push(game.player_list[i]) }
+    for (var i = 0; i < game.player_list.length; i++) { player_name_list.push(game.player_list[i]) }
 
-    for (var i = 0 ; i < text.length ; i++) {
-        // change $ by random sip
+    for (var i = 0; i < text.length; i++) {
         if (text.charAt(i) == "$") {
-            var random_sip = randomSip();
-            text = replaceAt(text, i, html_span_sip + random_sip + html_span_end, 0);
+            text = replaceAt(text, i, html_span_sip + randomSip() + html_span_end, 0);
         }
         // change %s by random player
         if (text.charAt(i) == "%" && text.charAt(i+1) == "s") {
@@ -812,13 +827,6 @@ function displaySentenceList(force_ingame) {
     }
 }
 
-function tryNextSentence () {
-    if (game.gamemode != "weakest_link") {
-        nextSentence(true);
-        document.getElementById('game_cycle_next_button').innerHTML = '>';
-    }
-}
-
 function updateSentenceList(mode) {
     if (mode == "clear") {
         sentence_list.innerHTML = ""
@@ -826,7 +834,7 @@ function updateSentenceList(mode) {
         var ul_head = "";
         var html_inner = "";
 
-        for (var i in game.sentence_history) {
+        for (var i = 0; i < game.sentence_history.length; i++) {
             var color = game.sentence_history[i].color;
             var sentence = game.sentence_history[i].sentence;
 
@@ -841,7 +849,7 @@ function updateSentenceList(mode) {
     }
 }
 
-function updateTeamSelectiontable() {
+function updateTeamSelectionTable() {
     team_selection_table = team_selection_table
 
     //clear
@@ -852,21 +860,17 @@ function updateTeamSelectiontable() {
         var player_input = `<td>${player_name}</td>`
         var select_team_1_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_select +`</button></td>`
         var select_team_2_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_select +`</button></td>`
-        var delete_button = `<td><button class="btn btn-danger" onclick="removePlayer('${player_name}', this.parentElement.parentElement.id, 'team_selection_page')">`+ global.current_language_strings.team_delete +`</button></td>`
-
-        return `<tr id="player_id_team_selection_${index}">` + player_input + select_team_1_button + select_team_2_button + delete_button + "<tr>";
+        return `<tr id="player_id_team_selection_${index}">` + player_input + select_team_1_button + select_team_2_button + "<tr>";
     }
-    for (var i in game.player_list) {
+    for (var i = 0; i < game.player_list.length; i++) {
         var test1 = selectingPlayerCell(i);
         team_selection_table.children[1].innerHTML += test1;
     }
-
-    updateTeamSelectionNextButton()
 }
 
 function leaveTeam(player_name) {
     if (game.team_1_player_list.length > 0) {
-        for (var i in game.team_1_player_list) {
+        for (var i = 0; i < game.team_1_player_list.length; i++) {
             if (player_name == game.team_1_player_list[i]) {
                 game.team_1_player_list.splice(i, 1);
                 break
@@ -874,7 +878,7 @@ function leaveTeam(player_name) {
         }
     }
     if (game.team_2_player_list.length > 0) {
-        for (var i in game.team_2_player_list) {
+        for (var i = 0; i < game.team_2_player_list.length; i++) {
             if (player_name == game.team_2_player_list[i]) {
                 game.team_2_player_list.splice(i, 1);
                 break
@@ -902,18 +906,15 @@ function changeTeam(html_id, team) {
         game.team_2_player_list.push(player_name)
     }
 
-    updateTeamSelectionNextButton()
-}
-
-function updateTeamSelectionNextButton() {
     var team_1_lenght = game.team_1_player_list.length
     var team_2_lenght = game.team_2_player_list.length
     var player_list_length = game.player_list.length
 
-    if (team_1_lenght > 0 && team_2_lenght > 0 && (team_1_lenght + team_2_lenght == player_list_length)) {
-        document.getElementById("button_next_team_selection").disabled = false;
+    // Update team selection next button
+    if (team_1_lenght + team_2_lenght == game.player_list.length && (team_1_lenght > 0 && team_2_lenght > 0) ) {
+        document.getElementById("text_team_selection_next").disabled = false
     } else {
-        document.getElementById("button_next_team_selection").disabled = true;
+        document.getElementById("text_team_selection_next").disabled = true
     }
 }
 
@@ -935,20 +936,7 @@ window.addEventListener("keydown", function(event) {
   }, true);
 
 function DEBUG_RandomPlayer() {
-    if (global.debug_random_player == undefined) {
-        global.debug_random_player = 0;
-        global.debug_random_player_triggered = true;
-    }
-    global.debug_random_player++;
-
-    if (global.debug_random_player == 3) {
-        if (global.debug_random_player_triggered == false) {
-            global.debug_random_player_triggered = true;
-            alert(global.current_language_strings.debug_add_fake_player);
-        }
-        generateRandomPlayer(1);
-        global.debug_random_player = 0;
-    }
+    addPlayer("J" + "#" + (game.player_list.length+1) + "_" + (Math.random()*0xFFFF).toString(16));
 }
 
 function parseBoolean(value) {
@@ -1007,20 +995,6 @@ function stopsound(sound) {
     } 
 }
 
-function DEBUG_weakestlink_add5sec() {
-    if (global.dev_mode == true) {
-        var current_time_player = global.audio.weakest_link_amb_60.currentTime;
-        var current_time = game.weakest_link.current_time;
-    
-        if ((current_time - 5) > 5) {
-            global.audio.weakest_link_amb_60.currentTime = current_time_player + 5;
-            game.weakest_link.current_time = current_time - 5;
-        }
-    
-        weakestLinkCalcTime();
-    }
-}
-
 function manageHergeBTChoice(cookie_choice, remind_me_later) {
     if (cookie_choice == true) {
         global.accept_cookie = true;
@@ -1065,7 +1039,7 @@ function iniTriviaData(nb) {
 
 function displayTriviaData() {
     var extractHTML = ""
-    for (var i in game.weakest_link.database_opentdb) {
+    for (var i = 0; i < game.weakest_link.database_opentdb.length; i++) {
         var object = game.weakest_link.database_opentdb[i]
         extractHTML += `<tr><td>${object.category}</td><td>type</td><td>${object.difficulty}</td><td>${object.question}</td><td>${object.correct_answer}</td><td>${object.incorrect_answers}</td>`
     }
@@ -1113,8 +1087,148 @@ async function getTriviaData(questionCount) {
     }
 }
 
-function DEBUG_carthage() {
-    alert("Bienvenue à carthage")
-    gamename.innerHTML = global.picolito_version;
-    global.dev_mode = true;
+function DEBUG_carthage(debug) {
+    if (debug == true) {
+        document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
+        document.getElementById("gamename_menu").style = "background-color: #061f01; color: #0079d2; text-shadow: 0 0 BLACK; font-family: courier;"
+        checkBrowserColorScheme(false)
+        document.getElementById("debug_tools_placeholder").style.display = "block";
+        
+        alert("Bienvenue à Carthage.");
+    } else {
+        document.getElementById("gamename_menu").innerHTML = "PICOLITO";
+        document.getElementById("gamename_menu").style = ""
+        checkBrowserColorScheme()
+        document.getElementById("debug_tools_placeholder").style.display = "none";
+        
+        alert("Retour vers le passé.");
+    }
 }
+
+function DEBUG_weakestlink_add5sec() {
+    if (global.dev_mode == true) {
+        var current_time_player = global.audio.weakest_link_amb_60.currentTime;
+        var current_time = game.weakest_link.current_time;
+    
+        if ((current_time - 5) >= 5) {
+            global.audio.weakest_link_amb_60.currentTime = current_time_player + 5;
+            game.weakest_link.current_time = current_time - 5;
+        }
+    
+        weakestLinkCalcTime();
+    }
+}
+
+function DEBUG_ImportCSV() {
+    var formFile = document.getElementById('input_csv');
+
+    if (!formFile.files) {
+        console.log("This browser doesn't seem to support the `files` property of file inputs.");
+    } else if (!formFile.files[0]) {
+        console.log("No file selected.");
+    } else {
+        // console.log("Import CSV called.")
+        let file = formFile.files[0];
+        let fr = new FileReader();
+        fr.onload = receivedText;
+        fr.readAsText(file);
+
+        function receivedText() {
+            // console.log("RESULT", fr.result);
+            // console.log(fr);
+
+            var csv_result = fr.result;
+            csvJSON(csv_result)
+            // console.log(csv_result)
+        // Do additional processing here
+        }
+    }
+}
+
+//     {cycle_state:"false",
+//     type:"8",
+//     text:"Team %t: What is %s's zodiac sign? If you're right,
+//     the other team drinks $ times. Otherwise, you drink!",
+//     ...
+//     key:"",
+//     parent_key:"",
+//     pack_name:"war",
+//     language:"en",
+//     nb_players:"1"
+// },
+
+function csvJSON(csv) {
+    function removeQuote(text) {
+        return text.substring(1,text.length-1)
+    }
+    var lines=csv.split("\n");
+    var result = [];
+    for (var i=0; i<lines.length; i++) {
+        var obj = {};
+        // Mise en tableau de la ligne séparé des virgules
+        var currentline=lines[i].split(",");
+        var text = [];
+        if (currentline.length == 8) {
+            text.push(currentline[2]);
+        } else {
+            for (var j=0; j<currentline.length-7; j++) {
+                text.push(currentline[j+2])
+            }
+        }
+        obj["text"] = removeQuote(text.join(''));
+        obj["cycle_state"] = removeQuote(currentline[0]);
+        console.log(currentline[0])
+        obj["type"] = removeQuote(currentline[1]);
+        obj["key"] = removeQuote(currentline[currentline.length-5]);
+        obj["parent_key"] = removeQuote(currentline[currentline.length-4]);
+        obj["pack_name"] = removeQuote(currentline[currentline.length-3]);
+        obj["language"] = removeQuote(currentline[currentline.length-2]);
+        obj["nb_players"] = removeQuote(currentline[currentline.length-1]);
+        
+        var lang = removeQuote(currentline[currentline.length-2])
+        var gamemode = removeQuote(currentline[currentline.length-3])
+        
+        result.push(obj);
+    }
+    console.log(result)
+}
+    // Le CSV n'est pas régulier, ne pas prendre la première variable
+    // var headers=lines[0].split(",");
+
+//IndexedDB API, remplacement des cookies
+
+// const request = window.indexedDB.open("PicolitoData", 1);
+// request.onerror = (event) => {
+//     // Do something with request.errorCode!
+//     console.log(request.errorCode)
+// };
+//   request.onsuccess = (event) => {
+//     // Do something with request.result!
+//     console.log(request.result)
+// };
+
+// let db;
+// const request = indexedDB.open("MyTestDatabase");
+// request.onerror = (event) => {
+//     console.error("Why didn't you allow my web app to use IndexedDB?!");
+// };
+// request.onsuccess = (event) => {
+// db = event.target.result;
+// };
+
+
+// Service Woker, Mise en cache
+if ('serviceWorker' in navigator && window.origin != "null" && window.matchMedia('(display-mode: standalone)').matches) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
+        if(reg.installing)
+            console.log('Service worker installing');
+        else if(reg.waiting)
+            console.log('Service worker installed');
+        else if(reg.active)
+            console.log('Service worker active');
+
+    }).catch(function(error) {
+        // registration failed
+        console.log('Registration failed with ' + error);
+    });
+};

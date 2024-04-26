@@ -33,7 +33,7 @@ function initWeakestLink() {
         game.weakest_link.player_analytics.answer_time = [];
         game.weakest_link.player_analytics.avegarge_answer_time = []; 
     
-        for (var i in game.player_list) {
+        for (var i = 0; i < game.player_list.length; i++) {
             game.weakest_link.player_analytics.correct.push(0)
             game.weakest_link.player_analytics.wrong.push(0)
             game.weakest_link.player_analytics.bank_saved.push(0)
@@ -156,7 +156,7 @@ function initWeakestLink() {
         manageNavDisplay("restart",true)
         
         game.weakest_link.vote_count = [];
-        for (var i in game.player_list) {
+        for (var i = 0; i < game.player_list.length; i++) {
             game.weakest_link.vote_count.push(0)
         }
     }
@@ -168,7 +168,7 @@ function initWeakestLink() {
                 var ul_head = "";
                 var html_inner = "";
         
-                for (var i in game.weakest_link.alphabetically_ordered_player) {
+                for (var i = 0; i < game.weakest_link.alphabetically_ordered_player.length; i++) {
                     var player_name = game.weakest_link.alphabetically_ordered_player[i]
                     if (i != game.weakest_link.player_vote_index) {
                         html_inner += `<li class="list-group-item sentence-list weakest-link-vote-button" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
@@ -253,27 +253,25 @@ function initWeakestLink() {
     
         var player_ratio_sorted = [];
         player_ratio_sorted = player_ratio.slice();
-    
+
         //determ one weakest link ()
         if (tie == true && game.weakest_link.tie_behaviour == "weakest") {
             var most_voted_player_sorted = [];
             most_voted_player_sorted = most_voted_player.slice();
             game.weakest_link.weakest_link_id = most_voted_player_sorted.sort(sortPlayerWeakest)[0][0]
-            console.log(game.weakest_link.alphabetically_ordered_player[game.weakest_link.weakest_link_id], game.weakest_link.weakest_link_id,"weakest")
         }
     
         //determ who's strongest link
         if (game.weakest_link.tie_behaviour == "weakest") { 
-            console.log(player_ratio_sorted, game.weakest_link.weakest_link_id)
-                player_ratio_sorted[game.weakest_link.weakest_link_id].pop() }
+            // player_ratio_sorted[game.weakest_link.weakest_link_id].pop()
+        }
         game.weakest_link.strongest_link_id = player_ratio_sorted.sort(sortPlayerStrongest)[0][0]
-        console.log(game.weakest_link.alphabetically_ordered_player[game.weakest_link.strongest_link_id], game.weakest_link.strongest_link_id, "strongest")
         
         // each player stats
         var ul_head = "";
         var vote_result_innerHTML = "";
     
-        for (var i in game.weakest_link.alphabetically_ordered_player) {
+        for (var i = 0; i < game.weakest_link.alphabetically_ordered_player.length; i++) {
             var player_name = game.weakest_link.alphabetically_ordered_player[i]
             var vote_count = game.weakest_link.vote_count[i]
             var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
@@ -303,7 +301,7 @@ function initWeakestLink() {
         }
         weakest_link_vote_result.innerHTML =  ul_head + vote_result_innerHTML + "</ul>"; 
     
-        weakest_link_vote_end_analytics_table.innerHTML = ""
+        weakest_link_vote_end_analytics_table.innerHTML = "";
         analytics_table_innerHTML = `<tr>
                 <td id="text_ingame_weakest_link_analytics_time">Temps</td>
                 <td id="text_ingame_weakest_link_analytics_correct">Bonne réponse</td>
@@ -324,10 +322,7 @@ function initWeakestLink() {
                 <td colspan="5"><p id="weakest_link_loser_text_placeholder" class="no-margin"></p></td>
                 <td><button id="text_weakest_link_vote_quit" type="submit" class="btn btn-primary" onclick="exitGame()">Quitter</button></p></td>
             </tr>`;
-        weakest_link_vote_end_analytics_table.innerHTML = analytics_table_innerHTML
-    
-        
-    game.weakest_link.strongest_link_id
+        weakest_link_vote_end_analytics_table.innerHTML = analytics_table_innerHTML;
     
         //display loser
         switch (game.weakest_link.tie_behaviour) {
@@ -337,7 +332,7 @@ function initWeakestLink() {
             break;
             case "both" :
                 var behaviour_both_innerHTML = ""
-                for (var i in most_voted_player) { 
+                for (var i = 0; i < most_voted_player.length; i++) { 
                     behaviour_both_innerHTML += most_voted_player[i][3];
     
                     if (i == most_voted_player.length-2 && i < most_voted_player.length) {
@@ -352,6 +347,7 @@ function initWeakestLink() {
                 weakest_link_loser_text_placeholder.innerHTML = `<span class="player_analytics_orange">${game.weakest_link.alphabetically_ordered_player[game.weakest_link.weakest_link_id]}</span><a> </a><a>vous êtes le maillon faible. Au reboire.</a>`
             break;
         }
+        
         // EMPTY BANK
         if (game.weakest_link.bank == 0) {
             var penality = weakestLinkRandomPenalityInit();
