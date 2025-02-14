@@ -1,7 +1,7 @@
 :root {
     --picolito-primary: #ffc107;
     --picolito-primary-shade: #fde13e;
-    --picolito-primary-boxshadow-border: #ffc10591;
+    --picolito-primary-boxshadow-border: #ffc105cc;
     --picolo_yellow: #E7BB00;
     --picolo_red: #E51000;
     --picolo_blue: #1B586B;
@@ -10,7 +10,7 @@
     --picolo_red_highlight: #E51000;
     --picolo_blue_highlight: #0093c1;
     --picolo_green_highlight: #00d508;
-    --picolo_dark_blue: #093340;
+    --weakest_link: #093340;
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
     --picolo_team: #ff8844;
@@ -21,6 +21,8 @@
     --dark_mode_gray: #101010;
     --weakest-link: #000046;
     --never-done: #5c0090;
+    --never-done-lighter: #9100e1;
+    --never-done-darker: #3f0062;
     --password_2009: #180000;
     --password_2016_shade_1: #0dafce;
     --password_2016_shade_2: #0662b8;
@@ -29,6 +31,7 @@
     --password-red: #b30000;
     --password-yellow: #eede04;
     --password-shake-distance: 1vw;
+    --tenzi-background: #ff9900;
 }
 .page {
     padding: 5vw;
@@ -49,13 +52,16 @@
 }
 #ingame_text {
     cursor: pointer;
+    background: none;
+    border: none;
+    color: unset;
 }
 
-div#game.dark_blue #ingame_text {
+div#game.weakest_link #ingame_text {
     cursor:unset;
 }
 
-div#game.dark_blue #ingame_content {
+div#game.weakest_link #ingame_content {
     display: flex;
     margin-top: 15vh;
     justify-content: flex-start;
@@ -65,17 +71,19 @@ div#game.dark_blue #ingame_content {
 
 p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame, h1#ingame_title {
     font-weight: bold;
-    font-size: xx-large;
+    font-size: 2rem;
     user-select: none;
     -webkit-user-select:none;
     line-height: 1.75;
     padding-left: 5vw;
     padding-right: 5vw;
     text-size-adjust: auto;
+    overflow: auto;
+    max-height: 75vh;
 }
 
-div#game.dark_blue p#ingame_sentence, div#game.dark_blue p#ingame_answer {
-    font-size: x-large;
+div#game.weakest_link p#ingame_sentence, div#game.weakest_link p#ingame_answer {
+    font-size: calc(2rem);
     background-color: #0000004d;
 }
 
@@ -88,13 +96,14 @@ p#ingame_answer {
     font-size: xx-large;
 }
 
-h1#ingame_title {font-weight: 900;}
+h1#ingame_title {font-size: 2.5rem;font-weight: bolder;}
 
 .animation_text_change {
-    animation: animation_text_change 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation: animation_text_change .4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 @keyframes animation_text_change {
-0% {opacity: 0;transform: translateX(5vw);}
+0% {opacity: 0;transform: translateX(-5vw);
+   }
 }
 
 div#game {overflow: hidden;padding: 0;background: var(--gray-dark);background-color: var(--gray-dark);width: 100vw;}
@@ -106,7 +115,8 @@ div#game.black {background-color: var(--dark_mode_light_gray);}
 div#game.never_done {background-color: var(--never-done);}
 div#game.password_2009 {background-color: var(--password_2009);}
 div#game.password_2016 {background-color: var(--password_2009_shade_1);background-image: linear-gradient(180deg, var(--password_2016_shade_1), var(--password_2016_shade_2));}
-div#game.dark_blue, #weakest_link_vote_end_ingame_option {
+div#game.tenzi {background-color: var(--tenzi-background);}
+div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     background-color: var(--weakest-link);
     background: rgb(20,26,77);
     background: linear-gradient(147deg, #0c102d 0%, #215d73 50%, #204b55 75%, #234f5f 150%);
@@ -125,7 +135,7 @@ div#game.dark_blue, #weakest_link_vote_end_ingame_option {
 .dark_mode .dark_affected.red #ingame_sentence {color: var(--picolo_red);}
 .dark_mode .dark_affected.yellow #ingame_sentence {color: var(--picolo_yellow);}
 .dark_mode .dark_affected.green #ingame_sentence {color: var(--picolo_green_highlight);}
-.dark_mode .dark_affected.never_done #ingame_sentence {color: var(--picolo_never_done);}
+.dark_mode .dark_affected.never_done #ingame_sentence {color: var(--never-done-lighter);}
 
 .recap_sentences_cell {
     border: 1px solid black;
@@ -163,17 +173,13 @@ div#game.dark_blue, #weakest_link_vote_end_ingame_option {
     opacity:0.5;
 }
 
-/* .bright_mode #disclaimer, .bright_mode #menu, .bright_mode div#gamemode, .bright_mode div#team_selection {
-    background-color: var(--picolo_blue);
-    color: white;
-} */
-span.span_player, span.span_sip, span.span_team {padding-left: 7px;padding-right: 7px;padding-top: 2px;padding-bottom: 2px;border-radius: 3px;background-color: #00000080;}
+span.span_player, span.span_sip, span.span_team {padding: 0.25rem 0.5rem;border-radius: 0.25rem;background-color: #00000080;text-align: center;}
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_team);}
 
 
-div#sentence_list {margin: 5vh;overflow: auto;height: 70vh;}
+div#sentence_list {margin: 5vh;overflow: scroll;height: 70vh;}
 
 li.list-group-item.sentence-list, .player-vote-button, .player-recap-vote, table#weakest_link_vote_end_analytics_table td {
     background-color: var(--dark_mode_gray);
@@ -189,6 +195,7 @@ li.list-group-item.sentence-list.red {color:var(--picolo_red)}
 li.list-group-item.sentence-list.yellow {color:var(--picolo_yellow)}
 li.list-group-item.sentence-list.green {color:var(--picolo_green)}
 li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
+li.list-group-item.sentence-list.never_done {color:var(--never-done)}
 
 div#ingame_option {
     width: 100%;
@@ -214,7 +221,7 @@ div#ingame_option {
     margin: 5vh;
 }
 
-.gamename, .gamename_contrasted {
+.gamename {
     --couleur: 0, 0, 0;
     --bright: #ffb100;
     --shade: #bb8200;
@@ -222,19 +229,12 @@ div#ingame_option {
     justify-content: center;
     color: var(--bright);
     text-shadow: 0 1px 0 var(--shade), 0 2px 0 var(--shade), 0 3px 0 var(--shade), 0 4px 0 var(--shade), 0 5px 0 var(--shade), 0 6px 1px rgba(var(--couleur), .1), 0 0 5px rgba(var(--couleur), .1), 0 1px 3px rgba(var(--couleur), .3), 0 3px 5px rgba(var(--couleur), .3), 0 5px 10px rgba(var(--couleur), .25), 0 10px 10px rgba(var(--couleur), .2), 0 5px 5px rgba(var(--couleur), .15);
-    font-size: 5vw;
+    font-size: 2.75rem;
     padding:2vw;
     font-weight: bold;
     user-select: none;
     animation: logo_appear 0.75s;
 }
-
-.gamename_contrasted {
-    color: #855c00;
-    text-shadow: 0 0 2px;
-    animation: none;
-}
-
 
 @keyframes logo_appear {
     0% {
@@ -251,47 +251,6 @@ div#cookie-disclaimer {
     font-size: small;
 }
 
-div#disclaimer {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    padding: 5vh;
-    position: fixed;
-    /* background-color: var(--picolito-primary); */
-    /* position: absolute; */
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-
-div#disclaimer_warning {
-    background-color: #ffffff;
-    padding: 2.5vw;
-    border-radius: .25rem;
-    overflow-y: clip;
-    overflow: auto;
-}
-
-.dark_mode #disclaimer_warning {
-    background-color: var(--dark_mode_light_gray);
-}
-
-div#disclaimer_warning_validation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1vw;
-    border-radius: .25rem;
-    margin-top: 1vh;
-    height: 12.5vh;
-}
-
-.dark_mode div#disclaimer_warning_validation {
-    background-color: var(--dark_mode_gray);
-}
-
 a#picolito_version {
     text-decoration: underline;
     color: unset;
@@ -303,7 +262,7 @@ a#picolito_version {
     font-size: larger;
 }
 
-div#menu {padding: 3vh;height: auto;/* background-color: var(--picolo_dark_blue); *//* color: white; */height: auto;}
+div#menu {padding: 3vh;height: auto;/* background-color: var(--weakest_link); *//* color: white; */height: auto;}
 
 div#menu_links {align-items: center;flex-direction: row;flex-wrap: wrap;justify-content: center;}
 
@@ -324,6 +283,7 @@ div#ingame_topbar {
 div#menu_player_list {
     display: flex;
     margin: 1.25rem;
+    flex-wrap: wrap;
     /* flex-direction: column; */
     /* max-height: 20vh; */
     /* overflow: scroll; */
@@ -332,7 +292,7 @@ div#menu_player_list {
 }
 
 div#ingame_information {
-    color: rgb(0 0 0 / 10%);
+    color: rgb(0 0 0 / 50%);
     padding: 1vh;
     transition: 0.25s;
 }
@@ -354,9 +314,7 @@ div#ingame_weakest_link {
     align-items: center;
 }
 
-div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
-    width: 30vw;
-}
+div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {display: flex;flex-direction: column;align-items: flex-start;}
 
 
 .weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
@@ -372,14 +330,14 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
     var(--color_4) 90%,
     var(--color_3) 100%);
     box-shadow: 0px 3px 0px 0px black;
-    height: 10vh;
-    width: 10vw;
+    height: 5rem;
+    width: 20rem;
     display: flex;
     border-radius: 50%;
     border: 2px solid #00000082;
     align-items: center;
     justify-content: center;
-    margin: 1vh;
+    margin: 0.25rem;
     font-family: impact;
     user-select: none;
     transition: .25s;
@@ -388,15 +346,14 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
 }
 
 .weakest_link_shield_normal {
-    height: 15vh;
-    width: 17vw;
+    height: 5rem;
+    width: 10rem;
     border-radius: 50%;
-    margin: 1vh;
 }
 
 .weakest_link_shield_player {
-    height: 20vh;
-    width: 30vw;
+    height: 7rem;
+    width: 25rem;
     margin: 1vh;
     /* background-color: #72eafa;
     --color_1: #969696;
@@ -411,17 +368,17 @@ div#ingame_weakest_link_score, div#ingame_weakest_questions_actions {
     var(--color_3) 100%); */
 }
 
-.dark_blue div#ingame_content {
+.weakest_link div#ingame_content {
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
 }
 
-div#game.dark_blue div#ingame_topbar {
+div#game.weakest_link div#ingame_topbar {
     position: absolute;
 }
 
-.dark_blue div#navigation_arrows {
+.weakest_link div#navigation_arrows {
     display: none !important;
 }
 
@@ -457,7 +414,7 @@ div#weakest_link_vote {
 
 div#ingame_weakest_questions_actions {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
     justify-content: flex-end;
 }
@@ -473,7 +430,7 @@ div#weakest_link_player_vote_ballot {
 }
 
 div#ingame_content {
-    height: 100%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -552,10 +509,6 @@ img.svg {
     /* padding-right: 0.75rem; */
 }
 
-.disclaimer_section {
-    height: 100%;
-}
-
 button.nostyle-button {
     border: 0;
     background-color: unset;
@@ -590,15 +543,6 @@ div#ingame_weakest_link_voting_area {
 
 #weakest_link_vote_end_ingame_option_side {
     font-size: small;
-}
-
-div#herge_bt_buttons {
-    display: flex;
-    flex-direction: column;
-}
-
-button > #herge_bt_buttons {
-    color:  red;
 }
 
 table#weakest_link_vote_end_analytics_table {
@@ -670,7 +614,7 @@ a#picolito_version_menu {
 }
 
 .answer-hided {
-    animation: 7.5s animation-answer-hided;
+    animation: 5s animation-answer-hided;
 }
 
 @keyframes animation-answer-hided {
@@ -687,7 +631,7 @@ body {
 div#weakest_link_rule {
     text-align: justify;
     padding: 1em;
-}
+} 
 
 div#password_ingame_content {
     width: 100%;
@@ -704,16 +648,15 @@ div#password_controls {
     display: flex;
     position: fixed;
     bottom: 0;
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 div#password_ingame_display {
-    font-size: xx-large;
-    margin-left: 15vw;
-    margin-right: 15vw;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    padding-top: 1vh;
-    padding-bottom: 1vh;
+    font-size: 2rem;
+    margin-left: auto;
+    padding: 0.5rem 1.5rem;
+    margin: 5px 25rem;
 }
 
 span.word_indicator {
@@ -724,26 +667,29 @@ span.word_indicator {
     border-radius: 100%;
     /* box-shadow: inset -1px -1px 3px black; */
     /* display: inline-block; */
-    margin: 1vw;
+    margin: 5px;
     transition: 0.25s;
 }
 div#game.password_2016 span.word_indicator {
     background-color: var(--dark_mode_light_gray);
 }
-
 span.word_indicator.pass {
     background-color: orange;
     animation: 0.5s infinite alternate cubic-bezier(0.65, 0.05, 0.36, 1) animation-word-indicator-pass-pending;
 }
 span.word_indicator.disabled, div#game.password_2016 span.word_indicator.disabled {
     background-color: #c40d0d;
+}
+#password_ingame_status span.word_indicator.disabled, div#game.password_2016 #password_ingame_status span.word_indicator.disabled {
     animation: 0.25s ease-in-out animation-word-indicator-shake;
 }
+span.word_indicator.correct, div#game.password_2016 span.word_indicator.correct {
+    background-color: #41c40d;
+}
+
 span.word_indicator.highlighted {
     outline: 4px solid #f1f1f1;
 }
-span.word_indicator.correct, div#game.password_2016 span.word_indicator.correct {background-color: #41c40d;/* box-shadow: inset -1px -5px 10px 0px black; */}
-
 @keyframes animation-word-indicator-shake {
     20% {
         transform: translateX(var(--password-shake-distance));
@@ -791,7 +737,7 @@ div#password_ingame_content {
     padding: 1vh 1vw 1vh 1vw;
     font-weight: bold;
     transition: 0.25s;
-    /* text-shadow: 0 0 20px #575757; */
+    text-shadow: 0 0 20px #575757;
     height: 7.5vh;
 }
 
@@ -804,8 +750,13 @@ div#game.password_2016 .password-button {
     background-color: var(--password_2016_shield_1);
     text-shadow: 0 0 20px var(--password_2016_shield_2);
     background-image: linear-gradient(var(--password_2016_shield_1), var(--password_2016_shield_2) 75%);
+    max-width: 8rem;
 }
 
+.password-button:hover {
+    color:white;
+    border-color: white;
+}
 .password-button:hover {
     color:white;
 }
@@ -914,4 +865,81 @@ div#landing img {
     opacity: 0;
     transition: 0.5s;
     transition-delay: 1s;
+}
+
+.form-check-settings {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.h6-strong {
+    font-weight: bold;
+}
+/* 
+.btn-picolo {
+    background-color: var(--picolo_yellow);
+}
+
+.btn-never_done {
+    background-color: var(--never-done-darker);
+    color: white;
+}
+
+.dark_mode .btn-picolo {
+    border-color: var(--picolo_yellow);
+}
+
+.dark_mode .btn-never_done {
+    border-color: var(--never-done-lighter);
+} */
+
+.mix-btn-indicator {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#ingame_gamemode_information_mix_indicator_db {
+    opacity: .3;
+    display: flow;
+    transform: scale(0.75);
+}
+
+div#tenzi_dice_placeholder {
+    display: flex;
+    /* height: 100%; */
+    justify-content: center;
+    flex-direction: row;
+    padding: 0vh 10vw;
+    flex-wrap: wrap;
+    max-height: 70vh;
+    overflow: overlay;
+}
+
+div#tenzi_dice {
+    background-color: white;
+    color: black;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 10%;
+    margin: 1vw;
+    font-size: calc(2.5rem);
+    cursor: pointer;
+    user-select: none;
+}
+
+div#tenzi_dice.dice_locked {
+    color: white;
+    background: #252525;
+    transform: scale(0.75);
+    transition: 0.5s;
+    opacity: 0.75;
+    cursor: no-drop;
+}
+
+progress {
+  accent-color: white;
+}
+
+div#tenzi_dice.dice_hint {
+    color: purple;
 }

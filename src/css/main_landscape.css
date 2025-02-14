@@ -1,0 +1,83 @@
+
+@media screen and (orientation:portrait) {
+    body.portrait_mode_enabled #game_content.portrait-mode {
+        text-align: center;
+        /* transform: rotate(-90deg) translateX(-100vh); */
+        transform: rotate(90deg) translateY(-100vw);
+        transform-origin: top left;
+        width: 100vh;
+        padding: 0;
+        height: 100vw;
+    }
+    .gamename {
+        font-size: 5vh;
+        padding:2vh;
+    }
+    div#menu {
+        padding: 3vw;
+    }
+    body.portrait_mode_enabled #game_content.portrait-mode div#sentence_list {
+        height: 60vw;
+    }
+    div#game.weakest_link #ingame_content {
+        margin-top: 15vw;
+    }
+    div#ingame_topbar {
+        padding: 3vw;
+    }
+    .weakest_link_shield_small, .weakest_link_shield_normal, .weakest_link_shield_player {
+        height: 12.5vw;
+        width: 17vh;
+        text-decoration: auto;
+    }
+    .weakest_link_shield_small {
+        height: 10vw;
+        width: 10vh;
+    }
+
+    div#game.weakest_link, #weakest_link_vote {
+        background: linear-gradient(60deg, #0c102d 0%, #215d73 50%, #204b55 75%, #234f5f 150%);
+    }
+    div#ingame_weakest_link {
+        padding: 2vw;
+    }
+    .weakest_link_shield_player {
+        height: 20vw;
+        width: 30vh;
+        margin: 1vw;
+    }
+    #ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule {
+        padding: 4vw;
+    }
+    body.portrait_mode_enabled #game_content.portrait-mode #ingame_option {
+        flex-direction: row !important;
+    }
+    div#weakest_link_player_vote_ballot {
+        height: 60vw;
+    }
+    
+    div#weakest_link_vote_end_ingame_option {
+        padding: 1vh;
+        height: 100vw;
+        width: 100vh;
+    }
+
+    div#weakest_link_vote_result {
+        width: 100vh;
+        height: 45vw;
+    }
+
+    li.list-group-item.player-recap-vote {
+        min-width: 40vh;
+        max-width: 50vh;
+        margin-left: 1vh;
+    }
+
+    table#weakest_link_vote_end_analytics_table td {
+        padding: 0.75vh;
+    }
+    .password-button {
+        width: 100vh;
+        padding: 1vw 1vh 1vw 1vh;
+    }
+}

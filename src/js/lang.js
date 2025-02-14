@@ -17,7 +17,6 @@ function setLanguageString() {
             skip: "Passer",
             herge_bt_deny: "Refuser",
             herge_bt_accept: "Accepter",
-            herge_bt_accept_dont_remind: "Ne plus afficher",
             quit: "Quitter",
             close: "Fermer",
             next: "Suivant",
@@ -63,6 +62,7 @@ function setLanguageString() {
             settings_darkmode_dark: "Sombre",
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
+            settings_portrait_mode: "Mode portrait",
             settings_others: "Autres",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
@@ -101,21 +101,20 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
             gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
             gamemode_war_minimum_requierement: "2 joueurs minimum.",
-            gamemode_mix_title: "Mix - 🧪",
-            gamemode_mix_subtitle_0: "Melangez Touut! Picolito... est là.",
-            gamemode_mix_subtitle_1: "Before, On est débiles, Bar & Caliente",
             gamemode_never_title: "Je n'ai jamais",
             gamemode_never_popular: "Populaire - ⭐",
             gamemode_never_hot: "Coquin & Sexy - 💋",
             gamemode_never_party: "Fête - 🎉",
-            gamemode_never_mix: "Mix - 🧪",
-            gamemode_never_mix_subtitle_1: "Je n'ai jamais rien fait.",
-            gamemode_never_mix_subtitle_2: "Populaire, Coquin & Sexy et Fête",
+            gamemode_mix_title: "Mix - 🧪",
+            gamemode_mix_subtitle_0: "Melangez Touut! Picolito... est là.",
+            gamemode_mix_subtitle_1: "Picolito & Je n'ai Jamais",
             gamemode_weakest_link_title:"Maillon Faible 🔗",
             gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir.",
             gamemode_weakest_link_subtitle_2:"4 joueurs min.",
             gamemode_title_password:"Mot de passe 💡",
             gamemode_password_subtitle_1:"Un mot peut en cacher un autre",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
+            gamemode_title_tenzi:"Tenzi 🎲",
+            gamemode_tenzi_subtitle_1:"Faire volte-face",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
 
             weakest_link_rule_header: "Maillon Faible",
             weakest_link_rule_1: "Les joueurs doivent répondre consecutivement et correctement à des questions pendant 60s.",
@@ -125,10 +124,6 @@ function setLanguageString() {
             password_rule_header: "Mot de passe",
             password_rule_1: "Les joueurs doivent deviner les mots affichés en s'aidant d'autre mots suggérés par un autre joueur.",
             password_rule_2: "Les mots composés, de même famille, qui commencent pareil et les mimes sont interdits.",
-
-            password_invalidate: "Invalider",
-            password_pass: "Passer",
-            password_validate: "Valider",
             
             gamemode_other: "Autre",
             lang_fr: "Français",
@@ -169,7 +164,6 @@ function setLanguageString() {
             skip: "Skip",
             herge_bt_deny: "Refuser",
             herge_bt_accept: "Accepter",
-            herge_bt_accept_dont_remind: "Don't remind me",
             quit: "Quit",
             close: "Close",
             next: "Next",
@@ -220,6 +214,7 @@ function setLanguageString() {
             settings_darkmode_dark: "Dark theme",
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
+            settings_portrait_mode: "Portrait mode",
             settings_debug_display: "Recap",
             settings_others: "Other",
             settings_delete_all_cookies: "Delete all cookies",
@@ -259,21 +254,20 @@ function setLanguageString() {
             gamemode_war_subtitle_0: "Friends, come together!",
             gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
             gamemode_war_minimum_requierement: "2 players at least.",
-            gamemode_mix_title: "Mix - 🧪",
-            gamemode_mix_subtitle_0: "Shuffle Everythiiiing! Picolito... is here.",
-            gamemode_mix_subtitle_1: "Getting Started, Getting Crazy, Bar, Caliente",
             gamemode_never_title: "Never I have ever",
             gamemode_never_popular: "Popular - ⭐",
             gamemode_never_hot: "Dirty & Sex - 💋",
             gamemode_never_party: "Party - 🎉",
-            gamemode_never_mix: "Mix - 🧪",
-            gamemode_never_mix_subtitle_1: "Never Have I Ever.",
-            gamemode_never_mix_subtitle_2: "Popular, Dirty & Sex and Party",
+            gamemode_mix_title: "Mix - 🧪",
+            gamemode_mix_subtitle_0: "Shuffle Everythiiiing! Picolito... is here.",
+            gamemode_mix_subtitle_1: "Picolito & Never I have ever",
             gamemode_weakest_link_title:"Weakest Link 🔗",
             gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye.",
             gamemode_weakest_link_subtitle_2:"4 players min.",
             gamemode_title_password:"Password 💡",
             gamemode_password_subtitle_1:"One word can hide another",
+            gamemode_title_tenzi:"Tenzi 🎲",
+            gamemode_tenzi_subtitle_1:"Rolling in the Deep -Adele",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
 
             weakest_link_rule_header: "Weakest Link",
             weakest_link_rule_1: "Players answer questions consecutively and correctly for 60s.",
@@ -283,10 +277,6 @@ function setLanguageString() {
             password_rule_header: "Password",
             password_rule_1: "Players guess the words displayed with the help of other words suggested by another player.",
             password_rule_2: "Composed words, from the same family, which start the same and mimes are prohibited",
-
-            password_invalidate: "Invalidate",
-            password_pass: "Pass",
-            password_validate: "Validate",
 
             gamemode_other: "Other",
             lang_fr: "French",
@@ -353,7 +343,6 @@ function updateHTMLLanguageStrings() {
     text_herge_bt.innerHTML = global.current_language_strings.herge_bt;
     herge_bt_deny.innerHTML = global.current_language_strings.herge_bt_deny;
     herge_bt_accept.innerHTML = global.current_language_strings.herge_bt_accept;
-    herge_bt_accept_dont_remind.innerHTML = global.current_language_strings.herge_bt_accept_dont_remind;
 
     text_prevention_warning.innerHTML = global.current_language_strings.prevention_warning;
     text_prevention_text_0.innerHTML = global.current_language_strings.prevention_text_0;
@@ -398,6 +387,7 @@ function updateHTMLLanguageStrings() {
     text_settings_darkmode_dark.innerHTML = global.current_language_strings.settings_darkmode_dark;
     text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
     text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
+    text_settings_landscape.innerHTML = global.current_language_strings.settings_portrait_mode;
     text_settings_others.innerHTML = global.current_language_strings.settings_others;
     text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
     text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
@@ -439,30 +429,23 @@ function updateHTMLLanguageStrings() {
     text_gamemode_war_subtitle_0.innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
     text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
     text_gamemode_war_minimum_requierement.innerHTML = global.current_language_strings.gamemode_war_minimum_requierement;
-    text_gamemode_title_mix.innerHTML = global.current_language_strings.gamemode_mix_title;
-    text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
-    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
 
     text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
     text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
     text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
-    text_gamemode_title_never_mix.innerHTML = global.current_language_strings.gamemode_never_mix;
-    text_gamemode_never_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_1;
-    text_gamemode_never_mix_subtitle_2.innerHTML = global.current_language_strings.gamemode_never_mix_subtitle_2;
 
+    text_gamemode_mix_title.innerHTML = global.current_language_strings.gamemode_mix_title;
+    text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
+    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
+    button_update_mix_gamemode_list.innerHTML = global.current_language_strings.next;
+
+    text_custom_mix_gamemode_picolo_section.innerHTML = global.current_language_strings.gamemode_picolo_title;
     text_custom_mix_gamemode_default.innerHTML = global.current_language_strings.gamemode_default_title;
-    text_custom_mix_gamemode_default_subtitle_0.innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
-    text_custom_mix_gamemode_default_subtitle_1.innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
     text_custom_mix_gamemode_silly.innerHTML = global.current_language_strings.gamemode_silly_title;
-    text_custom_mix_gamemode_silly_subtitle_0.innerHTML = global.current_language_strings.gamemode_silly_subtitle_0;
-    text_custom_mix_gamemode_silly_subtitle_1.innerHTML = global.current_language_strings.gamemode_silly_subtitle_1;
     text_custom_mix_gamemode_bar.innerHTML = global.current_language_strings.gamemode_bar_title;
-    text_custom_mix_gamemode_bar_subtitle_0.innerHTML = global.current_language_strings.gamemode_bar_subtitle_0;
-    text_custom_mix_gamemode_bar_subtitle_1.innerHTML = global.current_language_strings.gamemode_bar_subtitle_1;
     text_custom_mix_gamemode_hot.innerHTML = global.current_language_strings.gamemode_hot_title;
-    text_custom_mix_gamemode_hot_subtitle_0.innerHTML = global.current_language_strings.gamemode_hot_subtitle_0;
-    text_custom_mix_gamemode_hot_subtitle_1.innerHTML = global.current_language_strings.gamemode_hot_subtitle_1;
+    text_custom_mix_gamemode_never_section.innerHTML = global.current_language_strings.gamemode_never_title;
     text_custom_mix_gamemode_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
     text_custom_mix_gamemode_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
     text_custom_mix_gamemode_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
@@ -473,6 +456,9 @@ function updateHTMLLanguageStrings() {
 
     text_gamemode_title_password.innerHTML = global.current_language_strings.gamemode_title_password;
     text_gamemode_password_subtitle_1.innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
+    
+    text_gamemode_title_tenzi.innerHTML = global.current_language_strings.gamemode_title_tenzi;
+    text_gamemode_tenzi_subtitle_1.innerHTML = global.current_language_strings.gamemode_tenzi_subtitle_1;
 
     text_team_selection_back.innerHTML = global.current_language_strings.back;
     text_team_selection_next.innerHTML = global.current_language_strings.next;
@@ -507,7 +493,6 @@ function updateHTMLLanguageStrings() {
 
     // alert_random_player_button.innerHTML = global.current_language_strings.alert_random_player;
     close_player_option_ingame.innerHTML = global.current_language_strings.close;
-
     
     ingame_weakest_link_text_sip.innerHTML = global.current_language_strings.weakest_link_sip;
     ingame_weakest_link_text_bank.innerHTML = global.current_language_strings.weakest_link_bank;
@@ -519,9 +504,4 @@ function updateHTMLLanguageStrings() {
     text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
     button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
     text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
-
-    button_password_invalidate.innerHTML = global.current_language_strings.password_invalidate;
-    button_password_pass.innerHTML = global.current_language_strings.password_pass;
-    button_password_validate.innerHTML = global.current_language_strings.password_validate;
-
 }

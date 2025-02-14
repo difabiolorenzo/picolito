@@ -54,13 +54,13 @@ function initWeakestLink() {
         ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
         ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
         
-        game.weakest_link.current_time = game.weakest_link.time;
+        game.weakest_link.current_time = game.weakest_link.time + 5;
     
         weakestLinkCalcTime();
         weakestLinkChrono()
         if (game.weakest_link.time == 60) { playsound("weakest_link_amb_60") }
     
-        global.weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
+        game.weakest_link.weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
     }
     
     function weakestLinkCorrect() {
@@ -373,7 +373,7 @@ function initWeakestLink() {
     }
     
     function weakestLinkEndQuestion() {
-        clearInterval(global.weakestLinkTimer);
+        clearInterval(game.weakest_link.weakestLinkTimer);
         if (game.player_list.length > 2 ) {
             weakestLinkInitVote()
         } else { manageIngameOptionDisplay(true, 'replay', 'block') }

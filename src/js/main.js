@@ -7,18 +7,23 @@ function init() {
     filterVariables();
     retrieveCookie();
     if (global.dev_mode == true) { devOverrideSettings() }
-    hideLandingPage()
+    displaySafetyAndCookieModal();
 }
 
 function devOverrideSettings() {
-    document.getElementById("gamename_menu").innerHTML = global.picolito_version;
-    addPlayer("Ricard", "cookie");
-    addPlayer("Bertrude", "cookie");
-    addPlayer("Zolande", "cookie");
-    addPlayer("Alpipignoux", "cookie");
+    document.getElementById("gamename_menu").innerHTML = global.picolito_version + " - dev";
 
-    displayPage("gamemode")
-    global.display_landing_page_delay = 0;
+    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantofline","Childibert","Tringolin","Mimeline","Fricadène"];
+    for (var i=0; i<4; i++) {
+        var random = Math.round(Math.random() * (groland_names.length-1))
+        addPlayer(groland_names[random], "cookie");
+        groland_names.splice(random, 1);
+    }
+
+    displayPage("menu")
+    global.remind_warning_panel = false;
+
+    selectGamemode("password");
 }
 
 function defaultVariables() {
@@ -26,17 +31,16 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.4",
-        cookie_expiration_delay: 30,
-        weakestLinkTimer: undefined,
+        picolito_version: "0.33.6",
+        cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
             weakest_link_amb_end: undefined
         },
         audio_enabled: true,
         cookie_settings_value : [],
-        display_landing_page_delay : 1500,
-        use_cache_storage: false
+        use_cache_storage: false,
+        portrait_mode: false,
     }
 
     game = {
@@ -78,10 +82,8 @@ function defaultVariables() {
         pending_db: [],
         stored_db: {},
 
-        multiple_database: {
-            mix: ["default", "hot", "bar", "silly"],
-            never_mix: ["never_popular", "never_hot", "never_party"]
-        },
+        mix_gamemode_list_picolo: [],  //["default", "hot", "bar", "silly"]
+        mix_gamemode_list_never_done: [],  //["never_popular", "never_hot", "never_party"]
 
         player_list: [],
         max_player_number: -1,
@@ -95,6 +97,7 @@ function defaultVariables() {
         started: false,
         cycle_id: -1,
         gamemode: "default",
+        gamemode_type: "text",
         display_indicator: false,
         display_color_indicator: true,
         animation: true,
@@ -115,6 +118,7 @@ function defaultVariables() {
         social_posting_enabled: false,
 
         weakest_link: {
+            weakestLinkTimer: undefined,
             stop_at_max_chain: true, 
             max_chain: 6,
             tie_behaviour: "weakest", //strongest_link, arbitrary, both, weakest
@@ -139,6 +143,9 @@ function defaultVariables() {
             word_to_find_amount: 5,
             words: [], // Array to store the fetched words
             style: 2016
+        },
+        tenzi: {
+            // Init by tenzi.js
         }
     }
     updateHTMLSettingsByVar()
@@ -186,6 +193,9 @@ function updateHTMLSettingsByVar() {
     input_dark_mode_settings.value = global.dark_mode;
     changeDarkModeSettings(global.dark_mode)
 
+    input_settings_landscape.checked = global.portrait_mode;
+    changePortraitModeSettings(global.portrait_mode)
+
     input_weakest_link_tie.value = game.weakest_link.tie_behaviour;
 
     if (game.weakest_link.stop_at_max_chain == false) {
@@ -202,22 +212,12 @@ function updateHTMLSettingsByVar() {
     picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
 
-    if (global.remind_warning_panel == false) {
-        displayPage('menu');
-    } else {
-        displayPage('disclaimer');
-    }    
+    displayPage('menu');
 }
 
-function hideLandingPage() {
-    document.getElementById("landing").classList.add("fadout-landing");
-    if (global.display_landing_page_delay > 0 ) {
-        setTimeout(function() {
-            document.getElementById('landing').style.display = 'none';
-        }, (global.display_landing_page_delay));
-    } else {
-        document.getElementById('landing').style.display = 'none';
-    }
+function displaySafetyAndCookieModal() {
+    global.safety_and_cookie_modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    if (global.remind_warning_panel == true || global.remind_warning_panel == undefined) { global.safety_and_cookie_modal.show(); }
 }
 
 function checkBrowserColorScheme(force_bright) {
@@ -226,8 +226,6 @@ function checkBrowserColorScheme(force_bright) {
     } else {
         document.body.classList.value = "bright_mode";
     }
-
-
 }
 
 function changeDarkModeSettings(value) {
@@ -238,12 +236,26 @@ function changeDarkModeSettings(value) {
             document.body.classList.value = "bright_mode";
         }
         global.dark_mode = "system";
+
+        // A CHANGER
+        // Une seule valeur pour changer l'affichage, sinon, par default: bright_mode
     } else if (value == "bright") {
-        document.body.classList.value = "bright_mode";
+        document.body.classList.add("bright_mode")
+        document.body.classList.remove("dark_mode")
         global.dark_mode = "bright";
     } else {
-        document.body.classList.value = "dark_mode";
+        document.body.classList.add("dark_mode")
+        document.body.classList.remove("bright_mode")
         global.dark_mode = "dark";
+    }
+}
+
+function changePortraitModeSettings(value) {
+    global.portrait_mode = value;
+    if (value == true) {
+        document.body.classList.add("portrait_mode_enabled")
+    } else {
+        document.body.classList.remove("portrait_mode_enabled")
     }
 }
 
@@ -290,6 +302,7 @@ function changeWeakestLinkMaxChain(value) {
 function createScriptElement(script_src) {
     var headTag = document.getElementsByTagName("head").item(0);
     var scriptTag = document.createElement("script");
+    scriptTag.type = "text/javascript";
     scriptTag.src = script_src;
     headTag.appendChild(scriptTag);
 }
@@ -324,31 +337,30 @@ function replaceAt(string, index, replace, length) {
 }
 
 function displayPage(page) {
-    // document.getElementById('landing').style.display = 'none';
-    document.getElementById('disclaimer').style.display = 'none';
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('gamemode').style.display = 'none';
-    document.getElementById('team_selection').style.display = 'none';
-    document.getElementById('game').style.display = 'none';
-    document.getElementById('extract').style.display = 'none';
+    var pages = ["menu", "gamemode", "team_selection", "game"]
 
-    if (page == "disclaimer") {
-        document.getElementById(page).style.display = 'flex';
-    } else {
-        document.getElementById(page).style.display = 'block';
+    for (var i in pages) {
+        document.getElementById(pages[i]).style.display = 'none';
     }
+    document.getElementById(page).style.display = 'block';
 }
 
 function addPlayer(player_name, html_origin) {
-    if ((manu_player_input.value == "scipio" || manu_player_input.value == "SCIPIO") && html_origin == "menu") {
-        manu_player_input.value = "";
-        DEBUG_carthage(true);
-        return;
-    }
-    if ((manu_player_input.value == "terre" || manu_player_input.value == "TERRE") && html_origin == "menu") {
-        manu_player_input.value = "";
-        DEBUG_carthage(false);
-        return;
+    if (html_origin == "menu") {
+        if (manu_player_input.value == "LYOKO") {
+            manu_player_input.value = "";
+            DEBUG_carthage(true);
+            return;
+        }
+        if (manu_player_input.value == "TERRE") {
+            manu_player_input.value = "";
+            DEBUG_carthage(false);
+            return;
+        }
+        if (manu_player_input.value == "PAPRIKAAA") {
+            manu_player_input.value = "";
+            return;
+        }
     }
     if (player_name == undefined && html_origin == "menu") {
         var player_name = manu_player_input.value;
@@ -392,7 +404,7 @@ function addPlayer(player_name, html_origin) {
 }
 
 function removePlayer(player_name, html_element_id) {
-    var player_id = getIDFromString(html_element_id)
+    var player_id = getLastCharacter(html_element_id)
     //remove button
     document.getElementById("menu_player_button_" + player_id).remove();
     document.getElementById("ingame_player_button_" + player_id).remove();
@@ -417,59 +429,48 @@ function updatePlayerCount() {
     getMinPlayer()
 }
 
-function getIDFromString(text) {
+function getLastCharacter(text) {
     return text.substr(text.length - 1, 1);
 }
 
-function updateGameBackgroundColor(forced_color) {
-    if (forced_color != undefined) {
-        document.getElementById("game").className = "page dark_affected " + forced_color;
+function getBackgroundColorByHistory() {
+    if ( game.cycle_id > 0 ) {
+        return game.sentence_history[game.cycle_id - 1].color;
     } else {
-        if (game.sentence_history.length == 0) {
-            document.getElementById("game").className = "page blue"
-        } else {
-            if (game.sentence_history[game.cycle_id].color == undefined) {
-                var color = "blue";
-            } else {
-                var color = game.sentence_history[game.cycle_id].color;
-            }
-            document.getElementById("game").className = "page dark_affected " + color;
-        }
+        return "blue";
     }
+}
+
+function setBackgroundColor(value) {
+    document.getElementById("game").className = "page dark_affected " + value;
 }
 
 function initGame(select_team, direct_launch) {
     // à convertir en switch?
 
-    manageingameDisplayRotation("landscape")
+    addPotentialPortraitDisplayMarker("landscape")
+    displayTenziGame(false)
 
     getMinPlayer()
+
     if (game.gamemode == "war" && select_team == true) {
         if (game.player_list.length >= 2) {
             displayPage('team_selection');
             updateTeamSelectionTable();
         }
     } else if (game.gamemode == "weakest_link") {
-        checkDatabase();
-        displayPage('game');
-        manageIngameOptionDisplay(true, "weakest_link", true);
-        manageIngameOptionDisplay(true, "start", "block");
-        manageIngameOptionDisplay(true, "weakest_link_rule", "block");
-        manageNavDisplay("players", false);
-        manageNavDisplay("restart", false);
-        preloadSound("weakest_link")
-        weakestLinkCalcTime()
+        initGameWeakestLink();
         if (direct_launch == true) { startGame() }
     } else if (game.gamemode == "password") {
-        manageingameDisplayRotation("portrait")
-        displayPage('game');
-        manageIngameOptionDisplay(true, "password", true);
-        manageIngameOptionDisplay(true, "start", "block");
-        manageIngameOptionDisplay(true, "password_rule", "block");
-        manageNavDisplay("players", false);
-        manageNavDisplay("restart", false);
-        manageNavDisplay("navigation_arrows", false);
-        if (direct_launch == true) { startGame() }
+        if (window.navigator.onLine == true) {
+            initGamePassword()
+            if (direct_launch == true) { startGame() }
+        } else {
+            alert(global.current_language_strings.password_internet_requierement)
+            return;
+        }
+    } else if (game.gamemode == "tenzi") {
+        initGameTenzi();
     } else {
         if (game.started == false) {
             game.started = true;
@@ -477,21 +478,59 @@ function initGame(select_team, direct_launch) {
         }
         displayPage('game');
         manageIngameOptionDisplay(true, "start", "block");
-        manageNavDisplay("quit",true)
-        manageNavDisplay("restart",false)
-        manageNavDisplay("navigation_arrows", true)
+        manageNavDisplay("quit",true);
+        manageNavDisplay("restart",false);
+        manageNavDisplay("navigation_arrows", true);
         if (direct_launch == true) { startGame() }
+
+        if (game.gamemode == "mix" ) {
+            createGamemodeDBindicator();
+        }
     }
 }
 
+function initGameWeakestLink() {
+    checkDatabase();
+    manageIngameOptionDisplay(true, "weakest_link", true);
+    manageIngameOptionDisplay(true, "start", "block");
+    manageIngameOptionDisplay(true, "weakest_link_rule", "block");
+    manageNavDisplay("players", false);
+    manageNavDisplay("restart", false);
+    preloadSound("weakest_link");
+    weakestLinkCalcTime();
+    displayPage('game');
+}
+function initGamePassword() {
+    addPotentialPortraitDisplayMarker("portrait");
+    manageIngameOptionDisplay(true, "password", true);
+    manageIngameOptionDisplay(true, "start", "block");
+    manageIngameOptionDisplay(true, "password_rule", "block");
+    manageNavDisplay("players", false);
+    manageNavDisplay("restart", false);
+    manageNavDisplay("navigation_arrows", false);
+    displayPage('game');
+}
+function initGameTenzi() {
+    manageNavDisplay("navigation_arrows", false);
+    manageNavDisplay("players", false);
+    manageNavDisplay("restart", false);
+    displayPage('game');
+
+    displaySentenceList();
+    displayTenziGame(true)
+    initTenzi();
+}
+
 function checkDatabase() {
+    // Vérifie si la base de données demandée n'est pas déjà appelé dans 
     if (game.gamemode == "mix") {
-        for (var i = 0; i < game.multiple_database.mix.length; i++) {
-            testStoredDatabase(game.multiple_database.mix[i], global.current_language)
+        // A CONCATENER game.mix_gamemode_list_picolo et never_done
+        console.log("gamemode_mix", game.mix_gamemode_list_picolo, game.mix_gamemode_list_never_done)
+        for (var i = 0; i < game.mix_gamemode_list_picolo.length; i++) {
+            testStoredDatabase(game.mix_gamemode_list_picolo[i], global.current_language);         
         }
-    } else if (game.gamemode == "never_mix") {
-        for (var i = 0; i < game.multiple_database.never_mix.length; i++) {
-            testStoredDatabase(game.multiple_database.never_mix[i], global.current_language)
+        for (var i = 0; i < game.mix_gamemode_list_never_done.length; i++) {
+            testStoredDatabase(game.mix_gamemode_list_never_done[i], global.current_language);         
         }
     } else {
         testStoredDatabase(game.gamemode, global.current_language)
@@ -501,7 +540,6 @@ function checkDatabase() {
         try {
             if (game.stored_db && game.stored_db[gamemode + "_" + lang]) {
                 // DB exists, concat to pending_db
-                var myObj = game.stored_db[gamemode + "_" + lang];
                 game.pending_db = game.pending_db.concat(game.stored_db[gamemode + "_" + lang])
             } else {
                 // Calling file gamemode_lang.js
@@ -510,7 +548,6 @@ function checkDatabase() {
         } catch (error) {
             if (error instanceof TypeError) {
                 console.log(error.message);
-                // Ajouter ici la logique de traitement de l'erreur
             } else {
                 throw error;
             }
@@ -541,14 +578,13 @@ function startGame() {
 
 function exitGame() {
     if (game.gamemode == "weakest_link") { stopsound("weakest_link_amb_60") }
-    if (global.weakestLinkTimer != undefined) { clearInterval(global.weakestLinkTimer) }
+    if (game.weakest_link.weakestLinkTimer != undefined) { clearInterval(game.weakest_link.weakestLinkTimer) }
 
-    displaySentenceList(true);  // Force closing of sentence list ingame
+    hideDisplaySentenceList();
     displaySentence("", undefined); // reset HTML sentence display
 
     updateGameCycle();                                  // reset cycle count
     resetVariables();
-    updateGameBackgroundColor();
 
     manageIngameOptionDisplay(false, 'player_option', 'none')
     manageIngameOptionDisplay(false, 'start', 'none')
@@ -558,9 +594,9 @@ function exitGame() {
     manageIngameOptionDisplay(false, 'weakest_link_next_vote', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_vote_end', 'none')
     manageIngameOptionDisplay(false, 'weakest_link_rule', 'none')
-    manageIngameOptionDisplay(true, "password", 'none');
-    manageIngameOptionDisplay(true, "password_rule", 'none');
-    manageIngameOptionDisplay(true, "password_recap", 'none');
+    manageIngameOptionDisplay(false, "password", 'none');
+    manageIngameOptionDisplay(false, "password_rule", 'none');
+    manageIngameOptionDisplay(false, "password_recap", 'none');
     
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
@@ -578,15 +614,83 @@ function restartGame() {
 }
 
 function selectGamemode(selected_gamemode, direct_launch) {
+    switch (selected_gamemode) {
+        case "default":
+            game.gamemode_type = "text";
+            break;
+        case "silly":
+            game.gamemode_type = "text";
+            break;
+        case "bar":
+            game.gamemode_type = "text";
+            break;
+        case "hot":
+            game.gamemode_type = "text";
+            break;
+        case "war":
+            game.gamemode_type = "text";
+            break;
+        case "never_popular":
+            game.gamemode_type = "text";
+            break;
+        case "never_hot":
+            game.gamemode_type = "text";
+            break;
+        case "never_party":
+            game.gamemode_type = "text";
+            break;
+        case "weakest_link":
+            game.gamemode_type = "weakest_link";
+            break;
+        case "password":
+            game.gamemode_type = "password";
+            break;
+        case "tenzi":
+            game.gamemode_type = "tenzi";
+            break;
+        case "custom":
+            game.gamemode_type = "text";
+            break;
+    }
+    
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
         alert(global.current_language_strings.weakest_link_minimum_requierement);
     } else {
         if (selected_gamemode == "password") {
             passwordWordAmountRefreshOption();
         }
+        if (selected_gamemode == "mix") {
+            setMixGamemodeDatabase();
+        }
         game.gamemode = selected_gamemode;
         initGame(true, direct_launch);
-        manageNavDisplay("navigation_arrows", false);
+    }
+}
+
+function setMixGamemodeDatabase() {
+    // Pour toutes les checkbox cochées, mise en tableau des valeurs correspondantes 
+    var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
+    var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
+
+    game.mix_gamemode_list_picolo = [];
+    game.mix_gamemode_list_never_done = [];
+
+    for (var i = 0; i < checkboxes_picolo.length; i++) {
+        game.mix_gamemode_list_picolo.push(checkboxes_picolo[i].value)
+    }
+    for (var i = 0; i < checkboxes_neverdone.length; i++) {
+        game.mix_gamemode_list_never_done.push(checkboxes_neverdone[i].value)
+    }
+}
+
+function allowMixGamemodeNextStep() {
+    var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
+    var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
+
+    if ((checkboxes_picolo.length + checkboxes_neverdone.length) == 0) {
+        document.getElementById("button_update_mix_gamemode_list").disabled = true;
+    } else {
+        document.getElementById("button_update_mix_gamemode_list").disabled = false;
     }
 }
 
@@ -662,6 +766,14 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
     }
 }
 
+function togglePlayerListOptionDisplay() {
+    if (document.getElementById("ingame_player_option").style.display == "none") {
+        manageIngameOptionDisplay(false, 'player_option', 'block');
+    } else {
+        manageIngameOptionDisplay(true, 'player_option', 'none');
+    }
+}
+
 function manageNavDisplay(navigation_option, display) {
     switch(navigation_option) {
         case "navigation_arrows":
@@ -688,12 +800,12 @@ function manageNavDisplay(navigation_option, display) {
     }
 }
 
-function manageingameDisplayRotation(value) {
-    game_content.classList.remove("landscape-in-portrait");
+function addPotentialPortraitDisplayMarker(value) {
+    game_content.classList.remove("portrait-mode");
     if (value == "landscape") {
-        game_content.classList.add("landscape-in-portrait");
+        game_content.classList.add("portrait-mode");
     } else if (value == "portrait") {
-        game_content.classList.remove("landscape-in-portrait");
+        game_content.classList.remove("portrait-mode");
     }
 }
 
@@ -811,19 +923,38 @@ function textReplacer(text) {
     return text;
 }
 
-function displaySentenceList(force_ingame) {
+function toggleDisplaySentenceList() {
+    if (document.getElementById("sentence_list").style.display == "none") {
+        displaySentenceList();
+    } else {
+        hideDisplaySentenceList();
+    }
+}
+
+function displaySentenceList() {
     var ingame_text = document.getElementById("ingame_text");
     var sentence_list = document.getElementById("sentence_list");
 
-    if (force_ingame == true || ingame_text.style.display == "none") {
-        ingame_text.style.display = "block";
-        sentence_list.style.display = "none";
-        updateGameBackgroundColor()
+    document.getElementById("ingame_text").style.display = "none";
+    document.getElementById("sentence_list").style.display = "block";
+    setBackgroundColor("black")
+    updateSentenceList()
+}
+
+function hideDisplaySentenceList() {
+    document.getElementById("ingame_text").style.display = "block";
+    document.getElementById("sentence_list").style.display = "none";
+
+    var ingame_text = document.getElementById("ingame_text");
+    var sentence_list = document.getElementById("sentence_list");
+    setBackgroundColor(getBackgroundColorByHistory())
+}
+
+function displayTenziGame(force_ingame) {
+    if (force_ingame == true) {
+        document.getElementById("tenzi_game").style.display = "block";
     } else {
-        ingame_text.style.display = "none";
-        sentence_list.style.display = "block";
-        updateGameBackgroundColor("black")
-        updateSentenceList()
+        document.getElementById("tenzi_game").style.display = "none";
     }
 }
 
@@ -889,7 +1020,7 @@ function leaveTeam(player_name) {
 
 function changeTeam(html_id, team) {
     var html_id = document.getElementById(html_id)
-    var player_name = game.player_list[getIDFromString(html_id.id)]
+    var player_name = game.player_list[getLastCharacter(html_id.id)]
 
     leaveTeam(player_name)
 
@@ -923,7 +1054,7 @@ function displayweakestLinkDisplayVote() {
 }
 
 window.addEventListener("keydown", function(event) {
-    if ( game.started == true ) {
+    if (game.started == true) {
         switch (event.key) {
             case "ArrowLeft":
                 previousSentence();
@@ -934,6 +1065,15 @@ window.addEventListener("keydown", function(event) {
         }
     }
   }, true);
+
+// Confirmation de retour ou de sortie de la page
+window.addEventListener('beforeunload', function(e) {
+    if (game.started == true) {
+        e.preventDefault();
+        // Chrome
+        e.returnValue = '';
+    }
+});
 
 function DEBUG_RandomPlayer() {
     addPlayer("J" + "#" + (game.player_list.length+1) + "_" + (Math.random()*0xFFFF).toString(16));
@@ -1000,7 +1140,6 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
         global.accept_cookie = true;
         global.remind_warning_panel = true;
         if (remind_me_later == false) {
-            // console.log("Ne plus afficher")
             global.remind_warning_panel = false;
         }
         storeSettingsCookie()
@@ -1009,82 +1148,37 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     displayPage('menu')
     getCookie("settings")
 }
+function createGamemodeDBindicator() {
+    // Ici on peuple l'indicateur de base de donnée dans le mode de jeu mix.
+    // Les deux bases sont séparées pour les choisir 1 fois sur deux 
+    // Boucle pour ajouer un bouton pour chacune.
+    ingame_gamemode_information_mix_indicator_db.innerHTML = ""
 
-// Prevent reload
-window.addEventListener('beforeunload', function(e) {
-    // Cancel the event
-    e.preventDefault();
-    // Chrome requires returnValue to be set
-    e.returnValue = '';
-});
-
-function copyTriviaTable() {
-    var urlField = document.querySelector('#opentdb_table');
-    var range = document.createRange();  
-    range.selectNode(urlField);
-    window.getSelection().addRange(range);
-    
-    document.execCommand('copy');
-}
-
-function iniTriviaData(nb) {
-    game.weakest_link.database_opentdb = []
-    getTriviaData(nb).then(data => {
-        var object = data
-        console.log(object)
-        game.weakest_link.database_opentdb = data
-        displayTriviaData()
-    });
-}
-
-function displayTriviaData() {
-    var extractHTML = ""
-    for (var i = 0; i < game.weakest_link.database_opentdb.length; i++) {
-        var object = game.weakest_link.database_opentdb[i]
-        extractHTML += `<tr><td>${object.category}</td><td>type</td><td>${object.difficulty}</td><td>${object.question}</td><td>${object.correct_answer}</td><td>${object.incorrect_answers}</td>`
+    for (var i in game.mix_gamemode_list_picolo) {
+        addGamemodeDBindicator(game.mix_gamemode_list_picolo[i], game.mix_gamemode_list_picolo[i], "picolo")
     }
-    document.getElementById("opentdb_table_body").innerHTML += extractHTML
-
-    // {
-    //     "category": "General Knowledge",
-    //     "type": "boolean",
-    //     "difficulty": "medium",
-    //     "question": "The US emergency hotline is 911 because of the September 11th terrorist attacks.",
-    //     "correct_answer": "False",
-    //     "incorrect_answers": ["True"]
-    // }
+    for (var i in game.mix_gamemode_list_never_done) {
+        addGamemodeDBindicator(game.mix_gamemode_list_never_done[i], game.mix_gamemode_list_never_done[i], "never_done")
+    }
 }
 
-async function getTriviaData(questionCount) {
-    // Vérifiez si le nombre de questions est dans la plage autorisée
-    if (questionCount < 1 || questionCount > 50) {
-        console.error('Le nombre de questions doit être compris entre 1 et 50.');
-        return;
-    }
+function addGamemodeDBindicator(id, display_name, gamemode_type) {
+    var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
+    document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
+}
 
-    // Construisez l'URL avec le nombre de questions
-    const url = `https://opentdb.com/api.php?amount=${questionCount}&category=9`;
-
-    try {
-        // Faites une requête à l'API
-        const response = await fetch(url);
-
-        // Vérifiez si la requête a réussi
-        if (!response.ok) {
-            console.error('Erreur lors de la récupération des données:', response.status);
-            return;
+function selectGamemodeDBIndicator(id) {
+    for (var i=0; i<ingame_gamemode_information_mix_indicator_db.children.length; i++) {
+        document.getElementById("ingame_gamemode_information_mix_indicator_db").children[i].classList.remove("mix-btn-indicator")
+        console.log(ingame_gamemode_information_mix_indicator_db.children[i].value)
+        if (id == ingame_gamemode_information_mix_indicator_db.children[i].value) {
+            var selected_id_selected = i
+            // On selection la valeur de l'enfant n° X pour avoir le nom de la base de donnée
         }
-
-        // Convertissez la réponse en JSON
-        const data = await response.json();
-
-        // Affichez les résultats dans la console
-        console.log(data.results);
-        return data.results;
-        
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
     }
+
+    // Une fois trouver sa position dans le nombre de base de données, on le selectionne    
+    document.getElementById("ingame_gamemode_information_mix_indicator_db").children[selected_id_selected].classList.add("mix-btn-indicator")
 }
 
 function DEBUG_carthage(debug) {
@@ -1195,27 +1289,21 @@ function csvJSON(csv) {
     // Le CSV n'est pas régulier, ne pas prendre la première variable
     // var headers=lines[0].split(",");
 
-//IndexedDB API, remplacement des cookies
 
-// const request = window.indexedDB.open("PicolitoData", 1);
-// request.onerror = (event) => {
-//     // Do something with request.errorCode!
-//     console.log(request.errorCode)
-// };
-//   request.onsuccess = (event) => {
-//     // Do something with request.result!
-//     console.log(request.result)
-// };
-
-// let db;
-// const request = indexedDB.open("MyTestDatabase");
-// request.onerror = (event) => {
-//     console.error("Why didn't you allow my web app to use IndexedDB?!");
-// };
-// request.onsuccess = (event) => {
-// db = event.target.result;
-// };
-
+//     fr
+// en
+// da
+// de
+// es
+// fi
+// it
+// ja
+// ko
+// nb
+// nl
+// pt
+// ru
+// sv
 
 // Service Woker, Mise en cache
 if ('serviceWorker' in navigator && window.origin != "null" && window.matchMedia('(display-mode: standalone)').matches) {

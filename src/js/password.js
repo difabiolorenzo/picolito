@@ -8,9 +8,9 @@ function initPassword() {
     manageIngameOptionDisplay(false, 'password_recap', 'none');
     
     if (game.password.style == "2009") {
-        updateGameBackgroundColor("password_2009");
+        setBackgroundColor("password_2009");
     } else if (game.password.style == "2016") {
-        updateGameBackgroundColor("password_2016");
+        setBackgroundColor("password_2016");
     }
     
     button_password_invalidate.disabled = true;
@@ -61,6 +61,21 @@ async function initializeWords() {
     passwordDisplayNextWord()
 }
 
+async function wikipediaDescription(word) {
+    try {
+        const response = await fetch('https://en.wiktionary.org/w/api.php?action=query&format=json&prop=extracts&titles=' + word);
+        const data = await response.json();
+        var result = [];
+        for (var i in data.pages) {
+            result.push(data.pages[i].excerpt)
+        }
+        return result;
+    } catch (error) {
+        console.error('Error fetching fr.wiktionary.org/w/rest.php/v1/search/page?q= data:', error);
+        return [];
+    }
+}
+
 function passwordGenerateWordList() {
     if (game.password.word_to_find.length > 0) {
         password_ingame_display.innerHTML = game.password.words[game.password.word_to_find[0][0]];
@@ -99,7 +114,7 @@ function passwordPass() {
 
 function passwordDisplayNextWord() {
     if (game.password.word_to_find.length == 0) {
-        displayRecap();
+        password_displayRecap();
     } else {
         password_ingame_display.classList.remove("password-changing-word");
         setTimeout(function() { password_ingame_display.classList.add("password-changing-word"); }, 1);
@@ -108,24 +123,24 @@ function passwordDisplayNextWord() {
     }
 }
 
-function displayRecap() {
+function password_displayRecap() {
     password_recap.innerHTML = "";
     for (var i = 0; i < game.password.words.length; i++) {
         switch (game.password.word_status[i]) {
             case 1:
-                var modifier = " correct"
+                var modifier = "correct"
             break;
             case 2:
-                var modifier = " disabled"
+                var modifier = "disabled"
             break;
             case 3:
-                var modifier = " pass"
+                var modifier = "pass"
             break;
             default:
                 var modifier = ""
             break;
         }
-        password_recap.innerHTML += "<div class='recap_word password-shield'><span class='word_indicator" + modifier + "'></span> " + game.password.words[i] + "</div>"
+        password_recap.innerHTML += `<div class='recap_word password-shield'><div></div><span class='word_indicator ${modifier}'></span>${game.password.words[i]}</div>`
     }
     manageIngameOptionDisplay(true, 'password_recap', 'block')
     manageNavDisplay("restart",true)
@@ -152,5 +167,5 @@ function passwordWordAmountRefreshOption() {
     } else {
         document.getElementById("password_button_option_add_word_amount").disabled = true;
     }
-    document.getElementById("password_button_option_word_amount").innerHTML = game.password.word_to_find_amount;
+    document.getElementById("password_button_option_word_amount").value = game.password.word_to_find_amount;
 }
