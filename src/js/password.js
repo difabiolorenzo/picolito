@@ -8,9 +8,9 @@ function initPassword() {
     manageIngameOptionDisplay(false, 'password_recap', 'none');
     
     if (game.password.style == "2009") {
-        setBackgroundColor("password_2009");
+        setBackgroundStyleColor("password_2009");
     } else if (game.password.style == "2016") {
-        setBackgroundColor("password_2016");
+        setBackgroundStyleColor("password_2016");
     }
     
     button_password_invalidate.disabled = true;

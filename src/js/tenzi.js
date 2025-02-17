@@ -1,5 +1,5 @@
 function initTenzi() {
-    setBackgroundColor("tenzi");
+    setBackgroundStyleColor("tenzi");
     game.tenzi.dice_amount = 16;
 
     game.tenzi.die_data = []

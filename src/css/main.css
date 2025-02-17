@@ -69,17 +69,20 @@ div#game.weakest_link #ingame_content {
     align-items: stretch;
 }
 
-p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame, h1#ingame_title {
+p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame {
     font-weight: bold;
     font-size: 2rem;
     user-select: none;
     -webkit-user-select:none;
-    line-height: 1.75;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    text-size-adjust: auto;
-    overflow: auto;
-    max-height: 75vh;
+    /* text-size-adjust: auto; */
+    max-height: 60vh;
+    line-height: 2.6rem;
+}
+
+p#ingame_sentence {
+    overflow: overlay;
+    margin: 0vh 5vw;
+    max-height: 50vh;
 }
 
 div#game.weakest_link p#ingame_sentence, div#game.weakest_link p#ingame_answer {
@@ -96,9 +99,17 @@ p#ingame_answer {
     font-size: xx-large;
 }
 
-h1#ingame_title {font-size: 2.5rem;font-weight: bolder;}
+#text_ingame_title {
+    font-size: 4rem;
+    font-weight: bolder;
+    font-family: monospace;
+    margin-bottom: 5vh;
+    margin-top: 5vh;
+    opacity: 1;
+    animation: animation_d_ingame_title .5s ease;
+}
 
-.animation_text_change {
+.animation_text_change, #text_ingame_title {
     animation: animation_text_change .4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 @keyframes animation_text_change {
@@ -173,7 +184,7 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     opacity:0.5;
 }
 
-span.span_player, span.span_sip, span.span_team {padding: 0.25rem 0.5rem;border-radius: 0.25rem;background-color: #00000080;text-align: center;}
+span.span_player, span.span_sip, span.span_team {padding: 0.1rem 0.75rem;border-radius: 0.25rem;background-color: #00000080;text-align: center;}
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_team);}
@@ -208,14 +219,14 @@ div#ingame_option {
     align-content: center;
     justify-content: space-around;
     align-items: center;
-    background-color: #0d0f10;
+    background-color: #1a1b1b;
     flex-direction: column-reverse;
 }
 
-#ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule, #weakest_link_rule {
-    background-color: #000000d9;
+#replay_ingame_option, #start_ingame_option, #password_rule, #weakest_link_rule {
+    background-color: #00000087;
     padding: 5vh;
-    border: 1px solid #ffffff80;
+    border: 1px solid #ffffff3b;
     border-radius: .25rem;
     /* box-shadow: 0px 0 5px 0 white; */
     margin: 5vh;
@@ -609,8 +620,7 @@ a#picolito_version_menu {
     text-align: center;
     display: block;
     /* color: black; */
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin-top: 2rem;
 }
 
 .answer-hided {

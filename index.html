@@ -32,7 +32,7 @@
     </head>
     <body onload="init()" class="bright_mode">
         <noscript>Javascript est désactivé.</noscript>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="safety_and_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -185,7 +185,7 @@
                                         <h6 id="text_settings_weakest_link">text_settings_weakest_link</h6>
                                         <div class="form-group">
                                             <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
-                                            <select disabled class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
+                                            <select class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
                                                 <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
                                                 <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
                                                 <option id="text_settings_weakest_link_tie_both" value="both">both</option>
@@ -294,7 +294,7 @@
                             <div id="herge_bt_display_cookies_placeholder"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#exampleModal">text_prevention_panel</button>
+                    <button type="button" class="btn btn-primary" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#safety_and_cookie_modal">text_prevention_panel</button>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
                 </div>
@@ -437,7 +437,7 @@
                 <div>
                     <h6 id="text_gamemode_sandbox">text_gamemode_sandbox</h6>
                     <div class="card">
-                        <button class="btn card-title btn-primary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                        <button disabled class="btn card-title btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
                             <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                             <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
                             <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
@@ -478,7 +478,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="page" id="game" style="display:none">
+        <div class="page dark_affected black" id="game" style="display:none">
             <div id="game_content"class="portrait-mode">
                 <div id="ingame_topbar" class="d-flex">
                     <button id="text_game_quit_topbar" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit_topbar</button>
@@ -488,12 +488,83 @@
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="toggleDisplaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_next_button" onclick="nextSentence();">></button>
                     </div>
-                    <button id="text_game_player_menu" type="submit" class="btn btn-primary" onclick="togglePlayerListOptionDisplay();">text_game_player_menu</button>
+                    <button disabled id="text_game_player_menu" type="submit" class="btn btn-outline-secondary" onclick="togglePlayerListOptionDisplay();">text_game_player_menu</button>
                 </div>
 
                 <div id="ingame_content">
-                    <div id="ingame_text" onclick="nextSentence()">
-                        <h1 id="ingame_title"></h1>
+                    <!-- <div id="ingame_text" onclick="nextSentence()"> -->
+                    <div class="modal fade" id="sip_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="text_modal_sip_modifier">text_modal_sip_modifier</h5>
+                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="sip_modifier_modal_sentence">sentence</p>
+                                    <p>sentence</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="player_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">text</h5>
+                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>lorem</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="player_list_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">text</h5>
+                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
+                                        <button type="submit" class="btn btn-primary" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
+                                    </div>
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn btn-primary" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
+                                        <button type="submit" class="btn btn-primary" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
+                                    </div>
+                                    <div id="ingame_player_list"></div>
+                                    <!-- <button type="submit" class="btn btn-primary" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="sentence_list_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">text</h5>
+                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>lorem</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ingame_text">
+                        <h1 id="text_ingame_title"></h1>
                         <p id="ingame_sentence"></p>
                         <p id="ingame_answer" onclick="weakestLinkDisplayAnswer()"></p>
                     </div>
@@ -581,21 +652,6 @@
                               </div>
                         </div>
                         <div id="password_recap" style="display:none">
-                        </div>
-                        <div id="ingame_player_option" style="display: none;">
-                            <div class="d-flex">
-                                <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                                <button type="submit" class="btn btn-primary" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
-                            </div>
-                            <div class="d-flex">
-                                <button type="submit" class="btn btn-primary" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
-                                <button type="submit" class="btn btn-primary" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
-                            </div>
-                            <br>
-                            <div id="ingame_player_list"></div>
-                            <br>
-                            <!-- <button type="submit" class="btn btn-primary" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
-                            <button type="submit" class="btn btn-primary" id="close_player_option_ingame" onclick="togglePlayerListOptionDisplay();">close_player_option_ingame</button>
                         </div>
                     </div>
                     <div id="sentence_list" style="display: none;"></div>

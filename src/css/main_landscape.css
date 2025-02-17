@@ -40,14 +40,16 @@
     }
     div#ingame_weakest_link {
         padding: 2vw;
+        flex-direction: column;
+        align-items: flex-start;
     }
     .weakest_link_shield_player {
         height: 20vw;
         width: 30vh;
         margin: 1vw;
     }
-    #ingame_player_option, #replay_ingame_option, #start_ingame_option, #password_rule {
-        padding: 4vw;
+    #replay_ingame_option, #start_ingame_option, #password_rule {
+        /* padding: 4vw; */
     }
     body.portrait_mode_enabled #game_content.portrait-mode #ingame_option {
         flex-direction: row !important;

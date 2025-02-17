@@ -31,7 +31,7 @@ function initWeakestLink() {
         game.weakest_link.player_analytics.bank_saved = [];
         game.weakest_link.player_analytics.potential_bank_lost = [];
         game.weakest_link.player_analytics.answer_time = [];
-        game.weakest_link.player_analytics.avegarge_answer_time = []; 
+        game.weakest_link.player_analytics.average_answer_time = []; 
     
         for (var i = 0; i < game.player_list.length; i++) {
             game.weakest_link.player_analytics.correct.push(0)
@@ -212,26 +212,26 @@ function initWeakestLink() {
         var player_ratio = [] //id, ratio(correct-wrong),awnsering_time
     
         for (var i = 0; i < game.weakest_link.vote.length; i++) {
-            //avegarge_answer_time
+            //average_answer_time
             var raw_average_anwser_time = game.weakest_link.player_analytics.answer_time[i]
-            var avegarge_answer_time = raw_average_anwser_time.reduce((a, b) => a + b) / raw_average_anwser_time.length;
-            var average_anwser_time_sec = (avegarge_answer_time-(avegarge_answer_time%10)) / 1000;
-            game.weakest_link.player_analytics.avegarge_answer_time.push(average_anwser_time_sec)
+            var average_answer_time = raw_average_anwser_time.reduce((a, b) => a + b) / raw_average_anwser_time.length;
+            var average_anwser_time_sec = (average_answer_time-(average_answer_time%10)) / 1000;
+            game.weakest_link.player_analytics.average_answer_time.push(average_anwser_time_sec)
     
             //vote count
             var vote_count = game.weakest_link.vote_count[i]
             if (vote_count > highest_vote) {
                 highest_vote = vote_count
                 most_voted_player = [];
-                most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.avegarge_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
+                most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
                 tie = undefined
             } else if (vote_count == highest_vote && vote_count > 0) {
-                most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.avegarge_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
+                most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
                 var tie = true
             }  
             
             //player ratio
-            player_ratio.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.avegarge_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
+            player_ratio.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
         }
         console.log(most_voted_player)
     
@@ -275,7 +275,7 @@ function initWeakestLink() {
             var player_name = game.weakest_link.alphabetically_ordered_player[i]
             var vote_count = game.weakest_link.vote_count[i]
             var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
-            var average_anwser_time_sec = game.weakest_link.player_analytics.avegarge_answer_time[i]
+            var average_anwser_time_sec = game.weakest_link.player_analytics.average_answer_time[i]
             var potential_bank_lost = game.weakest_link.player_analytics.potential_bank_lost[i];
             var bank_saved = game.weakest_link.player_analytics.bank_saved[i];
             var correct = game.weakest_link.player_analytics.correct[i];

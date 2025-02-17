@@ -13,7 +13,7 @@ function init() {
 function devOverrideSettings() {
     document.getElementById("gamename_menu").innerHTML = global.picolito_version + " - dev";
 
-    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantofline","Childibert","Tringolin","Mimeline","Fricadène"];
+    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène"];
     for (var i=0; i<4; i++) {
         var random = Math.round(Math.random() * (groland_names.length-1))
         addPlayer(groland_names[random], "cookie");
@@ -23,7 +23,7 @@ function devOverrideSettings() {
     displayPage("menu")
     global.remind_warning_panel = false;
 
-    selectGamemode("password");
+    selectGamemode("default");
 }
 
 function defaultVariables() {
@@ -31,7 +31,7 @@ function defaultVariables() {
         current_language: "fr",
         dev_mode: false,
         dark_mode: "bright",
-        picolito_version: "0.33.6",
+        picolito_version: "0.33.7",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -41,6 +41,10 @@ function defaultVariables() {
         cookie_settings_value : [],
         use_cache_storage: false,
         portrait_mode: false,
+        sip_modifier_modal: new bootstrap.Modal(document.getElementById('sip_modifier_modal')),
+        safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('safety_and_cookie_modal')),
+        player_modifier_modal: new bootstrap.Modal(document.getElementById('player_modifier_modal')),
+        sentence_list_modal: new bootstrap.Modal(document.getElementById('sentence_list_modal'))
     }
 
     game = {
@@ -110,12 +114,15 @@ function defaultVariables() {
         chug_sentence_id_start_min: 10, // chug start to appear after sentence_id X
 
         virus_enabled: true,
-        virus_remaining: 1, // virus can occur X times (still overlap...)
+        virus_remaining: 1, // virus can occur X times, can overlap
         virus_end_min: 3,   // virus can end after X more sentence_id minimum
         virus_end_max: 6,   // virus can end after X more sentence_id maximum
-        virus_sentence_id_start_min: 5, // virus start to appear after sentence_id X
+        virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
 
         social_posting_enabled: false,
+
+        can_alter_player_name_in_sentence: true,
+        can_alter_sip_in_sentence: true,
 
         weakest_link: {
             weakestLinkTimer: undefined,
@@ -132,7 +139,7 @@ function defaultVariables() {
                 bank_saved: [],
                 potential_bank_lost: [],
                 answer_time: [],
-                avegarge_answer_time: []
+                average_answer_time: []
             },
             hide_answer: false
         },
@@ -216,7 +223,6 @@ function updateHTMLSettingsByVar() {
 }
 
 function displaySafetyAndCookieModal() {
-    global.safety_and_cookie_modal = new bootstrap.Modal(document.getElementById('exampleModal'));
     if (global.remind_warning_panel == true || global.remind_warning_panel == undefined) { global.safety_and_cookie_modal.show(); }
 }
 
@@ -315,7 +321,6 @@ function hopper(array, nature) {
             array.splice(i, 1);
         }
     }
-    
     for (var i = 0; i < array.length; i++) {
         array[i][1] = array[i][1] + (probability / array.length);
     }
@@ -347,17 +352,17 @@ function displayPage(page) {
 
 function addPlayer(player_name, html_origin) {
     if (html_origin == "menu") {
-        if (manu_player_input.value == "LYOKO") {
+        if (manu_player_input.value.toLowerCase() == "lyoko") {
             manu_player_input.value = "";
             DEBUG_carthage(true);
             return;
         }
-        if (manu_player_input.value == "TERRE") {
+        if (manu_player_input.value.toLowerCase() == "terre") {
             manu_player_input.value = "";
             DEBUG_carthage(false);
             return;
         }
-        if (manu_player_input.value == "PAPRIKAAA") {
+        if (manu_player_input.value.toLowerCase() == "paprikaaa") {
             manu_player_input.value = "";
             return;
         }
@@ -433,15 +438,15 @@ function getLastCharacter(text) {
     return text.substr(text.length - 1, 1);
 }
 
-function getBackgroundColorByHistory() {
-    if ( game.cycle_id > 0 ) {
-        return game.sentence_history[game.cycle_id - 1].color;
+function getActualBackgroundColorByHistory() {
+    if ( game.cycle_id >= 0 ) {
+        return game.sentence_history[game.cycle_id].color;
     } else {
-        return "blue";
+        return "black";
     }
 }
 
-function setBackgroundColor(value) {
+function setBackgroundStyleColor(value) {
     document.getElementById("game").className = "page dark_affected " + value;
 }
 
@@ -515,8 +520,6 @@ function initGameTenzi() {
     manageNavDisplay("players", false);
     manageNavDisplay("restart", false);
     displayPage('game');
-
-    displaySentenceList();
     displayTenziGame(true)
     initTenzi();
 }
@@ -572,7 +575,6 @@ function startGame() {
             return;
         }
     }
-
     manageIngameOptionDisplay(false, "start", "none");
 }
 
@@ -581,12 +583,17 @@ function exitGame() {
     if (game.weakest_link.weakestLinkTimer != undefined) { clearInterval(game.weakest_link.weakestLinkTimer) }
 
     hideDisplaySentenceList();
+    setBackgroundStyleColor("black");
+    hidePicoloVirusTitle()
     displaySentence("", undefined); // reset HTML sentence display
 
-    updateGameCycle();                                  // reset cycle count
+    updateGameCycleIndicator();                                  // reset cycle count
     resetVariables();
 
-    manageIngameOptionDisplay(false, 'player_option', 'none')
+    manageNavigationButton("previous", false)
+    manageNavigationButton("game_cyle", false)
+    manageNavigationButton("next", false)
+
     manageIngameOptionDisplay(false, 'start', 'none')
     manageIngameOptionDisplay(false, 'replay', 'none')
     manageIngameOptionDisplay(false, 'weakest_link', 'none')
@@ -715,20 +722,12 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
 
     if (display_option_panel == true) {
         ingame_option.style.display = "flex";
-    } else if (display_option_panel == false) {
-        //only close playeroption if game not started
-        if (game.cycle_id == -1 && option_identifier == "player_option") {
-            ingame_player_option.style.display = "none";
-        } else {
-            ingame_option.style.display = "none";
-        }
+    } else {
+        ingame_option.style.display = "none";
     }
 
     if (option_identifier != undefined && option_display_value != undefined) {
         switch(option_identifier) {
-            case "player_option":
-            var selected_option = ingame_player_option;
-                break;
             case "start":
             var selected_option = start_ingame_option;
                 break;
@@ -767,11 +766,7 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
 }
 
 function togglePlayerListOptionDisplay() {
-    if (document.getElementById("ingame_player_option").style.display == "none") {
-        manageIngameOptionDisplay(false, 'player_option', 'block');
-    } else {
-        manageIngameOptionDisplay(true, 'player_option', 'none');
-    }
+
 }
 
 function manageNavDisplay(navigation_option, display) {
@@ -809,7 +804,7 @@ function addPotentialPortraitDisplayMarker(value) {
     }
 }
 
-function updateGameCycle() {
+function updateGameCycleIndicator() {
     //previous
     if (game.cycle_id > 0) {
         manageNavigationButton("previous", true)
@@ -844,21 +839,23 @@ function updateGameCycle() {
     }
 }
 
-function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack_name, answer) {
+function addHistoryItem(posOffset, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, answer) {
 
     var offset_sentence_id = (game.cycle_id) + posOffset;
     if (posOffset > 0) {
         for (var i = 0; i < posOffset; i++) {
             var sentence_history_content = {
                 id: "A0000000000000",
-                sentence:"none"
+                formatted_sentence:"none"
             }
             game.sentence_history.push(sentence_history_content);
         }
     }
     var sentence_history_item = {
         database_id: database_id,
-        sentence: sentence,
+        original_sentence: original_sentence,
+        sentence_keys: sentence_keys,
+        formatted_sentence: formatted_sentence,
         key: key,
         type: type,
         color : color,
@@ -867,7 +864,7 @@ function addHistoryItem(posOffset, database_id, sentence, key, type, color, pack
     }
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
-    } else if (game.sentence_history[offset_sentence_id].sentence == "none") {
+    } else if (game.sentence_history[offset_sentence_id].formatted_sentence == "none") {
         game.sentence_history[offset_sentence_id] = sentence_history_item;
     }
 }
@@ -883,6 +880,10 @@ function randomSip() {
 }
 
 function textReplacer(text) {
+    const original_sentence = text;
+    const keys = [];
+    let formatted_sentence = text;
+
     if (game.display_color_indicator == true) {
         var html_span_sip = "<span class=\"span_sip\">";
         var html_span_player = "<span class=\"span_player\">";
@@ -895,32 +896,69 @@ function textReplacer(text) {
         var html_span_end = "";
     }
 
-    // retrieve all player name
+    // retrieve all player names
     var player_name_list = [];
     for (var i = 0; i < game.player_list.length; i++) { player_name_list.push(game.player_list[i]) }
 
-    for (var i = 0; i < text.length; i++) {
-        if (text.charAt(i) == "$") {
-            text = replaceAt(text, i, html_span_sip + randomSip() + html_span_end, 0);
+    for (var i = 0; i < formatted_sentence.length; i++) {
+        if (formatted_sentence.charAt(i) == "$") {
+            const sip = randomSip();
+            formatted_sentence = replaceAt(formatted_sentence, i, html_span_sip + sip + html_span_end, 0);
+            keys.push({ type: 'sip', value: sip });
         }
         // change %s by random player
-        if (text.charAt(i) == "%" && text.charAt(i+1) == "s") {
+        if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "s") {
             var random_player_index = Math.floor(Math.random() * player_name_list.length);
             var random_player = player_name_list[random_player_index];
-            player_name_list.splice(random_player_index,1);
-            text = replaceAt(text, i, html_span_player + random_player + html_span_end, 1);
+            player_name_list.splice(random_player_index, 1);
+            formatted_sentence = replaceAt(formatted_sentence, i, html_span_player + random_player + html_span_end, 1);
+            keys.push({ type: 'player', value: random_player });
         }
         // change %t by team
-        if (text.charAt(i) == "%" && text.charAt(i+1) == "t") {
-            if (Math.random() < 0.5 == true) { //choose between TEAM 1 and 2
-                text = replaceAt(text, i, html_span_team + game.team_1 + html_span_end, 1);
-            } else {
-                text = replaceAt(text, i, html_span_team + game.team_2 + html_span_end, 1);
-            }
-            
+        if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "t") {
+            const team = Math.random() < 0.5 ? game.team_1 : game.team_2;
+            formatted_sentence = replaceAt(formatted_sentence, i, html_span_team + team + html_span_end, 1);
+            keys.push({ type: 'team', value: team });
         }
     }
-    return text;
+
+    return {
+        original_sentence: original_sentence,
+        keys: keys,
+        formatted_sentence: formatted_sentence
+    };
+}
+
+function applyTextModifiers(original_sentence, keys) {
+    let formatted_sentence = original_sentence;
+
+    if (game.display_color_indicator == true) {
+        var html_span_sip = "<span class=\"span_sip\">";
+        var html_span_player = "<span class=\"span_player\">";
+        var html_span_team = "<span class=\"span_team\">";
+        var html_span_end = "</span>";
+    } else {
+        var html_span_sip = "";
+        var html_span_player = "";
+        var html_span_team = "";
+        var html_span_end = "";
+    }
+
+    keys.forEach(modifier => {
+        switch (modifier.type) {
+            case 'sip':
+                formatted_sentence = formatted_sentence.replace('$', html_span_sip + modifier.value + html_span_end);
+                break;
+            case 'player':
+                formatted_sentence = formatted_sentence.replace('%s', html_span_player + modifier.value + html_span_end);
+                break;
+            case 'team':
+                formatted_sentence = formatted_sentence.replace('%t', html_span_team + modifier.value + html_span_end);
+                break;
+        }
+    });
+
+    return formatted_sentence;
 }
 
 function toggleDisplaySentenceList() {
@@ -928,6 +966,7 @@ function toggleDisplaySentenceList() {
         displaySentenceList();
     } else {
         hideDisplaySentenceList();
+        setBackgroundStyleColor(getActualBackgroundColorByHistory())
     }
 }
 
@@ -937,7 +976,7 @@ function displaySentenceList() {
 
     document.getElementById("ingame_text").style.display = "none";
     document.getElementById("sentence_list").style.display = "block";
-    setBackgroundColor("black")
+    setBackgroundStyleColor("black")
     updateSentenceList()
 }
 
@@ -947,7 +986,6 @@ function hideDisplaySentenceList() {
 
     var ingame_text = document.getElementById("ingame_text");
     var sentence_list = document.getElementById("sentence_list");
-    setBackgroundColor(getBackgroundColorByHistory())
 }
 
 function displayTenziGame(force_ingame) {
@@ -967,7 +1005,7 @@ function updateSentenceList(mode) {
 
         for (var i = 0; i < game.sentence_history.length; i++) {
             var color = game.sentence_history[i].color;
-            var sentence = game.sentence_history[i].sentence;
+            var sentence = game.sentence_history[i].formatted_sentence;
 
             if (sentence != "none") {
                 var sentence_index = parseInt(i)+1;
@@ -978,6 +1016,11 @@ function updateSentenceList(mode) {
         }
         sentence_list.innerHTML = ul_head + html_inner + "</ul>";
     }
+}
+
+function displaySipModifierModal() {
+    global.sip_modifier_modal.show();
+    document.getElementById("sip_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
 }
 
 function updateTeamSelectionTable() {
@@ -1155,16 +1198,21 @@ function createGamemodeDBindicator() {
     ingame_gamemode_information_mix_indicator_db.innerHTML = ""
 
     for (var i in game.mix_gamemode_list_picolo) {
-        addGamemodeDBindicator(game.mix_gamemode_list_picolo[i], game.mix_gamemode_list_picolo[i], "picolo")
+        var id = game.mix_gamemode_list_picolo[i];
+        var display_name = game.mix_gamemode_list_picolo[i];
+        var gamemode_type = "picolo";
+
+        var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
+        document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
     }
     for (var i in game.mix_gamemode_list_never_done) {
-        addGamemodeDBindicator(game.mix_gamemode_list_never_done[i], game.mix_gamemode_list_never_done[i], "never_done")
-    }
-}
+        var id = game.mix_gamemode_list_never_done[i];
+        var display_name = game.mix_gamemode_list_never_done[i];
+        var gamemode_type = "never_done";
 
-function addGamemodeDBindicator(id, display_name, gamemode_type) {
-    var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
-    document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
+        var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
+        document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
+    }
 }
 
 function selectGamemodeDBIndicator(id) {
@@ -1184,15 +1232,11 @@ function selectGamemodeDBIndicator(id) {
 function DEBUG_carthage(debug) {
     if (debug == true) {
         document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
-        document.getElementById("gamename_menu").style = "background-color: #061f01; color: #0079d2; text-shadow: 0 0 BLACK; font-family: courier;"
-        checkBrowserColorScheme(false)
         document.getElementById("debug_tools_placeholder").style.display = "block";
         
         alert("Bienvenue à Carthage.");
     } else {
         document.getElementById("gamename_menu").innerHTML = "PICOLITO";
-        document.getElementById("gamename_menu").style = ""
-        checkBrowserColorScheme()
         document.getElementById("debug_tools_placeholder").style.display = "none";
         
         alert("Retour vers le passé.");

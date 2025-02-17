@@ -354,6 +354,8 @@ function updateHTMLLanguageStrings() {
     text_prevention_call_text.innerHTML = global.current_language_strings.prevention_call_text;
     text_prevention_number.innerHTML = global.current_language_strings.prevention_number;
     text_prevention_number_modality.innerHTML = global.current_language_strings.prevention_number_modality;
+
+    text_ingame_title.innerText = global.current_language_strings.virus
     
     text_prevention_panel.innerHTML = global.current_language_strings.prevention_panel;
 
@@ -490,9 +492,6 @@ function updateHTMLLanguageStrings() {
     text_gamemode_menu.title = global.current_language_strings.gamemode;
     ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
     ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E2";
-
-    // alert_random_player_button.innerHTML = global.current_language_strings.alert_random_player;
-    close_player_option_ingame.innerHTML = global.current_language_strings.close;
     
     ingame_weakest_link_text_sip.innerHTML = global.current_language_strings.weakest_link_sip;
     ingame_weakest_link_text_bank.innerHTML = global.current_language_strings.weakest_link_bank;

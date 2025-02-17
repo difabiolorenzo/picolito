@@ -3,8 +3,9 @@ function nextSentence() {
         game.cycle_id++;
         retrieve(game.cycle_id);
 
-        updateGameCycle();
+        updateGameCycleIndicator();
     }
+    setBackgroundStyleColor(getActualBackgroundColorByHistory())
     hideDisplaySentenceList();
 }
 
@@ -13,14 +14,15 @@ function previousSentence() {
         game.cycle_id--;
         goToSpecificSentence(game.cycle_id)
     }
+    setBackgroundStyleColor(getActualBackgroundColorByHistory())
     hideDisplaySentenceList();
 }
 
 function goToSpecificSentence(position) {
     game.cycle_id = position;
-    updateGameCycle();
-    setBackgroundColor(getBackgroundColorByHistory())
+    updateGameCycleIndicator();
     retrieve(position);
+    setBackgroundStyleColor(getActualBackgroundColorByHistory())
     hideDisplaySentenceList();
 }
 
@@ -42,7 +44,7 @@ function getMinPlayer() {
 
 function retrieve(sentence_id) {
     // Generation si l'historique ne trouve rien, sinon fonction retrieve
-    if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].sentence == "none") {
+    if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].formatted_sentence == "none") {
         switch (game.gamemode) {
             case "default":
                 generatePicoloSentences();
@@ -75,12 +77,12 @@ function retrieve(sentence_id) {
                 generateWeakestLink();
                 break;
             default:
-            break;
+                break;
         }
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
-        displaySentence(sentence_requested.sentence, sentence_requested.color, sentence_requested.pack_name, sentence_requested.answer);
-        updateGameCycle();
+        displaySentence(sentence_requested.formatted_sentence, sentence_requested.color, sentence_requested.pack_name, sentence_requested.answer);
+        updateGameCycleIndicator();
     }
 }
 
@@ -95,7 +97,6 @@ function generateMixSentences() {
             generateNeverDoneSentences(true);
             console.log("generation never_done sentence mix")
         }
-        // exitGame();
     } else {
         // Si aucun mode "game.mix_gamemode_list_picolo" alors "je n'ai jamais"
         if (game.mix_gamemode_list_picolo.length > 0) {
@@ -107,14 +108,12 @@ function generateMixSentences() {
 }
 
 function displaySentence(sentence, color, pack_name, answer) {
-    ingame_sentence.className = "";
-    ingame_answer.className = "";
-    ingame_title.className = "";
+    document.getElementById("ingame_sentence").className = "";
+    document.getElementById("ingame_answer").className = "";
 
-    setTimeout(function() {
+    setTimeout(function () {
         if (game.animation == true) {
             ingame_sentence.className = "animation_text_change";
-            ingame_title.className = "animation_text_change";
             ingame_answer.className = "animation_text_change";
             if (game.weakest_link.hide_answer == true) {
                 ingame_answer.className += " answer-hided";
@@ -126,21 +125,18 @@ function displaySentence(sentence, color, pack_name, answer) {
         }
     }, 0);
 
-    if (color == "yellow") {
-        ingame_title.innerText = global.current_language_strings.virus;
-    } else {
-        ingame_title.innerText = "";
-    }
+    if (color == "yellow") { displayPicoloVirusTitle() } else { hidePicoloVirusTitle() }
 
-    if (game.gamemode == "mix" && sentence != "") {
-        selectGamemodeDBIndicator(pack_name)
-    }
-    
+    if (game.gamemode == "mix" && sentence != "") { selectGamemodeDBIndicator(pack_name) }
 }
 
+function displayPicoloVirusTitle() { document.getElementById("text_ingame_title").style.display = ""; }
+function hidePicoloVirusTitle() { document.getElementById("text_ingame_title").style.display = "none"; }
+
 function randomPercentage() {
-    while (random_percent == 0 || random_percent == 100 || random_percent == undefined) {
-        var random_percent = Math.floor(Math.random() * 100);
+    var random_percent = Math.floor(Math.random() * 100);
+    if (random_percent === 0 || random_percent === 100) {
+        return randomPercentage();
     }
     return random_percent;
 }
@@ -157,8 +153,7 @@ function getRandomColor() {
         available_color_probability.push(["green", game.filter.color_probability.green])
     }
     available_color_probability.push(["blue", game.filter.color_probability.blue])
-
-    available_color_probability.sort( function(a, b) { return a[1] - b[1]; } );
+    available_color_probability.sort(function (a, b) { return a[1] - b[1]; });
 
     var random_percent = randomPercentage();
 
@@ -168,11 +163,12 @@ function getRandomColor() {
     var random_probability_next_step = 0;
     for (var i = 0; i < available_color_probability.length; i++) {
         random_probability_next_step = random_probability_next_step + available_color_probability[i][1];
-        if ( (random_percent > random_probability_step && random_percent < random_probability_next_step) || (random_percent > random_probability_next_step) || (random_percent > random_probability_step)) {
+        if ((random_percent > random_probability_step && random_percent < random_probability_next_step) || (random_percent > random_probability_next_step) || (random_percent > random_probability_step)) {
             color = available_color_probability[i][0];
         }
         random_probability_step = random_probability_next_step;
     }
+    console.log(color)
     return color;
 }
 
@@ -180,18 +176,19 @@ function getRandomType() {
     if (game.gamemode == "mix") {
         var possible_type = ["bar", "default", "hot", "silly"]
         var percentage = randomPercentage()
-        var gamemode = possible_type[Math.floor(percentage/(100/4))]
+        var gamemode = possible_type[Math.floor(percentage / (100 / 4))]
     } else {
         var gamemode = game.gamemode;
     }
 
+    // Je ne sais plus pourquoi game.max_player_number peux être -1
     if (game.max_player_number != -1) {
         var type_by_gamemode = [];
         var max_player_number_by_gamemode = [];
         switch (gamemode) {
             case "bar":
-                type_by_gamemode = game.filter.type_by_gamemode.bar;            
-                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.bar;            
+                type_by_gamemode = game.filter.type_by_gamemode.bar;
+                max_player_number_by_gamemode = game.filter.max_player_number_by_gamemode.bar;
                 break;
             case "default":
                 type_by_gamemode = game.filter.type_by_gamemode.default;
@@ -215,7 +212,7 @@ function getRandomType() {
         var type_by_color = []
         switch (color) {
             case "blue":
-                type_by_color = game.filter.type_by_color.blue;            
+                type_by_color = game.filter.type_by_color.blue;
                 break;
             case "red":
                 type_by_color = game.filter.type_by_color.red;
@@ -229,8 +226,8 @@ function getRandomType() {
         }
 
         var color_gamemode_matching_type = []
-        for (var i = 0; i < type_by_gamemode.length; i++) {
-            for (var j = 0; i < type_by_color.length; i++) {
+        for (var i in type_by_gamemode) {
+            for (var j in type_by_color) {
                 if (type_by_gamemode[i] == type_by_color[j]) {
                     if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {
                         console.log(`SOCIAL POSTING DISABLED`)
@@ -244,20 +241,22 @@ function getRandomType() {
         var potential_type = []
         for (var i = 0; i < color_gamemode_matching_type.length; i++) {
             var checking_cg_matching_type = color_gamemode_matching_type[i];
-            var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type-1];
+            var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type - 1];
             if (checking_mp_by_gamemode.length != 0) {
                 for (var j = 0; i < checking_mp_by_gamemode.length; i++) {
+                    console.log(checking_mp_by_gamemode[j], "<=", game.max_player_number)
                     if (checking_mp_by_gamemode[j] <= game.max_player_number) {
                         potential_type.push(checking_cg_matching_type)
                     }
                 }
             }
         }
-    
+
         var random_type_index = Math.floor(Math.random() * potential_type.length);
         var selected_type = potential_type[random_type_index];
+        console.log("selected_type", selected_type, "potential_type", potential_type, "color", color, "gamemode", gamemode);
 
-        return [color, selected_type, potential_type];
+        return {color: color, selected_type: selected_type, potential_type: potential_type};
     } else {
         getMinPlayer()
         getRandomType()
@@ -267,147 +266,168 @@ function getRandomType() {
 function generatePicoloSentences(use_mix_gamemode_data) {
     var request = [];
     var key = "";
-    var sentence = "";
+    var formatted_sentence = "";
+    var original_sentence = "";
+    var sentence_keys = "";
     var database_id = "";
     var pack_name = "";
     var color = ""
     var type = ""
     var max_player = game.max_player_number;
 
-    var get_random_color_type = getRandomType();
-    color = get_random_color_type[0];
-    type = get_random_color_type[1];
-    console.clear()
-    console.log(get_random_color_type, color, "type", type, "max_player", max_player);
+    function getSentence(use_parent_key, player_amount, type_id) {
+        var parent_key_string = use_parent_key ? key : "";
 
-    function getSentence(use_parent_key, selected_nb_players, selected_type) {
-        if (use_parent_key == false) {
-            var parent_key_string = "";
-        } else {
-            var parent_key_string = key;
-        }
-
+        // Choix aleatoire du mode de jeu selon la liste des modes choisi
         if (use_mix_gamemode_data == true) {
-            // Choix aleatoire du mode de jeu selon la liste des modes choisi
             var random_picolo_mix_gamemode_list = game.mix_gamemode_list_picolo[Math.floor(Math.random() * game.mix_gamemode_list_picolo.length)];
-            return game.database().filter({nb_players:selected_nb_players, type:selected_type, pack_name:random_picolo_mix_gamemode_list, parent_key:parent_key_string}).get();
-        } else {
-            return game.database().filter({nb_players:selected_nb_players, type:selected_type, parent_key:""}).get();
+            return game.database().filter({ nb_players: player_amount, type: type_id, pack_name: random_picolo_mix_gamemode_list, parent_key: parent_key_string }).get();
         }
-    }
 
-    //get sentence from lower nb_player to max_player
-    for (var i=0; i<= max_player; i++) {
-        var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, selected_nb_players, selected_type)
-        request.push(...addind_request);
-    }
-    if (request.length == 0) {
-        game.filter.empty_type.push(type)
-        console.log("REPICK TYPE");
-        return;
+        return game.database().filter({ nb_players: player_amount, type: type_id, parent_key: parent_key_string }).get();
     }
 
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
-        sentence = textReplacer(request[random_int].text);
+
+        var text_replacer_data = textReplacer(request[random_int].text)
+        formatted_sentence = text_replacer_data.formatted_sentence;
+        original_sentence = text_replacer_data.original_sentence;
+        sentence_keys = text_replacer_data.keys;
+
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
-        console.log(random_int, sentence, pack_name);
 
-        //remove sentence from db
-        game.database().filter({___id:database_id}).remove();
+        // Supprime la phrase de la db pour ne pas retrouver la même phrase
+        game.database().filter({ ___id: database_id }).remove();
         console.log(database_id, "picolo removed")
     }
 
-    getRandomSentence()
-    setBackgroundColor(color);
-    displaySentence(sentence, color, pack_name);
-    addHistoryItem(0, database_id, sentence, key, type, color, pack_name, undefined);
+    function tryGenerateSentence() {
+        var get_random_color_type = getRandomType();
+        color = get_random_color_type.color;
+        color ? "red" : alert(color);
+        type = get_random_color_type.selected_type;
+        // console.clear()
+        console.log(color, "type", type, "max_player", max_player);
 
-    if (key != "") {
-        request = [];
-        sentence = "";
-        database_id = "";
-        pack_name = "";
-        
-        console.log(request)
-
-        //get sentence from lower nb_player
+        // Avoir les phrases pour le nombre de joueurs max (requete db de 0 à max_player)
         for (var i = 0; i <= max_player; i++) {
-            var addind_request = getSentence(true, i.toString(), type.toString())
-            request.push(...addind_request)
+            var addind_request = getSentence(false, i.toString(), type.toString()); //getSentence(use_parent_key, player_amount, type_id)
+            request.push(...addind_request);
         }
-        getRandomSentence()
-
-        if (color == "yellow") {
-            game.virus_remaining--;
-            random_virus_end = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
-
-            console.log("game_cycle end virus", random_virus_end)
-            console.log(sentence, "key", key, "type", type)
-            addHistoryItem(random_virus_end, database_id, sentence, key, type, color, pack_name, undefined);
-
-            game.virus_established_start = game.cycle_id;
-            game.virus_established_end = game.cycle_id + random_virus_end;
-
-        } else if (color == "blue" || color == "green" ) {
-            addHistoryItem(1, database_id, sentence, key, type, color, pack_name, undefined);
+        if (request.length == 0) {
+            game.filter.empty_type.push(type)
+            tryGenerateSentence();
         }
-
     }
 
-    // Remove one remaining chug
-    if (color == "red") {
-        game.chug_remaining--;
+    tryGenerateSentence();
+
+    if (request.length > 0) {
+        getRandomSentence();
+        displaySentence(formatted_sentence, color, pack_name);
+        addHistoryItem(0, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, undefined);
+
+        if (key != "") {
+            request = [];
+            formatted_sentence = "";
+            database_id = "";
+            pack_name = "";
+
+            console.log(request);
+
+            // Get sentence from lower nb_player
+            for (var i = 0; i <= max_player; i++) {
+                var adding_request = getSentence(true, i.toString(), type.toString());
+                request.push(...adding_request);
+            }
+            getRandomSentence();
+
+            if (color == "yellow") {
+                game.virus_remaining--;
+                var random_virus_end = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
+
+                console.log("game_cycle end virus", random_virus_end);
+                console.log(formatted_sentence, "key", key, "type", type);
+                addHistoryItem(random_virus_end, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, undefined);
+                console.log(random_virus_end, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, undefined);
+
+                game.virus_established_start = game.cycle_id;
+                game.virus_established_end = game.cycle_id + random_virus_end;
+            }
+            if (color == "blue" || color == "green") {
+                addHistoryItem(1, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, undefined);
+            }
+        }
+
+        // Remove one remaining chug
+        if (color == "red") {
+            game.chug_remaining--;
+        }
     }
 }
 
 function generateNeverDoneSentences(use_mix_gamemode_data) {
+    var request = [];
+    var key = "";
+    var formatted_sentence = "";
+    var original_sentence = "";
+    var sentence_keys = "";
+    var database_id = "";
+    var pack_name = "";
+
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
-        sentence = textReplacer(request[random_int].text);
+
+        var text_replacer_data = textReplacer(request[random_int])
+        formatted_sentence = text_replacer_data.formatted_sentence;
+        original_sentence = text_replacer_data.original_sentence;
+        sentence_keys = text_replacer_data.keys;
+
+        formatted_sentence = textReplacer(request[random_int].text).formatted_sentence;
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
-        console.log(random_int, sentence)
+        console.log(random_int, formatted_sentence)
 
         //remove sentence from db
-        game.database().filter({___id:database_id}).remove();
+        game.database().filter({ ___id: database_id }).remove();
         console.log(database_id, pack_name, "never_done removed")
     }
-    
+
     if (use_mix_gamemode_data == true) {
         // Choix aleatoire du mode de jeu selon la liste des modes choisi
         var random_never_done_mix_gamemode_list = game.mix_gamemode_list_never_done[Math.floor(Math.random() * game.mix_gamemode_list_never_done.length)];
-        var request =  game.database().filter({pack_name:random_never_done_mix_gamemode_list}).get();
+        var request = game.database().filter({ pack_name: random_never_done_mix_gamemode_list }).get();
     } else {
-        var request =  game.database().get();
+        var request = game.database().get();
     }
-    
+
     getRandomSentence()
-    setBackgroundColor("never_done");
-    displaySentence(sentence, "never_done", pack_name);
-    addHistoryItem(0, database_id, sentence, undefined, undefined, "never_done", pack_name, undefined);
+    displaySentence(formatted_sentence, "never_done", pack_name);
+    addHistoryItem(0, database_id, original_sentence, sentence_keys, formatted_sentence, undefined, undefined, "never_done", pack_name, undefined);
+    setBackgroundStyleColor("never_done");
 }
 
 function generateWeakestLink() {
     function getRandomSentence() {
         var random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
-        sentence = request[random_int].text;
+        formatted_sentence = request[random_int].text;
         answer = request[random_int].answer;
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
 
         //remove sentence from db
-        game.database().filter({___id:database_id}).remove();
+        game.database().filter({ ___id: database_id }).remove();
     }
 
     var request = game.database().get();
     getRandomSentence()
 
-    setBackgroundColor("weakest_link");
-    displaySentence(sentence, "weakest_link", pack_name, answer);
-    addHistoryItem(0, database_id, sentence, undefined, undefined, "dark_blue", pack_name, answer);
+setBackgroundStyleColor("weakest_link");
+    displaySentence(formatted_sentence, "weakest_link", pack_name, answer);
+    addHistoryItem(0, database_id, original_sentence, sentence_keys, formatted_sentence, undefined, undefined, "dark_blue", pack_name, answer);
 }
