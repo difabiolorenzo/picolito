@@ -6,20 +6,13 @@ function init() {
     updateCurrentLanguageString("fr")
     filterVariables();
     retrieveCookie();
-    if (global.dev_mode == true) { devOverrideSettings() }
+    if (global.debug == true) { devOverrideSettings() }
     displaySafetyAndCookieModal();
 }
 
 function devOverrideSettings() {
     document.getElementById("gamename_menu").innerHTML = global.picolito_version + " - dev";
-
-    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène"];
-    for (var i=0; i<4; i++) {
-        var random = Math.round(Math.random() * (groland_names.length-1))
-        addPlayer(groland_names[random], "cookie");
-        groland_names.splice(random, 1);
-    }
-
+    DEBUG_RandomPlayer(4)
     displayPage("menu")
     global.remind_warning_panel = false;
 
@@ -29,9 +22,9 @@ function devOverrideSettings() {
 function defaultVariables() {
     global = {
         current_language: "fr",
-        dev_mode: false,
+        debug: false,
         dark_mode: "bright",
-        picolito_version: "0.33.7",
+        picolito_version: "0.33.8",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -41,7 +34,8 @@ function defaultVariables() {
         cookie_settings_value : [],
         use_cache_storage: false,
         portrait_mode: false,
-        sip_modifier_modal: new bootstrap.Modal(document.getElementById('sip_modifier_modal')),
+        settings_modal: new bootstrap.Modal(document.getElementById('settings_modal')),
+        sentence_modifier_modal: new bootstrap.Modal(document.getElementById('sentence_modifier_modal')),
         safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('safety_and_cookie_modal')),
         player_modifier_modal: new bootstrap.Modal(document.getElementById('player_modifier_modal')),
         sentence_list_modal: new bootstrap.Modal(document.getElementById('sentence_list_modal'))
@@ -109,21 +103,22 @@ function defaultVariables() {
         sentence_history: [],   //sentence_history_item = { sentence,key,type,nature }
         sentence_amount: 50,
 
-        chug_enabled: true,
-        chug_amount: 1,
-        chug_sentence_id_start_min: 10, // chug start to appear after sentence_id X
+        picolito : {
+            chug_enabled: true,
+            chug_amount: 1,
+            chug_sentence_id_start_min: 10, // chug start to appear after sentence_id X
 
-        virus_enabled: true,
-        virus_remaining: 1, // virus can occur X times, can overlap
-        virus_end_min: 3,   // virus can end after X more sentence_id minimum
-        virus_end_max: 6,   // virus can end after X more sentence_id maximum
-        virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
+            virus_enabled: true,
+            virus_remaining: 1, // virus can occur X times, can overlap
+            virus_end_min: 3,   // virus can end after X more sentence_id minimum
+            virus_end_max: 6,   // virus can end after X more sentence_id maximum
+            virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
+    
+            social_posting_enabled: false,
 
-        social_posting_enabled: false,
-
-        can_alter_player_name_in_sentence: true,
-        can_alter_sip_in_sentence: true,
-
+            // can_alter_player_name_in_sentence: true,
+            // can_alter_sip_in_sentence: true,
+        },
         weakest_link: {
             weakestLinkTimer: undefined,
             stop_at_max_chain: true, 
@@ -167,8 +162,8 @@ function resetVariables() {
     game.started = false;
     game.filter.empty_type = [];
     game.cycle_id = -1;
-    game.virus_remaining = 1;
-    game.chug_remaining = game.chug_amount;
+    game.picolito.virus_remaining = 1;
+    game.chug_remaining = game.picolito.chug_amount;
     game.database = undefined;
     game.pending_db = [];
 
@@ -186,13 +181,13 @@ function updateHTMLSettingsByVar() {
     input_team_1.value = game.team_1;
     input_team_2.value = game.team_2;
 
-    input_chug_enabled.checked = game.chug_enabled;
-    input_virus_enabled.checked = game.virus_enabled;
-    input_social_posting_enabled.checked = game.social_posting_enabled;
+    input_chug_enabled.checked = game.picolito.chug_enabled;
+    input_virus_enabled.checked = game.picolito.virus_enabled;
+    input_social_posting_enabled.checked = game.picolito.social_posting_enabled;
 
     input_sip_min.value = game.sip.min;
     input_sip_max.value = game.sip.max;
-    input_potential_chug = game.chug_amount;
+    input_potential_chug = game.picolito.chug_amount;
 
     input_color_display_settings.checked = game.display_color_indicator;
     input_color_display_animation.checked = game.animation;
@@ -287,7 +282,7 @@ function changeSipSettings(setting, value) {
 }
 
 function changeDownDrinking(value) {
-    game.chug_amount = parseInt(value);
+    game.picolito.chug_amount = parseInt(value);
     game.chug_remaining = parseInt(value);
 }
 
@@ -327,11 +322,11 @@ function hopper(array, nature) {
 }
 
 function filterVariables() {
-    if (game.chug_enabled == false) {
+    if (game.picolito.chug_enabled == false) {
         //delete and share red probability into others colors
         hopper(game.type_by_color, "red");
     }
-    if (game.virus_enabled == false) {
+    if (game.picolito.virus_enabled == false) {
         //delete and share yellow probability into others colors
         hopper(game.type_by_color, "yellow");
     }
@@ -360,10 +355,6 @@ function addPlayer(player_name, html_origin) {
         if (manu_player_input.value.toLowerCase() == "terre") {
             manu_player_input.value = "";
             DEBUG_carthage(false);
-            return;
-        }
-        if (manu_player_input.value.toLowerCase() == "paprikaaa") {
-            manu_player_input.value = "";
             return;
         }
     }
@@ -452,6 +443,9 @@ function setBackgroundStyleColor(value) {
 
 function initGame(select_team, direct_launch) {
     // à convertir en switch?
+
+
+    text_ingame_title.innerHTML = "";
 
     addPotentialPortraitDisplayMarker("landscape")
     displayTenziGame(false)
@@ -883,11 +877,12 @@ function textReplacer(text) {
     const original_sentence = text;
     const keys = [];
     let formatted_sentence = text;
+    var is_modified = false;
 
     if (game.display_color_indicator == true) {
-        var html_span_sip = "<span class=\"span_sip\">";
-        var html_span_player = "<span class=\"span_player\">";
-        var html_span_team = "<span class=\"span_team\">";
+        var html_span_sip = "<span class=\" span_highlight span_sip\">";
+        var html_span_player = "<span class=\" span_highlight span_player\">";
+        var html_span_team = "<span class=\" span_highlight span_team\">";
         var html_span_end = "</span>";
     } else {
         var html_span_sip = "";
@@ -905,6 +900,7 @@ function textReplacer(text) {
             const sip = randomSip();
             formatted_sentence = replaceAt(formatted_sentence, i, html_span_sip + sip + html_span_end, 0);
             keys.push({ type: 'sip', value: sip });
+            is_modified = true;
         }
         // change %s by random player
         if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "s") {
@@ -913,19 +909,22 @@ function textReplacer(text) {
             player_name_list.splice(random_player_index, 1);
             formatted_sentence = replaceAt(formatted_sentence, i, html_span_player + random_player + html_span_end, 1);
             keys.push({ type: 'player', value: random_player });
+            is_modified = true;
         }
         // change %t by team
         if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "t") {
             const team = Math.random() < 0.5 ? game.team_1 : game.team_2;
             formatted_sentence = replaceAt(formatted_sentence, i, html_span_team + team + html_span_end, 1);
             keys.push({ type: 'team', value: team });
+            is_modified = true;
         }
     }
 
     return {
         original_sentence: original_sentence,
         keys: keys,
-        formatted_sentence: formatted_sentence
+        formatted_sentence: formatted_sentence,
+        is_modified: is_modified
     };
 }
 
@@ -1019,8 +1018,8 @@ function updateSentenceList(mode) {
 }
 
 function displaySipModifierModal() {
-    global.sip_modifier_modal.show();
-    document.getElementById("sip_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
+    global.sentence_modifier_modal.show();
+    document.getElementById("sentence_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
 }
 
 function updateTeamSelectionTable() {
@@ -1118,8 +1117,13 @@ window.addEventListener('beforeunload', function(e) {
     }
 });
 
-function DEBUG_RandomPlayer() {
-    addPlayer("J" + "#" + (game.player_list.length+1) + "_" + (Math.random()*0xFFFF).toString(16));
+function DEBUG_RandomPlayer(amount) {
+    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène"];
+    for (var i=0; i<amount; i++) {
+        var random = Math.round(Math.random() * (groland_names.length-1))
+        addPlayer(groland_names[random], "cookie");
+        groland_names.splice(random, 1);
+    }
 }
 
 function parseBoolean(value) {
@@ -1233,18 +1237,18 @@ function DEBUG_carthage(debug) {
     if (debug == true) {
         document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
         document.getElementById("debug_tools_placeholder").style.display = "block";
-        
+        game.debug = true;
         alert("Bienvenue à Carthage.");
     } else {
         document.getElementById("gamename_menu").innerHTML = "PICOLITO";
         document.getElementById("debug_tools_placeholder").style.display = "none";
-        
+        game.debug = false;
         alert("Retour vers le passé.");
     }
 }
 
 function DEBUG_weakestlink_add5sec() {
-    if (global.dev_mode == true) {
+    if (global.debug == true) {
         var current_time_player = global.audio.weakest_link_amb_60.currentTime;
         var current_time = game.weakest_link.current_time;
     

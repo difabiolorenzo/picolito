@@ -20,7 +20,10 @@ function setLanguageString() {
             quit: "Quitter",
             close: "Fermer",
             next: "Suivant",
+            next_sentence: "Phrase suivante",
             back: "Retour",
+            reinitialize: "Réinitialiser",
+            modify: "Modifier",
             add: "Ajouter",
             enter_player_name: "Entrer le nom du joueur",
             ready: "Prêts?",
@@ -40,6 +43,7 @@ function setLanguageString() {
             player_singular: "joueur",
             player_plural: "joueurs",
             player_menu: "Joueurs",
+            team: "Équipe",
             team_default_name_0: "Equipe 1",
             team_default_name_1: "Equipe 2",
             alert_random_player: "Afficher un joueur aléatoirement",
@@ -47,11 +51,13 @@ function setLanguageString() {
             team_delete: "Supprimer",
             team_change: "Changer",
             team_add_in_team: "Ajouter à ",
+            modal_sentence_modifier: "Modifier la phrase",
             settings: "Paramètres",
             settings_picolo: "Picolo",
             settings_chug: "Culs secs",
             settings_virus: "Virus",
             settings_social_posting: "Publication sur les réseaux sociaux",
+            sip: "Gorgées",
             settings_min_sip: "Gorgées minimum",
             settings_max_sip: "Gorgées maximum",
             settings_display: "Affichage (Picolito & Je n'ai jamais)",
@@ -62,7 +68,7 @@ function setLanguageString() {
             settings_darkmode_dark: "Sombre",
             settings_information_highlight: "Distinction des informations",
             settings_animation: "Animations",
-            settings_portrait_mode: "Mode portrait",
+            settings_landscape_mode: "Mode paysage",
             settings_others: "Autres",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
@@ -167,7 +173,10 @@ function setLanguageString() {
             quit: "Quit",
             close: "Close",
             next: "Next",
+            next_sentence: "Next sentence",
             back: "Back",
+            reinitialize: "Reinitialize",
+            modify: "Modify",
             add: "Add",
             enter_player_name: "Enter player name",
             ready: "Ready?",
@@ -192,6 +201,7 @@ function setLanguageString() {
             player_singular: "player",
             player_plural: "players",
             player_menu: "Players",
+            team: "Team",
             team_default_name_0: "Team 1",
             team_default_name_1: "Team 2",
             alert_random_player: "Display a player randomly",
@@ -199,12 +209,14 @@ function setLanguageString() {
             team_delete: "Delete",
             team_change: "Change",
             team_add_in_team: "Add to ",
+            modal_sentence_modifier: "Modify sentence",
             settings: "Settings",
             settings_picolo: "Picolo",
             settings_language: "Language",
             settings_chug: "Chugs",
             settings_virus: "Virus",
             settings_social_posting: "Posts on socials",
+            sip: "Sip",
             settings_min_sip: "Minimum sip",
             settings_max_sip: "Maximum sip",
             settings_display: "Display (Picolito & Never Have I Ever)",
@@ -214,7 +226,7 @@ function setLanguageString() {
             settings_darkmode_dark: "Dark theme",
             settings_information_highlight: "Information highlight",
             settings_animation: "Animations",
-            settings_portrait_mode: "Portrait mode",
+            settings_landscape_mode: "Landscape mode",
             settings_debug_display: "Recap",
             settings_others: "Other",
             settings_delete_all_cookies: "Delete all cookies",
@@ -374,133 +386,137 @@ function updateHTMLLanguageStrings() {
     // text_menu_lang_ru.innerHTML = global.current_language_strings.lang_ru
     // text_menu_lang_sv.innerHTML = global.current_language_strings.lang_sv
 
-    picolito_settings_collapse_header.innerHTML = global.current_language_strings.settings;
-    text_settings_picolo.innerHTML = global.current_language_strings.settings_picolo;
-    text_settings_chug.innerHTML = global.current_language_strings.settings_chug;
-    text_settings_virus.innerHTML = global.current_language_strings.settings_virus;
-    text_settings_social.innerHTML = global.current_language_strings.settings_social_posting;
-    text_settings_min_sip.innerHTML = global.current_language_strings.settings_min_sip;
-    text_settings_max_sip.innerHTML = global.current_language_strings.settings_max_sip;
-    text_settings_display.innerHTML = global.current_language_strings.settings_display;
-    text_settings_language.innerHTML = global.current_language_strings.settings_language;
-    text_settings_dark_theme.innerHTML = global.current_language_strings.settings_dark_theme;
-    text_settings_darkmode_system.innerHTML = global.current_language_strings.settings_darkmode_system;
-    text_settings_darkmode_light.innerHTML = global.current_language_strings.settings_darkmode_light;
-    text_settings_darkmode_dark.innerHTML = global.current_language_strings.settings_darkmode_dark;
-    text_settings_information_highlight.innerHTML = global.current_language_strings.settings_information_highlight;
-    text_settings_animation.innerHTML = global.current_language_strings.settings_animation;
-    text_settings_landscape.innerHTML = global.current_language_strings.settings_portrait_mode;
-    text_settings_others.innerHTML = global.current_language_strings.settings_others;
-    text_settings_save_settings.innerHTML = global.current_language_strings.settings_save_settings;
-    text_settings_delete_cookies.innerHTML = global.current_language_strings.settings_delete_all_cookies;
-    text_settings_information_signal_bug.innerHTML = global.current_language_strings.settings_report_bug;
+    document.getElementById("text_modal_sentence_modifier").innerHTML = global.current_language_strings.modal_sentence_modifier;
+    document.getElementById("sentence_modifier_modal_next_button").innerHTML = global.current_language_strings.next_sentence;
+    document.getElementById("sentence_modifier_modal_modify_button").innerHTML = global.current_language_strings.modify;
 
-    text_settings_weakest_link.innerHTML = global.current_language_strings.settings_weakest_link;
-    text_settings_weakest_link_tie.innerHTML = global.current_language_strings.settings_weakest_link_tie;
-    text_settings_weakest_link_tie_strongest_link.innerHTML = global.current_language_strings.settings_weakest_link_tie_strongest_link;
-    text_settings_weakest_link_tie_arbitrary.innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
-    text_settings_weakest_link_tie_both.innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
-    text_settings_weakest_link_tie_weakest.innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
-    text_settings_password.innerHTML = global.current_language_strings.settings_password;
-    text_settings_password_amount.innerHTML = global.current_language_strings.settings_password_amount;
-    text_settings_password_style.innerHTML = global.current_language_strings.settings_password_style;
-    // text_settings_password.innerHTML = "Mot de passe";
-    text_input_weakest_link_soundtrack.innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
-    text_settings_weakest_link_max_chain.innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
-    input_weakest_link_max_chain_none.innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
-    text_input_weakest_hide_answer.innerHTML = global.current_language_strings.settings_weakest_hide_answer;
-    text_settings_credits.innerHTML = global.current_language_strings.settings_credits;
+    document.getElementById("picolito_settings_collapse_header").innerHTML = global.current_language_strings.settings;
+    document.getElementById("text_modal_settings").innerHTML = global.current_language_strings.settings;
+    document.getElementById("text_settings_picolo").innerHTML = global.current_language_strings.settings_picolo;
+    document.getElementById("text_settings_chug").innerHTML = global.current_language_strings.settings_chug;
+    document.getElementById("text_settings_virus").innerHTML = global.current_language_strings.settings_virus;
+    document.getElementById("text_settings_social").innerHTML = global.current_language_strings.settings_social_posting;
+    document.getElementById("text_settings_min_sip").innerHTML = global.current_language_strings.settings_min_sip;
+    document.getElementById("text_settings_max_sip").innerHTML = global.current_language_strings.settings_max_sip;
+    document.getElementById("text_settings_display").innerHTML = global.current_language_strings.settings_display;
+    document.getElementById("text_settings_language").innerHTML = global.current_language_strings.settings_language;
+    document.getElementById("text_settings_dark_theme").innerHTML = global.current_language_strings.settings_dark_theme;
+    document.getElementById("text_settings_darkmode_system").innerHTML = global.current_language_strings.settings_darkmode_system;
+    document.getElementById("text_settings_darkmode_light").innerHTML = global.current_language_strings.settings_darkmode_light;
+    document.getElementById("text_settings_darkmode_dark").innerHTML = global.current_language_strings.settings_darkmode_dark;
+    document.getElementById("text_settings_information_highlight").innerHTML = global.current_language_strings.settings_information_highlight;
+    document.getElementById("text_settings_animation").innerHTML = global.current_language_strings.settings_animation;
+    document.getElementById("text_settings_landscape").innerHTML = global.current_language_strings.settings_landscape_mode;
+    document.getElementById("text_settings_others").innerHTML = global.current_language_strings.settings_others;
+    document.getElementById("text_settings_save_settings").innerHTML = global.current_language_strings.settings_save_settings;
+    document.getElementById("text_settings_delete_cookies").innerHTML = global.current_language_strings.settings_delete_all_cookies;
+    document.getElementById("text_settings_information_signal_bug").innerHTML = global.current_language_strings.settings_report_bug;
 
-    text_gamemode_back.innerHTML = global.current_language_strings.back;
-    text_gamemode_classical.innerHTML = global.current_language_strings.gamemode_classical;
-    text_gamemode_sandbox.innerHTML = global.current_language_strings.gamemode_sandbox;
-    text_gamemode_picolo_title.innerHTML = global.current_language_strings.gamemode_picolo_title;
-    text_gamemode_title_default.innerHTML = global.current_language_strings.gamemode_default_title;
-    text_gamemode_default_subtitle_0.innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
-    text_gamemode_default_subtitle_1.innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
-    text_gamemode_title_silly.innerHTML = global.current_language_strings.gamemode_silly_title;
-    text_gamemode_silly_subtitle_0.innerHTML = global.current_language_strings.gamemode_silly_subtitle_0;
-    text_gamemode_silly_subtitle_1.innerHTML = global.current_language_strings.gamemode_silly_subtitle_1;
-    text_gamemode_title_bar.innerHTML = global.current_language_strings.gamemode_bar_title;
-    text_gamemode_bar_subtitle_0.innerHTML = global.current_language_strings.gamemode_bar_subtitle_0;
-    text_gamemode_bar_subtitle_1.innerHTML = global.current_language_strings.gamemode_bar_subtitle_1;
-    text_gamemode_title_hot.innerHTML = global.current_language_strings.gamemode_hot_title;
-    text_gamemode_hot_subtitle_0.innerHTML = global.current_language_strings.gamemode_hot_subtitle_0;
-    text_gamemode_hot_subtitle_1.innerHTML = global.current_language_strings.gamemode_hot_subtitle_1;
-    text_gamemode_title_war.innerHTML = global.current_language_strings.gamemode_war_title;
-    text_gamemode_war_subtitle_0.innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
-    text_gamemode_war_subtitle_1.innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
-    text_gamemode_war_minimum_requierement.innerHTML = global.current_language_strings.gamemode_war_minimum_requierement;
+    document.getElementById("text_settings_weakest_link").innerHTML = global.current_language_strings.settings_weakest_link;
+    document.getElementById("text_settings_weakest_link_tie").innerHTML = global.current_language_strings.settings_weakest_link_tie;
+    document.getElementById("text_settings_weakest_link_tie_strongest_link").innerHTML = global.current_language_strings.settings_weakest_link_tie_strongest_link;
+    document.getElementById("text_settings_weakest_link_tie_arbitrary").innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
+    document.getElementById("text_settings_weakest_link_tie_both").innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
+    document.getElementById("text_settings_weakest_link_tie_weakest").innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
+    document.getElementById("text_settings_password").innerHTML = global.current_language_strings.settings_password;
+    document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
+    document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
+    document.getElementById("text_input_weakest_link_soundtrack").innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
+    document.getElementById("text_settings_weakest_link_max_chain").innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
+    document.getElementById("input_weakest_link_max_chain_none").innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
+    document.getElementById("text_input_weakest_hide_answer").innerHTML = global.current_language_strings.settings_weakest_hide_answer;
+    document.getElementById("text_settings_credits").innerHTML = global.current_language_strings.settings_credits;
 
-    text_gamemode_never_title.innerHTML = global.current_language_strings.gamemode_never_title;
-    text_gamemode_title_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
-    text_gamemode_title_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
-    text_gamemode_title_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
+    document.getElementById("text_gamemode_back").innerHTML = global.current_language_strings.back;
+    document.getElementById("text_gamemode_classical").innerHTML = global.current_language_strings.gamemode_classical;
+    document.getElementById("text_gamemode_sandbox").innerHTML = global.current_language_strings.gamemode_sandbox;
+    document.getElementById("text_gamemode_picolo_title").innerHTML = global.current_language_strings.gamemode_picolo_title;
+    document.getElementById("text_gamemode_title_default").innerHTML = global.current_language_strings.gamemode_default_title;
+    document.getElementById("text_gamemode_default_subtitle_0").innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
+    document.getElementById("text_gamemode_default_subtitle_1").innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
+    document.getElementById("text_gamemode_title_silly").innerHTML = global.current_language_strings.gamemode_silly_title;
+    document.getElementById("text_gamemode_silly_subtitle_0").innerHTML = global.current_language_strings.gamemode_silly_subtitle_0;
+    document.getElementById("text_gamemode_silly_subtitle_1").innerHTML = global.current_language_strings.gamemode_silly_subtitle_1;
+    document.getElementById("text_gamemode_title_bar").innerHTML = global.current_language_strings.gamemode_bar_title;
+    document.getElementById("text_gamemode_bar_subtitle_0").innerHTML = global.current_language_strings.gamemode_bar_subtitle_0;
+    document.getElementById("text_gamemode_bar_subtitle_1").innerHTML = global.current_language_strings.gamemode_bar_subtitle_1;
+    document.getElementById("text_gamemode_title_hot").innerHTML = global.current_language_strings.gamemode_hot_title;
+    document.getElementById("text_gamemode_hot_subtitle_0").innerHTML = global.current_language_strings.gamemode_hot_subtitle_0;
+    document.getElementById("text_gamemode_hot_subtitle_1").innerHTML = global.current_language_strings.gamemode_hot_subtitle_1;
+    document.getElementById("text_gamemode_title_war").innerHTML = global.current_language_strings.gamemode_war_title;
+    document.getElementById("text_gamemode_war_subtitle_0").innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
+    document.getElementById("text_gamemode_war_subtitle_1").innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
+    document.getElementById("text_gamemode_war_minimum_requierement").innerHTML = global.current_language_strings.gamemode_war_minimum_requierement;
 
-    text_gamemode_mix_title.innerHTML = global.current_language_strings.gamemode_mix_title;
-    text_gamemode_mix_subtitle_0.innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
-    text_gamemode_mix_subtitle_1.innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
-    button_update_mix_gamemode_list.innerHTML = global.current_language_strings.next;
+    document.getElementById("text_gamemode_never_title").innerHTML = global.current_language_strings.gamemode_never_title;
+    document.getElementById("text_gamemode_title_never_popular").innerHTML = global.current_language_strings.gamemode_never_popular;
+    document.getElementById("text_gamemode_title_never_hot").innerHTML = global.current_language_strings.gamemode_never_hot;
+    document.getElementById("text_gamemode_title_never_party").innerHTML = global.current_language_strings.gamemode_never_party;
 
-    text_custom_mix_gamemode_picolo_section.innerHTML = global.current_language_strings.gamemode_picolo_title;
-    text_custom_mix_gamemode_default.innerHTML = global.current_language_strings.gamemode_default_title;
-    text_custom_mix_gamemode_silly.innerHTML = global.current_language_strings.gamemode_silly_title;
-    text_custom_mix_gamemode_bar.innerHTML = global.current_language_strings.gamemode_bar_title;
-    text_custom_mix_gamemode_hot.innerHTML = global.current_language_strings.gamemode_hot_title;
-    text_custom_mix_gamemode_never_section.innerHTML = global.current_language_strings.gamemode_never_title;
-    text_custom_mix_gamemode_never_popular.innerHTML = global.current_language_strings.gamemode_never_popular;
-    text_custom_mix_gamemode_never_hot.innerHTML = global.current_language_strings.gamemode_never_hot;
-    text_custom_mix_gamemode_never_party.innerHTML = global.current_language_strings.gamemode_never_party;
+    document.getElementById("text_gamemode_mix_title").innerHTML = global.current_language_strings.gamemode_mix_title;
+    document.getElementById("text_gamemode_mix_subtitle_0").innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
+    document.getElementById("text_gamemode_mix_subtitle_1").innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
+    document.getElementById("button_update_mix_gamemode_list").innerHTML = global.current_language_strings.next;
 
-    text_gamemode_weakest_link_title.innerHTML = global.current_language_strings.gamemode_weakest_link_title;
-    text_gamemode_weakest_link_subtitle_1.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1;
-    text_gamemode_weakest_link_subtitle_2.innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_2;
+    document.getElementById("text_custom_mix_gamemode_picolo_section").innerHTML = global.current_language_strings.gamemode_picolo_title;
+    document.getElementById("text_custom_mix_gamemode_default").innerHTML = global.current_language_strings.gamemode_default_title;
+    document.getElementById("text_custom_mix_gamemode_silly").innerHTML = global.current_language_strings.gamemode_silly_title;
+    document.getElementById("text_custom_mix_gamemode_bar").innerHTML = global.current_language_strings.gamemode_bar_title;
+    document.getElementById("text_custom_mix_gamemode_hot").innerHTML = global.current_language_strings.gamemode_hot_title;
+    document.getElementById("text_custom_mix_gamemode_never_section").innerHTML = global.current_language_strings.gamemode_never_title;
+    document.getElementById("text_custom_mix_gamemode_never_popular").innerHTML = global.current_language_strings.gamemode_never_popular;
+    document.getElementById("text_custom_mix_gamemode_never_hot").innerHTML = global.current_language_strings.gamemode_never_hot;
+    document.getElementById("text_custom_mix_gamemode_never_party").innerHTML = global.current_language_strings.gamemode_never_party;
 
-    text_gamemode_title_password.innerHTML = global.current_language_strings.gamemode_title_password;
-    text_gamemode_password_subtitle_1.innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
+    document.getElementById("text_gamemode_weakest_link_title").innerHTML = global.current_language_strings.gamemode_weakest_link_title;
+    document.getElementById("text_gamemode_weakest_link_subtitle_1").innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1;
+    document.getElementById("text_gamemode_weakest_link_subtitle_2").innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_2;
+
+    document.getElementById("text_gamemode_title_password").innerHTML = global.current_language_strings.gamemode_title_password;
+    document.getElementById("text_gamemode_password_subtitle_1").innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
     
-    text_gamemode_title_tenzi.innerHTML = global.current_language_strings.gamemode_title_tenzi;
-    text_gamemode_tenzi_subtitle_1.innerHTML = global.current_language_strings.gamemode_tenzi_subtitle_1;
+    document.getElementById("text_gamemode_title_tenzi").innerHTML = global.current_language_strings.gamemode_title_tenzi;
+    document.getElementById("text_gamemode_tenzi_subtitle_1").innerHTML = global.current_language_strings.gamemode_tenzi_subtitle_1;
 
-    text_team_selection_back.innerHTML = global.current_language_strings.back;
-    text_team_selection_next.innerHTML = global.current_language_strings.next;
+    document.getElementById("text_team_selection_back").innerHTML = global.current_language_strings.back;
+    document.getElementById("text_team_selection_next").innerHTML = global.current_language_strings.next;
 
-    text_game_quit_topbar.innerHTML = global.current_language_strings.quit;
-    text_game_player_menu.innerHTML = global.current_language_strings.player_menu;
-    text_game_ready.innerHTML = global.current_language_strings.ready;
-    text_game_start_button.innerHTML = global.current_language_strings.start;
-    text_game_endgame.innerHTML = global.current_language_strings.end_game;
-    text_game_quit.innerHTML = global.current_language_strings.quit;
-    text_game_restart.innerHTML = global.current_language_strings.restart;
-    text_game_restart_topbar.innerHTML = global.current_language_strings.restart;
-    ingame_player_add.innerHTML = global.current_language_strings.add;
-    ingame_player_input.placeholder = global.current_language_strings.enter_player_name;
-    manu_player_input.placeholder = global.current_language_strings.enter_player_name;
-    text_menu_add.title = global.current_language_strings.add;
+    document.getElementById("text_game_quit_topbar").innerHTML = global.current_language_strings.quit;
+    document.getElementById("text_game_player_menu").innerHTML = global.current_language_strings.player_menu;
+    document.getElementById("text_game_ready").innerHTML = global.current_language_strings.ready;
+    document.getElementById("text_game_start_button").innerHTML = global.current_language_strings.start;
+    document.getElementById("text_game_endgame").innerHTML = global.current_language_strings.end_game;
+    document.getElementById("text_game_quit").innerHTML = global.current_language_strings.quit;
+    document.getElementById("text_game_restart").innerHTML = global.current_language_strings.restart;
+    document.getElementById("text_game_restart_topbar").innerHTML = global.current_language_strings.restart;
+    document.getElementById("ingame_player_add").innerHTML = global.current_language_strings.add;
+    document.getElementById("ingame_player_input").placeholder = global.current_language_strings.enter_player_name;
+    document.getElementById("manu_player_input").placeholder = global.current_language_strings.enter_player_name;
+    document.getElementById("text_menu_add").title = global.current_language_strings.add;
     
-    text_weakest_link_rule_header.innerHTML = global.current_language_strings.weakest_link_rule_header;
-    text_weakest_link_rule_1.innerHTML = global.current_language_strings.weakest_link_rule_1;
-    text_weakest_link_rule_3.innerHTML = global.current_language_strings.weakest_link_rule_3;
-    text_weakest_link_rule_2.innerHTML = global.current_language_strings.weakest_link_rule_2;
-    text_weakest_link_rule_4.innerHTML = global.current_language_strings.weakest_link_rule_4;
+    document.getElementById("text_weakest_link_rule_header").innerHTML = global.current_language_strings.weakest_link_rule_header;
+    document.getElementById("text_weakest_link_rule_1").innerHTML = global.current_language_strings.weakest_link_rule_1;
+    document.getElementById("text_weakest_link_rule_3").innerHTML = global.current_language_strings.weakest_link_rule_3;
+    document.getElementById("text_weakest_link_rule_2").innerHTML = global.current_language_strings.weakest_link_rule_2;
+    document.getElementById("text_weakest_link_rule_4").innerHTML = global.current_language_strings.weakest_link_rule_4;
 
-    text_password_rule_header.innerHTML = global.current_language_strings.password_rule_header;
-    text_password_rule_1.innerHTML = global.current_language_strings.password_rule_1;
-    text_password_rule_2.innerHTML = global.current_language_strings.password_rule_2;
-    text_password_rule_option.innerHTML = global.current_language_strings.settings_password_amount;
+    document.getElementById("text_password_rule_header").innerHTML = global.current_language_strings.password_rule_header;
+    document.getElementById("text_password_rule_1").innerHTML = global.current_language_strings.password_rule_1;
+    document.getElementById("text_password_rule_2").innerHTML = global.current_language_strings.password_rule_2;
+    document.getElementById("text_password_rule_option").innerHTML = global.current_language_strings.settings_password_amount;
 
-    text_gamemode_menu.title = global.current_language_strings.gamemode;
-    ingame_player_team_1.innerHTML = global.current_language_strings.team_add_in_team + " E1";
-    ingame_player_team_2.innerHTML = global.current_language_strings.team_add_in_team + " E2";
+    document.getElementById("text_gamemode_menu").title = global.current_language_strings.gamemode;
+    document.getElementById("ingame_player_team_1").innerHTML = global.current_language_strings.team_add_in_team + " E1";
+    document.getElementById("ingame_player_team_2").innerHTML = global.current_language_strings.team_add_in_team + " E2";
     
-    ingame_weakest_link_text_sip.innerHTML = global.current_language_strings.weakest_link_sip;
-    ingame_weakest_link_text_bank.innerHTML = global.current_language_strings.weakest_link_bank;
-    ingame_weakest_link_text_time.innerHTML = global.current_language_strings.weakest_link_time;
-    ingame_weakest_link_current_button_correct.innerHTML = global.current_language_strings.weakest_link_correct;
-    ingame_weakest_link_current_button_wrong.innerHTML = global.current_language_strings.weakest_link_wrong;
-    ingame_weakest_link_current_button_bank.innerHTML = global.current_language_strings.weakest_link_bank;
+    document.getElementById("ingame_weakest_link_text_sip").innerHTML = global.current_language_strings.weakest_link_sip;
+    document.getElementById("ingame_weakest_link_text_bank").innerHTML = global.current_language_strings.weakest_link_bank;
+    document.getElementById("ingame_weakest_link_text_time").innerHTML = global.current_language_strings.weakest_link_time;
+    document.getElementById("ingame_weakest_link_current_button_correct").innerHTML = global.current_language_strings.weakest_link_correct;
+    document.getElementById("ingame_weakest_link_current_button_wrong").innerHTML = global.current_language_strings.weakest_link_wrong;
+    document.getElementById("ingame_weakest_link_current_button_bank").innerHTML = global.current_language_strings.weakest_link_bank;
 
-    text_weakest_link_next_player_prepare_voting.innerHTML = global.current_language_strings.weakest_link_prepare_vote;
-    button_weakest_link_next_vote.innerHTML = global.current_language_strings.next;
-    text_weakest_link_current_player_voting.innerHTML = global.current_language_strings.weakest_link_vote_against;
+    document.getElementById("text_weakest_link_next_player_prepare_voting").innerHTML = global.current_language_strings.weakest_link_prepare_vote;
+    document.getElementById("button_weakest_link_next_vote").innerHTML = global.current_language_strings.next;
+    document.getElementById("text_weakest_link_current_player_voting").innerHTML = global.current_language_strings.weakest_link_vote_against;
 }

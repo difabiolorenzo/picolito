@@ -33,6 +33,14 @@
     --password-shake-distance: 1vw;
     --tenzi-background: #ff9900;
 }
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 100 700;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v226/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2) format('woff2');
+}
+
 .page {
     padding: 5vw;
     /* width: 100vw; */
@@ -40,7 +48,7 @@
     /* background-color: var(--picolito-background); */
 }
 .card-body .btn{width: 100%;}
-#game {transition: background-color 0.75s ease;background-color: var(--orange);}
+#game {transition: background-color 0.5s ease;background-color: var(--orange);}
 #game_content {
     text-align: center;
     color:white;
@@ -76,7 +84,7 @@ p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame {
     -webkit-user-select:none;
     /* text-size-adjust: auto; */
     max-height: 60vh;
-    line-height: 2.6rem;
+    line-height: 2.75rem;
 }
 
 p#ingame_sentence {
@@ -166,7 +174,7 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     border: unset;
 }
 
-.dark_mode span.span_player, .dark_mode span.span_sip, .dark_mode span.span_team {background-color: #00000040;}
+.dark_mode span.span_highlight {background-color: #00000040;}
 .dark_mode span.span_player {color: var(--picolo_player);}
 .dark_mode span.span_sip {color: var(--picolo_sip);}
 .dark_mode span.span_team {color: var(--picolo_team);}
@@ -176,6 +184,7 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     background-color: var(--dark_mode_gray);
     border-color: black !important;
     color:white;
+    font-size: x-large;
 }
 
 .dark_mode :disabled {
@@ -184,11 +193,25 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     opacity:0.5;
 }
 
-span.span_player, span.span_sip, span.span_team {padding: 0.1rem 0.75rem;border-radius: 0.25rem;background-color: #00000080;text-align: center;}
+span.span_player, span.span_sip, span.span_team {
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    background-color: #00000080;
+    text-align: center;
+}
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_team);}
 
+#sentence_modifier_modal_sentence {
+    padding: 1rem;
+    font-size: larger;
+    max-height: 25rem;
+    overflow-y: auto;
+    font-weight: bold;
+}
+
+.dark_mode #sentence_modifier_modal_sentence span.span_highlight {background-color: #000000b0;}
 
 div#sentence_list {margin: 5vh;overflow: scroll;height: 70vh;}
 
@@ -833,11 +856,6 @@ div#password_recap {
 div#ingame_weakest_link_voting_area {
     display: flex;
 }
-
-.card#settings-card:not(:has(#picolito_settings_collapse.collapse.show, #picolito_settings_collapse.collapsing)) {
-    /* border: 0px solid transparent; */
-    display: none;
-}
     
 #search-button svg {
   width: 25px;
@@ -952,4 +970,8 @@ progress {
 
 div#tenzi_dice.dice_hint {
     color: purple;
+}
+
+#sentence_modifier_modal_sentence span.span_highlight {
+    background-color: #000000d4;
 }

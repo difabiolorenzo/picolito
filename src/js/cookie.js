@@ -48,12 +48,12 @@ function storeSettingsCookie() {
     var settings = [
         game.display_color_indicator,
         game.animation,
-        game.chug_enabled,
-        game.virus_enabled,
-        game.social_posting_enabled,
+        game.picolito.chug_enabled,
+        game.picolito.virus_enabled,
+        game.picolito.social_posting_enabled,
         game.sip.min,
         game.sip.max,
-        game.chug_amount,
+        game.picolito.chug_amount,
         global.dark_mode,
         global.accept_cookie,
         global.remind_warning_panel,
@@ -92,12 +92,12 @@ function setSettingsValuesByCookies() {
 
         game.display_color_indicator = JSON.parse(cookie_settings_value[0]);
         game.animation = JSON.parse(cookie_settings_value[1]);
-        game.chug_enabled = JSON.parse(cookie_settings_value[2]);
-        game.virus_enabled = JSON.parse(cookie_settings_value[3]);
-        game.social_posting_enabled = JSON.parse(cookie_settings_value[4]);
+        game.picolito.chug_enabled = JSON.parse(cookie_settings_value[2]);
+        game.picolito.virus_enabled = JSON.parse(cookie_settings_value[3]);
+        game.picolito.social_posting_enabled = JSON.parse(cookie_settings_value[4]);
         game.sip.min = parseInt(cookie_settings_value[5]);
         game.sip.max = parseInt(cookie_settings_value[6]);
-        game.chug_amount = parseInt(cookie_settings_value[7]);
+        game.picolito.chug_amount = parseInt(cookie_settings_value[7]);
         global.dark_mode = cookie_settings_value[8];
         global.accept_cookie = parseBoolean(cookie_settings_value[9]);
         global.remind_warning_panel = parseBoolean(cookie_settings_value[10]);
@@ -117,12 +117,12 @@ function displayCookieList() {
     var settings_name = [
         "game.display_color_indicator",
         "game.animation",
-        "game.chug_enabled",
-        "game.virus_enabled",
-        "game.social_posting_enabled",
+        "game.picolito.chug_enabled",
+        "game.picolito.virus_enabled",
+        "game.picolito.social_posting_enabled",
         "game.sip.min",
         "game.sip.max",
-        "game.chug_amount",
+        "game.picolito.chug_amount",
         "global.dark_mode",
         "global.accept_cookie",
         "global.remind_warning_panel",

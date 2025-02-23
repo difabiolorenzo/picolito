@@ -143,10 +143,10 @@ function randomPercentage() {
 
 function getRandomColor() {
     var available_color_probability = [];
-    if (game.chug_enabled == true && game.chug_sentence_id_start_min <= game.cycle_id && game.chug_remaining > 0 && game.gamemode != "war") {
+    if (game.picolito.chug_enabled == true && game.picolito.chug_sentence_id_start_min <= game.cycle_id && game.chug_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["red", game.filter.color_probability.red])
     }
-    if (game.virus_enabled == true && game.virus_sentence_id_start_min <= game.cycle_id && game.virus_remaining > 0 && game.gamemode != "war") {
+    if (game.picolito.virus_enabled == true && game.picolito.virus_sentence_id_start_min <= game.cycle_id && game.picolito.virus_remaining > 0 && game.gamemode != "war") {
         available_color_probability.push(["yellow", game.filter.color_probability.yellow])
     }
     if (game.cycle_id < game.sentence_amount - 2) {
@@ -229,7 +229,7 @@ function getRandomType() {
         for (var i in type_by_gamemode) {
             for (var j in type_by_color) {
                 if (type_by_gamemode[i] == type_by_color[j]) {
-                    if (game.social_posting_enabled == false && type_by_gamemode[i] == 15) {
+                    if (game.picolito.social_posting_enabled == false && type_by_gamemode[i] == 15) {
                         console.log(`SOCIAL POSTING DISABLED`)
                     } else {
                         color_gamemode_matching_type.push(type_by_gamemode[i]);
@@ -240,13 +240,12 @@ function getRandomType() {
 
         var potential_type = []
         for (var i = 0; i < color_gamemode_matching_type.length; i++) {
-            var checking_cg_matching_type = color_gamemode_matching_type[i];
-            var checking_mp_by_gamemode = max_player_number_by_gamemode[checking_cg_matching_type - 1];
-            if (checking_mp_by_gamemode.length != 0) {
-                for (var j = 0; i < checking_mp_by_gamemode.length; i++) {
-                    console.log(checking_mp_by_gamemode[j], "<=", game.max_player_number)
-                    if (checking_mp_by_gamemode[j] <= game.max_player_number) {
-                        potential_type.push(checking_cg_matching_type)
+            var checking_color_gamemode_matching_type = color_gamemode_matching_type[i];
+            var checking_max_player_by_gamemode = max_player_number_by_gamemode[checking_color_gamemode_matching_type - 1];
+            if (checking_max_player_by_gamemode.length != 0) {
+                for (var j = 0; i < checking_max_player_by_gamemode.length; i++) {
+                    if (checking_max_player_by_gamemode[j] <= game.max_player_number) {
+                        potential_type.push(checking_color_gamemode_matching_type)
                     }
                 }
             }
@@ -295,6 +294,7 @@ function generatePicoloSentences(use_mix_gamemode_data) {
         formatted_sentence = text_replacer_data.formatted_sentence;
         original_sentence = text_replacer_data.original_sentence;
         sentence_keys = text_replacer_data.keys;
+        is_modified_sentence = text_replacer_data.is_modified;
 
         pack_name = request[random_int].pack_name;
         if (request[random_int].key != "") { key = request[random_int].key; }
@@ -346,8 +346,8 @@ function generatePicoloSentences(use_mix_gamemode_data) {
             getRandomSentence();
 
             if (color == "yellow") {
-                game.virus_remaining--;
-                var random_virus_end = Math.floor(Math.random() * (game.virus_end_max - game.virus_end_min)) + game.virus_end_min;
+                game.picolito.virus_remaining--;
+                var random_virus_end = Math.floor(Math.random() * (game.picolito.virus_end_max - game.picolito.virus_end_min)) + game.picolito.virus_end_min;
 
                 console.log("game_cycle end virus", random_virus_end);
                 console.log(formatted_sentence, "key", key, "type", type);
@@ -396,7 +396,6 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
         game.database().filter({ ___id: database_id }).remove();
         console.log(database_id, pack_name, "never_done removed")
     }
-
     if (use_mix_gamemode_data == true) {
         // Choix aleatoire du mode de jeu selon la liste des modes choisi
         var random_never_done_mix_gamemode_list = game.mix_gamemode_list_never_done[Math.floor(Math.random() * game.mix_gamemode_list_never_done.length)];
@@ -411,23 +410,91 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
     setBackgroundStyleColor("never_done");
 }
 
-function generateWeakestLink() {
-    function getRandomSentence() {
-        var random_int = Math.floor(Math.random() * Math.floor(request.length));
-        database_id = request[random_int].___id;
-        formatted_sentence = request[random_int].text;
-        answer = request[random_int].answer;
-        pack_name = request[random_int].pack_name;
-        if (request[random_int].key != "") { key = request[random_int].key; }
-
-        //remove sentence from db
-        game.database().filter({ ___id: database_id }).remove();
+function userActionClickSentence() {
+    if (game.started == true && game.gamemode_type == "text") {
+        if (global.debug == true) {
+            showSentenceModifierModal();
+        } else {
+            nextSentence();
+        }
     }
+}
 
-    var request = game.database().get();
-    getRandomSentence()
+function showSentenceModifierModal() {
+    if (game.sentence_history[game.cycle_id].sentence_keys.length > 0) {
+        global.sentence_modifier_modal.show();
+        document.getElementById("sentence_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
+        document.getElementById("sentence_modifier_modal_value_placeholder").innerHTML = "";
+        
+        //copie de des clés de la phrase actuelle
+        game.sentence_modifier = JSON.parse(JSON.stringify(game.sentence_history[game.cycle_id].sentence_keys));
+        
+        var key = game.sentence_history[game.cycle_id].sentence_keys;
+        var element = "";
+        for (var i=0; i < game.sentence_history[game.cycle_id].sentence_keys.length; i++) {
+            if (key[i].type == "player") {
+                var element_label_text = global.current_language_strings.player_menu
+                var option_element = ""
+                for (var j=0; j < game.player_list.length; j++) {
+                    var selected = ""
+                    if (game.player_list[j] == key[i].value) {
+                        selected = "selected"
+                    }
+                    option_element += `<option ${selected} value="${game.player_list[j]}">${game.player_list[j]}</option>`;
+                }
+            }
+            if (key[i].type == "sip") {
+                var element_label_text = global.current_language_strings.sip
+                var option_element = ""
+                for (var j=game.sip.min; j <= game.sip.max; j++) {
+                    var selected = ""
+                    if (j == key[i].value) {
+                        selected = "selected"
+                    }
+                    option_element += `<option ${selected} value="${j}">${j}</option>`;
+                }
+            }
+            if (key[i].type == "team") {
+                var element_label_text = global.current_language_strings.team
+                if (key[i].value == game.team_1) { team_1_selected = "selected"} else {team_1_selected = ""}
+                if (key[i].value == game.team_2) { team_2_selected = "selected"} else {team_2_selected = ""}
+                var option_element = ""
+                option_element += `<option ${team_1_selected} value="${game.team_1}">${game.team_1}</option>`;
+                option_element += `<option ${team_2_selected} value="${game.team_2}">${game.team_2}</option>`;
+            }
 
-setBackgroundStyleColor("weakest_link");
-    displaySentence(formatted_sentence, "weakest_link", pack_name, answer);
-    addHistoryItem(0, database_id, original_sentence, sentence_keys, formatted_sentence, undefined, undefined, "dark_blue", pack_name, answer);
+            element += `<div class="form-group">
+            <label for="sentence_modifier_modal_player_${i}">${element_label_text}</label>
+            <div class="input-group mb-3">
+            <select class="form-control col-md-6" id="sentence_modifier_modal_player_${i}" name="sentence_modifier_modal_player_${i}" onchange="game.sentence_modifier[${i}].value = this.value">`;
+            element += option_element;
+            element += `</select>
+                        <div class="input-group-append"><button class="btn btn-outline-secondary"
+                            onclick="game.sentence_modifier[${i}].value = '${key[i].value}'; document.getElementById('sentence_modifier_modal_player_${i}').value = '${key[i].value}'"
+                            type="button">${global.current_language_strings.reinitialize}</button></div>
+                        </div></div>`;
+        }
+        document.getElementById("sentence_modifier_modal_value_placeholder").innerHTML = element;
+    } else {
+        nextSentence();
+    }
+}
+
+function sentenceModifierModalResetDefaultValue(value) {
+    console.log(value.parentElement)
+}
+
+function rewriteSentence() {
+    // Remplace les valeur actuelle de game.sentence_history[game.cycle_id].sentence_keys par les nouvelles valeurs de sentence_modifier
+    // Puis actualise la phrase en la passant dans textReplacer pour obtenir la phrase modifiée
+    // Affiche la nouvelle phrase
+    function replaceObjectContent(target, source) {
+        Object.keys(target).forEach(key => {
+            delete target[key];
+        });
+        Object.assign(target, source);
+    }
+    replaceObjectContent(game.sentence_history[game.cycle_id].sentence_keys, game.sentence_modifier);
+    game.sentence_history[game.cycle_id].formatted_sentence = applyTextModifiers(game.sentence_history[game.cycle_id].original_sentence, game.sentence_history[game.cycle_id].sentence_keys)
+    document.getElementById("ingame_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence
 }

@@ -16,15 +16,15 @@
                 
         <link rel="stylesheet" href="./src/css/radium-1.0.css">
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" media="print" onload="this.media='all'" crossorigin/>
 
         <script type="text/javascript" src="./src/js/taffy/taffy.js"></script>
 
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
-        <link rel="stylesheet" type="text/css" href="./src/css/main_landscape.css">
+        <link rel="stylesheet" type="text/css" href="./src/css/landscape.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/cookie.js"></script>
-        <script type="text/javascript" src="./src/js/core_engine.js"></script>
+        <script type="text/javascript" src="./src/js/picolito.js"></script>
         <script type="text/javascript" src="./src/js/weakest_link.js"></script>
         <script type="text/javascript" src="./src/js/password.js"></script>
         <script type="text/javascript" src="./src/js/tenzi.js"></script>
@@ -90,29 +90,36 @@
                             <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
                                 <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
                                 <option id="text_menu_lang_en" value="en">text_menu_lang_en</option>
-                                <!-- <option id="text_menu_lang_da" value="da">Danois</option>
-                                <option id="text_menu_lang_de" value="de">Allemand</option>
-                                <option id="text_menu_lang_es"value="es">Espagnol</option>
-                                <option id="text_menu_lang_fi" value="fi">Finlandais</option>
-                                <option id="text_menu_lang_it" value="it">Italien</option>
-                                <option id="text_menu_lang_ja" value="ja">Japonais</option>
-                                <option id="text_menu_lang_ko" value="ko">Coréen</option>
-                                <option id="text_menu_lang_nb" value="nb">Novégien</option>
-                                <option id="text_menu_lang_nl" value="nl">Néerlandais</option>
-                                <option id="text_menu_lang_pt" value="pt">Portugais</option>
-                                <option id="text_menu_lang_ru" value="ru">Russe</option>
-                                <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv????-->
+                                <!-- <option id="text_menu_lang_da" value="da">text_menu_lang_da</option> -->
+                                <!-- <option id="text_menu_lang_de" value="de">text_menu_lang_de</option> -->
+                                <!-- <option id="text_menu_lang_es"value="es">text_menu_lang_es</option> -->
+                                <!-- <option id="text_menu_lang_fi" value="fi">text_menu_lang_fi</option> -->
+                                <!-- <option id="text_menu_lang_it" value="it">text_menu_lang_it</option> -->
+                                <!-- <option id="text_menu_lang_ja" value="ja">text_menu_lang_ja</option> -->
+                                <!-- <option id="text_menu_lang_ko" value="ko">text_menu_lang_ko</option> -->
+                                <!-- <option id="text_menu_lang_nb" value="nb">text_menu_lang_nb</option> -->
+                                <!-- <option id="text_menu_lang_nl" value="nl">text_menu_lang_nl</option> -->
+                                <!-- <option id="text_menu_lang_pt" value="pt">text_menu_lang_pt</option> -->
+                                <!-- <option id="text_menu_lang_ru" value="ru">text_menu_lang_ru</option> -->
+                                <!-- <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv??? -->
                             </select>
                         </div>
                     </div>
-                    <div id="button-group-toggle-settings" class="btn-group-toggle" data-toggle="buttons">
+                    <div id="button-group-toggle-settings" class="btn-group-toggle" data-bs-toggle="modal" data-bs-target="#settings_modal">
                         <div class="form-check">
-                            <button class="btn card-title btn-primary" id="picolito_settings_collapse_header" 
-                            onclick="$('#picolito_settings_collapse').collapse('toggle')">picolito_settings_collapse_header</button>
+                            <button class="btn card-title btn-primary" id="picolito_settings_collapse_header">picolito_settings_collapse_header</button>
                         </div>
-                        <div id="settings-card" class="card">
-                            <div id="picolito_settings_collapse" class="collapse" aria-labelledby="picolito_settings_collapse_header" data-parent="#accordion">
-                                <div class="card-body card-body d-flex flex-wrap justify-content-start">
+                    </div>
+                    <div class="modal fade" id="settings_modal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="text_modal_settings">text_modal_settings</h5>
+                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body d-flex flex-wrap justify-content-start">
                                     <div class="col-md-6 form-check">
                                         <h6 id="text_settings_display">text_settings_display</h6>
                                         <div class="form-group">
@@ -140,15 +147,15 @@
                                         <h6 id="text_settings_picolo">text_settings_picolo</h6>
                                         <div class="form-check form-switch">
                                             <label class="form-check-label" id="text_settings_chug">text_settings_chug</label>
-                                            <input class="form-check-input" id="input_chug_enabled" type="checkbox" checked onclick="game.chug_enabled = this.checked">
+                                            <input class="form-check-input" id="input_chug_enabled" type="checkbox" checked onclick="game.picolito.chug_enabled = this.checked">
                                         </div>
                                         <div class="form-check form-switch">
                                             <label class="form-check-label" id="text_settings_virus">text_settings_virus</label>
-                                            <input class="form-check-input" id="input_virus_enabled" type="checkbox" checked onclick="game.virus_enabled = this.checked">
+                                            <input class="form-check-input" id="input_virus_enabled" type="checkbox" checked onclick="game.picolito.virus_enabled = this.checked">
                                         </div>
                                         <div class="form-check form-switch">
                                             <label class="form-check-label" id="text_settings_social">text_settings_social</label>
-                                            <input class="form-check-input" id="input_social_posting_enabled" type="checkbox" checked onclick="game.social_posting_enabled = this.checked">
+                                            <input class="form-check-input" id="input_social_posting_enabled" type="checkbox" checked onclick="game.picolito.social_posting_enabled = this.checked">
                                         </div>
                                         <div class="form-group">
                                             <label id="text_settings_min_sip" for="input_sip_min">text_settings_min_sip</label>
@@ -287,7 +294,7 @@
                     <h4 id="text_settings_others">text_settings_others</h4>
                     <div id="debug_tools_placeholder" style="display: none;">
                         <div>
-                            <button class="btn btn-secondary" onclick="DEBUG_RandomPlayer()">DEBUG_RandomPlayer</button>
+                            <button class="btn btn-secondary" onclick="DEBUG_RandomPlayer(1)">DEBUG_RandomPlayer(1)</button>
                         </div>
                         <div id="herge_bt_display_cookies">
                             <button class="btn btn-secondary" id="herge_bt_display_cookies_link" href="#" onclick="displayCookieList()">herge_bt_display_cookies</button>
@@ -437,7 +444,7 @@
                 <div>
                     <h6 id="text_gamemode_sandbox">text_gamemode_sandbox</h6>
                     <div class="card">
-                        <button disabled class="btn card-title btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                        <button class="btn card-title btn-primary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
                             <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                             <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
                             <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
@@ -471,7 +478,6 @@
                     <th scope="col"></th>
                     <th scope="col"><input type="text" id="input_team_1" onchange="game.team_1 = this.value" class="input_name" value=""></th>
                     <th scope="col"><input type="text" id="input_team_2" onchange="game.team_2 = this.value" class="input_name" value=""></th>
-                    <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -493,18 +499,24 @@
 
                 <div id="ingame_content">
                     <!-- <div id="ingame_text" onclick="nextSentence()"> -->
-                    <div class="modal fade" id="sip_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="sentence_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h5 class="modal-title" id="text_modal_sip_modifier">text_modal_sip_modifier</h5>
+                                <h5 class="modal-title" id="text_modal_sentence_modifier">text_modal_sentence_modifier</h5>
                                 <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p id="sip_modifier_modal_sentence">sentence</p>
-                                    <p>sentence</p>
+                                    <p id="sentence_modifier_modal_sentence"></p>
+                                    <div class="text-start">
+                                        <div id="sentence_modifier_modal_value_placeholder"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" id="sentence_modifier_modal_next_button" data-bs-dismiss="modal" onclick="nextSentence()">sentence_modifier_modal_next_button</button>
+                                    <button type="button" class="btn btn-primary" id="sentence_modifier_modal_modify_button" data-bs-dismiss="modal" onclick="rewriteSentence()">sentence_modifier_modal_modify_button</button>
                                 </div>
                             </div>
                         </div>
@@ -565,7 +577,7 @@
                     </div>
                     <div id="ingame_text">
                         <h1 id="text_ingame_title"></h1>
-                        <p id="ingame_sentence"></p>
+                        <p id="ingame_sentence" onclick="userActionClickSentence()"></p>
                         <p id="ingame_answer" onclick="weakestLinkDisplayAnswer()"></p>
                     </div>
                     <div id="ingame_weakest_link" style="display:none">
