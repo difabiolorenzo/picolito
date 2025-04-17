@@ -13,8 +13,9 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-                
-        <link rel="stylesheet" href="./src/css/radium-1.0.css">
+           
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="./src/css/radium.css">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" media="print" onload="this.media='all'" crossorigin/>
 
@@ -32,7 +33,7 @@
     </head>
     <body onload="init()" class="bright_mode">
         <noscript>Javascript est désactivé.</noscript>
-        <div class="modal fade" id="safety_and_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal_safety_and_cookie_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -64,230 +65,395 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modal_modal_player_menu" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content p-2">
+
+                    <!-- <div>
+                        <h3>Équipe 1</h3>
+                        <ul id="team_1_list" class="list-group"></ul>
+                    </div>
+                    <div>
+                        <h3>Équipe 2</h3>
+                        <ul id="team_2_list" class="list-group"></ul>
+                    </div> -->
+
+                    <div id="menu_player_list"></div>
+                    <div class="input-group">
+                        <input id="menu_player_input" type="text" class="col-md-9 form-control" maxlength="50">
+                        <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(menu_player_input.value)">
+                            <i class="bi bi-person-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="settings_modal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="text_modal_settings">text_modal_settings</h5>
+                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body d-flex flex-wrap justify-content-start">
+
+                        <div class="col-md-6 form-check">
+                            <h6 id="text_settings_language">text_settings_language</h6>
+                            <div class="form-group">
+                                <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
+                                    <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
+                                    <option id="text_menu_lang_en" value="en">text_menu_lang_en</option>
+                                    <!-- <option id="text_menu_lang_da" value="da">text_menu_lang_da</option> -->
+                                    <!-- <option id="text_menu_lang_de" value="de">text_menu_lang_de</option> -->
+                                    <!-- <option id="text_menu_lang_es"value="es">text_menu_lang_es</option> -->
+                                    <!-- <option id="text_menu_lang_fi" value="fi">text_menu_lang_fi</option> -->
+                                    <!-- <option id="text_menu_lang_it" value="it">text_menu_lang_it</option> -->
+                                    <!-- <option id="text_menu_lang_ja" value="ja">text_menu_lang_ja</option> -->
+                                    <!-- <option id="text_menu_lang_ko" value="ko">text_menu_lang_ko</option> -->
+                                    <!-- <option id="text_menu_lang_nb" value="nb">text_menu_lang_nb</option> -->
+                                    <!-- <option id="text_menu_lang_nl" value="nl">text_menu_lang_nl</option> -->
+                                    <!-- <option id="text_menu_lang_pt" value="pt">text_menu_lang_pt</option> -->
+                                    <!-- <option id="text_menu_lang_ru" value="ru">text_menu_lang_ru</option> -->
+                                    <!-- <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv??? -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-check">
+                            <h6 id="text_settings_display">text_settings_display</h6>
+                            <div class="form-group">
+                                <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
+                                <select class="form-control col-md-6" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
+                                    <option id="text_settings_darkmode_system" value="system">text_settings_darkmode_system</option>
+                                    <option id="text_settings_darkmode_light" value="bright">text_settings_darkmode_light</option>
+                                    <option id="text_settings_darkmode_dark" value="dark">text_settings_darkmode_dark</option>
+                                </select>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
+                                <label id="text_settings_information_highlight" class="form-check-label">text_settings_information_highlight</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_animation">text_settings_animation</label>
+                                <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">  
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_landscape">text_settings_landscape</label>
+                                <input class="form-check-input" id="input_settings_landscape" type="checkbox" checked onclick="changePortraitModeSettings(this.checked)">
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-check">
+                            <h6 id="text_settings_picolo">text_settings_picolo</h6>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_chug">text_settings_chug</label>
+                                <input class="form-check-input" id="input_chug_enabled" type="checkbox" checked onclick="game.picolito.chug_enabled = this.checked">
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_virus">text_settings_virus</label>
+                                <input class="form-check-input" id="input_virus_enabled" type="checkbox" checked onclick="game.picolito.virus_enabled = this.checked">
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_social">text_settings_social</label>
+                                <input class="form-check-input" id="input_social_posting_enabled" type="checkbox" checked onclick="game.picolito.social_posting_enabled = this.checked">
+                            </div>
+                            <div class="form-group">
+                                <label id="text_settings_min_sip" for="input_sip_min">text_settings_min_sip</label>
+                                <select class="form-control col-md-6" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label id="text_settings_max_sip" for="input_sip_max">text_settings_max_sip</label>
+                                <select class="form-control col-md-6" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-check">
+                            <h6 id="text_settings_weakest_link">text_settings_weakest_link</h6>
+                            <div class="form-group">
+                                <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
+                                <select class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
+                                    <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
+                                    <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
+                                    <option id="text_settings_weakest_link_tie_both" value="both">both</option>
+                                    <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
+                                <select class="form-control col-md-6" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
+                                    <option value="none" id="input_weakest_link_max_chain_none">none</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</label>
+                                <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</label>
+                                <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
+                            </div>
+                            <!-- <h6 id="text_settings_password">text_settings_password</h6> -->
+                            <!-- <div class="form-group">
+                                <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
+                                <select disabled class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
+                                    <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
+                                    <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
+                                    <option id="text_settings_weakest_link_tie_both" value="both">both</option>
+                                    <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
+                                <select class="form-control col-md-6" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
+                                    <option value="none" id="input_weakest_link_max_chain_none">none</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                </select>
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</label>
+                                <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</label>
+                                <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
+                            </div> -->
+                        </div>
+                        <div class="col-md-6 form-check">
+                            <h6 id="text_settings_password">text_settings_password</h6>
+                            <div class="form-group">
+                                <label id="text_settings_password_amount" for="select_settings_password_amount">text_settings_password_amount</label>
+                                <select class="form-control col-md-6" id="select_settings_password_amount" onchange="game.password.word_to_find_amount = this.value">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label id="text_settings_password_style" for="select_settings_password_style">text_settings_password_style</label>
+                                <select class="form-control col-md-6" id="select_settings_password_style" onchange="game.password.style = this.value">
+                                    <option value="password_2009">2009</option>
+                                    <option value="password_2016">2016</option>
+                                    <option value="password_2025">2025</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label id="text_settings_password_mode" for="select_settings_password_mode">text_settings_password_mode</label>
+                                <div class="form-check">
+                                    <input type="radio" id="radio_settings_password_mode_direct" name="radio_settings_password_mode" value="direct" onclick="game.password.mode = this.value" checked>
+                                    <label for="radio_settings_password_mode_direct">
+                                        <span id="text_radio_settings_password_mode_direct"></span>
+                                        <p><code id="text_note_settings_password_mode_direct">text_note_settings_password_mode_direct</code></p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="radio_settings_password_mode_preview" name="radio_settings_password_mode" value="preview" onclick="game.password.mode = this.value">
+                                    <label for="radio_settings_password_mode_preview">
+                                        <span id="text_radio_settings_password_mode_preview"></span>
+                                        <p><code id="text_note_settings_password_mode_preview">text_note_settings_password_mode_preview</code></p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-check">
+                            <button id="text_settings_save_settings"class="btn btn-primary" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
+                            <button id="text_settings_delete_cookies" class="btn btn-primary" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_sentence_modifier" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="text_modal_sentence_modifier">text_modal_sentence_modifier</h5>
+                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal_sentence_modifier_sentence"></p>
+                        <div class="text-start">
+                            <div id="modal_sentence_modifier_value_placeholder"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="modal_sentence_modifier_next_button" data-bs-dismiss="modal" onclick="nextSentence()">modal_sentence_modifier_next_button</button>
+                        <button type="button" class="btn btn-primary" id="modal_sentence_modifier_modify_button" data-bs-dismiss="modal" onclick="rewriteSentence()">modal_sentence_modifier_modify_button</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_sentence_list" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">text</h5>
+                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>lorem</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade password_2016" id="modal_password_preview" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="text-white">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="text_modal_password_preview_title">text_modal_password_preview_title</h3>
+                        <button type="button" class="btn btn-primary close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="progressbar"></div>
+                        <div id="modal_password_preview_list" class="p-2"></div>
+                        <p class="p-2" id="text_modal_password_preview_text">text_modal_password_preview_text</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="page dark_affected" id="menu" style="display:none;">
             <h1 id="gamename_menu" class="gamename">PICOLITO</h1>
 
             <!-- <label for="avatar">Fichier CSV</label>
             <input type="file" id="input_csv" name="avatar" accept=".csv"/> -->
 
-            <div class="d-flex justify-content-center">
-                <form class="d-flex" action="javascript:void(0);">
-                    <input id="manu_player_input" type="text" class="col-md-9 form-control" maxlength="50">
-                    <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(undefined, 'menu')">
-                        <img class="svg" src="./src/img/user-plus-svgrepo-com.svg"></img>
-                    </button>
-                    <button id="text_gamemode_menu" class="btn btn-primary" onclick="displayPage('gamemode')">
-                        <img class="svg" src="./src/img/arrow-right-svgrepo-com.svg"></img>
-                    </button>
-                </form>
+            <div class="d-flex form-check justify-content-end pb-2">
+                <button id="text_more_games" class="btn border-secondary col-4" onclick="displayPage('gamemode')">text_gamemode_menu</button>
+                <button class="btn border-secondary" id="text_menu_add_player col-2" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
             </div>
-            <div id="menu_player_list"></div>
+
+
+            <div class="d-flex flex-column flex-md-row">
+                <div class="card col-12 col-md-5 border-0 mb-3 mb-md-0">
+                    <button class="btn btn-primary card-title" id="custom_mix_gamemode_collapse_header" onclick="$('#custom_mix_gamemode_collapse').collapse('toggle')">
+                        <h5 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h5>
+                        <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
+                        <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
+                    </button>
+                    <div id="custom_mix_gamemode_collapse" class="collapse" aria-labelledby="custom_mix_gamemode_collapse_header" data-parent="#accordion">
+                        <form id="custom_mix_gamemode_form" class="form-check" action="javascript:void(0);">
+                            <div id="custom_mix_gamemode_picolo_section" class="d-grid">
+                                <h6 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h6>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="default">
+                                        <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="silly">
+                                        <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="bar">
+                                        <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="hot">
+                                        <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
+                                    </input>
+                                </label>
+                            </div>
+                            <div id="custom_mix_gamemode_never_done_section" class="d-grid">
+                                <h6 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h6>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="never_popular">
+                                        <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="never_hot">
+                                        <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
+                                    onchange="allowMixGamemodeNextStep()" value="never_party">
+                                        <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
+                                    </input>
+                                </label>
+                            </div>
+                            <div class="d-flex form-group">
+                                <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            
+                <div class="card col-12 col-md-5 border-0">
+                    <button class="btn btn-primary card-title" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
+                        <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
+                        <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
+                    </button>
+                </div>
+            </div>
             <div id="menu_content">
                 <div id="settings">
-                    <div class="form-check">
-                        <h5 id="text_settings_language">text_settings_language</h5>
-                        <div class="form-group">
-                            <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
-                                <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
-                                <option id="text_menu_lang_en" value="en">text_menu_lang_en</option>
-                                <!-- <option id="text_menu_lang_da" value="da">text_menu_lang_da</option> -->
-                                <!-- <option id="text_menu_lang_de" value="de">text_menu_lang_de</option> -->
-                                <!-- <option id="text_menu_lang_es"value="es">text_menu_lang_es</option> -->
-                                <!-- <option id="text_menu_lang_fi" value="fi">text_menu_lang_fi</option> -->
-                                <!-- <option id="text_menu_lang_it" value="it">text_menu_lang_it</option> -->
-                                <!-- <option id="text_menu_lang_ja" value="ja">text_menu_lang_ja</option> -->
-                                <!-- <option id="text_menu_lang_ko" value="ko">text_menu_lang_ko</option> -->
-                                <!-- <option id="text_menu_lang_nb" value="nb">text_menu_lang_nb</option> -->
-                                <!-- <option id="text_menu_lang_nl" value="nl">text_menu_lang_nl</option> -->
-                                <!-- <option id="text_menu_lang_pt" value="pt">text_menu_lang_pt</option> -->
-                                <!-- <option id="text_menu_lang_ru" value="ru">text_menu_lang_ru</option> -->
-                                <!-- <option id="text_menu_lang_sv" value="sv">Suédois</option> bar_sv??? -->
-                            </select>
-                        </div>
-                    </div>
                     <div id="button-group-toggle-settings" class="btn-group-toggle" data-bs-toggle="modal" data-bs-target="#settings_modal">
                         <div class="form-check">
                             <button class="btn card-title btn-primary" id="picolito_settings_collapse_header">picolito_settings_collapse_header</button>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="settings_modal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="text_modal_settings">text_modal_settings</h5>
-                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body d-flex flex-wrap justify-content-start">
-                                    <div class="col-md-6 form-check">
-                                        <h6 id="text_settings_display">text_settings_display</h6>
-                                        <div class="form-group">
-                                            <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
-                                            <select class="form-control col-md-6" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
-                                                <option id="text_settings_darkmode_system" value="system">text_settings_darkmode_system</option>
-                                                <option id="text_settings_darkmode_light" value="bright">text_settings_darkmode_light</option>
-                                                <option id="text_settings_darkmode_dark" value="dark">text_settings_darkmode_dark</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" id="input_color_display_settings" type="checkbox" checked onclick="game.display_color_indicator = this.checked">
-                                            <label id="text_settings_information_highlight" class="form-check-label">text_settings_information_highlight</label>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_settings_animation">text_settings_animation</label>
-                                            <input class="form-check-input" id="input_color_display_animation" type="checkbox" checked onclick="game.animation = this.checked">  
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_settings_landscape">text_settings_landscape</label>
-                                            <input class="form-check-input" id="input_settings_landscape" type="checkbox" checked onclick="changePortraitModeSettings(this.checked)">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 form-check">
-                                        <h6 id="text_settings_picolo">text_settings_picolo</h6>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_settings_chug">text_settings_chug</label>
-                                            <input class="form-check-input" id="input_chug_enabled" type="checkbox" checked onclick="game.picolito.chug_enabled = this.checked">
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_settings_virus">text_settings_virus</label>
-                                            <input class="form-check-input" id="input_virus_enabled" type="checkbox" checked onclick="game.picolito.virus_enabled = this.checked">
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_settings_social">text_settings_social</label>
-                                            <input class="form-check-input" id="input_social_posting_enabled" type="checkbox" checked onclick="game.picolito.social_posting_enabled = this.checked">
-                                        </div>
-                                        <div class="form-group">
-                                            <label id="text_settings_min_sip" for="input_sip_min">text_settings_min_sip</label>
-                                            <select class="form-control col-md-6" id="input_sip_min" onchange="changeSipSettings('min', this.value)">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>6</option>
-                                                <option>7</option>
-                                                <option>8</option>
-                                                <option>9</option>
-                                                <option>10</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label id="text_settings_max_sip" for="input_sip_max">text_settings_max_sip</label>
-                                            <select class="form-control col-md-6" id="input_sip_max" onchange="changeSipSettings('max', this.value)">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>6</option>
-                                                <option>7</option>
-                                                <option>8</option>
-                                                <option>9</option>
-                                                <option>10</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 form-check">
-                                        <h6 id="text_settings_weakest_link">text_settings_weakest_link</h6>
-                                        <div class="form-group">
-                                            <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
-                                            <select class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
-                                                <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
-                                                <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
-                                                <option id="text_settings_weakest_link_tie_both" value="both">both</option>
-                                                <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
-                                            <select class="form-control col-md-6" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
-                                                <option value="none" id="input_weakest_link_max_chain_none">none</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</label>
-                                            <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</label>
-                                            <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
-                                        </div>
-                                        <!-- <h6 id="text_settings_password">text_settings_password</h6> -->
-                                        <!-- <div class="form-group">
-                                            <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
-                                            <select disabled class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
-                                                <option id="text_settings_weakest_link_tie_strongest_link" value="strongest_link">strongest_link</option>
-                                                <option id="text_settings_weakest_link_tie_arbitrary" value="arbitrary">arbitrary</option>
-                                                <option id="text_settings_weakest_link_tie_both" value="both">both</option>
-                                                <option id="text_settings_weakest_link_tie_weakest" value="weakest">weakest</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label id="text_settings_weakest_link_max_chain" for="input_weakest_link_max_chain">text_settings_weakest_link_max_chain</label>
-                                            <select class="form-control col-md-6" id="input_weakest_link_max_chain" onchange="changeWeakestLinkMaxChain(this.value)">
-                                                <option value="none" id="input_weakest_link_max_chain_none">none</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_input_weakest_link_soundtrack">text_input_weakest_link_soundtrack</label>
-                                            <input class="form-check-input" id="input_weakest_link_soundtrack" type="checkbox" onclick="global.audio_enabled = this.checked">
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <label class="form-check-label" id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</label>
-                                            <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
-                                        </div> -->
-                                    </div>
-                                    <div class="col-md-6 form-check">
-                                        <h6 id="text_settings_password">text_settings_password</h6>
-                                        <div class="form-group">
-                                            <label id="text_settings_password_amount" for="select_settings_password_amount">text_settings_password_amount</label>
-                                            <select class="form-control col-md-6" id="select_settings_password_amount" onchange="game.password.word_to_find_amount = this.value">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label id="text_settings_password_style" for="select_settings_password_style">text_settings_password_style</label>
-                                            <select class="form-control col-md-6" id="select_settings_password_style" onchange="game.password.style = this.value">
-                                                <option value="password_2009">2009</option>
-                                                <option value="password_2016">2016</option>
-                                                <option value="password_2025">2025</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 form-check">
-                                        <button id="text_settings_save_settings"class="btn btn-primary" onclick="storeSettingsCookie()">text_settings_information_save_settings</button>
-                                        <button id="text_settings_delete_cookies" class="btn btn-primary" onclick="deleteAllCookies()">text_settings_information_delete_cookies</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -302,15 +468,17 @@
                             <div id="herge_bt_display_cookies_placeholder"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#safety_and_cookie_modal">text_prevention_panel</button>
+                    <button type="button" class="btn btn-primary" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#modal_safety_and_cookie_modal">text_prevention_panel</button>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
                 </div>
                 <div class="form-check">
                     <h4 id="text_settings_credits">text_settings_credits</h4>
-                    <p><a href="https://marmelapp.com">marmelapp.com</a></p>
-                    <p><a href="https://psycatgames.com">psycatgames.com</a></p>
-                    <p><a href="https://trouve-mot.fr/">trouve-mot.fr</a></p>
+                    <div class="d-grid">
+                        <a class="m-1" href="https://marmelapp.com">marmelapp.com</a>
+                        <a class="m-1" href="https://psycatgames.com">psycatgames.com</a>
+                        <a class="m-1" href="https://trouve-mot.fr/">trouve-mot.fr</a>
+                    </div>
                 </div>
                 <a id="picolito_version_menu" href="https://github.com/difabiolorenzo/picolito/commits/master">Picolito</a>
             </div>
@@ -318,11 +486,7 @@
         <div class="page dark_affected" id="gamemode" style="display:none">
             <div id="gamemode_topbar">
                 <button id="text_gamemode_back" class="col-md-3 btn btn-primary" onclick="displayPage('menu')">Retour</button>
-                <div class="col-md-12 text-center d-flex">
-                    <a id="text_gamemode_player_number">-</a>
-                </div>
             </div>
-            <hr>
             <div id="button-group-toggle" class="btn-group-toggle" data-toggle="buttons">
                 <div>
                     <h6 id="text_gamemode_classical">text_gamemode_classical</h6>
@@ -352,7 +516,7 @@
                                     <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
                                     <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
                                 </button>
-                                <button class="btn btn-primary" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
+                                <button disabled class="btn btn-primary" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
                                     <h5 id="text_gamemode_title_war">text_gamemode_title_war</h3>
                                     <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
                                     <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
@@ -366,7 +530,7 @@
                             <h5 class="mb-0" id="text_gamemode_never_title">text_gamemode_never_title</h5>
                         </button>
                         <div id="never_gamemode_collapse" class="collapse" aria-labelledby="never_gamemode_collapse_header" data-parent="#accordion">
-                            <div class="card-body">
+                            <div class="card-body d-flex">
                                 <button class="btn btn-primary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">
                                     <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
                                 </button>
@@ -379,82 +543,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <button class="btn card-title btn-primary" id="custom_mix_gamemode_collapse_header" onclick="$('#custom_mix_gamemode_collapse').collapse('toggle')">
-                            <h5 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h5>
-                            <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
-                            <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
-                        </button>
-                        <div id="custom_mix_gamemode_collapse" class="collapse" aria-labelledby="custom_mix_gamemode_collapse_header" data-parent="#accordion">
-                            <form id="custom_mix_gamemode_form" class="form-check" action="javascript:void(0);">
-                                <div id="custom_mix_gamemode_picolo_section" class="d-grid">
-                                    <h6 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h6>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="default">
-                                            <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
-                                        </input>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="silly">
-                                            <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
-                                        </input>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="bar">
-                                            <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
-                                        </input>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="hot">
-                                            <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
-                                        </input>
-                                    </label>
-                                </div>
-                                <div id="custom_mix_gamemode_never_done_section" class="d-grid">
-                                    <h6 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h6>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="never_popular">
-                                            <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
-                                        </input>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="never_hot">
-                                            <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
-                                        </input>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
-                                        onchange="allowMixGamemodeNextStep()" value="never_party">
-                                            <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
-                                        </input>
-                                    </label>
-                                </div>
-                                <div class="d-flex form-group">
-                                    <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
                 <div>
                     <h6 id="text_gamemode_sandbox">text_gamemode_sandbox</h6>
                     <div class="card">
-                        <button class="btn card-title btn-primary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
+                        <button disabled class="btn card-title btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
                             <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                             <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
                             <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
-                        </button>
-                    </div>
-                    <div class="card">
-                        <button class="btn card-title btn-primary" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
-                            <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
-                            <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
                         </button>
                     </div>
                     <div class="card">
@@ -466,28 +562,10 @@
                 </div>
             </div>
         </div>
-        <div class="page dark_affected" id="team_selection" style="display:none">
-            <div class="d-flex justify-content-center">
-                <button id="text_team_selection_back" class="col-md-3 btn btn-primary" onclick="displayPage('gamemode')">text_team_selection_back</button>
-                <a class="col-md-6 text-center d-flex"></a>
-                <button id="text_team_selection_next" class="col-md-3 btn btn-success" onclick="initGame()" disabled>text_team_selection_next</button>
-            </div>
-            <br>
-            <table class="table table-bordered text-center" id="team_selection_table">
-                <thead>
-                    <tr>
-                    <th scope="col"></th>
-                    <th scope="col"><input type="text" id="input_team_1" onchange="game.team_1 = this.value" class="input_name" value=""></th>
-                    <th scope="col"><input type="text" id="input_team_2" onchange="game.team_2 = this.value" class="input_name" value=""></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+        
         <div class="page dark_affected black" id="game" style="display:none">
             <div id="game_content"class="portrait-mode">
-                <div id="ingame_topbar" class="d-flex">
+                <div id="ingame_topbar" class="d-flex justify-content-between p-2">
                     <button id="text_game_quit_topbar" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit_topbar</button>
                     <button id="text_game_restart_topbar" type="submit" class="btn btn-primary" onclick="restartGame()">text_game_restart_topbar</button>
                     <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
@@ -495,87 +573,11 @@
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="toggleDisplaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_next_button" onclick="nextSentence();">></button>
                     </div>
-                    <button disabled id="text_game_player_menu" type="submit" class="btn btn-outline-secondary" onclick="togglePlayerListOptionDisplay();">text_game_player_menu</button>
+                    <button id="text_game_player_menu" class="btn btn-primary fs-6" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
                 </div>
 
                 <div id="ingame_content">
                     <!-- <div id="ingame_text" onclick="nextSentence()"> -->
-                    <div class="modal fade" id="sentence_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="text_modal_sentence_modifier">text_modal_sentence_modifier</h5>
-                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p id="sentence_modifier_modal_sentence"></p>
-                                    <div class="text-start">
-                                        <div id="sentence_modifier_modal_value_placeholder"></div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" id="sentence_modifier_modal_next_button" data-bs-dismiss="modal" onclick="nextSentence()">sentence_modifier_modal_next_button</button>
-                                    <button type="button" class="btn btn-primary" id="sentence_modifier_modal_modify_button" data-bs-dismiss="modal" onclick="rewriteSentence()">sentence_modifier_modal_modify_button</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="player_modifier_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title">text</h5>
-                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    <h3>lorem</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="player_list_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title">text</h5>
-                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control" pattern="[A-Za-z]" id="ingame_player_input" placeholder="Ajouter un joueur">
-                                        <button type="submit" class="btn btn-primary" id="ingame_player_add"onclick="addPlayer(undefined, 'ingame')" >ingame_player_add</button>
-                                    </div>
-                                    <div class="d-flex">
-                                        <button type="submit" class="btn btn-primary" id="ingame_player_team_1" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_1</button>
-                                        <button type="submit" class="btn btn-primary" id="ingame_player_team_2" onclick="addPlayer(undefined, 'ingame')" style="display: none;" >ingame_player_team_2</button>
-                                    </div>
-                                    <div id="ingame_player_list"></div>
-                                    <!-- <button type="submit" class="btn btn-primary" id="alert_random_player_button" onclick="alertRandomPlayer()">alert_random_player_button</button> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="sentence_list_modal" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title">text</h5>
-                                <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    <h3>lorem</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div id="ingame_text">
                         <h1 id="text_ingame_title"></h1>
                         <p id="ingame_sentence" onclick="userActionClickSentence()"></p>
@@ -657,12 +659,11 @@
                             <h3 id="text_password_rule_header">password</h3>
                             <p id="text_password_rule_1">text_password_rule_1</p>
                             <p id="text_password_rule_2">text_password_rule_2</p>
-                            <h6 id="text_password_rule_option">text_password_rule_option</h6>
-                            <div class="btn-group" role="group">
-                                <button type="button" id="password_button_option_remove_word_amount" class="btn btn-primary" onclick="passwordWordAmountRemove()">-</button>
-                                <input type="text" id="password_button_option_word_amount" class="btn btn-light" min="1" max="10">
-                                <button type="button" id="password_button_option_add_word_amount" class="btn btn-primary" onclick="passwordWordAmountAdd()">+</button>
-                              </div>
+                            <br>
+                            <div>
+                                <h4 id="text_password_rule_option">text_password_rule_option</h4>
+                                <div class="form-check form-check-inline d-flex flex-wrap" id="password_word_amount_selector"></div>
+                            </div>
                         </div>
                         <div id="password_recap" style="display:none">
                             <div id="password_recap_placeholder">password</div>

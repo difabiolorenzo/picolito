@@ -422,9 +422,9 @@ function userActionClickSentence() {
 
 function showSentenceModifierModal() {
     if (game.sentence_history[game.cycle_id].sentence_keys.length > 0) {
-        global.sentence_modifier_modal.show();
-        document.getElementById("sentence_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
-        document.getElementById("sentence_modifier_modal_value_placeholder").innerHTML = "";
+        global.modal_sentence_modifier.show();
+        document.getElementById("modal_sentence_modifier_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
+        document.getElementById("modal_sentence_modifier_value_placeholder").innerHTML = "";
         
         //copie de des clés de la phrase actuelle
         game.sentence_modifier = JSON.parse(JSON.stringify(game.sentence_history[game.cycle_id].sentence_keys));
@@ -433,14 +433,12 @@ function showSentenceModifierModal() {
         var element = "";
         for (var i=0; i < game.sentence_history[game.cycle_id].sentence_keys.length; i++) {
             if (key[i].type == "player") {
-                var element_label_text = global.current_language_strings.player_menu
+                var element_label_text = global.current_language_strings.player_capitalized
                 var option_element = ""
                 for (var j=0; j < game.player_list.length; j++) {
                     var selected = ""
-                    if (game.player_list[j] == key[i].value) {
-                        selected = "selected"
-                    }
-                    option_element += `<option ${selected} value="${game.player_list[j]}">${game.player_list[j]}</option>`;
+                    if (game.player_list[j].player_name == key[i].value) { selected = "selected" }
+                    option_element += `<option ${selected} value="${game.player_list[j].player_name}">${game.player_list[j].player_name}</option>`;
                 }
             }
             if (key[i].type == "sip") {
@@ -464,17 +462,17 @@ function showSentenceModifierModal() {
             }
 
             element += `<div class="form-group">
-            <label for="sentence_modifier_modal_player_${i}">${element_label_text}</label>
+            <label for="modal_sentence_modifier_player_${i}">${element_label_text}</label>
             <div class="input-group mb-3">
-            <select class="form-control col-md-6" id="sentence_modifier_modal_player_${i}" name="sentence_modifier_modal_player_${i}" onchange="game.sentence_modifier[${i}].value = this.value">`;
+            <select class="form-control col-md-6" id="modal_sentence_modifier_player_${i}" name="modal_sentence_modifier_player_${i}" onchange="game.sentence_modifier[${i}].value = this.value">`;
             element += option_element;
             element += `</select>
                         <div class="input-group-append"><button class="btn btn-outline-secondary"
-                            onclick="game.sentence_modifier[${i}].value = '${key[i].value}'; document.getElementById('sentence_modifier_modal_player_${i}').value = '${key[i].value}'"
+                            onclick="game.sentence_modifier[${i}].value = '${key[i].value}'; document.getElementById('modal_sentence_modifier_player_${i}').value = '${key[i].value}'"
                             type="button">${global.current_language_strings.reinitialize}</button></div>
                         </div></div>`;
         }
-        document.getElementById("sentence_modifier_modal_value_placeholder").innerHTML = element;
+        document.getElementById("modal_sentence_modifier_value_placeholder").innerHTML = element;
     } else {
         nextSentence();
     }

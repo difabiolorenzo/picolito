@@ -3,29 +3,33 @@ function init() {
     checkBrowserColorScheme();
     defaultVariables();
     setLanguageString();
+    password_generateAmountSelector();
     updateCurrentLanguageString("fr")
     filterVariables();
     retrieveCookie();
+    loadPlayerListFromCookie(); // Charger les joueurs depuis les cookies
     if (global.debug == true) { devOverrideSettings() }
     displaySafetyAndCookieModal();
 }
 
 function devOverrideSettings() {
     document.getElementById("gamename_menu").innerHTML = global.picolito_version + " - dev";
-    DEBUG_RandomPlayer(4)
+    if (getCookie("player_list").length == 0) { DEBUG_RandomPlayer(4) }
     displayPage("menu")
     global.remind_warning_panel = false;
-    game.password.style = "password_2025";
+    // game.password.style = "password_2025";
 
-    selectGamemode("password");
+    radio_settings_password_mode_preview.checked = true
+
+    // selectGamemode("password");
 }
 
 function defaultVariables() {
     global = {
         current_language: "fr",
-        debug: true,
+        debug: false,
         dark_mode: "bright",
-        picolito_version: "0.33.8",
+        picolito_version: "0.34",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -35,11 +39,12 @@ function defaultVariables() {
         cookie_settings_value : [],
         use_cache_storage: false,
         portrait_mode: false,
-        settings_modal: new bootstrap.Modal(document.getElementById('settings_modal')),
-        sentence_modifier_modal: new bootstrap.Modal(document.getElementById('sentence_modifier_modal')),
-        safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('safety_and_cookie_modal')),
-        player_modifier_modal: new bootstrap.Modal(document.getElementById('player_modifier_modal')),
-        sentence_list_modal: new bootstrap.Modal(document.getElementById('sentence_list_modal'))
+
+        modal_player_menu: new bootstrap.Modal(document.getElementById('modal_modal_player_menu')),
+        modal_sentence_modifier: new bootstrap.Modal(document.getElementById('modal_sentence_modifier')),
+        modal_safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('modal_safety_and_cookie_modal')),
+        modal_sentence_list: new bootstrap.Modal(document.getElementById('modal_sentence_list')),
+        modal_password_preview: new bootstrap.Modal(document.getElementById('modal_password_preview'))
     }
 
     game = {
@@ -84,7 +89,7 @@ function defaultVariables() {
         mix_gamemode_list_picolo: [],  //["default", "hot", "bar", "silly"]
         mix_gamemode_list_never_done: [],  //["never_popular", "never_hot", "never_party"]
 
-        player_list: [],
+        player_list: [], //{ id: 1, name: "Alice", team: null },
         max_player_number: -1,
 
         team_1: "EQUIPE# 1",
@@ -143,9 +148,13 @@ function defaultVariables() {
             currentIndex: -1,
             word_to_find_left: undefined,
             word_status: [],
-            word_to_find_amount: 5,
             words: [], // Array to store the fetched words
-            style: "password_2016"
+            style: "password_2016",
+            word_to_find_amount: 5,
+            word_to_find_min: 1,
+            word_to_find_max: 10,
+            mode: "preview", //"preview", "direct"
+            hide_hint_after_seconds: 3
         },
         tenzi: {
             // Init by tenzi.js
@@ -179,9 +188,6 @@ function resetVariables() {
 }
 
 function updateHTMLSettingsByVar() {
-    input_team_1.value = game.team_1;
-    input_team_2.value = game.team_2;
-
     input_chug_enabled.checked = game.picolito.chug_enabled;
     input_virus_enabled.checked = game.picolito.virus_enabled;
     input_social_posting_enabled.checked = game.picolito.social_posting_enabled;
@@ -219,7 +225,7 @@ function updateHTMLSettingsByVar() {
 }
 
 function displaySafetyAndCookieModal() {
-    if (global.remind_warning_panel == true || global.remind_warning_panel == undefined) { global.safety_and_cookie_modal.show(); }
+    if (global.remind_warning_panel == true || global.remind_warning_panel == undefined) { global.modal_safety_and_cookie_modal.show(); }
 }
 
 function checkBrowserColorScheme(force_bright) {
@@ -338,7 +344,7 @@ function replaceAt(string, index, replace, length) {
 }
 
 function displayPage(page) {
-    var pages = ["menu", "gamemode", "team_selection", "game"]
+    var pages = ["menu", "gamemode", "game"]
 
     for (var i in pages) {
         document.getElementById(pages[i]).style.display = 'none';
@@ -346,84 +352,98 @@ function displayPage(page) {
     document.getElementById(page).style.display = 'block';
 }
 
-function addPlayer(player_name, html_origin) {
-    if (html_origin == "menu") {
-        if (manu_player_input.value.toLowerCase() == "lyoko") {
-            manu_player_input.value = "";
-            DEBUG_carthage(true);
-            return;
-        }
-        if (manu_player_input.value.toLowerCase() == "terre") {
-            manu_player_input.value = "";
-            DEBUG_carthage(false);
-            return;
-        }
+function addPlayer(player_name) {
+    // DEV MODE
+    if (menu_player_input.value.toLowerCase() == "lyoko") {
+        menu_player_input.value = "";
+        DEBUG_carthage(true);
+        return;
     }
-    if (player_name == undefined && html_origin == "menu") {
-        var player_name = manu_player_input.value;
-        if (manu_player_input.value == "") { return; }
-    } else if (player_name == undefined && html_origin == "ingame") {
-        var player_name = ingame_player_input.value;
-        if (ingame_player_input.value == "") { return; }
+    if (menu_player_input.value.toLowerCase() == "terre") {
+        menu_player_input.value = "";
+        DEBUG_carthage(false);
+        return;
     }
 
-    if (player_name.length > 0 && player_name.length <= 50) {
-        var start_by_space = true; //prevent name start by spaces
-        for (var i = 0; i < player_name.length; i++) {
-            if (player_name.charAt(i) == " ") {
-            } else {
-                start_by_space = false;
-                player_name = player_name.substr(i, player_name.length-i);
-                if (player_name.length != 0) {
-                    //add button with player name
-                    document.getElementById("menu_player_list").innerHTML += `<button id="menu_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'menu')"> ${player_name}</button>`;
-                    document.getElementById("ingame_player_list").innerHTML += `<button id="ingame_player_button_${game.player_list.length}" class="btn btn-primary" onclick="removePlayer('${player_name}', this.id, 'ingame')"> ${player_name}</button>`;
-
-                    game.player_list.push(player_name);
-                }
-                break;
-            }
-        }
-    }
-    if (html_origin == "menu") {
-        manu_player_input.focus();
-    } else if (html_origin == "ingame") {
-        ingame_player_input.focus();
-    }
-
-    ingame_player_input.value = "";
-    manu_player_input.value = "";
-
-    updatePlayerCount();
-    
-    if (html_origin != "cookie") { storePlayerListCookie(); }
-    
+    const id = game.player_list.length > 0 ? game.player_list[game.player_list.length - 1].id + 1 : 1;
+    game.player_list.push({ id, player_name, team: "null" });
+    refreshPlayerList();
+    document.getElementById("menu_player_input").value = "";
 }
 
-function removePlayer(player_name, html_element_id) {
-    var player_id = getLastCharacter(html_element_id)
-    //remove button
-    document.getElementById("menu_player_button_" + player_id).remove();
-    document.getElementById("ingame_player_button_" + player_id).remove();
+function refreshPlayerList() {
+    const playerListElement = document.getElementById("menu_player_list");
+    playerListElement.innerHTML = "";
 
-    leaveTeam(game.player_list[player_id])
-    for (var i = 0; i < game.player_list.length; i++) {
-        if (player_name == game.player_list[i]) {
-            game.player_list.splice(i, 1)
-        }
-    }
-    updatePlayerCount();
+    game.player_list.forEach(player => {
+        const listItem = document.createElement("li");
+        listItem.className = "list-group-item d-flex justify-content-between align-items-center col-12";
+        listItem.innerHTML = `
+            <span>${player.player_name}</span>
+            <div>
+                <button class="btn btn-primary btn-sm" onclick="editPlayerNameModal(${player.id})">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="removePlayer(${player.id})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+        playerListElement.appendChild(listItem);
+    });
+
+
     storePlayerListCookie();
 }
 
-function updatePlayerCount() {
-    if (game.player_list.length > 1) {
-        document.getElementById("text_gamemode_player_number").innerHTML = game.player_list.length + " " + global.current_language_strings.player_plural;
-    } else {
-        document.getElementById("text_gamemode_player_number").innerHTML = game.player_list.length + " " + global.current_language_strings.player_singular;
+function refreshTeamDisplay() {
+    const team1Element = document.getElementById("team_1_list");
+    const team2Element = document.getElementById("team_2_list");
+
+    team1Element.innerHTML = "";
+    team2Element.innerHTML = "";
+
+    game.player_list.forEach(player => {
+        const listItem = document.createElement("li");
+        listItem.textContent = player.name;
+
+        if (player.team === "team_1") {
+            team1Element.appendChild(listItem);
+        } else if (player.team === "team_2") {
+            team2Element.appendChild(listItem);
+        }
+    });
+}
+
+function editPlayerNameModal(element) {
+    player_id = element.parentElement.parentElement.children[0].innerHTML
+
+    refreshPlayerList()
+}
+
+function removePlayer(html_element_id) {
+    game.player_list = game.player_list.filter(player => player.id !== html_element_id);
+    refreshPlayerList();
+}
+
+function editPlayerNameModal(id) {
+    const player = game.player_list.find(player => player.id === id);
+    console.log(player)
+    if (player) {
+        const newName = prompt("Enter new name:", player.player_name);
+        if (newName) {
+            player.player_name = newName;
+            refreshPlayerList();
+        }
     }
-    
-    getMinPlayer()
+}
+
+function assignPlayerToTeam(id, team) {
+    const player = game.player_list.find(player => player.id === id);
+    if (player) {
+        player.team = team;
+    }
+    refreshPlayerList();
 }
 
 function getLastCharacter(text) {
@@ -442,10 +462,8 @@ function setBackgroundStyleColor(value) {
     document.getElementById("game").className = "page dark_affected " + value;
 }
 
-function initGame(select_team, direct_launch) {
+function initGame(direct_launch) {
     // à convertir en switch?
-
-
     text_ingame_title.innerHTML = "";
 
     addPotentialPortraitDisplayMarker("landscape")
@@ -453,9 +471,8 @@ function initGame(select_team, direct_launch) {
 
     getMinPlayer()
 
-    if (game.gamemode == "war" && select_team == true) {
+    if (game.gamemode == "war") {
         if (game.player_list.length >= 2) {
-            displayPage('team_selection');
             updateTeamSelectionTable();
         }
     } else if (game.gamemode == "weakest_link") {
@@ -556,6 +573,7 @@ function checkDatabase() {
 function startGame() {
     if (game.gamemode != "password") {
         convertPendingDBTaffy();
+
         if (game.gamemode == "weakest_link") { 
             initWeakestLink()
         } else {
@@ -563,6 +581,8 @@ function startGame() {
         }
         nextSentence();
     } else {
+        game.password.word_to_find_amount = document.querySelector('input[name="password_word_amount_selector_radio"]:checked').value;
+
         if (window.navigator.onLine == true) {
             initPassword()
         } else {
@@ -604,10 +624,9 @@ function exitGame() {
     manageNavDisplay("players", true);
     manageNavDisplay("restart",false);
 
-    displayPage('gamemode');
+    displayPage('menu');
 
     ingame_answer.innerHTML = "";
-    document.getElementById("text_team_selection_next").disabled = true;
 }
 
 function restartGame() {
@@ -629,19 +648,15 @@ function selectGamemode(selected_gamemode, direct_launch) {
         case "password": game.gamemode_type = "password"; break;
         case "tenzi": game.gamemode_type = "tenzi"; break;
         case "custom": game.gamemode_type = "text"; break;
-    }
-    
+    }    
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
         alert(global.current_language_strings.weakest_link_minimum_requierement);
     } else {
-        if (selected_gamemode == "password") {
-            passwordWordAmountRefreshOption();
-        }
         if (selected_gamemode == "mix") {
             setMixGamemodeDatabase();
         }
         game.gamemode = selected_gamemode;
-        initGame(true, direct_launch);
+        initGame(direct_launch);
     }
 }
 
@@ -714,10 +729,6 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
         }
         selected_option.style.display = option_display_value;
     }
-}
-
-function togglePlayerListOptionDisplay() {
-
 }
 
 function manageNavDisplay(navigation_option, display) {
@@ -850,7 +861,7 @@ function textReplacer(text) {
 
     // retrieve all player names
     var player_name_list = [];
-    for (var i = 0; i < game.player_list.length; i++) { player_name_list.push(game.player_list[i]) }
+    for (var i = 0; i < game.player_list.length; i++) { player_name_list.push(game.player_list[i].player_name) }
 
     for (var i = 0; i < formatted_sentence.length; i++) {
         if (formatted_sentence.charAt(i) == "$") {
@@ -975,27 +986,8 @@ function updateSentenceList(mode) {
 }
 
 function displaySipModifierModal() {
-    global.sentence_modifier_modal.show();
-    document.getElementById("sentence_modifier_modal_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
-}
-
-function updateTeamSelectionTable() {
-    team_selection_table = team_selection_table
-
-    //clear
-    team_selection_table.children[1].innerHTML = ""
-
-    function selectingPlayerCell(index) {
-        var player_name = game.player_list[index]
-        var player_input = `<td>${player_name}</td>`
-        var select_team_1_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_select +`</button></td>`
-        var select_team_2_button = `<td><button class="btn btn-success" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_select +`</button></td>`
-        return `<tr id="player_id_team_selection_${index}">` + player_input + select_team_1_button + select_team_2_button + "<tr>";
-    }
-    for (var i = 0; i < game.player_list.length; i++) {
-        var test1 = selectingPlayerCell(i);
-        team_selection_table.children[1].innerHTML += test1;
-    }
+    global.modal_sentence_modifier.show();
+    document.getElementById("modal_sentence_modifier_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
 }
 
 function leaveTeam(player_name) {
@@ -1039,13 +1031,6 @@ function changeTeam(html_id, team) {
     var team_1_lenght = game.team_1_player_list.length
     var team_2_lenght = game.team_2_player_list.length
     var player_list_length = game.player_list.length
-
-    // Update team selection next button
-    if (team_1_lenght + team_2_lenght == game.player_list.length && (team_1_lenght > 0 && team_2_lenght > 0) ) {
-        document.getElementById("text_team_selection_next").disabled = false
-    } else {
-        document.getElementById("text_team_selection_next").disabled = true
-    }
 }
 
 function displayweakestLinkDisplayVote() {
@@ -1075,10 +1060,10 @@ window.addEventListener('beforeunload', function(e) {
 });
 
 function DEBUG_RandomPlayer(amount) {
-    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène"];
+    var groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène","Monique"];
     for (var i=0; i<amount; i++) {
         var random = Math.round(Math.random() * (groland_names.length-1))
-        addPlayer(groland_names[random], "cookie");
+        addPlayer(groland_names[random]);
         groland_names.splice(random, 1);
     }
 }
@@ -1152,6 +1137,19 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     displayPage('menu')
     getCookie("settings")
 }
+
+function password_generateAmountSelector() {
+    selector = document.getElementById("password_word_amount_selector")
+    selector.innerHTML = ""
+
+    for (var i = game.password.word_to_find_min; i <= game.password.word_to_find_max; i++) {
+        selector.innerHTML += `<input id="password_word_amount_selector_radio_${i}" name="password_word_amount_selector_radio" value="${i}" class="radio isHidden" name="password_word_amount_selector_radio" type="radio">`
+        selector.innerHTML += `<label for="password_word_amount_selector_radio_${i}" class="password_label">${i}</label>`
+    }   
+
+    document.getElementById("password_word_amount_selector_radio_" + game.password.word_to_find_amount).checked = true;
+}
+
 function createGamemodeDBindicator() {
     // Ici on peuple l'indicateur de base de donnée dans le mode de jeu mix.
     // Les deux bases sont séparées pour les choisir 1 fois sur deux 
@@ -1192,14 +1190,16 @@ function selectGamemodeDBIndicator(id) {
 
 function DEBUG_carthage(debug) {
     if (debug == true) {
+        game.debug = true;
+        global.modal_player_menu.hide()
         document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
         document.getElementById("debug_tools_placeholder").style.display = "block";
-        game.debug = true;
         alert("Bienvenue à Carthage.");
     } else {
+        game.debug = false;
+        global.modal_player_menu.hide()
         document.getElementById("gamename_menu").innerHTML = "PICOLITO";
         document.getElementById("debug_tools_placeholder").style.display = "none";
-        game.debug = false;
         alert("Retour vers le passé.");
     }
 }

@@ -38,7 +38,7 @@ game.stored_db.never_party_fr = [{pack_name:"never_party",language:"fr",text:"Ja
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais conduit sous influence."},
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais consommé de drogues."},
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais couché avec la même personne qu'un de mes amis."},
-    {pack_name:"never_party",language:"fr",text:"Je n'ai jamais couché avec quelqu'un de ma job."},
+    {pack_name:"never_party",language:"fr",text:"Je n'ai jamais couché avec quelqu'un de mon job."},
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais couché avec quelqu'un ne parlant pas ma langue."},
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais demandé à quelqu'un de m'acheter de l'alcool quand j'étais mineur."},
     {pack_name:"never_party",language:"fr",text:"Je n'ai jamais demandé à quelqu'un de me payer un verre."},

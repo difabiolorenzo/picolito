@@ -42,6 +42,7 @@ function setLanguageString() {
             restart: "Recommencer",
             player_singular: "joueur",
             player_plural: "joueurs",
+            player_capitalized: "Joueur",
             team: "Équipe",
             team_default_name_0: "Equipe 1",
             team_default_name_1: "Equipe 2",
@@ -49,8 +50,10 @@ function setLanguageString() {
             team_select: "Sélectionner",
             team_delete: "Supprimer",
             team_change: "Changer",
-            team_add_in_team: "Ajouter à ",
             modal_sentence_modifier: "Modifier la phrase",
+            modal_password_preview_title: "Prévisualisation des mots",
+            modal_password_preview_text: "Toucher pour fermer la fenêtre",
+            modal_password_preview_ended: "Prévisualisation finie",
             settings: "Paramètres",
             settings_picolo: "Picolo",
             settings_chug: "Culs secs",
@@ -85,7 +88,13 @@ function setLanguageString() {
             settings_password: "Mot de passe",
             settings_password_amount: "Nombre de mot à faire deviner",
             settings_password_style: "Style",
+            settings_password_mode: "Mode de jeu (Mot de passe)",
+            settings_password_mode_direct: "Direct",
+            settings_password_mode_direct_note: "Faire deviner les mots les uns après les autres.", 
+            settings_password_mode_preview: "Prévisualisation",
+            settings_password_mode_preview_note: "Prévisualisation de tous les mots pour les faire deviner.",
             settings_credits: "Credits",
+            more_games: "Plus de jeux",
             gamemode: "Mode de jeu",
             gamemode_classical: "Classique",
             gamemode_sandbox: "Autres",
@@ -199,6 +208,7 @@ function setLanguageString() {
             weakest_link_wrong: "WRONG",
             player_singular: "player",
             player_plural: "players",
+            player_capitalized: "Player",
             team: "Team",
             team_default_name_0: "Team 1",
             team_default_name_1: "Team 2",
@@ -206,8 +216,10 @@ function setLanguageString() {
             team_select: "Select",
             team_delete: "Delete",
             team_change: "Change",
-            team_add_in_team: "Add to ",
             modal_sentence_modifier: "Modify sentence",
+            modal_password_preview_title: "Words preview",
+            modal_password_preview_text: "Touch to close",
+            modal_password_preview_ended: "Preview ended",
             settings: "Settings",
             settings_picolo: "Picolo",
             settings_language: "Language",
@@ -243,7 +255,13 @@ function setLanguageString() {
             settings_password: "Password",
             settings_password_amount: "Number of words to be guessed",
             settings_password_style: "Style",
+            settings_password_mode: "Gamemode (Password)",
+            settings_password_mode_direct: "Direct",
+            settings_password_mode_direct_note: "Guess the words one by one.",
+            settings_password_mode_preview: "Preview",
+            settings_password_mode_preview_note: "Preview of all words to guess.",
             settings_credits: "Credits",
+            more_games: "More games",
             gamemode: "Gamemode",
             gamemode_classical: "Classic",
             gamemode_sandbox: "Other",
@@ -385,9 +403,13 @@ function updateHTMLLanguageStrings() {
     // text_menu_lang_sv.innerHTML = global.current_language_strings.lang_sv
 
     document.getElementById("text_modal_sentence_modifier").innerHTML = global.current_language_strings.modal_sentence_modifier;
-    document.getElementById("sentence_modifier_modal_next_button").innerHTML = global.current_language_strings.next_sentence;
-    document.getElementById("sentence_modifier_modal_modify_button").innerHTML = global.current_language_strings.modify;
-
+    document.getElementById("modal_sentence_modifier_next_button").innerHTML = global.current_language_strings.next_sentence;
+    document.getElementById("modal_sentence_modifier_modify_button").innerHTML = global.current_language_strings.modify;
+    
+    document.getElementById("text_modal_password_preview_title").innerHTML = global.current_language_strings.modal_password_preview_title;
+    document.getElementById("text_modal_password_preview_text").innerHTML = global.current_language_strings.modal_password_preview_text;
+    document.getElementById("text_more_games").innerHTML = global.current_language_strings.more_games;
+    
     document.getElementById("picolito_settings_collapse_header").innerHTML = global.current_language_strings.settings;
     document.getElementById("text_modal_settings").innerHTML = global.current_language_strings.settings;
     document.getElementById("text_settings_picolo").innerHTML = global.current_language_strings.settings_picolo;
@@ -419,6 +441,11 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_settings_password").innerHTML = global.current_language_strings.settings_password;
     document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
     document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
+    document.getElementById("text_settings_password_mode").innerHTML = global.current_language_strings.settings_password_mode;
+    document.getElementById("text_radio_settings_password_mode_direct").innerHTML = global.current_language_strings.settings_password_mode_direct;
+    document.getElementById("text_note_settings_password_mode_direct").innerHTML = global.current_language_strings.settings_password_mode_direct_note;
+    document.getElementById("text_radio_settings_password_mode_preview").innerHTML = global.current_language_strings.settings_password_mode_preview;
+    document.getElementById("text_note_settings_password_mode_preview").innerHTML = global.current_language_strings.settings_password_mode_preview_note;
     document.getElementById("text_input_weakest_link_soundtrack").innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
     document.getElementById("text_settings_weakest_link_max_chain").innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
     document.getElementById("input_weakest_link_max_chain_none").innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
@@ -476,20 +503,14 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_gamemode_title_tenzi").innerHTML = global.current_language_strings.gamemode_title_tenzi;
     document.getElementById("text_gamemode_tenzi_subtitle_1").innerHTML = global.current_language_strings.gamemode_tenzi_subtitle_1;
 
-    document.getElementById("text_team_selection_back").innerHTML = global.current_language_strings.back;
-    document.getElementById("text_team_selection_next").innerHTML = global.current_language_strings.next;
-
     document.getElementById("text_game_quit_topbar").innerHTML = global.current_language_strings.quit;
-    document.getElementById("text_game_player_menu").innerHTML = global.current_language_strings.player_menu;
     document.getElementById("text_game_ready").innerHTML = global.current_language_strings.ready;
     document.getElementById("text_game_start_button").innerHTML = global.current_language_strings.start;
     document.getElementById("text_game_endgame").innerHTML = global.current_language_strings.end_game;
     document.getElementById("text_game_quit").innerHTML = global.current_language_strings.quit;
     document.getElementById("text_game_restart").innerHTML = global.current_language_strings.restart;
     document.getElementById("text_game_restart_topbar").innerHTML = global.current_language_strings.restart;
-    document.getElementById("ingame_player_add").innerHTML = global.current_language_strings.add;
-    document.getElementById("ingame_player_input").placeholder = global.current_language_strings.enter_player_name;
-    document.getElementById("manu_player_input").placeholder = global.current_language_strings.enter_player_name;
+    document.getElementById("menu_player_input").placeholder = global.current_language_strings.enter_player_name;
     document.getElementById("text_menu_add").title = global.current_language_strings.add;
     
     document.getElementById("text_weakest_link_rule_header").innerHTML = global.current_language_strings.weakest_link_rule_header;
@@ -505,8 +526,6 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_game_restart_password").innerHTML = global.current_language_strings.restart;
 
     document.getElementById("text_gamemode_menu").title = global.current_language_strings.gamemode;
-    document.getElementById("ingame_player_team_1").innerHTML = global.current_language_strings.team_add_in_team + " E1";
-    document.getElementById("ingame_player_team_2").innerHTML = global.current_language_strings.team_add_in_team + " E2";
     
     document.getElementById("ingame_weakest_link_text_sip").innerHTML = global.current_language_strings.weakest_link_sip;
     document.getElementById("ingame_weakest_link_text_bank").innerHTML = global.current_language_strings.weakest_link_bank;

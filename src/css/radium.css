@@ -115,7 +115,7 @@ label.form-check-label {
     -webkit-user-select:none;
     padding-left: 1.25rem;
 }
-.form-check {margin-top: 2vh;margin-bottom: 2vw;padding-right: 1.25rem;}
+.form-check {margin-top: 1vh;padding-right: 1.25rem;}
 
 .alert {
     margin-top: .5rem;
@@ -197,8 +197,7 @@ code {
 }
 
 .btn.password-button span.material-symbols-outlined {
-    font-size: 2.5rem;
-    display: block;
+    font-size: xx-large;
 }
 
 .modal-content {
@@ -213,4 +212,8 @@ code {
 
 .dark_mode .dark_affected .modal-header {
     border-bottom: 1px solid var(--bs-gray);
+}
+
+i.bi {
+    font-size: x-large;
 }

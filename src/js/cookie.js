@@ -1,9 +1,9 @@
-function setCookie(cookie_name, cookie_value) {
-    var d = new Date();
-    d.setTime(d.getTime() + ( global.cookie_expiration_delay*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    // console.log(cookie_name + "=" + cookie_value + ";" + expires + ";path=/;")
-    document.cookie = cookie_name + "=" + cookie_value + ";" + expires + ";path=/;";
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    const jsonValue = JSON.stringify(value); // Convertir en JSON
+    document.cookie = name + "=" + jsonValue + ";" + expires + ";path=/";
 }
 
 function deleteCookie(cookie_name) {
@@ -14,33 +14,48 @@ function deleteAllCookies() {
     deleteCookie("player_list")
     deleteCookie("settings")
 }
-
-function getCookie(cookie_name) {
-    var name = cookie_name + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i in ca) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + "=")) {
+            const value = cookie.substring(name.length + 1);
+            try {
+                return JSON.parse(value); // Tenter de parser comme JSON
+            } catch (error) {
+                // console.error(`Erreur lors du parsing du cookie ${name} :`, error);
+                return value; // Retourner la valeur brute si ce n'est pas du JSON
+            }
+        }
     }
-    return "";
+    return null;
 }
-
 function modifyCookie(cookie_name, edited_value) {
     deleteCookie(cookie_name);
     setCookie(cookie_name, edited_value);
 }
 
 function storePlayerListCookie() {
-    if (getCookie("player_list") == '') {
-        setCookie("player_list", game.player_list);
-    } else {
-        modifyCookie("player_list", game.player_list)
+    setCookie("player_list", game.player_list, global.cookie_expiration_delay);
+}
+
+function loadPlayerListFromCookie() {
+    const storedPlayers = getCookie("player_list");
+    if (storedPlayers) {
+        game.player_list = storedPlayers;
+        refreshPlayerList();
+    }
+}
+
+function storePlayerListLocalStorage() {
+    localStorage.setItem("player_list", JSON.stringify(game.player_list));
+}
+
+function loadPlayerListFromLocalStorage() {
+    const storedPlayers = localStorage.getItem("player_list");
+    if (storedPlayers) {
+        game.player_list = JSON.parse(storedPlayers);
+        refreshPlayerList();
     }
 }
 
@@ -79,10 +94,17 @@ function retrieveCookie() {
 }
 
 function getStoredPlayerListCookie() {
-    var stored_players = getCookie("player_list").split(",");
-    for (var i = 0; i < stored_players.length; i++) {
-        addPlayer(stored_players[i], "cookie");
+    const cookieValue = getCookie("player_list");
+    if (cookieValue && Array.isArray(cookieValue)) {
+        return cookieValue; // Retourner la liste si elle est valide
+    } else {
+        console.warn("Le cookie player_list n'est pas un tableau valide ou est vide.");
+        return []; // Retourner un tableau vide par défaut
     }
+}
+
+function clearCorruptedCookies() {
+    deleteCookie("player_list");
 }
 
 function setSettingsValuesByCookies() {

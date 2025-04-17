@@ -7,7 +7,7 @@ function initPassword() {
     manageIngameOptionDisplay(false, 'password_rule', 'none');
     manageIngameOptionDisplay(false, 'password_recap', 'none');
 
-    setBackgroundStyleColor(game.password.style)
+    setBackgroundStyleColor(game.password.style);
     
     button_password_invalidate.disabled = true;
     button_password_pass.disabled = true;
@@ -22,8 +22,9 @@ function initPassword() {
 const indexesOf = (arr, item) => arr.reduce((acc, v, i) => (v === item && acc.push(i), acc),[]);
 
 async function fetchWords() {
+    const PASSWORD_WEBSITE_API = 'https://trouve-mot.fr/api/random/';
     try {
-        const response = await fetch('https://trouve-mot.fr/api/random/' + game.password.word_to_find_amount);
+        const response = await fetch(PASSWORD_WEBSITE_API + game.password.word_to_find_amount);
         const data = await response.json();
         var word_arr = [];
         for (var i = 0; i < data.length; i++) {
@@ -36,25 +37,48 @@ async function fetchWords() {
         }
         return word_arr;
     } catch (error) {
-        console.error('Error fetching trouve-mot.fr data:', error);
+        console.error('Error fetching ' + PASSWORD_WEBSITE_API + ' data:', error);
         return [];
     }
 }
 
 async function initializeWords() {
     game.password.words = await fetchWords();
+    if (game.password.words.length == 0) {
+        alert("Aucun mot trouvé");
+        return;
+    }
     password_ingame_status.innerHTML = "";
     game.password.word_status = [];
     game.password.word_to_find = [];
 
     for (var i = 0; i < game.password.words.length; i++) {
-        game.password.word_status.push(0)
-        game.password.word_to_find.push([game.password.words[i][0], i])   //words = [["MOT1", 0],["MOT2", 1]...]
-        password_ingame_status.innerHTML += "<span class='word_indicator'></span>"
+        game.password.word_status.push(0);
+        game.password.word_to_find.push([game.password.words[i][0], i]);   //words = [["MOT1", 0],["MOT2", 1]...]
+        password_ingame_status.innerHTML += "<span class='word_indicator'></span>";
     }
-    console.log("word_to_find", game.password.word_to_find)
+    passwordDisplayNextWord();
 
-    passwordDisplayNextWord()
+    // MODE PREVIEW
+    if (document.querySelector('input[name="radio_settings_password_mode"]:checked').value == "preview") {
+        var list = document.getElementById("modal_password_preview_list");
+        list.innerHTML = "";
+        for (var i in game.password.words) {
+            list.innerHTML += "<div class='password-shield'><div></div><span class='word_indicator'></span>" + game.password.words[i][0] + "</div>";
+        }
+        global.modal_password_preview.show();
+        // Disparition du menu modal après game.password.hide_hint_after_seconds secondes
+
+        //timer
+        var timer = game.password.hide_hint_after_seconds
+        if (game.password.words.length > 5) {
+            timer = timer + (game.password.words.length / 5)
+        }
+        setTimeout(function() {
+            // global.modal_password_preview.hide();
+            document.getElementById("modal_password_preview_list").innerHTML = `<h1>${global.current_language_strings.modal_password_preview_ended}</h1>`
+        }, timer * 1000);
+    }
 }
 
 async function wikipediaDescription(word) {
@@ -80,32 +104,29 @@ function passwordGenerateWordList() {
 
 function passwordValidate() {
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
-
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("correct")
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("pass");
     game.password.word_status[game.password.word_to_find[0][1]] = 1;
-    game.password.word_to_find.shift()
-    passwordDisplayNextWord()   
+    game.password.word_to_find.shift();
+    passwordDisplayNextWord();
 }
 
 function passwordInvalidate() {
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
-    
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("disabled")
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("pass");
     game.password.word_status[game.password.word_to_find[0][1]] = 2;
-    game.password.word_to_find.shift()
-    passwordDisplayNextWord()
+    game.password.word_to_find.shift();
+    passwordDisplayNextWord();
 }
 
 function passwordPass() {
     password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.remove("highlighted");
-
-    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("pass")
+    password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("pass");
     game.password.word_status[game.password.word_to_find[0][1]] = 3;
     game.password.word_to_find.push([game.password.word_to_find[0][0],game.password.word_to_find[0][1]])
-    game.password.word_to_find.shift()
-    passwordDisplayNextWord()
+    game.password.word_to_find.shift();
+    passwordDisplayNextWord();
 }
 
 function passwordDisplayNextWord() {
@@ -115,7 +136,7 @@ function passwordDisplayNextWord() {
         password_ingame_display.classList.remove("password-changing-word");
         setTimeout(function() { password_ingame_display.classList.add("password-changing-word"); }, 1);
         setTimeout(function() { password_ingame_display.innerHTML = game.password.word_to_find[0][0]; }, 250)
-        password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("highlighted")
+        password_ingame_status.childNodes[game.password.word_to_find[0][1]].classList.add("highlighted");;
     }
 }
 
@@ -124,44 +145,29 @@ function password_displayRecap() {
     for (var i = 0; i < game.password.words.length; i++) {
         switch (game.password.word_status[i]) {
             case 1:
-                var modifier = "correct"
+                var modifier = "correct";
             break;
             case 2:
-                var modifier = "disabled"
+                var modifier = "disabled";
             break;
             case 3:
-                var modifier = "pass"
+                var modifier = "pass";
             break;
             default:
-                var modifier = ""
+                var modifier = "";
             break;
         }
         password_recap_placeholder.innerHTML += `<div class='recap_word password-shield'><div></div><span class='word_indicator ${modifier}'></span>${game.password.words[i]}</div>`
     }
-    manageIngameOptionDisplay(true, 'password_recap', 'block')
-    manageNavDisplay("restart",true)
+    manageIngameOptionDisplay(true, 'password_recap', 'block');
+    manageNavDisplay("restart",true);
 }
 
-function passwordWordAmountRemove() {
-    game.password.word_to_find_amount--;
-    passwordWordAmountRefreshOption()
-}
-
-function passwordWordAmountAdd() {
-    game.password.word_to_find_amount++;
-    passwordWordAmountRefreshOption()
-}
-
-function passwordWordAmountRefreshOption() {
-    if (game.password.word_to_find_amount > 1) {
-        document.getElementById("password_button_option_remove_word_amount").disabled = false;
+function get_password_word_amount_selector_value() {
+    var selected = document.querySelector('input[name="password_word_amount"]:checked');
+    if (selected) {
+        return selected.value;
     } else {
-        document.getElementById("password_button_option_remove_word_amount").disabled = true;
+        return null;
     }
-    if (game.password.word_to_find_amount < 10) {
-        document.getElementById("password_button_option_add_word_amount").disabled = false;
-    } else {
-        document.getElementById("password_button_option_add_word_amount").disabled = true;
-    }
-    document.getElementById("password_button_option_word_amount").value = game.password.word_to_find_amount;
 }

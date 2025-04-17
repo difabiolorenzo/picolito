@@ -137,9 +137,10 @@ div#game.blue {background-color: var(--picolo_blue);}
 div#game.green {background-color: var(--picolo_green);}
 div#game.black {background-color: var(--dark_mode_light_gray);}
 div#game.never_done {background-color: var(--never-done);}
-div#game.password_2009 {background-color: var(--password_2009);}
-div#game.password_2016 {background-color: var(--password_2009_shade_1);background-image: linear-gradient(180deg, var(--password_2016_shade_1), var(--password_2016_shade_2));}
-div#game.password_2025 {background-color: var(--password_2025_shade_1);background-image: radial-gradient(ellipse at top, var(--password_2025_shade_1), var(--password_2025_shade_3)), radial-gradient(ellipse at bottom, var(--password_2025_shade_2), var(--password_2025_shade_4)););););););););}
+div#game.password_2009, .modal.password_2005 {background-color: var(--password_2009);}
+div#game.password_2016, .modal.password_2016 {background-color: var(--password_2009_shade_1);background-image: linear-gradient(180deg, var(--password_2016_shade_1), var(--password_2016_shade_2));}
+div#game.password_2025, .modal.password_2025 {background-color: var(--password_2025_shade_1);background-image: radial-gradient(ellipse at top, var(--password_2025_shade_1), var(--password_2025_shade_3)), radial-gradient(ellipse at bottom, var(--password_2025_shade_2), var(--password_2025_shade_4));}
+
 div#game.tenzi {background-color: var(--tenzi-background);}
 div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     background-color: var(--weakest-link);
@@ -314,7 +315,6 @@ div#menu_content {height: 100%;}
 }
 
 div#ingame_topbar {
-    padding: 3vh;
     z-index: 1;
     transition: 0.25s;
     background-color: #0000001a;
@@ -691,11 +691,11 @@ div#password_controls {
     justify-content: center;
 }
 
-div#password_ingame_display {
+div#password_ingame_display, .modal .password-shield {
     font-size: 2rem;
-    margin-left: auto;
+    /* margin-left: auto; */
     padding: 0.5rem 1.5rem;
-    margin: 5px 25rem;
+    margin: 5px;
 }
 
 #game.password_2016 div#ingame_option {
@@ -821,12 +821,13 @@ div#game.password_2009 .password-shield {
     background-color: black;
 }
 
-div#game.password_2016 .password-shield {
+div#game.password_2016 .password-shield, .modal.password_2016 .password-shield {
     text-shadow: 0 0 20px var(--password_2016_shield_2);
     border: 1px solid var(--password_2016_shield_2);
     background-color: var(--password_2016_shield_1);
     background-image: linear-gradient(var(--password_2016_shield_1), var(--password_2016_shield_2) 75%);
-    box-shadow: 0px 5px 0px 0px #00000080;
+    box-shadow: 0px 2px 0px 0px #00000080;
+    color: white;
 }
 
 div#game.password_2025 #password_ingame_display.password-shield {
@@ -837,7 +838,7 @@ div#game.password_2025 #password_ingame_display.password-shield {
     width: 70vw;
     /* box-shadow: inset 0 0 5px black; */
     aspect-ratio: cos(30deg);
-    clip-path: polygon(-60% 50%,50% 100%,160% 50%,50% 0);););
+    clip-path: polygon(-60% 50%,50% 100%,160% 50%,50% 0);
     background: #3B8686;
     display: flex;
     align-items: center;
@@ -1006,3 +1007,51 @@ div#tenzi_dice.dice_hint {
 #sentence_modifier_modal_sentence span.span_highlight {
     background-color: #000000d4;
 }
+.isHidden {
+    display: none; /* hide radio buttons */
+  }
+  
+  .password_label {
+    display: inline-block;
+    /* background-color: red; */
+    width: 2.5em;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: larger;
+    margin: 2px;
+    border: 1px solid gray;
+  }
+  
+  .radio:checked + .password_label {   /* target next sibling (+) label */
+    border: 3px solid white
+  }
+  /* progressbar that empty in 3 secondes */
+  .progressbar {
+    width: 100%;
+    height: 1rem;
+    background-color: var(--dark_mode_light_gray);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+  }
+    .progressbar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background-color: var(--picolo_yellow);
+        animation: progress-animation 3s linear forwards;
+    }
+
+    @keyframes progress-animation {
+        0% {
+            width: 100%;
+        }
+        100% {
+            width: 0;
+        }
+    }
