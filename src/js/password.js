@@ -6,12 +6,8 @@ function initPassword() {
     manageIngameOptionDisplay(false, 'password', 'flex');
     manageIngameOptionDisplay(false, 'password_rule', 'none');
     manageIngameOptionDisplay(false, 'password_recap', 'none');
-    
-    if (game.password.style == "2009") {
-        setBackgroundStyleColor("password_2009");
-    } else if (game.password.style == "2016") {
-        setBackgroundStyleColor("password_2016");
-    }
+
+    setBackgroundStyleColor(game.password.style)
     
     button_password_invalidate.disabled = true;
     button_password_pass.disabled = true;
@@ -124,7 +120,7 @@ function passwordDisplayNextWord() {
 }
 
 function password_displayRecap() {
-    password_recap.innerHTML = "";
+    password_recap_placeholder.innerHTML = "";
     for (var i = 0; i < game.password.words.length; i++) {
         switch (game.password.word_status[i]) {
             case 1:
@@ -140,7 +136,7 @@ function password_displayRecap() {
                 var modifier = ""
             break;
         }
-        password_recap.innerHTML += `<div class='recap_word password-shield'><div></div><span class='word_indicator ${modifier}'></span>${game.password.words[i]}</div>`
+        password_recap_placeholder.innerHTML += `<div class='recap_word password-shield'><div></div><span class='word_indicator ${modifier}'></span>${game.password.words[i]}</div>`
     }
     manageIngameOptionDisplay(true, 'password_recap', 'block')
     manageNavDisplay("restart",true)

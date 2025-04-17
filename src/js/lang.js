@@ -42,7 +42,6 @@ function setLanguageString() {
             restart: "Recommencer",
             player_singular: "joueur",
             player_plural: "joueurs",
-            player_menu: "Joueurs",
             team: "Équipe",
             team_default_name_0: "Equipe 1",
             team_default_name_1: "Equipe 2",
@@ -200,7 +199,6 @@ function setLanguageString() {
             weakest_link_wrong: "WRONG",
             player_singular: "player",
             player_plural: "players",
-            player_menu: "Players",
             team: "Team",
             team_default_name_0: "Team 1",
             team_default_name_1: "Team 2",
@@ -504,6 +502,7 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_password_rule_1").innerHTML = global.current_language_strings.password_rule_1;
     document.getElementById("text_password_rule_2").innerHTML = global.current_language_strings.password_rule_2;
     document.getElementById("text_password_rule_option").innerHTML = global.current_language_strings.settings_password_amount;
+    document.getElementById("text_game_restart_password").innerHTML = global.current_language_strings.restart;
 
     document.getElementById("text_gamemode_menu").title = global.current_language_strings.gamemode;
     document.getElementById("ingame_player_team_1").innerHTML = global.current_language_strings.team_add_in_team + " E1";

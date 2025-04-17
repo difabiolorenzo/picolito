@@ -107,7 +107,12 @@ function setSettingsValuesByCookies() {
         game.weakest_link.max_chain = cookie_settings_value[14];
         game.weakest_link.hide_answer = cookie_settings_value[15];
         game.password.word_to_find_amount = cookie_settings_value[16];
-        game.password.style = cookie_settings_value[17];
+
+        if (cookie_settings_value[17] == "2016" || cookie_settings_value[17] == "2009") {
+            game.password.style == "password_" + cookie_settings_value[17]
+        } else {
+            game.password.style = cookie_settings_value[17];
+        }
 
         updateHTMLSettingsByVar();
     }

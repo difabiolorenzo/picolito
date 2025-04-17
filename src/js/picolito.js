@@ -412,7 +412,7 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
 
 function userActionClickSentence() {
     if (game.started == true && game.gamemode_type == "text") {
-        if (global.debug == true) {
+        if (game.debug == true) {
             showSentenceModifierModal();
         } else {
             nextSentence();

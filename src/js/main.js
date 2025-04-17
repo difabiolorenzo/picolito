@@ -15,14 +15,15 @@ function devOverrideSettings() {
     DEBUG_RandomPlayer(4)
     displayPage("menu")
     global.remind_warning_panel = false;
+    game.password.style = "password_2025";
 
-    selectGamemode("default");
+    selectGamemode("password");
 }
 
 function defaultVariables() {
     global = {
         current_language: "fr",
-        debug: false,
+        debug: true,
         dark_mode: "bright",
         picolito_version: "0.33.8",
         cookie_expiration_delay: 15,
@@ -144,7 +145,7 @@ function defaultVariables() {
             word_status: [],
             word_to_find_amount: 5,
             words: [], // Array to store the fetched words
-            style: 2016
+            style: "password_2016"
         },
         tenzi: {
             // Init by tenzi.js
@@ -616,42 +617,18 @@ function restartGame() {
 
 function selectGamemode(selected_gamemode, direct_launch) {
     switch (selected_gamemode) {
-        case "default":
-            game.gamemode_type = "text";
-            break;
-        case "silly":
-            game.gamemode_type = "text";
-            break;
-        case "bar":
-            game.gamemode_type = "text";
-            break;
-        case "hot":
-            game.gamemode_type = "text";
-            break;
-        case "war":
-            game.gamemode_type = "text";
-            break;
-        case "never_popular":
-            game.gamemode_type = "text";
-            break;
-        case "never_hot":
-            game.gamemode_type = "text";
-            break;
-        case "never_party":
-            game.gamemode_type = "text";
-            break;
-        case "weakest_link":
-            game.gamemode_type = "weakest_link";
-            break;
-        case "password":
-            game.gamemode_type = "password";
-            break;
-        case "tenzi":
-            game.gamemode_type = "tenzi";
-            break;
-        case "custom":
-            game.gamemode_type = "text";
-            break;
+        case "default": game.gamemode_type = "text"; break;
+        case "silly": game.gamemode_type = "text"; break;
+        case "bar": game.gamemode_type = "text"; break;
+        case "hot": game.gamemode_type = "text"; break;
+        case "war": game.gamemode_type = "text"; break;
+        case "never_popular": game.gamemode_type = "text"; break;
+        case "never_hot": game.gamemode_type = "text"; break;
+        case "never_party": game.gamemode_type = "text"; break;
+        case "weakest_link": game.gamemode_type = "weakest_link"; break;
+        case "password": game.gamemode_type = "password"; break;
+        case "tenzi": game.gamemode_type = "tenzi"; break;
+        case "custom": game.gamemode_type = "text"; break;
     }
     
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
@@ -722,36 +699,16 @@ function manageIngameOptionDisplay(display_option_panel, option_identifier, opti
 
     if (option_identifier != undefined && option_display_value != undefined) {
         switch(option_identifier) {
-            case "start":
-            var selected_option = start_ingame_option;
-                break;
-            case "replay":
-            var selected_option = replay_ingame_option;
-                break;
-            case "weakest_link":
-                var selected_option = ingame_weakest_link;
-                break;
-            case "weakest_link_vote":
-                var selected_option = weakest_link_vote_ingame_option;
-                break;
-            case "weakest_link_next_vote":
-                var selected_option = weakest_link_next_vote_ingame_option;
-                break;
-            case "weakest_link_vote_end":
-                var selected_option = weakest_link_vote_end_ingame_option;
-                break;
-            case "weakest_link_rule":
-                var selected_option = weakest_link_rule;
-                break;
-            case "password":
-                var selected_option = ingame_password;
-                break;
-            case "password_rule":
-                var selected_option = password_rule;
-                break;
-            case "password_recap":
-                var selected_option = password_recap;
-                break;
+            case "start": var selected_option = start_ingame_option; break;
+            case "replay": var selected_option = replay_ingame_option; break;
+            case "weakest_link": var selected_option = ingame_weakest_link; break;
+            case "weakest_link_vote": var selected_option = weakest_link_vote_ingame_option; break;
+            case "weakest_link_next_vote": var selected_option = weakest_link_next_vote_ingame_option; break;
+            case "weakest_link_vote_end": var selected_option = weakest_link_vote_end_ingame_option; break;
+            case "weakest_link_rule": var selected_option = weakest_link_rule; break;
+            case "password": var selected_option = ingame_password; break;
+            case "password_rule": var selected_option = password_rule; break;
+            case "password_recap": var selected_option = password_recap; break;
             default:
                 break;
         }

@@ -276,8 +276,9 @@
                                         <div class="form-group">
                                             <label id="text_settings_password_style" for="select_settings_password_style">text_settings_password_style</label>
                                             <select class="form-control col-md-6" id="select_settings_password_style" onchange="game.password.style = this.value">
-                                                <option value="2009">2009</option>
-                                                <option value="2016">2016</option>
+                                                <option value="password_2009">2009</option>
+                                                <option value="password_2016">2016</option>
+                                                <option value="password_2025">2025</option>
                                             </select>
                                         </div>
                                     </div>
@@ -664,6 +665,10 @@
                               </div>
                         </div>
                         <div id="password_recap" style="display:none">
+                            <div id="password_recap_placeholder">password</div>
+                            <div>
+                                <button id="text_game_restart_password" type="submit" class="btn password-button" onclick="restartGame()">text_game_restart_topbar</button>
+                            </div>
                         </div>
                     </div>
                     <div id="sentence_list" style="display: none;"></div>
