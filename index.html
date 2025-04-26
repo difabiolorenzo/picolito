@@ -33,13 +33,13 @@
     </head>
     <body onload="init()" class="bright_mode">
         <noscript>Javascript est désactivé.</noscript>
-        <div class="modal fade" id="modal_safety_and_cookie_modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="modal_safety_and_cookie_modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 class="modal-title" id="text_prevention_warning">text_prevention_warning</h5>
-                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn close" data-bs-dismiss="modal">
+                        <span >&times;</span>
                     </button>
                     </div>
                     <div class="modal-body">
@@ -66,37 +66,51 @@
         </div>
 
         <div class="modal fade" id="modal_modal_player_menu" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog " role="document">
                 <div class="modal-content p-2">
-
-                    <!-- <div>
-                        <h3>Équipe 1</h3>
-                        <ul id="team_1_list" class="list-group"></ul>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="text_modal_player_menu_title">text_modal_player_menu_title</h5>
+                        <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                            <span >&times;</span>
+                        </button>
                     </div>
-                    <div>
-                        <h3>Équipe 2</h3>
-                        <ul id="team_2_list" class="list-group"></ul>
-                    </div> -->
-
                     <div id="menu_player_list"></div>
                     <div class="input-group">
-                        <input id="menu_player_input" type="text" class="col-md-9 form-control" maxlength="50">
-                        <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(menu_player_input.value)">
-                            <i class="bi bi-person-plus"></i>
-                        </button>
+                        <div class="input-group">
+                            <input id="menu_player_input" type="text" class="col-md-9 form-control" maxlength="50">
+                            <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(menu_player_input.value)">
+                                <i class="bi bi-person-plus"></i>
+                            </button>
+                        </div>
+                        <div class="form-check">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="menu_player_switch_team_mode" onclick="refreshTeamDisplay()">
+                                <label class="form-check-label" for="menu_player_switch_team_mode"><i class="bi bi-people"></i><span id="menu_player_switch_team_mode_text">menu_player_switch_team_mode_text</span></label>
+                                <p><code id="menu_player_switch_team_mode_alert">menu_player_switch_team_mode_alert</code></p>
+                            </div>
+                        </div>
+                        <div id="menu_player_team_placeholder" class="input-group d-none">
+                            <h5 id="menu_player_team_name_title">menu_player_team_name_title</h5>
+                            <div class="input-group">
+                                <btn id="menu_player_team_1_name" class="btn btn-lg btn-group col-md-9 form-control" disabled onclick="editTeamName('team_1')">menu_player_team_1_name</btn>
+                            </div>
+                            <div class="input-group">
+                                <btn id="menu_player_team_2_name" class="btn btn-lg btn-group col-md-9 form-control" disabled onclick="editTeamName('team_2')">menu_player_team_2_name</btn>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="settings_modal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+        <div class="modal fade" id="settings_modal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" >
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="text_modal_settings">text_modal_settings</h5>
-                    <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <h5 class="modal-title" id="text_modal_settings">text_modal_settings</h5>
+                        <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
+                            <span >&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body d-flex flex-wrap justify-content-start">
 
@@ -279,7 +293,7 @@
                                 <select class="form-control col-md-6" id="select_settings_password_style" onchange="game.password.style = this.value">
                                     <option value="password_2009">2009</option>
                                     <option value="password_2016">2016</option>
-                                    <option value="password_2025">2025</option>
+                                    <option disabled value="password_2025">2025</option>
                                 </select>
                             </div>
                             <div>
@@ -309,13 +323,13 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal_sentence_modifier" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal_sentence_modifier" tabindex="-1" role="dialog" aria-labelledby="sipModifierModalLabel" >
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 class="modal-title" id="text_modal_sentence_modifier">text_modal_sentence_modifier</h5>
                     <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span >&times;</span>
                     </button>
                     </div>
                     <div class="modal-body">
@@ -332,29 +346,28 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal_sentence_list" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal_sentence_list" tabindex="-1" role="dialog" aria-labelledby="playerModifierModalLabel" >
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title">text</h5>
+                    <h5 id="modal_sentence_list_title" class="modal-title">modal_sentence_list_title</h5>
                     <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span >&times;</span>
                     </button>
                     </div>
-                    <div class="modal-body">
-                        <h3>lorem</h3>
+                    <div id="modal_sentence_list_content" class="modal-body">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade password_2016" id="modal_password_preview" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade password_2016" id="modal_password_preview" tabindex="-1" role="dialog" >
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="text-white">
                     <div class="modal-header">
                         <h3 class="modal-title" id="text_modal_password_preview_title">text_modal_password_preview_title</h3>
                         <button type="button" class="btn btn-primary close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span >&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -373,92 +386,181 @@
             <input type="file" id="input_csv" name="avatar" accept=".csv"/> -->
 
             <div class="d-flex form-check justify-content-end pb-2">
-                <button id="text_more_games" class="btn border-secondary col-4" onclick="displayPage('gamemode')">text_gamemode_menu</button>
-                <button class="btn border-secondary" id="text_menu_add_player col-2" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
+                <button  id="picolito_settings_collapse_header" class="btn border-secondary" data-bs-toggle="modal" data-bs-target="#settings_modal">picolito_settings_collapse_header</button>
+                <button id="text_menu_add_player col-2" class="btn border-secondary" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
             </div>
-
 
             <div class="d-flex flex-column flex-md-row">
-                <div class="card col-12 col-md-5 border-0 mb-3 mb-md-0">
-                    <button class="btn btn-primary card-title" id="custom_mix_gamemode_collapse_header" onclick="$('#custom_mix_gamemode_collapse').collapse('toggle')">
-                        <h5 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h5>
-                        <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
-                        <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
-                    </button>
-                    <div id="custom_mix_gamemode_collapse" class="collapse" aria-labelledby="custom_mix_gamemode_collapse_header" data-parent="#accordion">
-                        <form id="custom_mix_gamemode_form" class="form-check" action="javascript:void(0);">
-                            <div id="custom_mix_gamemode_picolo_section" class="d-grid">
-                                <h6 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h6>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="default">
-                                        <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
-                                    </input>
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="silly">
-                                        <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
-                                    </input>
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="bar">
-                                        <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
-                                    </input>
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="hot">
-                                        <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
-                                    </input>
-                                </label>
-                            </div>
-                            <div id="custom_mix_gamemode_never_done_section" class="d-grid">
-                                <h6 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h6>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="never_popular">
-                                        <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
-                                    </input>
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="never_hot">
-                                        <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
-                                    </input>
-                                </label>
-                                <label class="form-check-label">
-                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
-                                    onchange="allowMixGamemodeNextStep()" value="never_party">
-                                        <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
-                                    </input>
-                                </label>
-                            </div>
-                            <div class="d-flex form-group">
-                                <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            
                 <div class="card col-12 col-md-5 border-0">
-                    <button class="btn btn-primary card-title" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value);">
-                        <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
-                        <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
-                    </button>
+                    <ul class="nav nav-pills nav-fill" id="menu_tab_nav">
+                        <li class="nav-item">
+                            <a id="nav_menu_link_main" class="nav-link col-1 active" href="#" value="main" onclick="manageMenuTab(this)">nav_menu_link_main</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav_menu_link_picolo" class="nav-link col-1" href="#" value="picolo" onclick="manageMenuTab(this)">nav_menu_link_picolo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav_menu_link_never" class="nav-link col-1" href="#" value="never" onclick="manageMenuTab(this)">nav_menu_link_never</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav_menu_link_other" class="nav-link col-1" href="#" value="other" onclick="manageMenuTab(this)">nav_menu_link_other</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div id="menu_content">
-                <div id="settings">
-                    <div id="button-group-toggle-settings" class="btn-group-toggle" data-bs-toggle="modal" data-bs-target="#settings_modal">
-                        <div class="form-check">
-                            <button class="btn card-title btn-primary" id="picolito_settings_collapse_header">picolito_settings_collapse_header</button>
-                        </div>
+            <div id="gamemode_collapse_main" class="collapse show" data-parent="#accordion">
+                <div class="card p-2 m-1">
+                    <h6 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h6>
+                    <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
+                    <p id="text_gamemode_password_subtitle_2">text_gamemode_password_subtitle_2</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value)">gamemode_option_password</button>
                     </div>
                 </div>
+                <div class="card p-2 m-1">
+                    <h6 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h6>
+                    <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
+                    <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
+                    
+                    <form id="custom_mix_gamemode_form" class="form-check" action="javascript:void(0);">
+                        <div id="custom_mix_gamemode_picolo_section" class="d-grid">
+                            <h6 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h6>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="default">
+                                    <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
+                                </input>
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="silly">
+                                    <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
+                                </input>
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="bar">
+                                    <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
+                                </input>
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="hot">
+                                    <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
+                                </input>
+                            </label>
+                        </div>
+                        <div id="custom_mix_gamemode_never_done_section" class="d-grid">
+                            <h6 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h6>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="never_popular">
+                                    <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
+                                </input>
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="never_hot">
+                                    <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
+                                </input>
+                            </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
+                                onchange="allowMixGamemodeNextStep()" value="never_party">
+                                    <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
+                                </input>
+                            </label>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="gamemode_collapse_picolo" class="collapse" data-parent="#accordion">
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_default">text_gamemode_title_default</h6>
+                    <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
+                    <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">gamemode_option_default</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_silly">text_gamemode_title_silly</h6>
+                    <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
+                    <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_silly" value="default" onclick="selectGamemode(this.value);">gamemode_option_silly</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_bar">text_gamemode_title_bar</h6>
+                    <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
+                    <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_bar" value="default" onclick="selectGamemode(this.value);">gamemode_option_bar</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_hot">text_gamemode_title_hot</h6>
+                    <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
+                    <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_hot" value="default" onclick="selectGamemode(this.value);">gamemode_option_hot</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_war">text_gamemode_title_war</h6>
+                    <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
+                    <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
+                    <p id="text_gamemode_war_minimum_requierement">text_gamemode_war_minimum_requierement</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_war" value="default" onclick="selectGamemode(this.value);">gamemode_option_default</button>
+                    </div>
+                </div>
+            </div>
+            <div id="gamemode_collapse_never" class="collapse" data-parent="#accordion">
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h6>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">gamemode_option_never_popular</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h6>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">gamemode_option_never_hot</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h6>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">gamemode_option_never_party</button>
+                    </div>
+                </div>
+            </div>
+            <div id="gamemode_collapse_other" class="collapse" data-parent="#accordion">
+                <div class="card p-2 m-1">
+                    <h6 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h6>
+                    <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
+                    <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
+                    <div class="d-flex">
+                        <button class="btn btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">gamemode_option_weakest_link</button>
+                    </div>
+                </div>
+                <div class="card p-2 m-1">
+                    <h6 class="mb-0" id="text_gamemode_title_tenzi">text_gamemode_title_tenzi</h6>
+                    <p id="text_gamemode_tenzi_subtitle_1">text_gamemode_tenzi_subtitle_1</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_tenzi" value="tenzi" onclick="selectGamemode(this.value);">gamemode_option_tenzi</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="menu_content">
                 <div class="form-check">
-                    <h4 id="text_settings_others">text_settings_others</h4>
+                    <h6 id="text_settings_others">text_settings_others</h6>
                     <div id="debug_tools_placeholder" style="display: none;">
                         <div>
                             <button class="btn btn-secondary" onclick="DEBUG_RandomPlayer(1)">DEBUG_RandomPlayer(1)</button>
@@ -483,85 +585,6 @@
                 <a id="picolito_version_menu" href="https://github.com/difabiolorenzo/picolito/commits/master">Picolito</a>
             </div>
         </div>
-        <div class="page dark_affected" id="gamemode" style="display:none">
-            <div id="gamemode_topbar">
-                <button id="text_gamemode_back" class="col-md-3 btn btn-primary" onclick="displayPage('menu')">Retour</button>
-            </div>
-            <div id="button-group-toggle" class="btn-group-toggle" data-toggle="buttons">
-                <div>
-                    <h6 id="text_gamemode_classical">text_gamemode_classical</h6>
-                    <div class="card">
-                        <button class="btn card-title btn-primary" id="picolito_gamemode_collapse_header" onclick="$('#picolito_gamemode_collapse').collapse('toggle')">
-                            <h5 id="text_gamemode_picolo_title" class="mb-0">text_gamemode_picolo_title</h5>
-                        </button>
-                        <div id="picolito_gamemode_collapse" class="collapse" aria-labelledby="picolito_gamemode_collapse_header" data-parent="#accordion">
-                            <div class="card-body">
-                                <button class="btn btn-primary" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_default">text_gamemode_title_default</h3>
-                                    <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
-                                    <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
-                                </button>
-                                <button class="btn btn-primary" id="gamemode_option_silly" value="silly" onclick="selectGamemode(this.value);" >
-                                    <h5 id="text_gamemode_title_silly">text_gamemode_title_silly</h3>
-                                    <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
-                                    <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
-                                </button>
-                                <button class="btn btn-primary" id="gamemode_option_bar" value="bar" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_bar">text_gamemode_title_bar</h3>
-                                    <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
-                                    <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
-                                </button>
-                                <button class="btn btn-primary" id="gamemode_option_hot" value="hot" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_hot">text_gamemode_title_hot</h3>
-                                    <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
-                                    <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
-                                </button>
-                                <button disabled class="btn btn-primary" id="gamemode_option_war" value="war" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_war">text_gamemode_title_war</h3>
-                                    <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
-                                    <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
-                                    <p id="text_gamemode_war_minimum_requierement">text_gamemode_war_minimum_requierement</p>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <button class="btn card-title btn-primary" id="never_gamemode_collapse_header" onclick="$('#never_gamemode_collapse').collapse('toggle')">
-                            <h5 class="mb-0" id="text_gamemode_never_title">text_gamemode_never_title</h5>
-                        </button>
-                        <div id="never_gamemode_collapse" class="collapse" aria-labelledby="never_gamemode_collapse_header" data-parent="#accordion">
-                            <div class="card-body d-flex">
-                                <button class="btn btn-primary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h3>
-                                </button>
-                                <button class="btn btn-primary" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h3>
-                                </button>
-                                <button class="btn btn-primary" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">
-                                    <h5 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h3>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h6 id="text_gamemode_sandbox">text_gamemode_sandbox</h6>
-                    <div class="card">
-                        <button disabled class="btn card-title btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">
-                            <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
-                            <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
-                            <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
-                        </button>
-                    </div>
-                    <div class="card">
-                        <button class="btn card-title btn-primary" id="gamemode_option_tenzi" value="tenzi" onclick="selectGamemode(this.value);">
-                            <h5 class="mb-0" id="text_gamemode_title_tenzi">text_gamemode_title_tenzi</h5>
-                            <p id="text_gamemode_tenzi_subtitle_1">text_gamemode_tenzi_subtitle_1</p>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
         
         <div class="page dark_affected black" id="game" style="display:none">
             <div id="game_content"class="portrait-mode">
@@ -570,7 +593,7 @@
                     <button id="text_game_restart_topbar" type="submit" class="btn btn-primary" onclick="restartGame()">text_game_restart_topbar</button>
                     <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
-                        <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="toggleDisplaySentenceList()">-</button>
+                        <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_next_button" onclick="nextSentence();">></button>
                     </div>
                     <button id="text_game_player_menu" class="btn btn-primary fs-6" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
@@ -622,13 +645,13 @@
                     <div id="ingame_option" style="display:none">
                         <div id="start_ingame_option" style="display:none">
                             <p id="text_game_ready">text_game_ready</p>
-                            <button id="text_game_start_button" type='submit' class='btn btn-primary' onclick='startGame()'>text_game_start_button</button>
+                            <button id="text_game_start_button" type='submit' class='btn btn-primary btn-lg' onclick='startGame()'>text_game_start_button</button>
                         </div>
                         <div id="replay_ingame_option" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
                             <div>
-                                <button id="text_game_quit" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit</button>
-                                <button id="text_game_restart" type='submit' class='btn btn-primary' onclick='restartGame()'>text_game_restart</button>
+                                <button id="text_game_quit" type="submit" class="btn btn-primary btn-lg" onclick="exitGame()">text_game_quit</button>
+                                <button id="text_game_restart" type='submit' class='btn btn-primary btn-lg' onclick='restartGame()'>text_game_restart</button>
                             </div>
                         </div>
                         <div id="weakest_link_vote_ingame_option" class="weakest_link_vote_menu" style="display:none">
@@ -672,7 +695,6 @@
                             </div>
                         </div>
                     </div>
-                    <div id="sentence_list" style="display: none;"></div>
                     <div id="tenzi_game" style="display: none;">
                         <progress id="tenzi_progress" value="3" min="0" max="3"></progress>
                         <div id="tenzi_dice_placeholder"></div>

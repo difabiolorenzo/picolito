@@ -6,7 +6,6 @@ function nextSentence() {
         updateGameCycleIndicator();
     }
     setBackgroundStyleColor(getActualBackgroundColorByHistory())
-    hideDisplaySentenceList();
 }
 
 function previousSentence() {
@@ -15,7 +14,6 @@ function previousSentence() {
         goToSpecificSentence(game.cycle_id)
     }
     setBackgroundStyleColor(getActualBackgroundColorByHistory())
-    hideDisplaySentenceList();
 }
 
 function goToSpecificSentence(position) {
@@ -23,7 +21,8 @@ function goToSpecificSentence(position) {
     updateGameCycleIndicator();
     retrieve(position);
     setBackgroundStyleColor(getActualBackgroundColorByHistory())
-    hideDisplaySentenceList();
+
+    global.modal_sentence_list.hide()
 }
 
 function convertPendingDBTaffy() {
@@ -411,7 +410,7 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
 }
 
 function userActionClickSentence() {
-    if (game.started == true && game.gamemode_type == "text") {
+    if (game.started == true && game.gamemode_type == "mix") {
         if (game.debug == true) {
             showSentenceModifierModal();
         } else {

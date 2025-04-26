@@ -74,7 +74,7 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
-.btn-primary, .btn-primary:focus, .btn-primary:active, .btn-primary:hover {
+.btn-primary, .btn-primary:focus, .btn-primary:active, .btn-primary:hover, .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     color: #000;
     background-color: var(--picolito-primary);
     border-color: var(--picolito-primary);
@@ -90,7 +90,7 @@ input[type=checkbox] {
 .dark_mode .dark_affected .btn-primary{
     color: #fff;
     background-color: none;
-    /* border-color: #e3e3e3; */
+    border-color: var(--picolito-primary);
 }
 
 .dark_mode .dark_affected select{
@@ -149,8 +149,8 @@ label.form-check-label {
 }
 
 p, .form-group, .form-check.form-switch {
-    margin-top: .75rem;
-    margin-bottom: .75rem;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
 }
 
 .form-group {.form-group {
@@ -169,6 +169,11 @@ a {
 .text-center {
     align-items: center;
     justify-content: center;
+}
+
+.form-check-input:checked {
+    background-color: var(--picolito-primary);
+    border-color: var(--picolito-primary);
 }
 
 .btn-secondary {
@@ -196,6 +201,15 @@ code {
     border-color: var(--picolito-primary);
 }
 
+.form-check-input:focus {
+    border-color: var(--picolito-primary-boxshadow-border);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem var(--picolito-primary-boxshadow-hover);
+}
+.form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+}
+
 .btn.password-button span.material-symbols-outlined {
     font-size: xx-large;
 }
@@ -216,4 +230,17 @@ code {
 
 i.bi {
     font-size: x-large;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        max-width: 700px;
+        margin: 1.75rem auto;
+    }
+}
+@media (min-width: 1024px) {
+    .modal-dialog {
+        max-width: 900px;
+        margin: 1.75rem auto;
+    }
 }

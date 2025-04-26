@@ -78,7 +78,8 @@ function storeSettingsCookie() {
         game.weakest_link.max_chain,
         game.weakest_link.hide_answer,
         game.password.word_to_find_amount,
-        game.password.style
+        game.password.style,
+        game.password.mode
     ]
 
     if (getCookie("settings") == '') {
@@ -108,33 +109,38 @@ function clearCorruptedCookies() {
 }
 
 function setSettingsValuesByCookies() {
-    if (getCookie("settings") != "") {
-        var cookie_settings_value = getCookie("settings").split(",");
-        global.cookie_settings_value = cookie_settings_value;
-
-        game.display_color_indicator = JSON.parse(cookie_settings_value[0]);
-        game.animation = JSON.parse(cookie_settings_value[1]);
-        game.picolito.chug_enabled = JSON.parse(cookie_settings_value[2]);
-        game.picolito.virus_enabled = JSON.parse(cookie_settings_value[3]);
-        game.picolito.social_posting_enabled = JSON.parse(cookie_settings_value[4]);
-        game.sip.min = parseInt(cookie_settings_value[5]);
-        game.sip.max = parseInt(cookie_settings_value[6]);
-        game.picolito.chug_amount = parseInt(cookie_settings_value[7]);
-        global.dark_mode = cookie_settings_value[8];
-        global.accept_cookie = parseBoolean(cookie_settings_value[9]);
-        global.remind_warning_panel = parseBoolean(cookie_settings_value[10]);
-        game.weakest_link.tie_behaviour = cookie_settings_value[11];
-        global.audio_enabled = cookie_settings_value[12];
-        game.weakest_link.stop_at_max_chain = cookie_settings_value[13];
-        game.weakest_link.max_chain = cookie_settings_value[14];
-        game.weakest_link.hide_answer = cookie_settings_value[15];
-        game.password.word_to_find_amount = cookie_settings_value[16];
-
-        if (cookie_settings_value[17] == "2016" || cookie_settings_value[17] == "2009") {
-            game.password.style == "password_" + cookie_settings_value[17]
+    if (getCookie("settings") != undefined) {
+        if (typeof getCookie("settings") == "object") {
+            global.cookie_settings_value = getCookie("settings");
         } else {
-            game.password.style = cookie_settings_value[17];
+            global.cookie_settings_value = getCookie("settings").split(",");
         }
+
+        game.display_color_indicator = JSON.parse(global.cookie_settings_value[0]);
+        game.animation = JSON.parse(global.cookie_settings_value[1]);
+        game.picolito.chug_enabled = JSON.parse(global.cookie_settings_value[2]);
+        game.picolito.virus_enabled = JSON.parse(global.cookie_settings_value[3]);
+        game.picolito.social_posting_enabled = JSON.parse(global.cookie_settings_value[4]);
+        game.sip.min = parseInt(global.cookie_settings_value[5]);
+        game.sip.max = parseInt(global.cookie_settings_value[6]);
+        game.picolito.chug_amount = parseInt(global.cookie_settings_value[7]);
+        global.dark_mode = global.cookie_settings_value[8];
+        global.accept_cookie = parseBoolean(global.cookie_settings_value[9]);
+        global.remind_warning_panel = parseBoolean(global.cookie_settings_value[10]);
+        game.weakest_link.tie_behaviour = global.cookie_settings_value[11];
+        global.audio_enabled = global.cookie_settings_value[12];
+        game.weakest_link.stop_at_max_chain = global.cookie_settings_value[13];
+        game.weakest_link.max_chain = global.cookie_settings_value[14];
+        game.weakest_link.hide_answer = global.cookie_settings_value[15];
+        game.password.word_to_find_amount = global.cookie_settings_value[16];
+
+        if (global.cookie_settings_value[17] == "2016" || global.cookie_settings_value[17] == "2009") {
+            game.password.style == "password_" + global.cookie_settings_value[17]
+        } else {
+            game.password.style = global.cookie_settings_value[17];
+        }
+
+        game.password.mode = global.cookie_settings_value[17];
 
         updateHTMLSettingsByVar();
     }
@@ -159,7 +165,9 @@ function displayCookieList() {
         "game.weakest_link.max_chain",
         "game.weakest_link.hide_answer",
         "game.password.word_to_find_amount",
-        "game.password.style"
+        "game.password.style",
+        "game.password.mode"
+
     ];
 
     global.cookie_settings_value = getCookie("settings").split(",");

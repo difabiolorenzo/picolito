@@ -29,7 +29,7 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.34",
+        picolito_version: "0.34.1",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -66,7 +66,7 @@ function defaultVariables() {
                 silly: [[0,1,2,3,4], [0,1,2], [0], [1,2,3], [], [0,1,2,3], [], [], [], [], [], [], [], [0,1], [], [], [], [], [], [], [], [], [0,1,2,3,4], [3,4], [0,1,2]],
                 war: [[], [], [], [], [], [], [], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], [], [], [], [], [], [], [], [], [], [], [], []]
             },
-            // Senteces of type 1 is blue, 2 and 3 is yellow, 4 is green, etc...
+            // Sentences of type 1 is blue, 2 and 3 is yellow, 4 is green, etc...
             type_by_color: {
                 blue: [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25],
                 red: [5, 6, 7],
@@ -344,7 +344,7 @@ function replaceAt(string, index, replace, length) {
 }
 
 function displayPage(page) {
-    var pages = ["menu", "gamemode", "game"]
+    var pages = ["menu", "game"]
 
     for (var i in pages) {
         document.getElementById(pages[i]).style.display = 'none';
@@ -353,6 +353,9 @@ function displayPage(page) {
 }
 
 function addPlayer(player_name) {
+    if (player_name == "" || player_name == undefined) {
+        return;
+    }
     // DEV MODE
     if (menu_player_input.value.toLowerCase() == "lyoko") {
         menu_player_input.value = "";
@@ -375,49 +378,64 @@ function refreshPlayerList() {
     const playerListElement = document.getElementById("menu_player_list");
     playerListElement.innerHTML = "";
 
+    var team_mode = menu_player_switch_team_mode.checked;   
+
     game.player_list.forEach(player => {
-        const listItem = document.createElement("li");
-        listItem.className = "list-group-item d-flex justify-content-between align-items-center col-12";
-        listItem.innerHTML = `
-            <span>${player.player_name}</span>
-            <div>
-                <button class="btn btn-primary btn-sm" onclick="editPlayerNameModal(${player.id})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="removePlayer(${player.id})">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
-        playerListElement.appendChild(listItem);
+        var listItem = "";
+        var team = player.team;
+        var team_class = "";
+        if ((team == "team_1" || team == "team_2") && team_mode == true) {
+            team_class = "bg-" + player.team;
+        } else {
+
+        }
+        listItem += `<li class="list-group-item d-flex justify-content-between align-items-center col-12 ${team_class}">`;
+        listItem += `<span>${player.player_name}</span>`;
+        listItem += `<div>`;
+        if (team_mode == true) {
+            console.log(player.team)
+            if (player.team == "null") {
+                listItem += `<button class="btn btn-primary btn-sm bg-team_1" onclick="assignPlayerToTeam(${player.id}, 'team_1')">
+                            <i class="bi bi-people"></i>
+                        </button>
+                        <button class="btn btn-primary btn-sm bg-team_2" onclick="assignPlayerToTeam(${player.id}, 'team_2')">
+                            <i class="bi bi-people"></i>
+                        </button>`;
+            }
+            if (player.team == "team_1") {
+                listItem += `<button class="btn btn-primary btn-sm bg-team_2" onclick="assignPlayerToTeam(${player.id}, 'team_2')">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </button>`;
+            }
+            if (player.team == "team_2") {
+                listItem += `<button class="btn btn-primary btn-sm bg-team_1" onclick="assignPlayerToTeam(${player.id}, 'team_1')">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </button>`;
+            }
+        }
+        listItem += `<button class="btn btn-primary btn-sm" onclick="editPlayerNameModal(${player.id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="removePlayer(${player.id})">
+                        <i class="bi bi-trash"></i>
+                    </button>`;
+        listItem += `</div>`;
+        listItem += `</li>`;
+        playerListElement.innerHTML += listItem;
     });
-
-
     storePlayerListCookie();
 }
 
 function refreshTeamDisplay() {
-    const team1Element = document.getElementById("team_1_list");
-    const team2Element = document.getElementById("team_2_list");
-
-    team1Element.innerHTML = "";
-    team2Element.innerHTML = "";
-
-    game.player_list.forEach(player => {
-        const listItem = document.createElement("li");
-        listItem.textContent = player.name;
-
-        if (player.team === "team_1") {
-            team1Element.appendChild(listItem);
-        } else if (player.team === "team_2") {
-            team2Element.appendChild(listItem);
-        }
-    });
-}
-
-function editPlayerNameModal(element) {
-    player_id = element.parentElement.parentElement.children[0].innerHTML
-
+    if (menu_player_switch_team_mode.checked) {
+        document.getElementById("menu_player_team_1_name").innerHTML = game.team_1;
+        document.getElementById("menu_player_team_2_name").innerHTML = game.team_2;
+    
+        document.getElementById("menu_player_team_placeholder").classList.remove("d-none")
+    } else {
+        document.getElementById("menu_player_team_placeholder").classList.add("d-none")
+    }
+    
     refreshPlayerList()
 }
 
@@ -435,6 +453,22 @@ function editPlayerNameModal(id) {
             player.player_name = newName;
             refreshPlayerList();
         }
+    }
+}
+
+function editTeamName(team) {
+    if (team == "team_1") {
+        var team_name = game.team_1;
+        document.getElementById("menu_player_team_1_name").innerHTML = promptTeamName(team_name);
+    }
+    if (team == "team_2") {
+        var team_name = game.team_2;
+        document.getElementById("menu_player_team_2_name").innerHTML = promptTeamName(team_name);
+    }
+
+    function promptTeamName(old_name) {
+        const newName = prompt("Enter new name:", old_name);
+        if (newName) { return newName; }
     }
 }
 
@@ -503,6 +537,10 @@ function initGame(direct_launch) {
         if (game.gamemode == "mix" ) {
             createGamemodeDBindicator();
         }
+    }
+
+    if (game.gamemode_type == "picolo" || game.mix_gamemode_list_picolo.length > 0) {
+        global.modal_player_menu.show();
     }
 }
 
@@ -597,7 +635,6 @@ function exitGame() {
     if (game.gamemode == "weakest_link") { stopsound("weakest_link_amb_60") }
     if (game.weakest_link.weakestLinkTimer != undefined) { clearInterval(game.weakest_link.weakestLinkTimer) }
 
-    hideDisplaySentenceList();
     setBackgroundStyleColor("black");
     hidePicoloVirusTitle()
     displaySentence("", undefined); // reset HTML sentence display
@@ -635,29 +672,29 @@ function restartGame() {
 }
 
 function selectGamemode(selected_gamemode, direct_launch) {
+    if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
+        alert(global.current_language_strings.weakest_link_minimum_requierement);
+        return;
+    }
     switch (selected_gamemode) {
-        case "default": game.gamemode_type = "text"; break;
-        case "silly": game.gamemode_type = "text"; break;
-        case "bar": game.gamemode_type = "text"; break;
-        case "hot": game.gamemode_type = "text"; break;
-        case "war": game.gamemode_type = "text"; break;
-        case "never_popular": game.gamemode_type = "text"; break;
-        case "never_hot": game.gamemode_type = "text"; break;
-        case "never_party": game.gamemode_type = "text"; break;
+        case "default": game.gamemode_type = "picolo"; break;
+        case "silly": game.gamemode_type = "picolo"; break;
+        case "bar": game.gamemode_type = "picolo"; break;
+        case "hot": game.gamemode_type = "picolo"; break;
+        case "war": game.gamemode_type = "picolo"; break;
+        case "never_popular": game.gamemode_type = "never_done"; break;
+        case "never_hot": game.gamemode_type = "never_done"; break;
+        case "never_party": game.gamemode_type = "never_done"; break;
         case "weakest_link": game.gamemode_type = "weakest_link"; break;
         case "password": game.gamemode_type = "password"; break;
         case "tenzi": game.gamemode_type = "tenzi"; break;
-        case "custom": game.gamemode_type = "text"; break;
-    }    
-    if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
-        alert(global.current_language_strings.weakest_link_minimum_requierement);
-    } else {
-        if (selected_gamemode == "mix") {
-            setMixGamemodeDatabase();
-        }
-        game.gamemode = selected_gamemode;
-        initGame(direct_launch);
+        case "mix": game.gamemode_type = "mix"; break;
     }
+    if (selected_gamemode == "mix") {
+        setMixGamemodeDatabase();
+    }
+    
+    initGame(direct_launch);
 }
 
 function setMixGamemodeDatabase() {
@@ -928,31 +965,23 @@ function applyTextModifiers(original_sentence, keys) {
     return formatted_sentence;
 }
 
-function toggleDisplaySentenceList() {
-    if (document.getElementById("sentence_list").style.display == "none") {
-        displaySentenceList();
-    } else {
-        hideDisplaySentenceList();
-        setBackgroundStyleColor(getActualBackgroundColorByHistory())
-    }
-}
-
 function displaySentenceList() {
-    var ingame_text = document.getElementById("ingame_text");
-    var sentence_list = document.getElementById("sentence_list");
+    global.modal_sentence_list.show();
+    modal_sentence_list_content.innerHTML = "";
 
-    document.getElementById("ingame_text").style.display = "none";
-    document.getElementById("sentence_list").style.display = "block";
-    setBackgroundStyleColor("black")
-    updateSentenceList()
-}
+    var html_element = "";
+    for (var i = 0; i < game.sentence_history.length; i++) {
+        var color = game.sentence_history[i].color;
+        var sentence = game.sentence_history[i].formatted_sentence;
 
-function hideDisplaySentenceList() {
-    document.getElementById("ingame_text").style.display = "block";
-    document.getElementById("sentence_list").style.display = "none";
-
-    var ingame_text = document.getElementById("ingame_text");
-    var sentence_list = document.getElementById("sentence_list");
+        if (sentence != "none") {
+            var sentence_index = parseInt(i)+1;
+            html_element += `<li class="list-group-item sentence-list border-color-${color} text-color-${color}" onclick="goToSpecificSentence(${i})">${sentence_index}. ${sentence}</li>`;
+        } else {
+            break;
+        }
+    }
+    modal_sentence_list_content.innerHTML = html_element;
 }
 
 function displayTenziGame(force_ingame) {
@@ -960,28 +989,6 @@ function displayTenziGame(force_ingame) {
         document.getElementById("tenzi_game").style.display = "block";
     } else {
         document.getElementById("tenzi_game").style.display = "none";
-    }
-}
-
-function updateSentenceList(mode) {
-    if (mode == "clear") {
-        sentence_list.innerHTML = ""
-    } else {
-        var ul_head = "";
-        var html_inner = "";
-
-        for (var i = 0; i < game.sentence_history.length; i++) {
-            var color = game.sentence_history[i].color;
-            var sentence = game.sentence_history[i].formatted_sentence;
-
-            if (sentence != "none") {
-                var sentence_index = parseInt(i)+1;
-                html_inner += `<li class="list-group-item sentence-list ${color}" onclick="goToSpecificSentence(${i})">${sentence_index}. ${sentence}</li>`;
-            } else {
-                break;
-            }
-        }
-        sentence_list.innerHTML = ul_head + html_inner + "</ul>";
     }
 }
 
@@ -1009,28 +1016,39 @@ function leaveTeam(player_name) {
     }
 }
 
-function changeTeam(html_id, team) {
-    var html_id = document.getElementById(html_id)
-    var player_name = game.player_list[getLastCharacter(html_id.id)]
-
-    leaveTeam(player_name)
-
-    var change_team_1_button = `<td><button class="btn btn-primary" onclick="changeTeam(this.parentElement.parentElement.id, 'team_1')">`+ global.current_language_strings.team_change +`</button></td>`
-    var change_team_2_button = `<td><button class="btn btn-primary" onclick="changeTeam(this.parentElement.parentElement.id, 'team_2')">`+ global.current_language_strings.team_change +`</button></td>`
-
-    if (team == "team_1") {
-        html_id.children[1].innerHTML = `✅`;
-        html_id.children[2].innerHTML = change_team_2_button;
-        game.team_1_player_list.push(player_name)
-    } else {
-        html_id.children[1].innerHTML = change_team_1_button;
-        html_id.children[2].innerHTML = `✅`;
-        game.team_2_player_list.push(player_name)
+function manageMenuTab(element) {
+    const menu_tab_nav = document.getElementById("menu_tab_nav")
+    const value = element.getAttribute("value")
+    for (var i in menu_tab_nav.children) {
+        if (menu_tab_nav.children[i].children) {
+            menu_tab_nav.children[i].children[0].classList.remove("active")
+        }
     }
 
-    var team_1_lenght = game.team_1_player_list.length
-    var team_2_lenght = game.team_2_player_list.length
-    var player_list_length = game.player_list.length
+    $('#gamemode_collapse_main').collapse('hide')
+    $('#gamemode_collapse_picolo').collapse('hide')
+    $('#gamemode_collapse_never').collapse('hide')
+    $('#gamemode_collapse_other').collapse('hide')
+
+    switch (value) {
+        case "main":
+            document.getElementById("nav_menu_link_main").classList.add("active")
+            $('#gamemode_collapse_main').collapse('show')
+        break;
+        case "picolo":
+            document.getElementById("nav_menu_link_picolo").classList.add("active")
+            $('#gamemode_collapse_picolo').collapse('show')
+        break;
+        case "never":
+            document.getElementById("nav_menu_link_never").classList.add("active")
+            $('#gamemode_collapse_never').collapse('show')
+        break;
+        case "other":
+            document.getElementById("nav_menu_link_other").classList.add("active")
+            $('#gamemode_collapse_other').collapse('show')
+        break;
+    }    
+    return;
 }
 
 function displayweakestLinkDisplayVote() {
@@ -1159,7 +1177,6 @@ function createGamemodeDBindicator() {
     for (var i in game.mix_gamemode_list_picolo) {
         var id = game.mix_gamemode_list_picolo[i];
         var display_name = game.mix_gamemode_list_picolo[i];
-        var gamemode_type = "picolo";
 
         var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
         document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
@@ -1167,7 +1184,6 @@ function createGamemodeDBindicator() {
     for (var i in game.mix_gamemode_list_never_done) {
         var id = game.mix_gamemode_list_never_done[i];
         var display_name = game.mix_gamemode_list_never_done[i];
-        var gamemode_type = "never_done";
 
         var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
         document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;

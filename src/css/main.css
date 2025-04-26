@@ -2,6 +2,7 @@
     --picolito-primary: #ffc107;
     --picolito-primary-shade: #fde13e;
     --picolito-primary-boxshadow-border: #ffc105cc;
+    --picolito-primary-boxshadow-hover: #ffc10540;
     --picolo_yellow: #E7BB00;
     --picolo_red: #E51000;
     --picolo_blue: #1B586B;
@@ -13,10 +14,13 @@
     --weakest_link: #093340;
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
-    --picolo_team: #ff8844;
+    --picolo_teams: #ff8844;
+    --picolo_team_1: #800080;
+    --picolo_team_1_bright: #ad00ad;
+    --picolo_team_2: #17e300;
     --picolo_player_dark: #6dbbbb;
     --picolo_sip_dark: #d7d78a;
-    --picolo_team_dark: #a6582c;
+    --picolo_teams_dark: #a6582c;
     --dark_mode_light_gray: #252525;
     --dark_mode_gray: #101010;
     --weakest-link: #000046;
@@ -173,6 +177,27 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
     box-shadow: inset 0 0 3px 1px white;
 }
 
+#menu_player_team_1_name, .bg-team_1 {
+    background-color: var(--picolo_team_1);
+    color:white;
+}
+#menu_player_team_2_name, .bg-team_2 {
+    background-color: var(--picolo_team_2);
+    color:white;
+}
+.dark_mode .bg-team_1 {
+    background-color: unset;
+    border: 1px solid var(--picolo_team_1_bright)
+}
+.dark_mode .bg-team_2 {
+    background-color: unset;
+    border: 1px solid var(--picolo_team_2);
+    box-shadow: 0px 0px 5px -1px var(--picolo_team_2);
+}
+#menu_player_team_1_name, #menu_player_team_2_name {
+    font-weight: bold;
+}
+
 .input_name {
     width: 100%;
     text-align: center;
@@ -184,7 +209,7 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
 .dark_mode span.span_highlight {background-color: #00000040;}
 .dark_mode span.span_player {color: var(--picolo_player);}
 .dark_mode span.span_sip {color: var(--picolo_sip);}
-.dark_mode span.span_team {color: var(--picolo_team);}
+.dark_mode span.span_team {color: var(--picolo_teams);}
 
 
 .dark_mode .input_name, .dark_mode .table, .dark_mode td, .dark_mode th {
@@ -203,12 +228,12 @@ div#game.weakest_link, #weakest_link_vote_end_ingame_option {
 span.span_player, span.span_sip, span.span_team {
     padding: 0 0.75rem;
     border-radius: 0.25rem;
-    background-color: #00000080;
+    background-color: #000000b0;
     text-align: center;
 }
 span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
-span.span_team {color: var(--picolo_team);}
+span.span_team {color: var(--picolo_teams);}
 
 #sentence_modifier_modal_sentence {
     padding: 1rem;
@@ -220,9 +245,7 @@ span.span_team {color: var(--picolo_team);}
 
 .dark_mode #sentence_modifier_modal_sentence span.span_highlight {background-color: #000000b0;}
 
-div#sentence_list {margin: 5vh;overflow: scroll;height: 70vh;}
-
-li.list-group-item.sentence-list, .player-vote-button, .player-recap-vote, table#weakest_link_vote_end_analytics_table td {
+.player-vote-button, .player-recap-vote, table#weakest_link_vote_end_analytics_table td {
     background-color: var(--dark_mode_gray);
     font-weight: 700;
     text-align: left;
@@ -232,11 +255,17 @@ li.list-group-item.sentence-list, .player-vote-button, .player-recap-vote, table
 li.list-group-item.sentence-list, .player-vote-button {
     font-size: 100%;
 }
-li.list-group-item.sentence-list.red {color:var(--picolo_red)}
-li.list-group-item.sentence-list.yellow {color:var(--picolo_yellow)}
-li.list-group-item.sentence-list.green {color:var(--picolo_green)}
-li.list-group-item.sentence-list.blue {color:var(--picolo_blue)}
-li.list-group-item.sentence-list.never_done {color:var(--never-done)}
+.text-color-red {color:var(--picolo_red)}
+.text-color-yellow {color:var(--picolo_yellow)}
+.text-color-green {color:var(--picolo_green)}
+.text-color-blue {color:var(--picolo_blue)}
+.text-color-never_done {color:var(--never-done)}
+
+.border-color-red {border-color:var(--picolo_red)}
+.border-color-yellow {border-color:var(--picolo_yellow)}
+.border-color-green {border-color:var(--picolo_green)}
+.border-color-blue {border-color:var(--picolo_blue)}
+.border-color-never_done {border-color:var(--never-done)}
 
 div#ingame_option {
     width: 100%;
@@ -1007,6 +1036,10 @@ div#tenzi_dice.dice_hint {
 #sentence_modifier_modal_sentence span.span_highlight {
     background-color: #000000d4;
 }
+
+#modal_sentence_list_content {
+    font-weight: bold;
+}
 .isHidden {
     display: none; /* hide radio buttons */
   }
@@ -1055,3 +1088,15 @@ div#tenzi_dice.dice_hint {
             width: 0;
         }
     }
+
+.dark_mode .modal-content {
+    background-color: var(--dark_mode_gray);
+    border: 1px solid white;
+    color:white;
+}
+.dark_mode .btn.close {
+    color:white;
+}
+.dark_mode .btn {
+    border:1px solid white
+}

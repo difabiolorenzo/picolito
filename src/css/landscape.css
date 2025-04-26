@@ -15,9 +15,6 @@
     div#menu {
         padding: 3vw;
     }
-    body.portrait_mode_enabled #game_content.portrait-mode div#sentence_list {
-        height: 60vw;
-    }
     div#game.weakest_link #ingame_content {
         margin-top: 15vw;
     }
