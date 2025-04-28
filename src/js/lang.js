@@ -56,6 +56,7 @@ function setLanguageString() {
             team_delete: "Supprimer",
             team_change: "Changer",
             modal_sentence_modifier: "Modifier la phrase",
+            modal_sentence_modifier_end_debug: "Arrêter le debug",
             modal_password_preview_title: "Prévisualisation des mots",
             modal_password_preview_text: "Toucher pour fermer la fenêtre",
             modal_password_preview_ended: "Prévisualisation finie",
@@ -230,6 +231,7 @@ function setLanguageString() {
             team_delete: "Delete",
             team_change: "Change",
             modal_sentence_modifier: "Modify sentence",
+            modal_sentence_modifier_end_debug: "Stop debug",
             modal_password_preview_title: "Words preview",
             modal_password_preview_text: "Touch to close",
             modal_password_preview_ended: "Preview ended",
@@ -435,6 +437,7 @@ function updateHTMLLanguageStrings() {
     // document.getElementById("text_menu_lang_sv").innerHTML = global.current_language_strings.lang_sv
 
     document.getElementById("text_modal_sentence_modifier").innerHTML = global.current_language_strings.modal_sentence_modifier;
+    document.getElementById("modal_sentence_modifier_end_debug").innerHTML = global.current_language_strings.modal_sentence_modifier_end_debug;
     document.getElementById("modal_sentence_modifier_next_button").innerHTML = global.current_language_strings.next_sentence;
     document.getElementById("modal_sentence_modifier_modify_button").innerHTML = global.current_language_strings.modify;
     

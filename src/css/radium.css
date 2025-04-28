@@ -61,6 +61,10 @@ hr {
     border: 1px solid var(--picolito-primary-boxshadow-border);
 }
 
+.dark_mode .dark_affected .bg-light {
+    background-color: hsl(0deg 0% 100% / 10%) !important;
+}
+
 .dark_mode .dark_affected img.svg {
     filter: invert(1);
     /* border: 1px solid rgb(43 43 43); */
@@ -129,8 +133,7 @@ label.form-check-label {
 }
 
 .card h5 {
-    padding: 0.2rem;
-    margin: 0;
+    padding: 0.5rem 0.2rem;
 }
 
 .card-title H5 {
@@ -158,8 +161,8 @@ p, .form-group, .form-check.form-switch {
 };
 }
 
-a {
-    color: #0060c7;
+a, .nav-link {
+    color: #0081ff;
 }
 
 .weakest_link a {

@@ -14,8 +14,8 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = 'picolito-precache-4';
-const RUNTIME = 'picolito-runtime-4';
+const PRECACHE = 'picolito-precache-5';
+const RUNTIME = 'picolito-runtime-5';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
@@ -48,6 +48,7 @@ const PRECACHE_URLS = [
 	"/src/js/db/war_en.js",
 	"/src/js/db/war_fr.js",
 	"/src/js/db/weakest_link_fr.js",
+	"/src/js/db/password_fr.js",
 	"/src/js/taffy/taffy.js"
 ];
 

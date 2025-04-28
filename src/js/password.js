@@ -21,7 +21,7 @@ function initPassword() {
 
 const indexesOf = (arr, item) => arr.reduce((acc, v, i) => (v === item && acc.push(i), acc),[]);
 
-async function fetchWords() {
+async function fetchWordsfromAPI() {
     const PASSWORD_WEBSITE_API = 'https://trouve-mot.fr/api/random/';
     try {
         const response = await fetch(PASSWORD_WEBSITE_API + game.password.word_to_find_amount);
@@ -42,8 +42,36 @@ async function fetchWords() {
     }
 }
 
+async function fetchWordsLocal() {
+    if (global.current_language == "fr") {
+        if (game.stored_db.password_fr == undefined) {
+            testStoredDatabase("password", "fr")
+        }
+    } else {
+        alert("not fr")
+    }
+    
+
+    var word_arr = [];
+    for (var i = 0; i < game.stored_db.password_fr.length; i++) {
+        word_arr.push([game.stored_db.password_fr[i].toUpperCase()])
+    }
+    if (word_arr.length > 0) {
+        button_password_invalidate.disabled = false;
+        button_password_pass.disabled = false;
+        button_password_validate.disabled = false;
+    }
+    return word_arr;
+}
+
 async function initializeWords() {
-    game.password.words = await fetchWords();
+    if (game.password.db_source == "trouve_mot_api") {
+        game.password.words = await fetchWordsfromAPI();
+    }
+    if (game.password.db_source == "local") {
+        game.password.words = await fetchWordsLocal();
+    }
+
     if (game.password.words.length == 0) {
         alert("Aucun mot trouvé");
         return;

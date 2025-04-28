@@ -410,7 +410,7 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
 }
 
 function userActionClickSentence() {
-    if (game.started == true && game.gamemode_type == "mix") {
+    if (game.started == true && (game.gamemode_type == "picolo" || game.gamemode_type == "mix")) {
         if (game.debug == true) {
             showSentenceModifierModal();
         } else {

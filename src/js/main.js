@@ -29,7 +29,7 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.34.1",
+        picolito_version: "0.34.2",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -154,7 +154,8 @@ function defaultVariables() {
             word_to_find_min: 1,
             word_to_find_max: 10,
             mode: "preview", //"preview", "direct"
-            hide_hint_after_seconds: 3
+            hide_hint_after_seconds: 3,
+            db_source: "trouve_mot_api", // "trouve_mot_api", "local"
         },
         tenzi: {
             // Init by tenzi.js
@@ -509,18 +510,19 @@ function initGame(direct_launch) {
         if (game.player_list.length >= 2) {
             updateTeamSelectionTable();
         }
-    } else if (game.gamemode == "weakest_link") {
+    }
+    if (game.gamemode == "weakest_link") {
         initGameWeakestLink();
-        if (direct_launch == true) { startGame() }
-    } else if (game.gamemode == "password") {
+    }
+    if (game.gamemode == "password") {
         if (window.navigator.onLine == true) {
             initGamePassword()
-            if (direct_launch == true) { startGame() }
         } else {
             alert(global.current_language_strings.password_internet_requierement)
             return;
         }
-    } else if (game.gamemode == "tenzi") {
+    }
+    if (game.gamemode == "tenzi") {
         initGameTenzi();
     } else {
         if (game.started == false) {
@@ -532,16 +534,16 @@ function initGame(direct_launch) {
         manageNavDisplay("quit",true);
         manageNavDisplay("restart",false);
         manageNavDisplay("navigation_arrows", true);
-        if (direct_launch == true) { startGame() }
 
         if (game.gamemode == "mix" ) {
             createGamemodeDBindicator();
         }
     }
-
     if (game.gamemode_type == "picolo" || game.mix_gamemode_list_picolo.length > 0) {
         global.modal_player_menu.show();
     }
+
+    if (direct_launch == true) { startGame() }
 }
 
 function initGameWeakestLink() {
@@ -588,22 +590,22 @@ function checkDatabase() {
     } else {
         testStoredDatabase(game.gamemode, global.current_language)
     }
+}
 
-    function testStoredDatabase(gamemode, lang) {
-        try {
-            if (game.stored_db && game.stored_db[gamemode + "_" + lang]) {
-                // DB exists, concat to pending_db
-                game.pending_db = game.pending_db.concat(game.stored_db[gamemode + "_" + lang])
-            } else {
-                // Calling file gamemode_lang.js
-                createScriptElement("./src/js/db/" + gamemode + "_" + lang + ".js");
-            }
-        } catch (error) {
-            if (error instanceof TypeError) {
-                console.log(error.message);
-            } else {
-                throw error;
-            }
+function testStoredDatabase(gamemode, lang) {
+    try {
+        if (game.stored_db && game.stored_db[gamemode + "_" + lang]) {
+            // DB exists, concat to pending_db
+            game.pending_db = game.pending_db.concat(game.stored_db[gamemode + "_" + lang])
+        } else {
+            // Calling file gamemode_lang.js
+            createScriptElement("./src/js/db/" + gamemode + "_" + lang + ".js");
+        }
+    } catch (error) {
+        if (error instanceof TypeError) {
+            console.log(error.message);
+        } else {
+            throw error;
         }
     }
 }
@@ -672,6 +674,7 @@ function restartGame() {
 }
 
 function selectGamemode(selected_gamemode, direct_launch) {
+    game.gamemode = selected_gamemode;
     if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
         alert(global.current_language_strings.weakest_link_minimum_requierement);
         return;
@@ -690,6 +693,7 @@ function selectGamemode(selected_gamemode, direct_launch) {
         case "tenzi": game.gamemode_type = "tenzi"; break;
         case "mix": game.gamemode_type = "mix"; break;
     }
+    console.log("gamemode_type", game.gamemode_type)
     if (selected_gamemode == "mix") {
         setMixGamemodeDatabase();
     }
@@ -713,7 +717,7 @@ function setMixGamemodeDatabase() {
     }
 }
 
-function allowMixGamemodeNextStep() {
+function updateMixGamemodeForm() {
     var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
     var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
 

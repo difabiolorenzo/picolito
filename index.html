@@ -76,12 +76,12 @@
                     </div>
                     <div id="menu_player_list"></div>
                     <div class="input-group">
-                        <div class="input-group">
+                        <form class="input-group" action="javascript:void(0);">
                             <input id="menu_player_input" type="text" class="col-md-9 form-control" maxlength="50">
                             <button id="text_menu_add" class="btn btn-primary" onclick="addPlayer(menu_player_input.value)">
                                 <i class="bi bi-person-plus"></i>
                             </button>
-                        </div>
+                        </form>
                         <div class="form-check">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="menu_player_switch_team_mode" onclick="refreshTeamDisplay()">
@@ -296,6 +296,13 @@
                                     <option disabled value="password_2025">2025</option>
                                 </select>
                             </div>
+                            <!-- <div class="form-group">
+                                <label id="text_settings_password_db_source" for="select_settings_password_db_source">text_settings_password_style</label>
+                                <select class="form-control col-md-6" id="select_settings_password_db_source" onchange="game.password.db_source = this.value">
+                                    <option value="trouve_mot_api">API trouve-mot.fr</option>
+                                    <option value="local">local</option>
+                                </select>
+                            </div> -->
                             <div>
                                 <label id="text_settings_password_mode" for="select_settings_password_mode">text_settings_password_mode</label>
                                 <div class="form-check">
@@ -339,6 +346,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="modal_sentence_modifier_end_debug" data-bs-dismiss="modal" onclick="DEBUG_carthage(false)">modal_sentence_modifier_end_debug</button>
                         <button type="button" class="btn btn-secondary" id="modal_sentence_modifier_next_button" data-bs-dismiss="modal" onclick="nextSentence()">modal_sentence_modifier_next_button</button>
                         <button type="button" class="btn btn-primary" id="modal_sentence_modifier_modify_button" data-bs-dismiss="modal" onclick="rewriteSentence()">modal_sentence_modifier_modify_button</button>
                     </div>
@@ -393,93 +401,96 @@
             <div class="d-flex flex-column flex-md-row">
                 <div class="card col-12 col-md-5 border-0">
                     <ul class="nav nav-pills nav-fill" id="menu_tab_nav">
-                        <li class="nav-item">
-                            <a id="nav_menu_link_main" class="nav-link col-1 active" href="#" value="main" onclick="manageMenuTab(this)">nav_menu_link_main</a>
+                        <li class="nav-item m-1">
+                            <a id="nav_menu_link_main" class="nav-link col-1 border active" href="#" value="main" onclick="manageMenuTab(this)">nav_menu_link_main</a>
                         </li>
-                        <li class="nav-item">
-                            <a id="nav_menu_link_picolo" class="nav-link col-1" href="#" value="picolo" onclick="manageMenuTab(this)">nav_menu_link_picolo</a>
+                        <li class="nav-item m-1">
+                            <a id="nav_menu_link_picolo" class="nav-link col-1 border " href="#" value="picolo" onclick="manageMenuTab(this)">nav_menu_link_picolo</a>
                         </li>
-                        <li class="nav-item">
-                            <a id="nav_menu_link_never" class="nav-link col-1" href="#" value="never" onclick="manageMenuTab(this)">nav_menu_link_never</a>
+                        <li class="nav-item m-1">
+                            <a id="nav_menu_link_never" class="nav-link col-1 border " href="#" value="never" onclick="manageMenuTab(this)">nav_menu_link_never</a>
                         </li>
-                        <li class="nav-item">
-                            <a id="nav_menu_link_other" class="nav-link col-1" href="#" value="other" onclick="manageMenuTab(this)">nav_menu_link_other</a>
+                        <li class="nav-item m-1">
+                            <a id="nav_menu_link_other" class="nav-link col-1 border " href="#" value="other" onclick="manageMenuTab(this)">nav_menu_link_other</a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div id="gamemode_collapse_main" class="collapse show" data-parent="#accordion">
+            <div id="gamemode_collapse_main" class="bg-light card collapse show" data-parent="#accordion">
+                
                 <div class="card p-2 m-1">
-                    <h6 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h6>
-                    <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
-                    <p id="text_gamemode_password_subtitle_2">text_gamemode_password_subtitle_2</p>
-                    <div class="d-flex">
-                        <button class="btn btn-primary" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value)">gamemode_option_password</button>
-                    </div>
-                </div>
-                <div class="card p-2 m-1">
-                    <h6 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h6>
+                    <h5 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h5>
                     <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
                     <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
                     
                     <form id="custom_mix_gamemode_form" class="form-check" action="javascript:void(0);">
-                        <div id="custom_mix_gamemode_picolo_section" class="d-grid">
-                            <h6 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h6>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="default">
-                                    <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
-                                </input>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="silly">
-                                    <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
-                                </input>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="bar">
-                                    <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
-                                </input>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="hot">
-                                    <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
-                                </input>
-                            </label>
-                        </div>
-                        <div id="custom_mix_gamemode_never_done_section" class="d-grid">
-                            <h6 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h6>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="never_popular">
-                                    <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
-                                </input>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="never_hot">
-                                    <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
-                                </input>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
-                                onchange="allowMixGamemodeNextStep()" value="never_party">
-                                    <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
-                                </input>
-                            </label>
+                        <div class="d-flex justify-content-evenly">
+                            <div id="custom_mix_gamemode_picolo_section" class="d-grid">
+                                <h5 id="text_custom_mix_gamemode_picolo_section">text_custom_mix_gamemode_picolo_section</h5>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_default" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="default">
+                                        <a id="text_custom_mix_gamemode_default">text_custom_mix_gamemode_default</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_silly" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="silly">
+                                        <a id="text_custom_mix_gamemode_silly">text_custom_mix_gamemode_silly</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_bar" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="bar">
+                                        <a id="text_custom_mix_gamemode_bar">text_custom_mix_gamemode_bar</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_hot" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="hot">
+                                        <a id="text_custom_mix_gamemode_hot">text_custom_mix_gamemode_hot</a>
+                                    </input>
+                                </label>
+                            </div>
+                            <div id="custom_mix_gamemode_never_done_section" class="d-grid">
+                                <h5 id="text_custom_mix_gamemode_never_section">text_custom_mix_gamemode_never_section</h5>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_popular" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="never_popular">
+                                        <a id="text_custom_mix_gamemode_never_popular">text_custom_mix_gamemode_never_popular</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_hot" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="never_hot">
+                                        <a id="text_custom_mix_gamemode_never_hot">text_custom_mix_gamemode_never_hot</a>
+                                    </input>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_never_party" type="checkbox"
+                                    onchange="updateMixGamemodeForm()" value="never_party">
+                                        <a id="text_custom_mix_gamemode_never_party">text_custom_mix_gamemode_never_party</a>
+                                    </input>
+                                </label>
+                            </div>
                         </div>
                         <div class="d-flex">
                             <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
                         </div>
                     </form>
                 </div>
-            </div>
-            <div id="gamemode_collapse_picolo" class="collapse" data-parent="#accordion">
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_default">text_gamemode_title_default</h6>
+                    <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
+                    <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
+                    <p id="text_gamemode_password_subtitle_2">text_gamemode_password_subtitle_2</p>
+                    <div class="d-flex">
+                        <button class="btn btn-primary" id="gamemode_option_password" value="password" onclick="selectGamemode(this.value)">gamemode_option_password</button>
+                    </div>
+                </div>
+            </div>
+            <div id="gamemode_collapse_picolo" class="bg-light card collapse" data-parent="#accordion">
+                <div class="card p-2 m-1">
+                    <h5 id="text_gamemode_title_default">text_gamemode_title_default</h5>
                     <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
                     <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
                     <div class="d-flex">
@@ -487,7 +498,7 @@
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_silly">text_gamemode_title_silly</h6>
+                    <h5 id="text_gamemode_title_silly">text_gamemode_title_silly</h5>
                     <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
                     <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
                     <div class="d-flex">
@@ -495,7 +506,7 @@
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_bar">text_gamemode_title_bar</h6>
+                    <h5 id="text_gamemode_title_bar">text_gamemode_title_bar</h5>
                     <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
                     <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
                     <div class="d-flex">
@@ -503,7 +514,7 @@
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_hot">text_gamemode_title_hot</h6>
+                    <h5 id="text_gamemode_title_hot">text_gamemode_title_hot</h5>
                     <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
                     <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
                     <div class="d-flex">
@@ -511,7 +522,7 @@
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_war">text_gamemode_title_war</h6>
+                    <h5 id="text_gamemode_title_war">text_gamemode_title_war</h5>
                     <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
                     <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
                     <p id="text_gamemode_war_minimum_requierement">text_gamemode_war_minimum_requierement</p>
@@ -520,29 +531,29 @@
                     </div>
                 </div>
             </div>
-            <div id="gamemode_collapse_never" class="collapse" data-parent="#accordion">
+            <div id="gamemode_collapse_never" class="bg-light card collapse" data-parent="#accordion">
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h6>
+                    <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">gamemode_option_never_popular</button>
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h6>
+                    <h5 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">gamemode_option_never_hot</button>
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h6>
+                    <h5 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">gamemode_option_never_party</button>
                     </div>
                 </div>
             </div>
-            <div id="gamemode_collapse_other" class="collapse" data-parent="#accordion">
+            <div id="gamemode_collapse_other" class="bg-light card collapse" data-parent="#accordion">
                 <div class="card p-2 m-1">
-                    <h6 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h6>
+                    <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                     <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
                     <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
                     <div class="d-flex">
@@ -550,7 +561,7 @@
                     </div>
                 </div>
                 <div class="card p-2 m-1">
-                    <h6 class="mb-0" id="text_gamemode_title_tenzi">text_gamemode_title_tenzi</h6>
+                    <h5 class="mb-0" id="text_gamemode_title_tenzi">text_gamemode_title_tenzi</h5>
                     <p id="text_gamemode_tenzi_subtitle_1">text_gamemode_tenzi_subtitle_1</p>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_tenzi" value="tenzi" onclick="selectGamemode(this.value);">gamemode_option_tenzi</button>
@@ -560,7 +571,7 @@
 
             <div id="menu_content">
                 <div class="form-check">
-                    <h6 id="text_settings_others">text_settings_others</h6>
+                    <h5 id="text_settings_others">text_settings_others</h5>
                     <div id="debug_tools_placeholder" style="display: none;">
                         <div>
                             <button class="btn btn-secondary" onclick="DEBUG_RandomPlayer(1)">DEBUG_RandomPlayer(1)</button>
@@ -570,14 +581,15 @@
                             <div id="herge_bt_display_cookies_placeholder"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#modal_safety_and_cookie_modal">text_prevention_panel</button>
+                    <p><a id="text_prevention_panel" href="#" data-bs-toggle="modal" data-bs-target="#modal_safety_and_cookie_modal">text_prevention_panel</a></p>
+                    <br>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>                        
                 </div>
                 <div class="form-check">
                     <h4 id="text_settings_credits">text_settings_credits</h4>
                     <div class="d-grid">
-                        <a class="m-1" href="https://marmelapp.com">marmelapp.com</a>
+                        <a class="m-1" href="http://www.marmelapp.com/picolo">marmelapp.com</a>
                         <a class="m-1" href="https://psycatgames.com">psycatgames.com</a>
                         <a class="m-1" href="https://trouve-mot.fr/">trouve-mot.fr</a>
                     </div>
