@@ -22,7 +22,6 @@
         <script type="text/javascript" src="./src/js/taffy/taffy.js"></script>
 
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
-        <link rel="stylesheet" type="text/css" href="./src/css/landscape.css">
         <script type="text/javascript" src="./src/js/main.js"></script>
         <script type="text/javascript" src="./src/js/cookie.js"></script>
         <script type="text/javascript" src="./src/js/picolito.js"></script>
@@ -55,6 +54,11 @@
                         <div>
                             <p id="text_herge_bt">herge_bt</p>
                         </div>
+                        
+                        <div id="herge_bt_display_cookies">
+                            <button class="btn btn-secondary" id="herge_bt_display_cookies_link" href="#" onclick="displayCookieList()">herge_bt_display_cookies</button>
+                            <div id="herge_bt_display_cookies_placeholder"></div>
+                        </div>
                         <a id="picolito_version_safety" href="https://github.com/difabiolorenzo/picolito/commits/master">Javascript Désactivé :'(</a>
                     </div>
                     <div class="modal-footer">
@@ -82,7 +86,7 @@
                                 <i class="bi bi-person-plus"></i>
                             </button>
                         </form>
-                        <div class="form-check">
+                        <div class="form-check d-none">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="menu_player_switch_team_mode" onclick="refreshTeamDisplay()">
                                 <label class="form-check-label" for="menu_player_switch_team_mode"><i class="bi bi-people"></i><span id="menu_player_switch_team_mode_text">menu_player_switch_team_mode_text</span></label>
@@ -115,7 +119,7 @@
                     <div class="modal-body d-flex flex-wrap justify-content-start">
 
                         <div class="col-md-6 form-check">
-                            <h6 id="text_settings_language">text_settings_language</h6>
+                            <h5 id="text_settings_language">text_settings_language</h5>
                             <div class="form-group">
                                 <select class="form-control col-md-6" id="input_language"  onchange="updateCurrentLanguageString(this.value)">
                                     <option id="text_menu_lang_fr" value="fr">text_menu_lang_fr</option>
@@ -136,7 +140,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 form-check">
-                            <h6 id="text_settings_display">text_settings_display</h6>
+                            <h5 id="text_settings_display">text_settings_display</h5>
                             <div class="form-group">
                                 <label id="text_settings_dark_theme" for="input_dark_mode_settings">text_settings_dark_theme</label>
                                 <select class="form-control col-md-6" id="input_dark_mode_settings" onchange="changeDarkModeSettings(this.value)">
@@ -159,7 +163,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 form-check">
-                            <h6 id="text_settings_picolo">text_settings_picolo</h6>
+                            <h5 id="text_settings_picolo">text_settings_picolo</h5>
                             <div class="form-check form-switch">
                                 <label class="form-check-label" id="text_settings_chug">text_settings_chug</label>
                                 <input class="form-check-input" id="input_chug_enabled" type="checkbox" checked onclick="game.picolito.chug_enabled = this.checked">
@@ -204,7 +208,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 form-check">
-                            <h6 id="text_settings_weakest_link">text_settings_weakest_link</h6>
+                            <h5 id="text_settings_weakest_link">text_settings_weakest_link</h5>
                             <div class="form-group">
                                 <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
                                 <select class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
@@ -238,7 +242,7 @@
                                 <label class="form-check-label" id="text_input_weakest_hide_answer">text_input_weakest_hide_answer</label>
                                 <input class="form-check-input" id="input_weakest_link_hide_answer" type="checkbox" onclick="game.weakest_link.hide_answer = this.checked">
                             </div>
-                            <!-- <h6 id="text_settings_password">text_settings_password</h6> -->
+                            <!-- <h5 id="text_settings_password">text_settings_password</h5> -->
                             <!-- <div class="form-group">
                                 <label id="text_settings_weakest_link_tie" for="input_weakest_link_tie">text_settings_weakest_link_tie</label>
                                 <select disabled class="form-control col-md-6" id="input_weakest_link_tie" onchange="changeWeakestLinkTieBehaviour(this.value)">
@@ -272,7 +276,7 @@
                             </div> -->
                         </div>
                         <div class="col-md-6 form-check">
-                            <h6 id="text_settings_password">text_settings_password</h6>
+                            <h5 id="text_settings_password">text_settings_password</h5>
                             <div class="form-group">
                                 <label id="text_settings_password_amount" for="select_settings_password_amount">text_settings_password_amount</label>
                                 <select class="form-control col-md-6" id="select_settings_password_amount" onchange="game.password.word_to_find_amount = this.value">
@@ -300,25 +304,17 @@
                                 <label id="text_settings_password_db_source" for="select_settings_password_db_source">text_settings_password_style</label>
                                 <select class="form-control col-md-6" id="select_settings_password_db_source" onchange="game.password.db_source = this.value">
                                     <option value="trouve_mot_api">API trouve-mot.fr</option>
-                                    <option value="local">local</option>
+                                    <option value="local">local (fr)</option>
                                 </select>
                             </div> -->
-                            <div>
-                                <label id="text_settings_password_mode" for="select_settings_password_mode">text_settings_password_mode</label>
-                                <div class="form-check">
-                                    <input type="radio" id="radio_settings_password_mode_direct" name="radio_settings_password_mode" value="direct" onclick="game.password.mode = this.value" checked>
-                                    <label for="radio_settings_password_mode_direct">
-                                        <span id="text_radio_settings_password_mode_direct"></span>
-                                        <p><code id="text_note_settings_password_mode_direct">text_note_settings_password_mode_direct</code></p>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" id="radio_settings_password_mode_preview" name="radio_settings_password_mode" value="preview" onclick="game.password.mode = this.value">
-                                    <label for="radio_settings_password_mode_preview">
-                                        <span id="text_radio_settings_password_mode_preview"></span>
-                                        <p><code id="text_note_settings_password_mode_preview">text_note_settings_password_mode_preview</code></p>
-                                    </label>
-                                </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_password_preview">text_settings_password_preview</label>
+                                <input class="form-check-input" id="input_settings_password_preview" type="checkbox" onclick="game.password.preview = this.checked">
+                                <p><code id="text_note_settings_password_preview">text_note_settings_password_preview</code></p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" id="text_settings_password_timer">text_settings_password_timer</label>
+                                <input class="form-check-input" id="input_settings_password_timer" type="checkbox" onclick="game.password.use_timer = this.checked">
                             </div>
                         </div>
                         <div class="col-md-6 form-check">
@@ -370,7 +366,7 @@
         </div>
 
         <div class="modal fade password_2016" id="modal_password_preview" tabindex="-1" role="dialog" >
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog" role="document">
                 <div class="text-white">
                     <div class="modal-header">
                         <h3 class="modal-title" id="text_modal_password_preview_title">text_modal_password_preview_title</h3>
@@ -418,7 +414,7 @@
             </div>
             <div id="gamemode_collapse_main" class="bg-light card collapse show" data-parent="#accordion">
                 
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1" id="gamemode_mix_section">
                     <h5 class="mb-0" id="text_gamemode_mix_title">text_gamemode_mix_title</h5>
                     <p id="text_gamemode_mix_subtitle_0">text_gamemode_mix_subtitle_0</p>
                     <p id="text_gamemode_mix_subtitle_1">text_gamemode_mix_subtitle_1</p>
@@ -475,11 +471,11 @@
                             </div>
                         </div>
                         <div class="d-flex">
-                            <button class="btn btn-primary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
+                            <button class="btn btn-secondary" id="button_update_mix_gamemode_list" disabled onclick="selectGamemode('mix')">button_update_mix_gamemode_list</button>
                         </div>
                     </form>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1" id="gamemode_password_section">
                     <h5 class="mb-0" id="text_gamemode_title_password">text_gamemode_title_password</h5>
                     <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
                     <p id="text_gamemode_password_subtitle_2">text_gamemode_password_subtitle_2</p>
@@ -489,7 +485,7 @@
                 </div>
             </div>
             <div id="gamemode_collapse_picolo" class="bg-light card collapse" data-parent="#accordion">
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_picolito_section">
                     <h5 id="text_gamemode_title_default">text_gamemode_title_default</h5>
                     <p id="text_gamemode_default_subtitle_0">text_gamemode_default_subtitle_0</p>
                     <p id="text_gamemode_default_subtitle_1">text_gamemode_default_subtitle_1</p>
@@ -497,7 +493,7 @@
                         <button class="btn btn-primary" id="gamemode_option_default" value="default" onclick="selectGamemode(this.value);">gamemode_option_default</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_picolito_section">
                     <h5 id="text_gamemode_title_silly">text_gamemode_title_silly</h5>
                     <p id="text_gamemode_silly_subtitle_0">text_gamemode_silly_subtitle_0</p>
                     <p id="text_gamemode_silly_subtitle_1">text_gamemode_silly_subtitle_1</p>
@@ -505,7 +501,7 @@
                         <button class="btn btn-primary" id="gamemode_option_silly" value="default" onclick="selectGamemode(this.value);">gamemode_option_silly</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_picolito_section">
                     <h5 id="text_gamemode_title_bar">text_gamemode_title_bar</h5>
                     <p id="text_gamemode_bar_subtitle_0">text_gamemode_bar_subtitle_0</p>
                     <p id="text_gamemode_bar_subtitle_1">text_gamemode_bar_subtitle_1</p>
@@ -513,7 +509,7 @@
                         <button class="btn btn-primary" id="gamemode_option_bar" value="default" onclick="selectGamemode(this.value);">gamemode_option_bar</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_picolito_section">
                     <h5 id="text_gamemode_title_hot">text_gamemode_title_hot</h5>
                     <p id="text_gamemode_hot_subtitle_0">text_gamemode_hot_subtitle_0</p>
                     <p id="text_gamemode_hot_subtitle_1">text_gamemode_hot_subtitle_1</p>
@@ -521,7 +517,7 @@
                         <button class="btn btn-primary" id="gamemode_option_hot" value="default" onclick="selectGamemode(this.value);">gamemode_option_hot</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_picolito_section">
                     <h5 id="text_gamemode_title_war">text_gamemode_title_war</h5>
                     <p id="text_gamemode_war_subtitle_0">text_gamemode_war_subtitle_0</p>
                     <p id="text_gamemode_war_subtitle_1">text_gamemode_war_subtitle_1</p>
@@ -532,19 +528,19 @@
                 </div>
             </div>
             <div id="gamemode_collapse_never" class="bg-light card collapse" data-parent="#accordion">
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_never_done_section">
                     <h5 id="text_gamemode_title_never_popular">text_gamemode_title_never_popular</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_popular" value="never_popular" onclick="selectGamemode(this.value);">gamemode_option_never_popular</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_never_done_section">
                     <h5 id="text_gamemode_title_never_hot">text_gamemode_title_never_hot</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_hot" value="never_hot" onclick="selectGamemode(this.value);">gamemode_option_never_hot</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1 gamemode_never_done_section">
                     <h5 id="text_gamemode_title_never_party">text_gamemode_title_never_party</h5>
                     <div class="d-flex">
                         <button class="btn btn-primary" id="gamemode_option_never_party" value="never_party" onclick="selectGamemode(this.value);">gamemode_option_never_party</button>
@@ -552,7 +548,7 @@
                 </div>
             </div>
             <div id="gamemode_collapse_other" class="bg-light card collapse" data-parent="#accordion">
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1" id="gamemode_weakest_link_section">
                     <h5 class="mb-0" id="text_gamemode_weakest_link_title">text_gamemode_weakest_link_title</h5>
                     <p id="text_gamemode_weakest_link_subtitle_1">text_gamemode_weakest_link_subtitle_1</p>
                     <p id="text_gamemode_weakest_link_subtitle_2">text_gamemode_weakest_link_subtitle_2</p>
@@ -560,7 +556,7 @@
                         <button class="btn btn-secondary" id="gamemode_option_weakest_link" value="weakest_link" onclick="selectGamemode(this.value);">gamemode_option_weakest_link</button>
                     </div>
                 </div>
-                <div class="card p-2 m-1">
+                <div class="card p-2 m-1" id="gamemode_tenzi_section">
                     <h5 class="mb-0" id="text_gamemode_title_tenzi">text_gamemode_title_tenzi</h5>
                     <p id="text_gamemode_tenzi_subtitle_1">text_gamemode_tenzi_subtitle_1</p>
                     <div class="d-flex">
@@ -575,10 +571,6 @@
                     <div id="debug_tools_placeholder" style="display: none;">
                         <div>
                             <button class="btn btn-secondary" onclick="DEBUG_RandomPlayer(1)">DEBUG_RandomPlayer(1)</button>
-                        </div>
-                        <div id="herge_bt_display_cookies">
-                            <button class="btn btn-secondary" id="herge_bt_display_cookies_link" href="#" onclick="displayCookieList()">herge_bt_display_cookies</button>
-                            <div id="herge_bt_display_cookies_placeholder"></div>
                         </div>
                     </div>
                     <p><a id="text_prevention_panel" href="#" data-bs-toggle="modal" data-bs-target="#modal_safety_and_cookie_modal">text_prevention_panel</a></p>
@@ -603,7 +595,7 @@
                 <div id="ingame_topbar" class="d-flex justify-content-between p-2">
                     <button id="text_game_quit_topbar" type="submit" class="btn btn-primary" onclick="exitGame()">text_game_quit_topbar</button>
                     <button id="text_game_restart_topbar" type="submit" class="btn btn-primary" onclick="restartGame()">text_game_restart_topbar</button>
-                    <div id="navigation_arrows" class="col-md-8 btn-group" role="group" aria-label="Button group with nested">
+                    <div id="navigation_arrows" class="col-md-3 btn-group" role="group" aria-label="Button group with nested">
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_previous_button" onclick="previousSentence()"><</button>
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_count" onclick="displaySentenceList()">-</button>
                         <button disabled type="button" class="btn btn-primary" id="game_cycle_next_button" onclick="nextSentence();">></button>
@@ -696,7 +688,7 @@
                             <p id="text_password_rule_2">text_password_rule_2</p>
                             <br>
                             <div>
-                                <h4 id="text_password_rule_option">text_password_rule_option</h4>
+                                <h4 id="text_password_option">text_password_option</h4>
                                 <div class="form-check form-check-inline d-flex flex-wrap" id="password_word_amount_selector"></div>
                             </div>
                         </div>

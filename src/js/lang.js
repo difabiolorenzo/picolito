@@ -96,10 +96,8 @@ function setLanguageString() {
             settings_password_amount: "Nombre de mot à faire deviner",
             settings_password_style: "Style",
             settings_password_mode: "Mode de jeu (Mot de passe)",
-            settings_password_mode_direct: "Direct",
-            settings_password_mode_direct_note: "Faire deviner les mots les uns après les autres.", 
-            settings_password_mode_preview: "Prévisualisation",
-            settings_password_mode_preview_note: "Prévisualisation de tous les mots pour les faire deviner.",
+            settings_password_preview: "Prévisualisation",
+            settings_password_preview_note: "Prévisualisation de tous les mots avant de les faire deviner.",
             settings_credits: "Credits",
             gamemode: "Mode de jeu",
             gamemode_picolo_title: "Picolo",
@@ -147,7 +145,7 @@ function setLanguageString() {
             password_rule_header: "Mot de passe",
             password_rule_1: "Les joueurs doivent deviner les mots affichés en s'aidant d'autre mots suggérés par un autre joueur.",
             password_rule_2: "Les mots composés, de même famille, qui commencent pareil et les mimes sont interdits.",
-            
+
             gamemode_other: "Autre",
             lang_fr: "Français",
             lang_da: "Danois",
@@ -272,10 +270,8 @@ function setLanguageString() {
             settings_password_amount: "Number of words to be guessed",
             settings_password_style: "Style",
             settings_password_mode: "Gamemode (Password)",
-            settings_password_mode_direct: "Direct",
-            settings_password_mode_direct_note: "Guess the words one by one.",
-            settings_password_mode_preview: "Preview",
-            settings_password_mode_preview_note: "Preview of all words to guess.",
+            settings_password_preview: "Preview",
+            settings_password_preview_note: "Preview all words before guessing them.",
             settings_credits: "Credits",
             gamemode: "Gamemode",
             gamemode_picolo_title: "Picolo",
@@ -479,18 +475,16 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_settings_weakest_link_tie_arbitrary").innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
     document.getElementById("text_settings_weakest_link_tie_both").innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     document.getElementById("text_settings_weakest_link_tie_weakest").innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
-    document.getElementById("text_settings_password").innerHTML = global.current_language_strings.settings_password;
-    document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
-    document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
-    document.getElementById("text_settings_password_mode").innerHTML = global.current_language_strings.settings_password_mode;
-    document.getElementById("text_radio_settings_password_mode_direct").innerHTML = global.current_language_strings.settings_password_mode_direct;
-    document.getElementById("text_note_settings_password_mode_direct").innerHTML = global.current_language_strings.settings_password_mode_direct_note;
-    document.getElementById("text_radio_settings_password_mode_preview").innerHTML = global.current_language_strings.settings_password_mode_preview;
-    document.getElementById("text_note_settings_password_mode_preview").innerHTML = global.current_language_strings.settings_password_mode_preview_note;
     document.getElementById("text_input_weakest_link_soundtrack").innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
     document.getElementById("text_settings_weakest_link_max_chain").innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
     document.getElementById("input_weakest_link_max_chain_none").innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
     document.getElementById("text_input_weakest_hide_answer").innerHTML = global.current_language_strings.settings_weakest_hide_answer;
+
+    document.getElementById("text_settings_password").innerHTML = global.current_language_strings.settings_password;
+    document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
+    document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
+    document.getElementById("text_settings_password_preview").innerHTML = global.current_language_strings.settings_password_preview;
+    document.getElementById("text_note_settings_password_preview").innerHTML = global.current_language_strings.settings_password_preview_note;
     document.getElementById("text_settings_credits").innerHTML = global.current_language_strings.settings_credits;
 
     document.getElementById("text_gamemode_title_default").innerHTML = global.current_language_strings.gamemode_default_title;
@@ -559,7 +553,7 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_password_rule_header").innerHTML = global.current_language_strings.password_rule_header;
     document.getElementById("text_password_rule_1").innerHTML = global.current_language_strings.password_rule_1;
     document.getElementById("text_password_rule_2").innerHTML = global.current_language_strings.password_rule_2;
-    document.getElementById("text_password_rule_option").innerHTML = global.current_language_strings.settings_password_amount;
+    document.getElementById("text_password_option").innerHTML = global.current_language_strings.settings_password_amount;
     document.getElementById("text_game_restart_password").innerHTML = global.current_language_strings.restart;
 
     document.getElementById("text_gamemode_menu").title = global.current_language_strings.gamemode;

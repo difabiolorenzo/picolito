@@ -145,6 +145,7 @@ label.form-check-label {
 .card {
     padding: 2px;
     transition: 0.5s;
+    font-weight: 600;
 }
 
 .list-group-item {

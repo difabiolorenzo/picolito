@@ -79,7 +79,7 @@ function storeSettingsCookie() {
         game.weakest_link.hide_answer,
         game.password.word_to_find_amount,
         game.password.style,
-        game.password.mode
+        game.password.preview
     ]
 
     if (getCookie("settings") == '') {
@@ -133,14 +133,8 @@ function setSettingsValuesByCookies() {
         game.weakest_link.max_chain = global.cookie_settings_value[14];
         game.weakest_link.hide_answer = global.cookie_settings_value[15];
         game.password.word_to_find_amount = global.cookie_settings_value[16];
-
-        if (global.cookie_settings_value[17] == "2016" || global.cookie_settings_value[17] == "2009") {
-            game.password.style == "password_" + global.cookie_settings_value[17]
-        } else {
-            game.password.style = global.cookie_settings_value[17];
-        }
-
-        game.password.mode = global.cookie_settings_value[17];
+        game.password.style = global.cookie_settings_value[17];
+        game.password.preview = global.cookie_settings_value[18];
 
         updateHTMLSettingsByVar();
     }
@@ -166,11 +160,9 @@ function displayCookieList() {
         "game.weakest_link.hide_answer",
         "game.password.word_to_find_amount",
         "game.password.style",
-        "game.password.mode"
-
+        "game.password.preview"
     ];
 
-    global.cookie_settings_value = getCookie("settings").split(",");
     var html_content = "";
     for (var i = 0; i < global.cookie_settings_value.length; i++) {
         html_content += "<p><code>" + settings_name[i] + " : <span class=\"cookie_var\">" + global.cookie_settings_value[i] + "<span></code></p>"

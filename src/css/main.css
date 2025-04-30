@@ -50,6 +50,38 @@
     src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v226/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2) format('woff2');
 }
 
+#gamemode_mix_section {
+    color: white;
+    background: #1B586B;
+    background: linear-gradient(135deg, #1a6881 30%, #630099 100%);
+}
+#gamemode_password_section {
+    color: white;
+    background: #0dafce;
+    background: linear-gradient(90deg, #389edc 0%, #df966e 50%, #de4a12 100%);
+}
+
+.gamemode_picolito_section {
+    color: white;
+    background: var(--picolo_blue);
+    background: linear-gradient(135deg, var(--picolo_blue) 0%, #5f0274 100%);
+}
+.gamemode_never_done_section {
+    color: white;
+    background: var(--never-done);
+    background: linear-gradient(135deg, var(--never-done) 0%, #00a54a 100%);
+}
+#gamemode_weakest_link_section {
+    color: white;
+    background: var(--weakest-link);
+    background: linear-gradient(135deg, var(--weakest-link) 0%, #422c89 100%);
+}
+#gamemode_tenzi_section {
+    /* color: white; */
+    background: var(--tenzi-background);
+    background: linear-gradient(-135deg, var(--tenzi-background) 0%, #ffcaf7 100%);
+}
+
 .page {
     padding: 5vw;
     /* width: 100vw; */
@@ -332,7 +364,7 @@ a#picolito_version {
     font-size: larger;
 }
 
-div#menu {padding: 3vh;height: auto;/* background-color: var(--weakest_link); *//* color: white; */height: auto;}
+div#menu {padding: 1.5rem;height: auto;/* background-color: var(--weakest_link); *//* color: white; */height: auto;}
 
 div#menu_links {align-items: center;flex-direction: row;flex-wrap: wrap;justify-content: center;}
 

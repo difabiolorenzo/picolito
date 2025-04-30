@@ -29,7 +29,7 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.34.2",
+        picolito_version: "0.34.3",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -94,8 +94,6 @@ function defaultVariables() {
 
         team_1: "EQUIPE# 1",
         team_2: "EQUIPE# 2",
-        team_1_player_list: [],
-        team_2_player_list: [],
 
         sip: { min: 1, max: 4 },
         started: false,
@@ -153,7 +151,7 @@ function defaultVariables() {
             word_to_find_amount: 5,
             word_to_find_min: 1,
             word_to_find_max: 10,
-            mode: "preview", //"preview", "direct"
+            preview: false,
             hide_hint_after_seconds: 3,
             db_source: "trouve_mot_api", // "trouve_mot_api", "local"
         },
@@ -166,9 +164,6 @@ function defaultVariables() {
 
 function resetVariables() {
     game.db = {};
-
-    game.team_1_player_list = [];
-    game.team_2_player_list = [];
 
     game.started = false;
     game.filter.empty_type = [];
@@ -218,6 +213,7 @@ function updateHTMLSettingsByVar() {
 
     select_settings_password_amount.value = game.password.word_to_find_amount;
     select_settings_password_style.value = game.password.style;
+    input_settings_password_preview.checked = game.password.preview;
     
     picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
@@ -394,7 +390,6 @@ function refreshPlayerList() {
         listItem += `<span>${player.player_name}</span>`;
         listItem += `<div>`;
         if (team_mode == true) {
-            console.log(player.team)
             if (player.team == "null") {
                 listItem += `<button class="btn btn-primary btn-sm bg-team_1" onclick="assignPlayerToTeam(${player.id}, 'team_1')">
                             <i class="bi bi-people"></i>
@@ -515,12 +510,8 @@ function initGame(direct_launch) {
         initGameWeakestLink();
     }
     if (game.gamemode == "password") {
-        if (window.navigator.onLine == true) {
-            initGamePassword()
-        } else {
-            alert(global.current_language_strings.password_internet_requierement)
-            return;
-        }
+        initGamePassword();
+        return;
     }
     if (game.gamemode == "tenzi") {
         initGameTenzi();
@@ -558,14 +549,15 @@ function initGameWeakestLink() {
     displayPage('game');
 }
 function initGamePassword() {
+    password_generateAmountSelector()
     addPotentialPortraitDisplayMarker("portrait");
     manageIngameOptionDisplay(true, "password", true);
     manageIngameOptionDisplay(true, "start", "block");
     manageIngameOptionDisplay(true, "password_rule", "block");
     manageNavDisplay("players", false);
     manageNavDisplay("restart", false);
-    manageNavDisplay("navigation_arrows", false);
     displayPage('game');
+    manageNavDisplay("navigation_arrows", false);
 }
 function initGameTenzi() {
     manageNavDisplay("navigation_arrows", false);
@@ -611,25 +603,20 @@ function testStoredDatabase(gamemode, lang) {
 }
 
 function startGame() {
-    if (game.gamemode != "password") {
-        convertPendingDBTaffy();
-
-        if (game.gamemode == "weakest_link") { 
-            initWeakestLink()
-        } else {
-            manageNavDisplay("navigation_arrows", true)
-        }
-        nextSentence();
-    } else {
-        game.password.word_to_find_amount = document.querySelector('input[name="password_word_amount_selector_radio"]:checked').value;
-
-        if (window.navigator.onLine == true) {
-            initPassword()
-        } else {
-            alert(global.current_language_strings.password_internet_requierement)
-            return;
-        }
+    if (game.gamemode == "password") {
+        initPassword();
+        return;
     }
+    
+    convertPendingDBTaffy();
+
+    if (game.gamemode == "weakest_link") { 
+        initWeakestLink()
+    } else {
+        manageNavDisplay("navigation_arrows", true)
+    }
+    nextSentence();
+
     manageIngameOptionDisplay(false, "start", "none");
 }
 
@@ -723,8 +710,10 @@ function updateMixGamemodeForm() {
 
     if ((checkboxes_picolo.length + checkboxes_neverdone.length) == 0) {
         document.getElementById("button_update_mix_gamemode_list").disabled = true;
+        document.getElementById("button_update_mix_gamemode_list").className = "btn btn-secondary";
     } else {
         document.getElementById("button_update_mix_gamemode_list").disabled = false;
+        document.getElementById("button_update_mix_gamemode_list").className = "btn btn-primary";
     }
 }
 
@@ -1001,25 +990,6 @@ function displaySipModifierModal() {
     document.getElementById("modal_sentence_modifier_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
 }
 
-function leaveTeam(player_name) {
-    if (game.team_1_player_list.length > 0) {
-        for (var i = 0; i < game.team_1_player_list.length; i++) {
-            if (player_name == game.team_1_player_list[i]) {
-                game.team_1_player_list.splice(i, 1);
-                break
-            }
-        }
-    }
-    if (game.team_2_player_list.length > 0) {
-        for (var i = 0; i < game.team_2_player_list.length; i++) {
-            if (player_name == game.team_2_player_list[i]) {
-                game.team_2_player_list.splice(i, 1);
-                break
-            }
-        }
-    }
-}
-
 function manageMenuTab(element) {
     const menu_tab_nav = document.getElementById("menu_tab_nav")
     const value = element.getAttribute("value")
@@ -1169,7 +1139,7 @@ function password_generateAmountSelector() {
         selector.innerHTML += `<label for="password_word_amount_selector_radio_${i}" class="password_label">${i}</label>`
     }   
 
-    document.getElementById("password_word_amount_selector_radio_" + game.password.word_to_find_amount).checked = true;
+    document.getElementById("password_word_amount_selector_radio_" + select_settings_password_amount.value).checked = true;
 }
 
 function createGamemodeDBindicator() {

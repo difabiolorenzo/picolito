@@ -1,4 +1,11 @@
 function initPassword() {
+    if (window.navigator.onLine != true) {
+        alert(global.current_language_strings.password_internet_requierement)
+        return;
+    }
+
+    game.password.word_to_find_amount = parseInt(document.querySelector('input[name="password_word_amount_selector_radio"]:checked').value);
+
     game.password.word_to_find_left = undefined;
     game.password.word_status = [];
     game.password.words = [];
@@ -87,8 +94,8 @@ async function initializeWords() {
     }
     passwordDisplayNextWord();
 
-    // MODE PREVIEW
-    if (document.querySelector('input[name="radio_settings_password_mode"]:checked').value == "preview") {
+    // Mode preview, affiche un menu modal avec tous les mots à faire deviner
+    if (game.password.preview == true) {
         var list = document.getElementById("modal_password_preview_list");
         list.innerHTML = "";
         for (var i in game.password.words) {
@@ -97,7 +104,7 @@ async function initializeWords() {
         global.modal_password_preview.show();
         // Disparition du menu modal après game.password.hide_hint_after_seconds secondes
 
-        //timer
+        // Timer
         var timer = game.password.hide_hint_after_seconds
         if (game.password.words.length > 5) {
             timer = timer + (game.password.words.length / 5)
@@ -188,6 +195,7 @@ function password_displayRecap() {
         password_recap_placeholder.innerHTML += `<div class='recap_word password-shield'><div></div><span class='word_indicator ${modifier}'></span>${game.password.words[i]}</div>`
     }
     manageIngameOptionDisplay(true, 'password_recap', 'block');
+    manageIngameOptionDisplay(true, "start", "none")
     manageNavDisplay("restart",true);
 }
 
