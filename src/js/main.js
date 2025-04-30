@@ -29,7 +29,7 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.34.3",
+        picolito_version: "0.34.4",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -356,11 +356,15 @@ function addPlayer(player_name) {
     // DEV MODE
     if (menu_player_input.value.toLowerCase() == "lyoko") {
         menu_player_input.value = "";
+        herge_bt_display_cookies.className.remove("d-none");
+
         DEBUG_carthage(true);
         return;
     }
     if (menu_player_input.value.toLowerCase() == "terre") {
         menu_player_input.value = "";
+        herge_bt_display_cookies.className.add("d-none");
+
         DEBUG_carthage(false);
         return;
     }
