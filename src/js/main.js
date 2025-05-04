@@ -18,9 +18,7 @@ function devOverrideSettings() {
     displayPage("menu")
     global.remind_warning_panel = false;
     // game.password.style = "password_2025";
-
-    radio_settings_password_mode_preview.checked = true
-
+    addExternalDBData("http://difabiolorenzo.fr/picolito/src/js/db/miranda.json")
     // selectGamemode("password");
 }
 
@@ -29,7 +27,7 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.34.4",
+        picolito_version: "0.35",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -39,12 +37,14 @@ function defaultVariables() {
         cookie_settings_value : [],
         use_cache_storage: false,
         portrait_mode: false,
+        external_db_version: 1,
 
         modal_player_menu: new bootstrap.Modal(document.getElementById('modal_modal_player_menu')),
         modal_sentence_modifier: new bootstrap.Modal(document.getElementById('modal_sentence_modifier')),
         modal_safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('modal_safety_and_cookie_modal')),
         modal_sentence_list: new bootstrap.Modal(document.getElementById('modal_sentence_list')),
-        modal_password_preview: new bootstrap.Modal(document.getElementById('modal_password_preview'))
+        modal_password_preview: new bootstrap.Modal(document.getElementById('modal_password_preview')),
+        modal_external_db: new bootstrap.Modal(document.getElementById('modal_external_db'))
     }
 
     game = {
@@ -88,6 +88,8 @@ function defaultVariables() {
 
         mix_gamemode_list_picolo: [],  //["default", "hot", "bar", "silly"]
         mix_gamemode_list_never_done: [],  //["never_popular", "never_hot", "never_party"]
+
+        external_db: [],
 
         player_list: [], //{ id: 1, name: "Alice", team: null },
         max_player_number: -1,
@@ -165,7 +167,6 @@ function defaultVariables() {
 function resetVariables() {
     game.db = {};
 
-    game.started = false;
     game.filter.empty_type = [];
     game.cycle_id = -1;
     game.picolito.virus_remaining = 1;
@@ -356,14 +357,16 @@ function addPlayer(player_name) {
     // DEV MODE
     if (menu_player_input.value.toLowerCase() == "lyoko") {
         menu_player_input.value = "";
-        herge_bt_display_cookies.className.remove("d-none");
+        herge_bt_display_cookies.classList.remove("d-none");
+        picolito_advanced_settings_collapse_header.classList.remove("d-none");
 
         DEBUG_carthage(true);
         return;
     }
     if (menu_player_input.value.toLowerCase() == "terre") {
         menu_player_input.value = "";
-        herge_bt_display_cookies.className.add("d-none");
+        herge_bt_display_cookies.classList.add("d-none");
+        picolito_advanced_settings_collapse_header.classList.add("d-none");
 
         DEBUG_carthage(false);
         return;
@@ -497,51 +500,59 @@ function setBackgroundStyleColor(value) {
 }
 
 function initGame(direct_launch) {
-    // à convertir en switch?
-    text_ingame_title.innerHTML = "";
-
-    addPotentialPortraitDisplayMarker("landscape")
-    displayTenziGame(false)
-
-    getMinPlayer()
-
-    if (game.gamemode == "war") {
-        if (game.player_list.length >= 2) {
-            updateTeamSelectionTable();
-        }
+    switch (game.gamemode_type) {
+        case "picolo":
+            if (game.mix_gamemode_list_picolo.length > 0) { global.modal_player_menu.show(); }
+            initPicolo();
+            break;
+        case "never_done": initNeverDone(); break;
+        case "mix": initMix(); break;
+        case "weakest_link":  initGameWeakestLink(); break;
+        case "password": initGamePassword(); break;
+        case "tenzi":
+            displayTenziGame(false)
+            initGameTenzi();
+            break;
+        case "mix": game.gamemode_type = "mix"; break;
     }
-    if (game.gamemode == "weakest_link") {
-        initGameWeakestLink();
-    }
-    if (game.gamemode == "password") {
-        initGamePassword();
-        return;
-    }
-    if (game.gamemode == "tenzi") {
-        initGameTenzi();
-    } else {
-        if (game.started == false) {
-            game.started = true;
-            checkDatabase();
-        }
-        displayPage('game');
-        manageIngameOptionDisplay(true, "start", "block");
-        manageNavDisplay("quit",true);
-        manageNavDisplay("restart",false);
-        manageNavDisplay("navigation_arrows", true);
-
-        if (game.gamemode == "mix" ) {
-            createGamemodeDBindicator();
-        }
-    }
-    if (game.gamemode_type == "picolo" || game.mix_gamemode_list_picolo.length > 0) {
-        global.modal_player_menu.show();
-    }
-
+    game.started = true;
     if (direct_launch == true) { startGame() }
-}
 
+    // if (game.gamemode == "war") {
+    //     if (game.player_list.length >= 2) {
+    //         updateTeamSelectionTable();
+    //     }
+    // }
+}
+function initPicolo() {
+    checkDatabase();
+    getMinPlayer()
+    displayPage('game');
+    manageIngameOptionDisplay(true, "start", "block");
+    manageNavDisplay("quit",true);
+    manageNavDisplay("restart",false);
+    manageNavDisplay("navigation_arrows", true);
+}
+function initNeverDone() {
+    checkDatabase();
+    displayPage('game');
+    manageIngameOptionDisplay(true, "start", "block");
+    manageNavDisplay("quit",true);
+    manageNavDisplay("restart",false);
+    manageNavDisplay("navigation_arrows", true);
+}
+function initMix() {
+    checkDatabase();
+    getMinPlayer()
+    createGamemodeDBindicator();
+    displayPage('game');
+    manageIngameOptionDisplay(true, "start", "block");
+    manageNavDisplay("quit",true);
+    manageNavDisplay("restart",false);
+    manageNavDisplay("navigation_arrows", true);
+}
 function initGameWeakestLink() {
+    getMinPlayer()
     checkDatabase();
     manageIngameOptionDisplay(true, "weakest_link", true);
     manageIngameOptionDisplay(true, "start", "block");
@@ -553,8 +564,8 @@ function initGameWeakestLink() {
     displayPage('game');
 }
 function initGamePassword() {
+    getMinPlayer()
     password_generateAmountSelector()
-    addPotentialPortraitDisplayMarker("portrait");
     manageIngameOptionDisplay(true, "password", true);
     manageIngameOptionDisplay(true, "start", "block");
     manageIngameOptionDisplay(true, "password_rule", "block");
@@ -589,14 +600,21 @@ function checkDatabase() {
 }
 
 function testStoredDatabase(gamemode, lang) {
+    var key = gamemode + "_" + lang
     try {
-        if (game.stored_db && game.stored_db[gamemode + "_" + lang]) {
+        if (game.stored_db && game.stored_db[key]) {
             // DB exists, concat to pending_db
-            game.pending_db = game.pending_db.concat(game.stored_db[gamemode + "_" + lang])
-        } else {
-            // Calling file gamemode_lang.js
-            createScriptElement("./src/js/db/" + gamemode + "_" + lang + ".js");
+            game.pending_db = game.pending_db.concat(game.stored_db[key])
+            return;
         }
+
+        const externalDB = game.external_db.find(db => db.id === gamemode);
+        if (externalDB) {
+            game.pending_db = game.pending_db.concat(externalDB.db);
+            return;
+        }
+        
+        createScriptElement("./src/js/db/" + key + ".js");
     } catch (error) {
         if (error instanceof TypeError) {
             console.log(error.message);
@@ -657,6 +675,8 @@ function exitGame() {
     displayPage('menu');
 
     ingame_answer.innerHTML = "";
+    text_ingame_title.innerHTML = "";
+    game.started = false;
 }
 
 function restartGame() {
@@ -692,10 +712,19 @@ function selectGamemode(selected_gamemode, direct_launch) {
     initGame(direct_launch);
 }
 
+function selectExternalGamemode(gamemode_type, base_id) {
+    game.gamemode_type = gamemode_type;
+    game.gamemode = base_id;
+
+    initGame();
+}
+
 function setMixGamemodeDatabase() {
     // Pour toutes les checkbox cochées, mise en tableau des valeurs correspondantes 
     var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
     var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
+
+    var checkboxes_neverdone_external = document.getElementById("custom_mix_gamemode_never_done_section_external_db").querySelectorAll('input[type=checkbox]:checked')
 
     game.mix_gamemode_list_picolo = [];
     game.mix_gamemode_list_never_done = [];
@@ -706,13 +735,18 @@ function setMixGamemodeDatabase() {
     for (var i = 0; i < checkboxes_neverdone.length; i++) {
         game.mix_gamemode_list_never_done.push(checkboxes_neverdone[i].value)
     }
+    for (var i = 0; i < checkboxes_neverdone_external.length; i++) {
+        game.mix_gamemode_list_never_done.push(checkboxes_neverdone_external[i].value)
+    }
 }
 
 function updateMixGamemodeForm() {
     var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
     var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
 
-    if ((checkboxes_picolo.length + checkboxes_neverdone.length) == 0) {
+    var checkboxes_neverdone_external = document.getElementById("custom_mix_gamemode_never_done_section_external_db").querySelectorAll('input[type=checkbox]:checked')
+
+    if ((checkboxes_picolo.length + checkboxes_neverdone.length + checkboxes_neverdone_external.length) == 0) {
         document.getElementById("button_update_mix_gamemode_list").disabled = true;
         document.getElementById("button_update_mix_gamemode_list").className = "btn btn-secondary";
     } else {
@@ -791,16 +825,12 @@ function manageNavDisplay(navigation_option, display) {
     }
 }
 
-function addPotentialPortraitDisplayMarker(value) {
-    game_content.classList.remove("portrait-mode");
-    if (value == "landscape") {
-        game_content.classList.add("portrait-mode");
-    } else if (value == "portrait") {
-        game_content.classList.remove("portrait-mode");
-    }
-}
-
 function updateGameCycleIndicator() {
+    if (game.pending_db.length < game.sentence_amount) {
+        var max_sentences = game.pending_db.length
+    } else {
+        var max_sentences = game.sentence_amount;
+    }
     //previous
     if (game.cycle_id > 0) {
         manageNavigationButton("previous", true)
@@ -810,13 +840,13 @@ function updateGameCycleIndicator() {
     //game count
     if (game.cycle_id >= 0) {
         manageNavigationButton("game_cyle", true)
-        document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + game.sentence_amount;
+        document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + max_sentences;
     } else {
         manageNavigationButton("game_cyle", false)
         document.getElementById("game_cycle_count").innerHTML = "-";
     }
     //next
-    if (game.cycle_id < game.sentence_amount - 1 && game.cycle_id >= 0) {
+    if (game.cycle_id < max_sentences - 1 && game.cycle_id >= 0) {
         manageNavigationButton("next", true)
     } else {
         manageNavigationButton("next", false)
@@ -828,7 +858,7 @@ function updateGameCycleIndicator() {
         manageIngameOptionDisplay(false, "start", "none")
     }
     // retry
-    if (game.cycle_id == game.sentence_amount - 1) {
+    if (game.cycle_id == max_sentences - 1) {
         manageIngameOptionDisplay(true, "replay", "block")
     } else {
         manageIngameOptionDisplay(false, "replay", "none")
@@ -1210,6 +1240,136 @@ function DEBUG_weakestlink_add5sec() {
     
         weakestLinkCalcTime();
     }
+}
+
+
+function getExternalDBLink() {
+    const input = document.getElementById('external_db_input');
+    const value = input.value.trim();
+
+    if (value !== '' && value.match(/\.json(\?.*)?$/i)) {
+        console.log('Valeur entrée :', value);
+        addExternalDBData(value)
+    }
+
+    input.value = ''; // vide le champ input
+    input.focus();
+}
+
+async function addExternalDBData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        const data = await response.json();
+
+        data.url = url; //ajout de l'url dans la bdd
+        if (data.version >= global.external_db_version) {
+            // Cherche si une BDD avec le même ID existe déjà
+            const existingIndex = game.external_db.findIndex(db => db.id === data.id);
+        
+            if (existingIndex !== -1) {
+                const existingDB = game.external_db[existingIndex];
+        
+                if (data.version > existingDB.version) {
+                    // Remplace l'ancienne BDD par la nouvelle (version supérieure)
+                    game.external_db[existingIndex] = data;
+                    console.log(`BDD mise à jour : ${data.id} (v${existingDB.version} → v${data.version})`);
+                } else {
+                    // La version est inférieure ou égale → ne rien faire
+                    console.log(`BDD ignorée : ${data.id} (v${data.version}) est obsolète ou identique à celle existante (v${existingDB.version})`);
+                }
+            } else {
+                // Pas encore présente → ajouter
+                game.external_db.push(data);
+
+                console.log(`Nouvelle BDD ajoutée : ${data.id} (v${data.version})`);
+            }
+            refreshModalExternalDBList();
+            refreshGamemodeExternalDBList()
+        } else {
+            console.error(`BDD trop ancienne : ${data.id} (v${data.version}) < version minimale requise (v${global.external_db_version})`);
+        }
+        
+    } catch (err) {
+        console.error(`Erreur lors du chargement de ${url}:`, err);
+    }
+}
+
+function refreshModalExternalDBList() {
+    var list = document.getElementById("modal_external_db_list")
+    list.innerHTML = "";
+
+    for (var i in game.external_db) {
+        list.innerHTML += `<a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                                <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${game.external_db[i].name}</h5>
+                                <span class="badge rounded-pill text-bg-primary">${game.external_db[i].db.length}</span>
+                                </div>
+                                <p class="mb-1">${game.external_db[i].description}</p>
+                                <div>
+                                    <small>gamemode:${game.external_db[i].gamemode}</small>
+                                    <small>language:${game.external_db[i].language}</small>
+                                    <small>id:${game.external_db[i].id}</small>
+                                    <small>version:${game.external_db[i].version}</small>
+                                    <small>url:${game.external_db[i].url}</small>
+                                </div>
+                            </a>`;
+    }
+}
+
+function refreshGamemodeExternalDBList() {
+    var custom_mix_list = document.getElementById("custom_mix_gamemode_never_done_section_external_db");
+    var custom_never_done_list = document.getElementById("gamemode_collapse_never_external_db");
+    custom_mix_list.innerHTML = "";
+    custom_never_done_list.innerHTML = "";
+    if (game.external_db.length > 0) {
+        custom_mix_list.innerHTML = `<h6>${global.current_language_strings.external_db}</h6>`;
+        custom_never_done_list.innerHTML = `<h6>${global.current_language_strings.external_db}</h6>`;
+
+        for (var i in game.external_db) {
+            if (game.external_db[i].gamemode == "never_done") {
+                custom_mix_list.innerHTML += `<label class="form-check-label">
+                                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_${game.external_db[i].id}" type="checkbox"
+                                                onchange="updateMixGamemodeForm()" value="${game.external_db[i].id}">
+                                                    <a id="text_custom_mix_gamemode_${game.external_db[i].id}">${game.external_db[i].name}</a>
+                                                </input>
+                                            </label>`;
+
+                custom_never_done_list.innerHTML += `<div class="card p-2 m-1 gamemode_never_done_section">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h5 id="text_gamemode_title_${game.external_db[i].id}">${game.external_db[i].name}</h5>
+                                                            <button class="btn btn-primary" id="gamemode_option_${game.external_db[i].id}" value="${game.external_db[i].id}" onclick="selectExternalGamemode('never_done', this.value);">${global.current_language_strings.launch}</button>
+                                                        </div>
+                                                    </div>`
+            }
+        }
+    }
+}
+
+function downloadCustomDBTamplate() {
+    const template = {
+        version: global.external_db_version,
+        gamemode: "",
+        id: "",
+        language: "",
+        name: "",
+        description: "",
+        db: [
+            { pack_name: "never_done", text: "" }
+        ]
+    };
+
+    const jsonStr = JSON.stringify(template, null, 4); // bien formatté
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    // Crée un lien temporaire pour déclencher le téléchargement
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "template_bdd.json";
+    a.click();
+
+    URL.revokeObjectURL(url); // Libère l'URL après téléchargement
 }
 
 function DEBUG_ImportCSV() {

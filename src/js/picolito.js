@@ -44,39 +44,12 @@ function getMinPlayer() {
 function retrieve(sentence_id) {
     // Generation si l'historique ne trouve rien, sinon fonction retrieve
     if (game.sentence_history[game.cycle_id] == undefined || game.sentence_history[game.cycle_id].formatted_sentence == "none") {
-        switch (game.gamemode) {
-            case "default":
-                generatePicoloSentences();
-                break;
-            case "silly":
-                generatePicoloSentences();
-                break;
-            case "bar":
-                generatePicoloSentences();
-                break;
-            case "hot":
-                generatePicoloSentences();
-                break;
-            case "war":
-                generatePicoloSentences();
-                break;
-            case "mix":
-                generateMixSentences();
-                break;
-            case "never_popular":
-                generateNeverDoneSentences();
-                break;
-            case "never_party":
-                generateNeverDoneSentences();
-                break;
-            case "never_hot":
-                generateNeverDoneSentences();
-                break;
-            case "weakest_link":
-                generateWeakestLink();
-                break;
-            default:
-                break;
+        switch (game.gamemode_type) {
+            case "picolo": generatePicoloSentences(); break;
+            case "never_done": generateNeverDoneSentences(); break;
+            case "mix": generateMixSentences(); break;
+            case "weakest_link": generateWeakestLink(); break;
+            default: break;
         }
     } else {
         var sentence_requested = game.sentence_history[sentence_id];
@@ -126,7 +99,7 @@ function displaySentence(sentence, color, pack_name, answer) {
 
     if (color == "yellow") { displayPicoloVirusTitle() } else { hidePicoloVirusTitle() }
 
-    if (game.gamemode == "mix" && sentence != "") { selectGamemodeDBIndicator(pack_name) }
+    // if (game.gamemode == "mix" && sentence != "") { selectGamemodeDBIndicator(pack_name) }
 }
 
 function displayPicoloVirusTitle() { document.getElementById("text_ingame_title").style.display = ""; }
@@ -410,7 +383,7 @@ function generateNeverDoneSentences(use_mix_gamemode_data) {
 }
 
 function userActionClickSentence() {
-    if (game.started == true && (game.gamemode_type == "picolo" || game.gamemode_type == "mix")) {
+    if (game.started == true && (game.gamemode_type == "picolo" || game.gamemode_type == "never_done" || game.gamemode_type == "mix")) {
         if (game.debug == true) {
             showSentenceModifierModal();
         } else {

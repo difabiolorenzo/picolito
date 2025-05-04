@@ -61,6 +61,11 @@ function setLanguageString() {
             modal_password_preview_text: "Toucher pour fermer la fenêtre",
             modal_password_preview_ended: "Prévisualisation finie",
             modal_sentence_list_title: "Liste des phrases",
+            external_db: "Bases de données externes",
+            external_db_link: "Lien de base de données externe",
+            external_db_list: "Liste des bases de données",
+            external_db_download_template: "Télécharger le modèle",
+            external_db_disclaimer: "Fonctionne seulement avec le mode \"Je n'ai jamais\".",
             settings: "Paramètres",
             settings_picolo: "Picolo",
             settings_chug: "Culs secs",
@@ -97,7 +102,6 @@ function setLanguageString() {
             settings_password_style: "Style",
             settings_password_mode: "Mode de jeu (Mot de passe)",
             settings_password_preview: "Prévisualisation",
-            settings_password_preview_note: "Prévisualisation de tous les mots avant de les faire deviner.",
             settings_credits: "Credits",
             gamemode: "Mode de jeu",
             gamemode_picolo_title: "Picolo",
@@ -234,6 +238,11 @@ function setLanguageString() {
             modal_password_preview_text: "Touch to close",
             modal_password_preview_ended: "Preview ended",
             modal_sentence_list_title: "Sentences list",
+            external_db: "External databases",
+            external_db_link: "External database link",
+            external_db_list: "External database list",
+            external_db_download_template: "Download model",
+            external_db_disclaimer: "Only works with \"Never I Ever\" mode",
             settings: "Settings",
             settings_picolo: "Picolo",
             settings_language: "Language",
@@ -271,7 +280,6 @@ function setLanguageString() {
             settings_password_style: "Style",
             settings_password_mode: "Gamemode (Password)",
             settings_password_preview: "Preview",
-            settings_password_preview_note: "Preview all words before guessing them.",
             settings_credits: "Credits",
             gamemode: "Gamemode",
             gamemode_picolo_title: "Picolo",
@@ -447,6 +455,12 @@ function updateHTMLLanguageStrings() {
     document.getElementById("menu_player_switch_team_mode_alert").innerHTML = global.current_language_strings.team_mode_alert;
     document.getElementById("menu_player_team_name_title").innerHTML = global.current_language_strings.team_name;
     
+    document.getElementById("text_modal_external_db_link").innerHTML = global.current_language_strings.external_db_link;
+    document.getElementById("text_modal_external_db_list").innerHTML = global.current_language_strings.external_db_list;
+    document.getElementById("external_db_input").placeholder = global.current_language_strings.external_db_link;
+    document.getElementById("modal_external_db_download_template").innerHTML = global.current_language_strings.external_db_download_template;
+    document.getElementById("text_modal_external_db_link_disclaimer").innerHTML = global.current_language_strings.external_db_disclaimer;
+
     document.getElementById("picolito_settings_collapse_header").innerHTML = global.current_language_strings.settings;
     document.getElementById("text_modal_settings").innerHTML = global.current_language_strings.settings;
     document.getElementById("text_settings_picolo").innerHTML = global.current_language_strings.settings_picolo;
@@ -484,7 +498,6 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
     document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
     document.getElementById("text_settings_password_preview").innerHTML = global.current_language_strings.settings_password_preview;
-    document.getElementById("text_note_settings_password_preview").innerHTML = global.current_language_strings.settings_password_preview_note;
     document.getElementById("text_settings_credits").innerHTML = global.current_language_strings.settings_credits;
 
     document.getElementById("text_gamemode_title_default").innerHTML = global.current_language_strings.gamemode_default_title;

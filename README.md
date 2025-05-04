@@ -6,25 +6,26 @@ L'abus d'alcool est dangereux pour la santé. Pour plus d'information sur l'alco
 - rendez vous sur [alcool-info-service.fr](https://www.alcool-info-service.fr/)
 - ou appeler le `0 980 980 930` _de 8h à 2h, appel non surtaxé_
 
-En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolo / Picolito.
+En poursuivant vous confirmez être responsables des éventuelles conséquences que pourrait engendrer l'utilisation de Picolito.
 Prenez soins de vous et de vos ami(e)s. L'alcool permet d'animer vos soirées cependant il peux aussi les ruiner...
 
 ### Différences entres les versions
 - Impossible d'ajouter des règles personalisées
 
-- Les modes `On est débiles`, `Bar`, `Caliente` et `Guerre` sont débloqués
+- Les modes `On est débiles`, `Bar`, `Caliente` et sont débloqués
+- Le mode `Guerre` est indisponible.
 - Intégration de `Je n'ai Jamais` aux modes de jeu.
+- Possiblité d'ajouter des bases de données externes. (`Je n'ai Jamais`)
 - Modes `Mix` pour jouer avec les différents types des jeux.
-- Navigation entres les phrases précedentes.
+- Navigation entres les phrases précedentes ou déjà générées.
 - Mode sombre.
 - Possibilité de désactiver les virus, les culs secs et les postes sur les réseaux sociaux.
-- Possibilité de changer le nombre de gorgés minimum et maximum
-- Distinctions des informations (joueurs, nombre de gorgées, équipes)
-- Sauvegarde des paramètres, des noms de joueurs et des noms des équipes. (Utilisation des cookies)
+- Possibilité de changer le nombre de gorgés minimum et maximum.
+- Distinctions des informations (joueurs, nombre de gorgées, équipes).
+- Sauvegarde des paramètres, des noms de joueurs et des noms des équipes. (Utilisation des cookies).
 
 ### Fonctionnement
-Il existe 5 mode de jeu pouvant avoir des thèmes divers `Before`, `On est débiles`, `Bar`, `Caliente` et `Guerre`.
-Chaques parties comptent 50 phrases ayant une couleur prédéfinie indiquant sont objectifs:
+Chaques parties de `Picolo` comptent 50 phrases ayant une couleur prédéfinie indiquant sont objectifs:
 
 `Bleu`
 Possède arbitrairement **70%** d'apparition.
@@ -50,15 +51,10 @@ Oblige un ou des joueur(s) à finir son verre.
 
 ### Maillon Faible
 Le but est de former une chaîne de bonnes réponses consécutives (6 par défault) durant le temps de la manche (60 secondes).
-
 C'est la personne dont le prénom est le premier dans l'ordre alphabétique qui débute la manche.
-
 Lorsque la personne répond correctement à la question posée, l'animateur dit « Correct ! ».
-
 Si le joueur ne trouve pas ou réponds incorrectement, la chaine retombe à 0.
-
 Néanmoins, les candidats peuvent dire « Banque ! » après que leur prénom ait été prononcé, le nombre de bonne réponses est alors mis en banque.
-
 Après la fin de chaque manche, les joueurs vote pour la personne dite "maillon faible".
 
 - Seulement 150~ questions... Contribuez!

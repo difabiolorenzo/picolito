@@ -120,7 +120,7 @@ div#game.weakest_link #ingame_content {
 
 p#ingame_sentence, p#ingame_answer, #text_game_ready, #text_game_endgame {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 2.5rem;
     user-select: none;
     -webkit-user-select:none;
     /* text-size-adjust: auto; */
@@ -286,6 +286,7 @@ span.span_team {color: var(--picolo_teams);}
 }
 li.list-group-item.sentence-list, .player-vote-button {
     font-size: 100%;
+    cursor: pointer;
 }
 .text-color-red {color:var(--picolo_red)}
 .text-color-yellow {color:var(--picolo_yellow)}
