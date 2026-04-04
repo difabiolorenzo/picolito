@@ -1,25 +1,47 @@
 // First function called when #body is loaded
 function init() {
-    checkBrowserColorScheme();
+    // checkBrowserColorScheme();
     defaultVariables();
     setLanguageString();
-    password_generateAmountSelector();
-    updateCurrentLanguageString("fr")
+    updateCurrentLanguageString("fr");
     filterVariables();
     retrieveCookie();
     loadPlayerListFromCookie(); // Charger les joueurs depuis les cookies
+
+    refreshDBList();
+    
     if (global.debug == true) { devOverrideSettings() }
     displaySafetyAndCookieModal();
 }
 
 function devOverrideSettings() {
-    document.getElementById("gamename_menu").innerHTML = global.picolito_version + " - dev";
-    if (getCookie("player_list").length == 0) { DEBUG_RandomPlayer(4) }
+    document.getElementById("gamename_menu").innerHTML = "dev" + game.picolito_version.toUpperCase();
+    // if (getCookie("player_list").length == 0) { DEBUG_RandomPlayer(4) }
     displayPage("menu")
     global.remind_warning_panel = false;
-    // game.password.style = "password_2025";
-    addExternalDBData("http://difabiolorenzo.fr/picolito/src/js/db/miranda.json")
-    // selectGamemode("password");
+
+    // setTimeout(function() {
+    //     updateSelectedMixGamemode( { gamemode_type: "picolo", bdd_id: "picolo_default_fr", bdd_source: "vanilla" } );
+    //     updateSelectedMixGamemode( { gamemode_type: "picolo", bdd_id: "picolo_silly_fr", bdd_source: "vanilla" } );
+    // }, 250);
+    // setTimeout(function() {
+    //     selectMixGamemode()
+    // }, 500)
+
+    // selectGame (
+    //     {
+    //         gamemode_type: "picolo",
+    //         bdd_data: [ 
+    //             {
+    //                 bdd_id: "picolo_default_fr",
+    //                 bdd_source: "vanilla"
+    //             }
+    //         ]
+    //     }
+    // )
+    
+    // document.getElementById("bootstrap-overlay").href = "./src/css/barium.css"
+    // selectGame("weakest_link")
 }
 
 function defaultVariables() {
@@ -27,7 +49,6 @@ function defaultVariables() {
         current_language: "fr",
         debug: false,
         dark_mode: "bright",
-        picolito_version: "0.35",
         cookie_expiration_delay: 15,
         audio : {
             weakest_link_amb_60: undefined,
@@ -35,172 +56,282 @@ function defaultVariables() {
         },
         audio_enabled: true,
         cookie_settings_value : [],
-        use_cache_storage: false,
-        portrait_mode: false,
-        external_db_version: 1,
 
         modal_player_menu: new bootstrap.Modal(document.getElementById('modal_modal_player_menu')),
         modal_sentence_modifier: new bootstrap.Modal(document.getElementById('modal_sentence_modifier')),
         modal_safety_and_cookie_modal: new bootstrap.Modal(document.getElementById('modal_safety_and_cookie_modal')),
         modal_sentence_list: new bootstrap.Modal(document.getElementById('modal_sentence_list')),
-        modal_password_preview: new bootstrap.Modal(document.getElementById('modal_password_preview')),
         modal_external_db: new bootstrap.Modal(document.getElementById('modal_external_db'))
     }
 
     game = {
-        filter: {
-            // Sentences of type 1 is used in "default", "hot", "bar", "mix" and "silly"
-            type_by_gamemode: {
-                default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
-                hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
-                bar: [1, 2, 4, 16, 17, 18, 19, 20, 21, 22],
-                silly: [1, 2, 3, 4, 6, 14, 23, 24, 25],
-                mix: [1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 20, 21, 25, 23, 24, 25],
-                war: [8, 9, 10, 11, 12, 13]
+        picolito_version: "0.36.0",
+        vanilla_db_index: [
+            // Picolo
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_default_fr",
+                "pack_name": "Before - 🥴",
+                "pack_description": "Le mode de jeu parfait pour s'ambiancer en soirées.\nSoyez prêts, car Picolito ne vous fera pas de cadeaux.",
+                "url":"./src/db/picolo/picolo_default_fr.json",
+                "language":"fr"
             },
-            // For .default[0], maximum players can be 0, 1, 2, 3 or 4 players (when there is more than 4 players, player count is noted 4)
-            max_player_number_by_gamemode: {
-                default: [[0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], [], [], [], [], [], [], [], [], [0,1,2], [2], [], [], [], [], [], [], [], [0,1,2,3], [3], [0,1,2,3,4]],
-                hot: [[0,1,2,3,4,5], [1,2], [0], [0,1,2], [], [], [1,2], [], [], [], [], [], [], [0,1,2,3], [], [], [], [], [], [], [], [], [0,1,2], [3,4], [0,1,2]],
-                bar: [[0,1,2], [1,3], [], [0,1], [], [], [], [], [], [], [], [], [], [], [], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], [], [], []],
-                silly: [[0,1,2,3,4], [0,1,2], [0], [1,2,3], [], [0,1,2,3], [], [], [], [], [], [], [], [0,1], [], [], [], [], [], [], [], [], [0,1,2,3,4], [3,4], [0,1,2]],
-                war: [[], [], [], [], [], [], [], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], [], [], [], [], [], [], [], [], [], [], [], []]
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_default_en",
+                "pack_name": "Getting Started - 🥴",
+                "pack_description": "The perfect way to start the party and add some fun to your night.\nGet ready, picolo shows no mercy.",
+                "url":"./src/db/picolo/picolo_default_en.json",
+                "language":"en"
             },
-            // Sentences of type 1 is blue, 2 and 3 is yellow, 4 is green, etc...
-            type_by_color: {
-                blue: [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25],
-                red: [5, 6, 7],
-                green: [4, 11, 12, 14, 17, 20, 21, 22, 23],
-                yellow: [2, 3]
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_silly_fr",
+                "pack_name": "On est débiles - 🤪",
+                "pack_description": "Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.\nAttention, public averti.",
+                "url":"./src/db/picolo/picolo_silly_fr.json",
+                "language":"fr"
             },
-            // % of chance for picking specific colors (70% to pick blue typed sentences)
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_silly_en",
+                "pack_name": "Getting Crazy - 🤪",
+                "pack_description": "If you want the night to get even more ridiculous, this game is for you.\nHope you've got a decent buzz going.",
+                "url":"./src/db/picolo/picolo_silly_en.json",
+                "language":"en"
+            },
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_bar_fr",
+                "pack_name": "Bar - 🍻",
+                "pack_description": "Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.\nAttention, il ne faut pas avoir peur du ridicule.",
+                "url":"./src/db/picolo/picolo_bar_fr.json",
+                "language":"fr"
+            },
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_bar_en",
+                "pack_name": "Bar - 🍻",
+                "pack_description": "If you're ready to turn the bar upside down, this is the perfetect game.\nBe prepared to face ridicule.",
+                "url":"./src/db/picolo/picolo_bar_en.json",
+                "language":"en"
+            },
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_hot_fr",
+                "pack_name": "Caliente - 🍆",
+                "pack_description": "Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.\nEst-ce que ça va pécho ce soir?",
+                "url":"./src/db/picolo/picolo_hot_fr.json",
+                "language":"fr"
+            },
+            {   
+                "gamemode":"picolo",
+                "id":"picolo_hot_en",
+                "pack_name": "Caliente - 🍆",
+                "pack_description": "Time to get a little naughty.\nBe prepare to reveal your best-kept secrets",
+                "url":"./src/db/picolo/picolo_hot_en.json",
+                "language":"en"
+            },
+            
+
+            // Je N'ai Jamais
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_popular_fr",
+                "pack_name": "Populaire - ⭐",
+                "url":"./src/db/je_n_ai_jamais/popular_fr.json",
+                "language":"fr"
+            },
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_popular_en",
+                "pack_name": "Popular - ⭐",
+                "url":"./src/db/je_n_ai_jamais/popular_en.json",
+                "language":"en"
+            },
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_party_fr",
+                "pack_name": "Fête - 🎉",
+                "url":"./src/db/je_n_ai_jamais/party_fr.json",
+                "language":"fr"
+            },
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_party_en",
+                "pack_name": "Party - 🎉",
+                "url":"./src/db/je_n_ai_jamais/party_en.json",
+                "language":"en"
+            },
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_hot_fr",
+                "pack_name": "Coquin & Sexy - 💋",
+                "url":"./src/db/je_n_ai_jamais/hot_fr.json",
+                "language":"fr"
+            },
+            {   
+                "gamemode":"je_n_ai_jamais",
+                "id":"je_n_ai_jamais_hot_en",
+                "pack_name": "Dirty & Sex - 💋",
+                "url":"./src/db/je_n_ai_jamais/hot_en.json",
+                "language":"en"
+            },
+
+            // Maillon Faible
+            {   
+                "gamemode":"maillon_faible",
+                "id":"maillon_faible_fr",
+                "pack_name": "Le Maillon Faible",
+                "url":"./src/db/questions/maillon_faible/maillon_faible.json",
+                "language":"fr"
+            }
+        ],
+        
+        pending_db: [],
+
+        mix_gamemode_list_picolo: [],
+
+        player_list: [],
+        max_player_number: -1,
+
+        team_1: "EQUIPE# 1",
+        team_2: "EQUIPE# 2",
+
+        sip: {
+            min: 1,
+            max: 3
+        },
+        started: false,
+        cycle_id: -1,
+        gamemode: "picolo_default",
+        gamemode_type: "text",
+        display_color_indicator: true,
+        quotes_indicator: "underline",   //none, italic, underline, highlight, white_on_black, black_on_white
+        animation: true,
+
+        only_display_current_language_databases: true,
+
+        sentence_history: [],   //sentence_history_item = { sentence,key,type,nature }
+        max_sentence_amount: 50,
+
+        picolito : {
+            chug_enabled: true,
+            chug_amount: 1,
+            chug_minimum_cycle_start: 20, // chug start to appear after sentence_id X
+
+            virus_enabled: true,
+            virus_remaining: 1, // virus can occur X times, can overlap
+            virus_end_min: 2,   // virus can end after X more sentence_id minimum
+            virus_end_max: 4,   // virus can end after X more sentence_id maximum
+            virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
+    
+            social_posting_enabled: false,
+
             color_probability: {
                 blue: 70,
                 red: 5,
                 green: 20,
                 yellow: 5
             },
-            empty_type: [] //when all sentences have been picked
-        },
-
-        pending_db: [],
-        stored_db: {},
-
-        mix_gamemode_list_picolo: [],  //["default", "hot", "bar", "silly"]
-        mix_gamemode_list_never_done: [],  //["never_popular", "never_hot", "never_party"]
-
-        external_db: [],
-
-        player_list: [], //{ id: 1, name: "Alice", team: null },
-        max_player_number: -1,
-
-        team_1: "EQUIPE# 1",
-        team_2: "EQUIPE# 2",
-
-        sip: { min: 1, max: 4 },
-        started: false,
-        cycle_id: -1,
-        gamemode: "default",
-        gamemode_type: "text",
-        display_indicator: false,
-        display_color_indicator: true,
-        animation: true,
-
-        sentence_history: [],   //sentence_history_item = { sentence,key,type,nature }
-        sentence_amount: 50,
-
-        picolito : {
-            chug_enabled: true,
-            chug_amount: 1,
-            chug_sentence_id_start_min: 10, // chug start to appear after sentence_id X
-
-            virus_enabled: true,
-            virus_remaining: 1, // virus can occur X times, can overlap
-            virus_end_min: 3,   // virus can end after X more sentence_id minimum
-            virus_end_max: 6,   // virus can end after X more sentence_id maximum
-            virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
-    
-            social_posting_enabled: false,
 
             // can_alter_player_name_in_sentence: true,
             // can_alter_sip_in_sentence: true,
         },
         weakest_link: {
-            weakestLinkTimer: undefined,
             stop_at_max_chain: true, 
             max_chain: 6,
             tie_behaviour: "weakest", //strongest_link, arbitrary, both, weakest
+            current_player_index: 0,
             chain: 0,
-            alphabetically_ordered_player: [],
             bank: 0,
-            time: 60,
-            player_analytics: {
-                correct: [],
-                wrong: [],
-                bank_saved: [],
-                potential_bank_lost: [],
-                answer_time: [],
-                average_answer_time: []
-            },
-            hide_answer: false
-        },
-        password: {
-            currentIndex: -1,
-            word_to_find_left: undefined,
-            word_status: [],
-            words: [], // Array to store the fetched words
-            style: "password_2016",
-            word_to_find_amount: 5,
-            word_to_find_min: 1,
-            word_to_find_max: 10,
-            preview: false,
-            hide_hint_after_seconds: 3,
-            db_source: "trouve_mot_api", // "trouve_mot_api", "local"
-        },
-        tenzi: {
-            // Init by tenzi.js
+            time: 60
         }
     }
     updateHTMLSettingsByVar()
 }
 
+function testNewFilters() {
+    var filter_old = {
+        // Sentences of type 1 is used in "default", "hot", "bar", "mix" and "silly"
+        type_by_gamemode: {
+            default: [1, 2, 3, 4, 5, 14, 15, 23, 24, 25],
+            hot: [1, 2, 3, 4, 7, 14, 23, 24, 25],
+            bar: [1, 2, 4, 16, 17, 18, 19, 20, 21, 22],
+            silly: [1, 2, 3, 4, 6, 14, 23, 24, 25],
+            mix: [1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 20, 21, 25, 23, 24, 25],
+            war: [8, 9, 10, 11, 12, 13]
+        },
+        // For .default[0], maximum players can be 0, 1, 2, 3 or 4 players (when there is more than 4 players, player count is noted 4)
+        max_player_number_by_gamemode: {
+            default: [[0,1,2,3,4], [1,2,3,4], [0,1], [0,1,2,3], [0,1,2,3,4], [], [], [], [], [], [], [], [], [0,1,2], [2], [], [], [], [], [], [], [], [0,1,2,3], [3], [0,1,2,3,4]],
+            hot: [[0,1,2,3,4,5], [1,2], [0], [0,1,2], [], [], [1,2], [], [], [], [], [], [], [0,1,2,3], [], [], [], [], [], [], [], [], [0,1,2], [3,4], [0,1,2]],
+            bar: [[0,1,2], [1,3], [], [0,1], [], [], [], [], [], [], [], [], [], [], [], [2,3], [0,1,2,3], [1,2], [1,2,3], [1], [1], [1], [], [], []],
+            silly: [[0,1,2,3,4], [0,1,2], [0], [1,2,3], [], [0,1,2,3], [], [], [], [], [], [], [], [0,1], [], [], [], [], [], [], [], [], [0,1,2,3,4], [3,4], [0,1,2]],
+            war: [[], [], [], [], [], [], [], [0,1,2], [0], [2,3], [0,1], [0,1], [0,1], [], [], [], [], [], [], [], [], [], [], [], []]
+        },
+        // Sentences of type 1 is blue, 2 and 3 is yellow, 4 is green, etc...
+        type_by_color: {
+            blue: [1, 8, 9, 10, 13, 15, 16, 18, 19, 24, 25],
+            red: [5, 6, 7],
+            green: [4, 11, 12, 14, 17, 20, 21, 22, 23],
+            yellow: [2, 3]
+        }
+    };
+
+    var filter_new = []
+    var colors = ["blue", "red", "yellow", "green"]
+
+    for (var i = 1; i<26; i++ ) {
+        var color = undefined;
+        for (var j in colors) {
+            if (type_by_color[colors[j]].includes(i)) {
+                color = colors[j]
+            }
+        }
+
+        // social_posting == 15
+        
+        filter_new.push({"type": i, "color": color })
+    }
+
+    console.log(filter_new)
+}
+
 function resetVariables() {
     game.db = {};
 
-    game.filter.empty_type = [];
     game.cycle_id = -1;
     game.picolito.virus_remaining = 1;
-    game.chug_remaining = game.picolito.chug_amount;
+    game.picolito.chug_remaining = game.picolito.chug_amount;
     game.database = undefined;
     game.pending_db = [];
 
     game.sentence_history = [];
 
     game_cycle_count.innerHTML = "-";
-
-    game.weakest_link.chain = 0;
-    game.weakest_link.alphabetically_ordered_player = [];
-    game.weakest_link.bank = 0;
-    game.weakest_link.player_turn_index = -1;
 }
 
 function updateHTMLSettingsByVar() {
-    input_chug_enabled.checked = game.picolito.chug_enabled;
-    input_virus_enabled.checked = game.picolito.virus_enabled;
-    input_social_posting_enabled.checked = game.picolito.social_posting_enabled;
+    game.picolito.chug_remaining = game.picolito.chug_amount;
 
-    input_sip_min.value = game.sip.min;
-    input_sip_max.value = game.sip.max;
+    document.getElementById("input_chug_enabled").checked = game.picolito.chug_enabled;
+    document.getElementById("input_virus_enabled").checked = game.picolito.virus_enabled;
+    document.getElementById("input_social_posting_enabled").checked = game.picolito.social_posting_enabled;
+
+    changeSipSettings('min', game.sip.min);
+    changeSipSettings('max', game.sip.max);
     input_potential_chug = game.picolito.chug_amount;
 
-    input_color_display_settings.checked = game.display_color_indicator;
-    input_color_display_animation.checked = game.animation;
+    changeClearInformationSettings(game.display_color_indicator);
+    
+    document.getElementById("input_quotes_visualization").value = game.quotes_indicator;
+    changeQuotesVisualization(game.quotes_indicator);
 
-    input_dark_mode_settings.value = global.dark_mode;
-    changeDarkModeSettings(global.dark_mode)
+    document.getElementById("input_color_display_animation").checked = game.animation;
 
-    input_settings_landscape.checked = global.portrait_mode;
-    changePortraitModeSettings(global.portrait_mode)
+    document.getElementById("input_dark_mode_settings").value = global.dark_mode;
+    changeDarkModeSettings(global.dark_mode);
 
     input_weakest_link_tie.value = game.weakest_link.tie_behaviour;
 
@@ -210,14 +341,20 @@ function updateHTMLSettingsByVar() {
         input_weakest_link_max_chain.value = game.weakest_link.max_chain;
     }
     input_weakest_link_soundtrack.checked = global.audio_enabled;
-    input_weakest_link_hide_answer.checked = game.weakest_link.hide_answer;
-
-    select_settings_password_amount.value = game.password.word_to_find_amount;
-    select_settings_password_style.value = game.password.style;
-    input_settings_password_preview.checked = game.password.preview;
     
-    picolito_version_safety.innerHTML = `Picolito ${global.picolito_version}`;
-    picolito_version_menu.innerHTML = `Picolito ${global.picolito_version}`;
+    picolito_version_safety.innerHTML = `Picolito ${game.picolito_version}`;
+    picolito_version_menu.innerHTML = `Picolito ${game.picolito_version}`;
+
+    document.getElementById("input_show_only_current_language_db").checked = input_show_only_current_language_db;
+
+    // Input ajout fichier bases de données
+    const input = document.getElementById("external_db_file_input");
+        input.addEventListener("change", () => {
+            if (input.files && input.files[0]) {
+                addDBData({ file: input.files[0] });
+            }
+        }
+    );
 
     displayPage('menu');
 }
@@ -256,39 +393,45 @@ function changeDarkModeSettings(value) {
     }
 }
 
-function changePortraitModeSettings(value) {
-    global.portrait_mode = value;
-    if (value == true) {
-        document.body.classList.add("portrait_mode_enabled")
-    } else {
-        document.body.classList.remove("portrait_mode_enabled")
-    }
-}
-
 function changeSipSettings(setting, value) {
-    //prevent settings to be incoherent (ex: min_sip = 8 && max_sip == 4)
+    // Prévention pour ne pas avoir de paramètres avec des minimum plus grand que maximum
     var value = parseInt(value)
+    const slider_min = document.getElementById("slider_sip_min");
+    const slider_sip_min_value = document.getElementById("slider_sip_min_value");
+
+    const slider_max = document.getElementById("slider_sip_max");
+    const slider_sip_max_value = document.getElementById("slider_sip_max_value");
+
+    function updateMinValue(min_value) {
+        game.sip.min = min_value;
+
+        slider_min.value = game.sip.min;
+        slider_sip_min_value.innerHTML = min_value;
+    }
+
+    function updateMaxValue(max_value) {
+        game.sip.max = max_value;
+
+        slider_max.value = game.sip.max;
+        slider_sip_max_value.innerHTML = max_value;
+    }
 
     if (setting == "min") {
-        game.sip.min = value;
+        updateMinValue(value)
         if (value > game.sip.max) {
-            game.sip.max = value;
+            updateMaxValue(value)
         }
     } else if (setting == "max") {
-        game.sip.max = value;
+        updateMaxValue(value)
         if (value < game.sip.min) {
-            game.sip.min = value;
+            updateMinValue(value)
         }
     }
-
-    //update HTML
-    input_sip_min.value = game.sip.min;
-    input_sip_max.value = game.sip.max;
 }
 
 function changeDownDrinking(value) {
     game.picolito.chug_amount = parseInt(value);
-    game.chug_remaining = parseInt(value);
+    game.picolito.chug_remaining = parseInt(value);
 }
 
 function changeWeakestLinkTieBehaviour(value) {
@@ -303,14 +446,6 @@ function changeWeakestLinkMaxChain(value) {
         game.weakest_link.stop_at_max_chain = true;
         game.weakest_link.max_chain = parseInt(value);
     }
-}
-
-function createScriptElement(script_src) {
-    var headTag = document.getElementsByTagName("head").item(0);
-    var scriptTag = document.createElement("script");
-    scriptTag.type = "text/javascript";
-    scriptTag.src = script_src;
-    headTag.appendChild(scriptTag);
 }
 
 function hopper(array, nature) {
@@ -329,25 +464,35 @@ function hopper(array, nature) {
 function filterVariables() {
     if (game.picolito.chug_enabled == false) {
         //delete and share red probability into others colors
-        hopper(game.type_by_color, "red");
+        hopper(game.type_by_color, "picolo_red");
     }
     if (game.picolito.virus_enabled == false) {
         //delete and share yellow probability into others colors
-        hopper(game.type_by_color, "yellow");
+        hopper(game.type_by_color, "picolo_yellow");
     }
 }
 
 function replaceAt(string, index, replace, length) {
-    return string.substring(0, index) + replace + string.substring((index+length)+1);
+    if (typeof string !== "string") return "";
+
+    // length doit être un nombre
+    length = Number(length) || 0;
+
+    return (
+        string.substring(0, index) +
+        replace +
+        string.substring(index + length)
+    );
 }
 
-function displayPage(page) {
-    var pages = ["menu", "game"]
 
-    for (var i in pages) {
-        document.getElementById(pages[i]).style.display = 'none';
+function displayPage(page) {
+    var pages = ["menu", "picolito", "weakest_link"]
+
+    for (let i in pages) {
+        document.getElementById(pages[i]).classList.add("d-none");
     }
-    document.getElementById(page).style.display = 'block';
+    document.getElementById(page).classList.remove("d-none");
 }
 
 function addPlayer(player_name) {
@@ -357,16 +502,14 @@ function addPlayer(player_name) {
     // DEV MODE
     if (menu_player_input.value.toLowerCase() == "lyoko") {
         menu_player_input.value = "";
-        herge_bt_display_cookies.classList.remove("d-none");
-        picolito_advanced_settings_collapse_header.classList.remove("d-none");
+        global.modal_player_menu.hide()
 
         DEBUG_carthage(true);
         return;
     }
     if (menu_player_input.value.toLowerCase() == "terre") {
         menu_player_input.value = "";
-        herge_bt_display_cookies.classList.add("d-none");
-        picolito_advanced_settings_collapse_header.classList.add("d-none");
+        global.modal_player_menu.hide()
 
         DEBUG_carthage(false);
         return;
@@ -451,7 +594,7 @@ function editPlayerNameModal(id) {
     const player = game.player_list.find(player => player.id === id);
     console.log(player)
     if (player) {
-        const newName = prompt("Enter new name:", player.player_name);
+        const newName = prompt(global.current_language_strings.enter_player_name, player.player_name);
         if (newName) {
             player.player_name = newName;
             refreshPlayerList();
@@ -470,7 +613,7 @@ function editTeamName(team) {
     }
 
     function promptTeamName(old_name) {
-        const newName = prompt("Enter new name:", old_name);
+        const newName = prompt(global.current_language_strings.enter_player_name, old_name);
         if (newName) { return newName; }
     }
 }
@@ -496,128 +639,106 @@ function getActualBackgroundColorByHistory() {
 }
 
 function setBackgroundStyleColor(value) {
-    document.getElementById("game").className = "page dark_affected " + value;
+    document.getElementById("picolito").className = "page dark_affected " + value;
 }
 
-function initGame(direct_launch) {
-    switch (game.gamemode_type) {
-        case "picolo":
-            if (game.mix_gamemode_list_picolo.length > 0) { global.modal_player_menu.show(); }
-            initPicolo();
-            break;
-        case "never_done": initNeverDone(); break;
-        case "mix": initMix(); break;
-        case "weakest_link":  initGameWeakestLink(); break;
-        case "password": initGamePassword(); break;
-        case "tenzi":
-            displayTenziGame(false)
-            initGameTenzi();
-            break;
-        case "mix": game.gamemode_type = "mix"; break;
-    }
-    game.started = true;
-    if (direct_launch == true) { startGame() }
-
-    // if (game.gamemode == "war") {
-    //     if (game.player_list.length >= 2) {
-    //         updateTeamSelectionTable();
-    //     }
-    // }
-}
 function initPicolo() {
-    checkDatabase();
+    // Cherche la première instance de bdd_data car nous savons que nous n'utilisons qu'un seul mode
+    // Plusieurs sera avec initMix
+    const bdd_id = game.current_gamemode.bdd_data[0].bdd_id
+    const bdd_source = game.current_gamemode.bdd_data[0].bdd_source
+    
+    testStoredDatabase({bdd_id: bdd_id, source: bdd_source})
+
     getMinPlayer()
-    displayPage('game');
-    manageIngameOptionDisplay(true, "start", "block");
+    displayPage('picolito');
+
+    displayIngameOptionPanel(true)
+    manageIngameOptionDisplay({option: "start", display: true});
+
     manageNavDisplay("quit",true);
     manageNavDisplay("restart",false);
-    manageNavDisplay("navigation_arrows", true);
-}
-function initNeverDone() {
-    checkDatabase();
-    displayPage('game');
-    manageIngameOptionDisplay(true, "start", "block");
-    manageNavDisplay("quit",true);
-    manageNavDisplay("restart",false);
-    manageNavDisplay("navigation_arrows", true);
-}
-function initMix() {
-    checkDatabase();
-    getMinPlayer()
-    createGamemodeDBindicator();
-    displayPage('game');
-    manageIngameOptionDisplay(true, "start", "block");
-    manageNavDisplay("quit",true);
-    manageNavDisplay("restart",false);
-    manageNavDisplay("navigation_arrows", true);
-}
-function initGameWeakestLink() {
-    getMinPlayer()
-    checkDatabase();
-    manageIngameOptionDisplay(true, "weakest_link", true);
-    manageIngameOptionDisplay(true, "start", "block");
-    manageIngameOptionDisplay(true, "weakest_link_rule", "block");
-    manageNavDisplay("players", false);
-    manageNavDisplay("restart", false);
-    preloadSound("weakest_link");
-    weakestLinkCalcTime();
-    displayPage('game');
-}
-function initGamePassword() {
-    getMinPlayer()
-    password_generateAmountSelector()
-    manageIngameOptionDisplay(true, "password", true);
-    manageIngameOptionDisplay(true, "start", "block");
-    manageIngameOptionDisplay(true, "password_rule", "block");
-    manageNavDisplay("players", false);
-    manageNavDisplay("restart", false);
-    displayPage('game');
     manageNavDisplay("navigation_arrows", false);
-}
-function initGameTenzi() {
-    manageNavDisplay("navigation_arrows", false);
-    manageNavDisplay("players", false);
-    manageNavDisplay("restart", false);
-    displayPage('game');
-    displayTenziGame(true)
-    initTenzi();
 }
 
-function checkDatabase() {
-    // Vérifie si la base de données demandée n'est pas déjà appelé dans 
-    if (game.gamemode == "mix") {
-        // A CONCATENER game.mix_gamemode_list_picolo et never_done
-        console.log("gamemode_mix", game.mix_gamemode_list_picolo, game.mix_gamemode_list_never_done)
-        for (var i = 0; i < game.mix_gamemode_list_picolo.length; i++) {
-            testStoredDatabase(game.mix_gamemode_list_picolo[i], global.current_language);         
-        }
-        for (var i = 0; i < game.mix_gamemode_list_never_done.length; i++) {
-            testStoredDatabase(game.mix_gamemode_list_never_done[i], global.current_language);         
-        }
-    } else {
-        testStoredDatabase(game.gamemode, global.current_language)
+function initJeNaiJamais() {
+    // Cherche la première instance de bdd_data car nous savons que nous n'utilisons qu'un seul mode
+    // Plusieurs sera avec initMix
+    const bdd_id = game.current_gamemode.bdd_data[0].bdd_id
+    const bdd_source = game.current_gamemode.bdd_data[0].bdd_source
+    
+    testStoredDatabase({bdd_id: bdd_id, source: bdd_source})
+
+    displayPage('picolito');
+
+    displayIngameOptionPanel(true)
+    manageIngameOptionDisplay({option: "start", display: true});
+
+    manageNavDisplay("quit",true);
+    manageNavDisplay("restart",false);
+    manageNavDisplay("navigation_arrows", false);
+}
+
+function initMix() {
+    // A CONCATENER game.mix_gamemode_list_picolo et je_n_ai_jamais
+    console.log("gamemode_mix", game.mix_gamemode_list_picolo)
+    for (var i in game.mix_gamemode_list_picolo) {
+        testStoredDatabase({bdd_id: game.mix_gamemode_list_picolo[i].bdd_id, source: game.mix_gamemode_list_picolo[i].bdd_source})       
+    }
+
+    getMinPlayer()
+    displayPage('picolito');
+    
+    displayIngameOptionPanel(true)
+    manageIngameOptionDisplay({option: "start", display: true});
+
+    manageNavDisplay("quit",true);
+    manageNavDisplay("restart",false);
+    manageNavDisplay("navigation_arrows", true);
+}
+
+function listStoredDatabase() {
+    const local_storage_keys = JSON.parse(localStorage.getItem("db:index:external"))
+
+    for (let i = 0; i < local_storage_keys.length; i++) {
+        console.log(local_storage_keys[i])
     }
 }
 
-function testStoredDatabase(gamemode, lang) {
-    var key = gamemode + "_" + lang
+async function testStoredDatabase({ bdd_id = null, lang = null, source = "vanilla" }) {
     try {
-        if (game.stored_db && game.stored_db[key]) {
-            // DB exists, concat to pending_db
-            game.pending_db = game.pending_db.concat(game.stored_db[key])
-            return;
+        const storedKey = `${source}:${bdd_id}`;
+        let storedData = localStorage.getItem(storedKey);
+
+        // Si la base n'existe pas dans le localStorage → on la télécharge
+        if (!storedData) {
+            const dbIndex =
+                source === "vanilla"
+                    ? DBManager.indexes.vanilla.find(db => db.id === bdd_id)
+                    : DBManager.indexes.external.find(db => db.id === bdd_id);
+
+            console.log(`${source}:${bdd_id}`)
+            
+            if (!dbIndex) {
+                throw new Error(`Aucune base trouvée avec l'id "${storedKey}" dans les indexes.`);
+            }
+
+            await DBManager.download(dbIndex); // Attend le téléchargement
+            refreshDBList();
+
+            // On relit le localStorage après téléchargement
+            storedData = localStorage.getItem(storedKey);
         }
 
-        const externalDB = game.external_db.find(db => db.id === gamemode);
-        if (externalDB) {
-            game.pending_db = game.pending_db.concat(externalDB.db);
-            return;
+        // Si la base est disponible dans le localStorage → on la charge dans pending_db
+        if (storedData) {
+            const db = JSON.parse(storedData);
+            game.pending_db = game.pending_db.concat(db);
+            console.log(`Base "${db.pack_name}" (${bdd_id}) chargée depuis le localStorage.`);
         }
-        
-        createScriptElement("./src/js/db/" + key + ".js");
     } catch (error) {
         if (error instanceof TypeError) {
-            console.log(error.message);
+            console.warn("Erreur de type :", error.message);
         } else {
             throw error;
         }
@@ -625,143 +746,221 @@ function testStoredDatabase(gamemode, lang) {
 }
 
 function startGame() {
-    if (game.gamemode == "password") {
-        initPassword();
-        return;
-    }
-    
-    convertPendingDBTaffy();
 
-    if (game.gamemode == "weakest_link") { 
-        initWeakestLink()
-    } else {
-        manageNavDisplay("navigation_arrows", true)
-    }
-    nextSentence();
+    game.started = true;
 
-    manageIngameOptionDisplay(false, "start", "none");
+    manageNavDisplay("navigation_arrows", true);
+
+    displayIngameOptionPanel(false);
+    manageIngameOptionDisplay({option: "start", display: false});
+
+    //Copie des données de game.pending_db vers game.current_gamemode.bdd_data
+    game.current_gamemode.bdd_data = [];
+    game.current_gamemode.bdd_data.push(...game.pending_db.map(e => ({...e})));
+
+    // Conversion vers TAFFY
+    const bdd = game.current_gamemode.bdd_data;
+    for (let i in bdd) {
+        bdd[i].db = TAFFY(bdd[i].db);
+        console.log(bdd[i])
+    }
+
+    // Affichages des infos BDD dans la ingame_bottombar
+    createIngameDatabaseIndicator()
+
+    // Longueur maximale possible
+    game.current_gamemode.database_length = calcCombineDatabasesPossibleLenght();
+
+    incrementCycleID();
 }
 
 function exitGame() {
-    if (game.gamemode == "weakest_link") { stopsound("weakest_link_amb_60") }
-    if (game.weakest_link.weakestLinkTimer != undefined) { clearInterval(game.weakest_link.weakestLinkTimer) }
+    if (game.gamemode == "weakest_link") {
+        stopsound("weakest_link_amb_60")
+
+        // parce qu'il ne comprend pas que le timer puisse ne pas exister mais aussi "ne pas exister"...
+        if (weakestLinkTimer != undefined || typeof weakestLinkTimer != "undefined") { clearInterval(weakestLinkTimer) }
+    }
 
     setBackgroundStyleColor("black");
-    hidePicoloVirusTitle()
+    document.getElementById("text_ingame_title").style.display = "none";
+    document.getElementById("text_ingame_title").innerHTML = "";
+
     displaySentence("", undefined); // reset HTML sentence display
 
-    updateGameCycleIndicator();                                  // reset cycle count
+    // Affichages des infos BDD dans la ingame_bottombar
+    document.getElementById("ingame_bdd_infos").innerHTML = "";
+
+    updateGameCycleIndicator(); // reset cycle count
     resetVariables();
+    game.pending_db = [];
+    game.current_gamemode = {};
 
-    manageNavigationButton("previous", false)
-    manageNavigationButton("game_cyle", false)
-    manageNavigationButton("next", false)
+    picolitoNavigationButtonsDisplay("previous", false)
+    picolitoNavigationButtonsDisplay("game_cyle", false)
+    picolitoNavigationButtonsDisplay("next", false)
 
-    manageIngameOptionDisplay(false, 'start', 'none')
-    manageIngameOptionDisplay(false, 'replay', 'none')
-    manageIngameOptionDisplay(false, 'weakest_link', 'none')
-    manageIngameOptionDisplay(false, 'weakest_link_vote', 'none')
-    manageIngameOptionDisplay(false, 'weakest_link_next_vote', 'none')
-    manageIngameOptionDisplay(false, 'weakest_link_vote_end', 'none')
-    manageIngameOptionDisplay(false, 'weakest_link_rule', 'none')
-    manageIngameOptionDisplay(false, "password", 'none');
-    manageIngameOptionDisplay(false, "password_rule", 'none');
-    manageIngameOptionDisplay(false, "password_recap", 'none');
-    
+    displayIngameOptionPanel(false)
+    manageIngameOptionDisplay({option: "start", display: false});
+    manageIngameOptionDisplay({option: "replay", display: false});
+
     manageNavDisplay("navigation_arrows", true);
     manageNavDisplay("players", true);
     manageNavDisplay("restart",false);
 
     displayPage('menu');
 
-    ingame_answer.innerHTML = "";
-    text_ingame_title.innerHTML = "";
+    game.mix_gamemode_list_picolo = [];
+    document.getElementById("button_update_mix_gamemode_list").disabled = true;
+    document.getElementById("gamemode_mix_picolo").querySelectorAll("input[type=checkbox]").forEach(checkbox => checkbox.checked = false);
+    document.getElementById("gamemode_mix_je_n_ai_jamais").querySelectorAll("input[type=checkbox]").forEach(checkbox => checkbox.checked = false);
+
     game.started = false;
+}
+
+function calcCombineDatabasesPossibleLenght() {
+    const bdd_data = game.current_gamemode.bdd_data
+    let length = 0;
+
+    for (let i in bdd_data) { length += bdd_data[i].db().count(); }
+    
+    console.warn(`Cette fonction retourne bêtement la longueur de toutes les bases séléctionnées. (${length}) (à prévoire de prendre en compte les limite de certains types ex: virus, cul sec, suites de phrases)`);
+    return length;
+}
+
+function createIngameDatabaseIndicator() {
+    const bdd_data = game.current_gamemode.bdd_data;
+    const bdd_infos_html = document.getElementById("ingame_bdd_infos");
+
+    console.log(bdd_data)
+
+    bdd_infos_html.innerHTML = "";
+    for (let i in bdd_data) {
+        const bdd = bdd_data[i];
+        var function_used = "";
+
+        if (bdd.gamemode == "picolito") {function_used = "generatePicoloSentences"}
+        if (bdd.gamemode == "je_n_ai_jamais") {function_used = "generateJeNaiJamaisSentences"}
+
+        bdd_infos_html.innerHTML += `<span class="badge bg-dark" id="ingame_bdd_infos_bdd_${bdd.id}" onclick="${function_used}('${bdd.id}')">${bdd.pack_name}</span>`;
+    }
+}
+
+function selectIngameDatabaseIndicator(bdd_id) {
+    const bdd_data = game.current_gamemode.bdd_data;
+    for (let i in bdd_data) {
+        const bdd = bdd_data[i];
+        const element = document.getElementById(`ingame_bdd_infos_bdd_${bdd.id}`);
+        if (bdd.id == bdd_id) {
+            element.classList.add("border");
+        } else {
+            element.classList.remove("border");
+        }
+    }
 }
 
 function restartGame() {
     exitGame();
-    selectGamemode(game.gamemode, true);
+    selectGame(
+        {
+            gamemode_type : game.current_gamemode.gamemode_type,
+            bdd_data : game.current_gamemode.bdd_data,
+            restart : true
+        }
+    );
 }
 
-function selectGamemode(selected_gamemode, direct_launch) {
-    game.gamemode = selected_gamemode;
-    if (selected_gamemode == "weakest_link" && game.player_list.length <= 3) {
-        alert(global.current_language_strings.weakest_link_minimum_requierement);
-        return;
-    }
-    switch (selected_gamemode) {
-        case "default": game.gamemode_type = "picolo"; break;
-        case "silly": game.gamemode_type = "picolo"; break;
-        case "bar": game.gamemode_type = "picolo"; break;
-        case "hot": game.gamemode_type = "picolo"; break;
-        case "war": game.gamemode_type = "picolo"; break;
-        case "never_popular": game.gamemode_type = "never_done"; break;
-        case "never_hot": game.gamemode_type = "never_done"; break;
-        case "never_party": game.gamemode_type = "never_done"; break;
-        case "weakest_link": game.gamemode_type = "weakest_link"; break;
-        case "password": game.gamemode_type = "password"; break;
-        case "tenzi": game.gamemode_type = "tenzi"; break;
-        case "mix": game.gamemode_type = "mix"; break;
-    }
-    console.log("gamemode_type", game.gamemode_type)
-    if (selected_gamemode == "mix") {
-        setMixGamemodeDatabase();
-    }
+function selectGame({gamemode_type, bdd_data=[], restart=false}) {
+    // Appelé depuis le menu avec selectGame({ gamemode_type:gamemode_type, bdd_data: [ {bdd_id:bdd_id, bdd_source:bdd_source}] })
+    game.current_gamemode = {
+        gamemode_type: gamemode_type,
+        bdd_data: [bdd_data],
+        restart: restart
+    };
     
-    initGame(direct_launch);
+    switch (gamemode_type) {
+        case "picolo": initPicolo(); break;
+        case "je_n_ai_jamais": initJeNaiJamais(); break;
+        case "mix": initMix(); break;
+        case "weakest_link":
+            if (game.player_list.length >= 2) {
+                initWeakestLink();
+            } else {
+                alert(global.current_language_strings.weakest_link_minimum_player_requierement)
+                return;
+            }
+            break;
+    }
+
+    if (restart == true) {
+        startGame();
+    }
+
+    // if (game.gamemode == "war") {
+    //     if (game.player_list.length >= 2) {
+    //         updateTeamSelectionTable();
+    //     }
+    // }
 }
 
-function selectExternalGamemode(gamemode_type, base_id) {
-    game.gamemode_type = gamemode_type;
-    game.gamemode = base_id;
-
-    initGame();
+function selectMixGamemode() {
+    // initMix();
+    selectGame({gamemode_type:"mix"})
+    return;
 }
 
-function setMixGamemodeDatabase() {
-    // Pour toutes les checkbox cochées, mise en tableau des valeurs correspondantes 
-    var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
-    var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
-
-    var checkboxes_neverdone_external = document.getElementById("custom_mix_gamemode_never_done_section_external_db").querySelectorAll('input[type=checkbox]:checked')
-
-    game.mix_gamemode_list_picolo = [];
-    game.mix_gamemode_list_never_done = [];
-
-    for (var i = 0; i < checkboxes_picolo.length; i++) {
-        game.mix_gamemode_list_picolo.push(checkboxes_picolo[i].value)
-    }
-    for (var i = 0; i < checkboxes_neverdone.length; i++) {
-        game.mix_gamemode_list_never_done.push(checkboxes_neverdone[i].value)
-    }
-    for (var i = 0; i < checkboxes_neverdone_external.length; i++) {
-        game.mix_gamemode_list_never_done.push(checkboxes_neverdone_external[i].value)
-    }
-}
-
-function updateMixGamemodeForm() {
-    var checkboxes_picolo = document.getElementById("custom_mix_gamemode_picolo_section").querySelectorAll('input[type=checkbox]:checked')
-    var checkboxes_neverdone = document.getElementById("custom_mix_gamemode_never_done_section").querySelectorAll('input[type=checkbox]:checked')
-
-    var checkboxes_neverdone_external = document.getElementById("custom_mix_gamemode_never_done_section_external_db").querySelectorAll('input[type=checkbox]:checked')
-
-    if ((checkboxes_picolo.length + checkboxes_neverdone.length + checkboxes_neverdone_external.length) == 0) {
-        document.getElementById("button_update_mix_gamemode_list").disabled = true;
-        document.getElementById("button_update_mix_gamemode_list").className = "btn btn-secondary";
+function updateSelectedMixGamemode(element) {
+    console.log(element)
+    
+    // ajout d'element dans game.mix_gamemode_list_picolo ou suppression en fonction de la checkbox (checked)
+    if (element.checked == true) {
+        game.mix_gamemode_list_picolo.push({ bdd_id: element.bdd_id, bdd_source: element.bdd_source });
+        console.log(`Ajout de ${element.bdd_id} (${element.gamemode_type}) dans ${game.mix_gamemode_list_picolo}`)
     } else {
+        let index = game.mix_gamemode_list_picolo.findIndex(e => e.bdd_id === element.bdd_id);
+        game.mix_gamemode_list_picolo.splice(index, 1);
+        console.log(`Suppression de ${element.bdd_id} (${element.gamemode_type}) dans ${game.mix_gamemode_list_picolo}`)
+    }
+
+    // ajout d'element dans game.mix_gamemode_list_picolo ou rien s'il est déjà présent
+
+
+    // if (element.gamemode_type == "picolo") {
+    //     console.log(element.bdd_id, element.gamemode_type + " dans " + game.mix_gamemode_list_picolo)
+        
+    //     // ajout d'element dans game.mix_gamemode_list_picolo ou rien s'il est déjà présent
+    //     var index = game.mix_gamemode_list_picolo.findIndex(e => e.bdd_id === element.bdd_id);
+    //     if (index === -1) {
+    //         game.mix_gamemode_list_picolo.push({ bdd_id: element.bdd_id, bdd_source: element.bdd_source });
+    //     } else {
+    //         game.mix_gamemode_list_picolo.splice(index, 1);
+    //     }
+    // }
+    // if (element.gamemode_type == "je_n_ai_jamais") {        
+    //     // ajout d'element dans game.mix_gamemode_list_je_n_ai_jamais ou rien s'il est déjà présent
+    //     var index = game.mix_gamemode_list_je_n_ai_jamais.findIndex(e => e.bdd_id === element.bdd_id);
+    //     if (index === -1) {
+    //         game.mix_gamemode_list_je_n_ai_jamais.push({ bdd_id: element.bdd_id, bdd_source: element.bdd_source });
+    //     } else {
+    //         game.mix_gamemode_list_je_n_ai_jamais.splice(index, 1);
+    //     }
+    // }
+
+    console.log("mix_gamemode_list_picolo", game.mix_gamemode_list_picolo)
+
+    if (game.mix_gamemode_list_picolo.length > 0) {
         document.getElementById("button_update_mix_gamemode_list").disabled = false;
-        document.getElementById("button_update_mix_gamemode_list").className = "btn btn-primary";
+    } else {
+        document.getElementById("button_update_mix_gamemode_list").disabled = true;
     }
 }
 
-function manageNavigationButton(button, display) {
-    if (button == "previous") {
-        var selected_button = game_cycle_previous_button;
-    } else if (button == "next") {
-        var selected_button = game_cycle_next_button;
-    } else if (button == "game_cyle") {
-        var selected_button = game_cycle_count;
+function picolitoNavigationButtonsDisplay(button, display=false) {
+    switch (button) {
+        case "previous" : var selected_button = document.getElementById("game_cycle_previous_button"); break;
+        case "next" : var selected_button = document.getElementById("game_cycle_next_button"); break;
+        case "game_cyle" : var selected_button = document.getElementById("game_cycle_count"); break;
+        default : break;
     }
 
     if (display == true) {
@@ -771,102 +970,109 @@ function manageNavigationButton(button, display) {
     }
 }
 
-function manageIngameOptionDisplay(display_option_panel, option_identifier, option_display_value) {
-    var option_status = ingame_option.style.display
-
-    if (display_option_panel == true) {
-        ingame_option.style.display = "flex";
+function displayIngameOptionPanel(value) {
+    const panel = document.getElementById("ingame_option")
+    if (value == true) {
+        panel.style.display = "flex";
     } else {
-        ingame_option.style.display = "none";
-    }
-
-    if (option_identifier != undefined && option_display_value != undefined) {
-        switch(option_identifier) {
-            case "start": var selected_option = start_ingame_option; break;
-            case "replay": var selected_option = replay_ingame_option; break;
-            case "weakest_link": var selected_option = ingame_weakest_link; break;
-            case "weakest_link_vote": var selected_option = weakest_link_vote_ingame_option; break;
-            case "weakest_link_next_vote": var selected_option = weakest_link_next_vote_ingame_option; break;
-            case "weakest_link_vote_end": var selected_option = weakest_link_vote_end_ingame_option; break;
-            case "weakest_link_rule": var selected_option = weakest_link_rule; break;
-            case "password": var selected_option = ingame_password; break;
-            case "password_rule": var selected_option = password_rule; break;
-            case "password_recap": var selected_option = password_recap; break;
-            default:
-                break;
-        }
-        selected_option.style.display = option_display_value;
+        panel.style.display = "none";
     }
 }
 
-function manageNavDisplay(navigation_option, display) {
+function manageIngameOptionDisplay({ option = null, display = false }) {    
+    switch (option) {
+        case "start" : var selected_option = document.getElementById("start_ingame_option"); break;
+        case "replay" : var selected_option = document.getElementById("replay_ingame_option"); break;
+        default: break;
+    }
+
+    if (display == true) {
+        selected_option.style.display = "block";
+    } else {
+        selected_option.style.display = "none";
+    }
+}
+
+function manageNavDisplay(navigation_option=null, display=false) {
     switch(navigation_option) {
-        case "navigation_arrows":
-            var selected_navigation_option = navigation_arrows;
-            break;
-        case "players":
-            var selected_navigation_option = text_game_player_menu;
-            break;
-        case "quit":
-            var selected_navigation_option = text_game_quit_topbar;
-            break;
-        case "restart":
-            var selected_navigation_option = text_game_restart_topbar;
-            break;
-        default:
-            break;
+        case "navigation_arrows": var selected_navigation_option = document.getElementById("navigation_arrows"); break;
+        case "players": var selected_navigation_option = document.getElementById("text_game_player_menu"); break;
+        case "quit": var selected_navigation_option = document.getElementById("text_game_quit_topbar"); break;
+        case "restart": var selected_navigation_option = document.getElementById("text_game_restart_topbar"); break;
+        default: break;
     }
 
     if (display == true) {
         selected_navigation_option.style.display = "inline-flex";
         selected_navigation_option.style.justifycontent = "center";
-    } else if (display == false) {
+    } else {
         selected_navigation_option.style.display = "none";
     }
 }
 
 function updateGameCycleIndicator() {
-    if (game.pending_db.length < game.sentence_amount) {
-        var max_sentences = game.pending_db.length
+    const database_length = game.current_gamemode.database_length;
+
+    if (database_length < game.max_sentence_amount) {
+        var max_sentences = database_length;
     } else {
-        var max_sentences = game.sentence_amount;
+        var max_sentences = game.max_sentence_amount;
     }
     //previous
     if (game.cycle_id > 0) {
-        manageNavigationButton("previous", true)
+        picolitoNavigationButtonsDisplay("previous", true);
     } else {
-        manageNavigationButton("previous", false)
+        picolitoNavigationButtonsDisplay("previous", false);
     }
     //game count
     if (game.cycle_id >= 0) {
-        manageNavigationButton("game_cyle", true)
-        document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + max_sentences;
+        picolitoNavigationButtonsDisplay("game_cyle", true)
+        if (game.cycle_id >= max_sentences) {
+            document.getElementById("game_cycle_count").innerHTML = global.current_language_strings.end;
+        } else {
+            document.getElementById("game_cycle_count").innerHTML = (game.cycle_id + 1) + "/" + max_sentences;
+        }
     } else {
-        manageNavigationButton("game_cyle", false)
+        picolitoNavigationButtonsDisplay("game_cyle", false)
         document.getElementById("game_cycle_count").innerHTML = "-";
     }
     //next
-    if (game.cycle_id < max_sentences - 1 && game.cycle_id >= 0) {
-        manageNavigationButton("next", true)
+    if (game.cycle_id < max_sentences && game.cycle_id >= 0) {
+        picolitoNavigationButtonsDisplay("next", true);
     } else {
-        manageNavigationButton("next", false)
+        picolitoNavigationButtonsDisplay("next", false);
     }
     //start
     if (game.cycle_id < 0) {
-        manageIngameOptionDisplay(true, "start", "block")
+        displayIngameOptionPanel(true)
+        manageIngameOptionDisplay({option: "start", display: true});
     } else {
-        manageIngameOptionDisplay(false, "start", "none")
+        displayIngameOptionPanel(false)
+        manageIngameOptionDisplay({option: "start", display: false});
     }
     // retry
-    if (game.cycle_id == max_sentences - 1) {
-        manageIngameOptionDisplay(true, "replay", "block")
+    if (game.cycle_id >= max_sentences) {
+        displayIngameOptionPanel(true)
+        manageIngameOptionDisplay({option: "replay", display: true});
     } else {
-        manageIngameOptionDisplay(false, "replay", "none")
+        displayIngameOptionPanel(false)
+        manageIngameOptionDisplay({option: "replay", display: false});
+
     }
 }
 
-function addHistoryItem(posOffset, database_id, original_sentence, sentence_keys, formatted_sentence, key, type, color, pack_name, answer) {
-
+function addHistoryItem({
+    posOffset=undefined,
+    database_id=undefined,
+    original_sentence=undefined,
+    sentence_keys=undefined,
+    formatted_sentence=undefined,
+    key=undefined,
+    type=undefined,
+    color=undefined,
+    pack_name=undefined,
+}
+) {
     var offset_sentence_id = (game.cycle_id) + posOffset;
     if (posOffset > 0) {
         for (var i = 0; i < posOffset; i++) {
@@ -886,8 +1092,8 @@ function addHistoryItem(posOffset, database_id, original_sentence, sentence_keys
         type: type,
         color : color,
         pack_name : pack_name,
-        answer : answer
     }
+
     if (game.sentence_history[game.cycle_id] == undefined) {
         game.sentence_history.push(sentence_history_item);
     } else if (game.sentence_history[offset_sentence_id].formatted_sentence == "none") {
@@ -907,55 +1113,158 @@ function randomSip() {
 
 function textReplacer(text) {
     const original_sentence = text;
-    const keys = [];
     let formatted_sentence = text;
     var is_modified = false;
 
+    // Variables des balises "indicateurs"
+    let html_span_sip_class = "";
+    let html_span_player_class = "";
+    let html_span_team_class = "";
+
     if (game.display_color_indicator == true) {
-        var html_span_sip = "<span class=\" span_highlight span_sip\">";
-        var html_span_player = "<span class=\" span_highlight span_player\">";
-        var html_span_team = "<span class=\" span_highlight span_team\">";
-        var html_span_end = "</span>";
-    } else {
-        var html_span_sip = "";
-        var html_span_player = "";
-        var html_span_team = "";
-        var html_span_end = "";
+        html_span_sip_class = "span_highlight span_sip";
+        html_span_player_class = "span_highlight span_player";
+        html_span_team_class = "span_highlight span_team";
     }
 
     // retrieve all player names
-    var player_name_list = [];
-    for (var i = 0; i < game.player_list.length; i++) { player_name_list.push(game.player_list[i].player_name) }
+    let player_name_list = game.player_list.map(player => player.player_name);
 
-    for (var i = 0; i < formatted_sentence.length; i++) {
-        if (formatted_sentence.charAt(i) == "$") {
-            const sip = randomSip();
-            formatted_sentence = replaceAt(formatted_sentence, i, html_span_sip + sip + html_span_end, 0);
-            keys.push({ type: 'sip', value: sip });
-            is_modified = true;
+    function formatSentence(
+            template,
+            player_name_list,
+            teams,
+            quotesIndicator
+        ) {
+        const keys = [];
+        let formatted = template;
+
+        // Copie pour éviter de modifier l'original
+        const availablePlayers = [...player_name_list];
+
+        if (formatted == undefined) {
+            console.error("La phrase n'est pas définie. (formatted)")
+            return;
         }
-        // change %s by random player
-        if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "s") {
-            var random_player_index = Math.floor(Math.random() * player_name_list.length);
-            var random_player = player_name_list[random_player_index];
-            player_name_list.splice(random_player_index, 1);
-            formatted_sentence = replaceAt(formatted_sentence, i, html_span_player + random_player + html_span_end, 1);
-            keys.push({ type: 'player', value: random_player });
-            is_modified = true;
+
+        // 1️⃣ Remplacement des tokens dynamiques avec suivi des clés
+        formatted = formatted.replace(/%s|\$|%t/g, token => {
+            let value; // valeur brute
+            let html;  // valeur HTML injectée
+
+            switch (token) {
+                case '%s': {
+                    // Sélection aléatoire d'un joueur et suppression de la liste
+                    const index = Math.floor(Math.random() * availablePlayers.length);
+                    value = availablePlayers.splice(index, 1)[0] ?? '[joueur]';
+                    html = `<span class='test ${html_span_player_class}'>${value}</span>`;
+
+                    // Enregistrement pour modification ultérieure 
+                    keys.push({ type: 'player', value });
+                    is_modified = true;
+                    return html;
+                }
+
+                case '$': {
+                    value = randomSip();
+                    html = `<span class='${html_span_sip_class}'>${value}</span>`;
+                    keys.push({ type: 'sip', value });
+                    is_modified = true;
+                    return html;
+                }
+
+                case '%t': {
+                    value = Math.random() < 0.5 ? teams.team_1 : teams.team_2;
+                    html = `<span class='${html_span_team_class}'>${value}</span>`;
+                    keys.push({ type: 'team', value });
+                    is_modified = true;
+                    return html;
+                }
+
+                default:
+                    return token;
+            }
+        });
+
+        // 2️⃣ Gestion des guillemets
+        const quoteStyles = {
+            italic: 'fst-italic',
+            underline: 'text-decoration-underline',
+            highlight: 'bg-yellow text-black',
+            white_on_black: 'bg-black text-light',
+            black_on_white: 'bg-light text-black'
+        };
+
+        if (quotesIndicator !== 'none' && quoteStyles[quotesIndicator]) {
+            formatted = formatted.replace(
+            /"([^"]+)"/g,
+            `<span class="quotes_highlight ${quoteStyles[quotesIndicator]}">$1</span>`
+            );
         }
-        // change %t by team
-        if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "t") {
-            const team = Math.random() < 0.5 ? game.team_1 : game.team_2;
-            formatted_sentence = replaceAt(formatted_sentence, i, html_span_team + team + html_span_end, 1);
-            keys.push({ type: 'team', value: team });
-            is_modified = true;
-        }
+
+        return {
+            formatted_sentence: formatted,
+            keys
+        };
     }
+    
+    // switch(game.quotes_indicator) {
+    //     case "none" :
+    //     break;
+    //     case "italic" :
+    //         formatted_sentence = formatted_sentence.replace(/"([^"]+)"/g, '<span class="quotes_highlight fst-italic">$1</span>');
+    //     break;
+    //     case "underline" :
+    //         formatted_sentence = formatted_sentence.replace(/"([^"]+)"/g, '<span class="quotes_highlight text-decoration-underline">$1</span>');
+    //     break;
+    //     case "highlight" :
+    //         formatted_sentence = formatted_sentence.replace(/"([^"]+)"/g, '<span class="quotes_highlight bg-yellow text-black">$1</span>');
+    //     break;
+    //     case "white_on_black" :
+    //         formatted_sentence = formatted_sentence.replace(/"([^"]+)"/g, '<span class="quotes_highlight bg-black text-light">$1</span>');
+    //     break;
+    //     case "black_on_white" :
+    //         formatted_sentence = formatted_sentence.replace(/"([^"]+)"/g, '<span class="quotes_highlight bg-light text-black">$1</span>');
+    //     break;
+    // }
+
+
+    // for (var i = 0; i < formatted_sentence.length; i++) {
+    //     if (formatted_sentence.charAt(i) == "$") {
+    //         const sip = randomSip();
+    //         formatted_sentence = replaceAt(formatted_sentence, i, html_span_sip + sip + html_span_end, 0);
+    //         keys.push({ type: 'sip', value: sip });
+    //         is_modified = true;
+    //     }
+    //     // change %s by random player
+    //     if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "s") {
+    //         var random_player_index = Math.floor(Math.random() * player_name_list.length);
+    //         var random_player = player_name_list[random_player_index];
+    //         player_name_list.splice(random_player_index, 1);
+    //         formatted_sentence = replaceAt(formatted_sentence, i, html_span_player + random_player + html_span_end, 1);
+    //         keys.push({ type: 'player', value: random_player });
+    //         is_modified = true;
+    //     }
+    //     // change %t by team
+    //     if (formatted_sentence.charAt(i) == "%" && formatted_sentence.charAt(i + 1) == "t") {
+    //         const team = Math.random() < 0.5 ? game.team_1 : game.team_2;
+    //         formatted_sentence = replaceAt(formatted_sentence, i, html_span_team + team + html_span_end, 1);
+    //         keys.push({ type: 'team', value: team });
+    //         is_modified = true;
+    //     }
+    // }
+    
+    const result = formatSentence(
+        formatted_sentence,
+        player_name_list,
+        { team_1: 'TEAM1', team_2: 'TEAM2' },
+        game.quotes_indicator
+    );
 
     return {
         original_sentence: original_sentence,
-        keys: keys,
-        formatted_sentence: formatted_sentence,
+        keys: result.keys,
+        formatted_sentence: result.formatted_sentence,
         is_modified: is_modified
     };
 }
@@ -988,8 +1297,27 @@ function applyTextModifiers(original_sentence, keys) {
                 break;
         }
     });
-
+    
     return formatted_sentence;
+}
+
+function changeClearInformationSettings(value) {
+    game.display_color_indicator = value;
+    document.getElementById("input_color_display_settings").checked = value;
+
+    settingsTextPreview()
+}
+
+function changeQuotesVisualization(value) {
+    game.quotes_indicator = value;
+
+    settingsTextPreview()
+}
+
+function settingsTextPreview() {
+    const text = `Qu'elles sont "jolies" les $ petites fleurs de %s`;
+    const formatted_text = textReplacer(text).formatted_sentence
+    document.getElementById("text_settings_quotes_visualization_playground").innerHTML = formatted_text;
 }
 
 function displaySentenceList() {
@@ -1001,62 +1329,21 @@ function displaySentenceList() {
         var color = game.sentence_history[i].color;
         var sentence = game.sentence_history[i].formatted_sentence;
 
-        if (sentence != "none") {
-            var sentence_index = parseInt(i)+1;
-            html_element += `<li class="list-group-item sentence-list border-color-${color} text-color-${color}" onclick="goToSpecificSentence(${i})">${sentence_index}. ${sentence}</li>`;
-        } else {
-            break;
-        }
+        if (sentence == "none") { break; }
+
+        html_element += `
+            <tr onclick="goToSpecificSentence(${i})" tabindex="0">
+                <th scope="row" >${i + 1}</th>
+                <td class="sentence-list-item sentence-list-${color}">${sentence}</td>
+            </tr>
+        `;
     }
     modal_sentence_list_content.innerHTML = html_element;
-}
-
-function displayTenziGame(force_ingame) {
-    if (force_ingame == true) {
-        document.getElementById("tenzi_game").style.display = "block";
-    } else {
-        document.getElementById("tenzi_game").style.display = "none";
-    }
 }
 
 function displaySipModifierModal() {
     global.modal_sentence_modifier.show();
     document.getElementById("modal_sentence_modifier_sentence").innerHTML = game.sentence_history[game.cycle_id].formatted_sentence;
-}
-
-function manageMenuTab(element) {
-    const menu_tab_nav = document.getElementById("menu_tab_nav")
-    const value = element.getAttribute("value")
-    for (var i in menu_tab_nav.children) {
-        if (menu_tab_nav.children[i].children) {
-            menu_tab_nav.children[i].children[0].classList.remove("active")
-        }
-    }
-
-    $('#gamemode_collapse_main').collapse('hide')
-    $('#gamemode_collapse_picolo').collapse('hide')
-    $('#gamemode_collapse_never').collapse('hide')
-    $('#gamemode_collapse_other').collapse('hide')
-
-    switch (value) {
-        case "main":
-            document.getElementById("nav_menu_link_main").classList.add("active")
-            $('#gamemode_collapse_main').collapse('show')
-        break;
-        case "picolo":
-            document.getElementById("nav_menu_link_picolo").classList.add("active")
-            $('#gamemode_collapse_picolo').collapse('show')
-        break;
-        case "never":
-            document.getElementById("nav_menu_link_never").classList.add("active")
-            $('#gamemode_collapse_never').collapse('show')
-        break;
-        case "other":
-            document.getElementById("nav_menu_link_other").classList.add("active")
-            $('#gamemode_collapse_other').collapse('show')
-        break;
-    }    
-    return;
 }
 
 function displayweakestLinkDisplayVote() {
@@ -1067,10 +1354,10 @@ window.addEventListener("keydown", function(event) {
     if (game.started == true) {
         switch (event.key) {
             case "ArrowLeft":
-                previousSentence();
+                decrementCycleID();
                 break;
             case "ArrowRight":
-                nextSentence();
+                incrementCycleID();
                 break;
         }
     }
@@ -1121,7 +1408,7 @@ function playsound(sound) {
     if (global.audio_enabled == true) {
         switch (sound) {
             case "weakest_link_amb_60":
-                global.audio.weakest_link_amb_60.currentTime = 0;
+                // global.audio.weakest_link_amb_60.currentTime = 0;
                 global.audio.weakest_link_amb_60.play(); 
             break; 
             case "weakest_link_amb_end":
@@ -1164,318 +1451,788 @@ function manageHergeBTChoice(cookie_choice, remind_me_later) {
     getCookie("settings")
 }
 
-function password_generateAmountSelector() {
-    selector = document.getElementById("password_word_amount_selector")
-    selector.innerHTML = ""
-
-    for (var i = game.password.word_to_find_min; i <= game.password.word_to_find_max; i++) {
-        selector.innerHTML += `<input id="password_word_amount_selector_radio_${i}" name="password_word_amount_selector_radio" value="${i}" class="radio isHidden" name="password_word_amount_selector_radio" type="radio">`
-        selector.innerHTML += `<label for="password_word_amount_selector_radio_${i}" class="password_label">${i}</label>`
-    }   
-
-    document.getElementById("password_word_amount_selector_radio_" + select_settings_password_amount.value).checked = true;
-}
-
-function createGamemodeDBindicator() {
-    // Ici on peuple l'indicateur de base de donnée dans le mode de jeu mix.
-    // Les deux bases sont séparées pour les choisir 1 fois sur deux 
-    // Boucle pour ajouer un bouton pour chacune.
-    ingame_gamemode_information_mix_indicator_db.innerHTML = ""
-
-    for (var i in game.mix_gamemode_list_picolo) {
-        var id = game.mix_gamemode_list_picolo[i];
-        var display_name = game.mix_gamemode_list_picolo[i];
-
-        var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
-        document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
-    }
-    for (var i in game.mix_gamemode_list_never_done) {
-        var id = game.mix_gamemode_list_never_done[i];
-        var display_name = game.mix_gamemode_list_never_done[i];
-
-        var element = "<button type=\"button\" value=\"" + id + "\"class=\"btn\" id=\"ingame_gamemode_information_mix_indicator_" + id + "\" disabled>" + display_name +"</button>"
-        document.getElementById("ingame_gamemode_information_mix_indicator_db").innerHTML += element;
-    }
-}
-
-function selectGamemodeDBIndicator(id) {
-    for (var i=0; i<ingame_gamemode_information_mix_indicator_db.children.length; i++) {
-        document.getElementById("ingame_gamemode_information_mix_indicator_db").children[i].classList.remove("mix-btn-indicator")
-        console.log(ingame_gamemode_information_mix_indicator_db.children[i].value)
-        if (id == ingame_gamemode_information_mix_indicator_db.children[i].value) {
-            var selected_id_selected = i
-            // On selection la valeur de l'enfant n° X pour avoir le nom de la base de donnée
-        }
-    }
-
-    // Une fois trouver sa position dans le nombre de base de données, on le selectionne    
-    document.getElementById("ingame_gamemode_information_mix_indicator_db").children[selected_id_selected].classList.add("mix-btn-indicator")
-}
-
 function DEBUG_carthage(debug) {
     if (debug == true) {
         game.debug = true;
-        global.modal_player_menu.hide()
-        document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
-        document.getElementById("debug_tools_placeholder").style.display = "block";
         alert("Bienvenue à Carthage.");
+
+        document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
+        // document.getElementById("debug_tools_placeholder").style.display = "block";
+        document.getElementById("debug_button_add_player").classList.remove("d-none");
+        document.getElementById("debug_button_quit_debug").classList.remove("d-none");
+
+        document.getElementById("ingame_bdd_infos").classList.remove("d-none");
+        
+        // Section 
+        document.getElementById("db_manager_modal_experimental_settings").classList.remove("d-none");
     } else {
         game.debug = false;
-        global.modal_player_menu.hide()
-        document.getElementById("gamename_menu").innerHTML = "PICOLITO";
-        document.getElementById("debug_tools_placeholder").style.display = "none";
         alert("Retour vers le passé.");
+
+        global.modal_player_menu.hide()
+
+        document.getElementById("gamename_menu").innerHTML = "PICOLITO";
+        // document.getElementById("debug_tools_placeholder").style.display = "none";
+        document.getElementById("debug_button_add_player").classList.add("d-none");
+        document.getElementById("debug_button_quit_debug").classList.add("d-none");
+
+        document.getElementById("ingame_bdd_infos").classList.add("d-none");
+        
+        document.getElementById("db_manager_modal_experimental_settings").classList.add("d-none");
     }
 }
 
-function DEBUG_weakestlink_add5sec() {
-    if (global.debug == true) {
-        var current_time_player = global.audio.weakest_link_amb_60.currentTime;
-        var current_time = game.weakest_link.current_time;
-    
-        if ((current_time - 5) >= 5) {
-            global.audio.weakest_link_amb_60.currentTime = current_time_player + 5;
-            game.weakest_link.current_time = current_time - 5;
+// ===================== DBManager =====================
+const DBManager = {
+    indexes: {
+        vanilla: [],
+        external: []
+    },
+
+    loaded: [], // Bases chargées en mémoire (optionnel)
+
+    // ---- Initialisation ----
+    async init() {
+        // Charger les index vanilla et externes
+        this.indexes.vanilla = game.vanilla_db_index || [];
+        this.indexes.external = JSON.parse(localStorage.getItem("db:index:external") || "[]");
+
+        // Vérifier les URLs pour toutes les bases (en parallèle)
+        const all = [
+            ...this.indexes.vanilla.map(db => ({ ...db, source: "vanilla" })),
+            ...this.indexes.external.map(db => ({ ...db, source: "external" }))
+        ];
+
+        const checked = await Promise.all(all.map(db => this.checkAvailability(db)));
+
+        // Répartir les résultats dans les index (toujours toutes les bases)
+        this.indexes.vanilla = checked.filter(d => d.source === "vanilla");
+        this.indexes.external = checked.filter(d => d.source === "external");
+
+        return checked;
+    },
+
+    // ---- Fusionner toutes les DB ----
+    getAll() {
+        if (game.only_display_current_language_databases) {
+            return [
+                ...this.indexes.vanilla.filter(db => db.language === global.current_language),
+                ...this.indexes.external.filter(db => db.language === global.current_language)
+            ].map(db => ({ ...db, source: db.source }));
+        } else {
+            return [
+                ...this.indexes.vanilla,
+                ...this.indexes.external
+            ].map(db => ({ ...db, source: db.source }));
         }
+    },
+
+    // ---- Vérifier la disponibilité d'une base ----
+    async checkAvailability(db) {
+        if (!db.url) return { ...db, available: false };
+        try {
+            const res = await fetch(db.url, { method: "HEAD", cache: "no-store" });
+            return { ...db, available: res.ok };
+        } catch {
+            return { ...db, available: false };
+        }
+    },
+
+    // ---- Charger depuis localStorage ----
+    loadLocal(db) {
+        const key = db.source === "vanilla"
+            ? `vanilla:${db.id}`
+            : `external:${db.id}`; // modification ici
+
+        const stored = localStorage.getItem(key);
+        if (!stored) return null;
+        try {
+            return JSON.parse(stored);
+        } catch {
+            return null;
+        }
+    },
+
+    // ---- Télécharger une base ----
+    async download(db) {
+        const res = await fetch(db.url);
+        if (!res.ok) throw new Error(`Impossible de télécharger ${db.id}`);
+        let data = await res.json();
+
+        const key = db.source === "vanilla"
+            ? `vanilla:${db.id}`
+            : `external:${db.id}`;
+
+        // Ajout dans chaque ligne de l'id de la bdd et du mode de jeu
+        for (let i in data.db) {
+            let entry = data.db[i];
+            entry.bdd_id = data.id;
+            entry.gamemode_type = data.gamemode;
+        }
+
+        // Sauvegarder la base complète
+        localStorage.setItem(key, JSON.stringify(data));
+
+        // ➕ Mettre à jour l'index
+        const indexData = {
+            id: data.id,
+            version: data.version,
+            url: db.url,
+            gamemode: data.gamemode,
+            language: data.language,
+            pack_name: data.pack_name,
+            pack_description: data.pack_description,
+            filters: data.filters,
+            available: true,
+            source: db.source
+        };
+
+        if (db.source === "vanilla") {
+            const idx = this.indexes.vanilla.findIndex(e => e.id === db.id);
+            if (idx !== -1) this.indexes.vanilla[idx] = indexData;
+            else this.indexes.vanilla.push(indexData);
+        } else {
+            const idx = this.indexes.external.findIndex(e => e.id === db.id);
+            if (idx !== -1) this.indexes.external[idx] = indexData;
+            else this.indexes.external.push(indexData);
+            localStorage.setItem("db:index:external", JSON.stringify(this.indexes.external));
+        }
+
+        return { data, version: data.version };
+    },
+
+    // ---- Rafraîchir une base ----
+    async refresh(db) {
+        const localData = this.loadLocal(db);
+        if (!localData) {
+            const result = await this.download(db);
+            return { updated: true, from: "—", to: result.version };
+        }
+
+        const res = await fetch(db.url);
+        if (!res.ok) throw new Error("Impossible d’accéder à la version distante.");
+        const remoteData = await res.json();
+
+        const key = db.source === "vanilla"
+            ? `vanilla:${db.id}`
+            : `external:${db.id}`;
+
+        if (remoteData.version !== localData.version) {
+            localStorage.setItem(key, JSON.stringify(remoteData));
+
+            // ➕ Mettre à jour la version dans l’index
+            if (db.source === "external") {
+                const idx = this.indexes.external.findIndex(e => e.id === db.id);
+                if (idx !== -1) {
+                    this.indexes.external[idx].version = remoteData.version;
+                    localStorage.setItem("db:index:external", JSON.stringify(this.indexes.external));
+                }
+            }
+
+            return { updated: true, from: localData.version, to: remoteData.version };
+        }
+
+        return { updated: false, version: localData.version };
+    },
+
+
+    // ---- Supprimer du localStorage ----
+    unload(db) {
+        const key = db.source === "vanilla"
+            ? `vanilla:${db.id}`
+            : `external:${db.id}`;
+        localStorage.removeItem(key);
+    },
+
+    // ---- Supprimer complètement une base externe ----
+    forget(db) {
+        this.unload(db);
+        if (db.source === "external") {
+            this.indexes.external = this.indexes.external.filter(e => e.id !== db.id);
+            localStorage.setItem("db:index:external", JSON.stringify(this.indexes.external));
+        }
+    }
+};
+
+function onlyDisplayCurrentLanguageDB() {
+    const input = document.getElementById("input_show_only_current_language_db")
+    game.only_display_current_language_databases = input.checked
+    refreshDBList()
+}
+
+async function refreshDBList() {
+    console.log("refreshDBList appelé encore une fois ???")
+
+    const modal_db_list = document.getElementById("modal_db_list");
+    await DBManager.init();
+    const allDBs = DBManager.getAll();
     
-        weakestLinkCalcTime();
+    const existingLis = new Map();
+    for (const li of modal_db_list.children) {
+        existingLis.set(li.id, li);
+    }
+
+    const currentIds = new Set();
+
+    for (const db of allDBs) {
+        const liId = `db-li-${db.source}-${db.id}`;
+        currentIds.add(liId);
+
+        let li = existingLis.get(liId);
+        if (!li) {
+            // Crée le li uniquement s'il n'existe pas
+            li = document.createElement("li");
+            li.id = liId;
+            li.className = "list-group-item d-flex align-items-start";
+
+            const header = document.createElement("div");
+            header.className = "db-header d-flex w-100 justify-content-between flex-column mb-1";
+            li.appendChild(header);
+
+            const actions = document.createElement("div");
+            actions.className = "btn-group";
+            li.appendChild(actions);
+
+            modal_db_list.appendChild(li);
+        }
+
+        // Mettre à jour le contenu (header + boutons)
+        updateDBListItem(li, db);
+    }
+
+    // Met à jour les bontons des menus principaux
+    updateGamemodeMenuButton(allDBs);
+
+    // Met à jour la liste des bases de données déjà chargé dans l'explorateur
+    databaseExplorerRefresh(allDBs);
+
+    // Met à jour la liste des modes de jeu dans Mix
+    updateMixGamemodeMenuList(allDBs);
+
+    // Supprimer les <li> qui ne sont plus dans la liste filtrée
+    for (const li of Array.from(modal_db_list.children)) {
+        if (!currentIds.has(li.id)) li.remove();
     }
 }
 
+// Fonction pour mettre à jour le contenu d'un <li>
+function updateDBListItem(li, db) {
+    const local = DBManager.loadLocal(db);
+    const localVersion = local?.version || "—";
 
-function getExternalDBLink() {
+    const header = li.querySelector(".db-header");
+    const stateBadge = db.available ? `` : `<span class="badge bg-danger">indisponible</span>`;
+    const packDescription = db.pack_description ? `<span>${db.pack_description}</span>` : "";
+    const language = convertLangCodeToLanguage(db.language)
+    header.innerHTML = `
+        <div class="d-flex flex-column">
+            <strong>${db.pack_name || db.id}</strong>
+            ${packDescription}
+        </div>
+        <div>
+            <span class="badge ${db.source === "vanilla" ? "bg-secondary" : "bg-info"}">${db.source}</span>
+            <span class="badge bg-secondary">v${localVersion}</span>
+            ${stateBadge}
+            <span class="badge bg-secondary">${language}</span>
+        </div>
+    `;
+
+    const actions = li.querySelector(".btn-group");
+    actions.innerHTML = "";
+
+    const actionBtn = document.createElement("button");
+    actionBtn.className = `btn ${local ? "btn-outline-success" : "btn-success"} btn-action`;
+    actionBtn.innerHTML = local
+        ? `<i class="bi bi-arrow-clockwise"></i>`
+        : `<i class="bi bi-cloud-arrow-down"></i>`;
+    actionBtn.disabled = !db.available;
+    actionBtn.onclick = async () => {
+        try {
+            if (!local) await DBManager.download(db);
+            else await DBManager.refresh(db);
+            refreshDBList();
+        } catch (err) { alert(`❌ Erreur (${db.id}) : ${err.message}`); }
+    };
+    actions.appendChild(actionBtn);
+
+    if (local) {
+        const unloadBtn = document.createElement("button");
+        unloadBtn.innerHTML = `<i class="bi bi-folder-x"></i>`;
+        unloadBtn.className = "btn btn-secondary";
+        unloadBtn.onclick = () => { DBManager.unload(db); refreshDBList(); };
+        actions.appendChild(unloadBtn);
+    }
+
+    if (db.source === "external") {
+        const forgetBtn = document.createElement("button");
+        forgetBtn.className = "btn btn-dark";
+        forgetBtn.innerHTML = `<i class="bi bi-x-circle"></i>`;
+        forgetBtn.onclick = () => {
+            if (confirm(`${global.current_language_strings.delete_definitive} ${db.id} ?`)) {
+                DBManager.forget(db);
+                refreshDBList();
+            }
+        };
+        actions.appendChild(forgetBtn);
+    }
+}
+
+function databaseExplorerRefresh(allDBs) {
+    // Affiche dans le select les bases de données chargées en mémoire (localStorage) pour l'explorateur de base de données.    const select = document.getElementById("db_explorer_list_select");
+    // La liste tri par gamemode puis par source, les gamemode sont séparés pas un optgroup
+    
+    const select = document.getElementById("db_explorer_list_select");
+    select.innerHTML = "";
+
+    // Filtrer les bases de données pour n'afficher que celles qui sont chargées en mémoire
+    const loadedDBs = allDBs.filter(db => DBManager.loadLocal(db));
+
+    var picolo_gamemode = [];
+    var je_n_ai_jamais_gamemode = [];
+
+    for (const db of loadedDBs) {
+        if (db.gamemode == "picolo") {
+            picolo_gamemode.push(
+                {
+                    id: db.id,
+                    pack_name: db.pack_name,
+                    db_source: db.source,
+                    gamemode: db.gamemode
+            });
+        }
+        if (db.gamemode == "je_n_ai_jamais") {
+            je_n_ai_jamais_gamemode.push(
+                {
+                    id: db.id,
+                    pack_name: db.pack_name,
+                    db_source: db.source,
+                    gamemode: db.gamemode
+            });
+        }
+    }
+
+    const default_unselected_option = document.createElement("option");
+    default_unselected_option.text = global.current_language_strings.db_manager_select_db;
+    select.appendChild(default_unselected_option);
+
+    const optgroup_picolo = document.createElement("optgroup");
+    optgroup_picolo.label = global.current_language_strings.picolo;
+    select.appendChild(optgroup_picolo);
+    for (const db of picolo_gamemode) {
+        optgroup_picolo.appendChild(createOption(db));
+    }
+
+    const optgroup_je_n_ai_jamais = document.createElement("optgroup");
+    optgroup_je_n_ai_jamais.label = global.current_language_strings.je_n_ai_jamais;
+    select.appendChild(optgroup_je_n_ai_jamais);
+    for (const db of je_n_ai_jamais_gamemode) {
+        optgroup_je_n_ai_jamais.appendChild(createOption(db));
+    }
+
+    function createOption(db, gamemode) {
+        const option = document.createElement("option");
+        option.value = `${db.id}:${db.gamemode}`;
+        option.text = db.pack_name;
+        option.dataset.source = db.db_source;
+        return option;
+    }
+}
+
+function refreshExplorerList(db) {
+    // Affichage des phrase de la base de données sélectionnée dans l'explorateur de base de données (db_source:db.id)
+    const db_explorer_list_list = document.getElementById("db_explorer_list_list");
+    db_explorer_list_list.innerHTML = "";
+
+    const [db_id, gamemode] = db.split(":");
+
+    const db_data = getDBFromLocalStorage(db_id);
+    if (!db_data) {
+        db_explorer_list_list.innerHTML = `<li class="list-group-item">Erreur lors du chargement de la base de données.</li>`;
+        return;
+    }
+    if (db_data) {
+        // Creation d'un entête pour la liste en fonction du gamemode
+        // Picolo : type | text | key | parent_key
+        // Je n'ai Jamais : text
+        
+        const table = document.createElement("table");
+        table.className = "table table-striped";
+        
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        if (gamemode == "picolo") {
+            ["Type", "Texte", "Clé", "Clé parente"].forEach(columnName => {
+                const th = document.createElement("th");
+                th.textContent = columnName;
+                headerRow.appendChild(th);
+            });
+        }
+        if (gamemode == "je_n_ai_jamais") {
+            ["Texte"].forEach(columnName => {
+                const th = document.createElement("th");
+                th.textContent = columnName;
+                headerRow.appendChild(th);
+            });
+        }
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+        db_explorer_list_list.appendChild(table);
+
+        // Affichage des phrases
+        const tbody = document.createElement("tbody");
+        for (const entry of db_data) {
+            const row = document.createElement("tr");
+
+            if (gamemode == "picolo") {
+                const typeCell = document.createElement("td");
+                typeCell.textContent = entry.type;
+                row.appendChild(typeCell);
+            }
+
+            const textCell = document.createElement("td");
+            textCell.textContent = entry.text;
+            row.appendChild(textCell);
+            
+            if (gamemode == "picolo") {
+                const keyCell = document.createElement("td");
+                keyCell.textContent = entry.key || "";
+                row.appendChild(keyCell);
+
+                const parentKeyCell = document.createElement("td");
+                parentKeyCell.textContent = entry.parent_key || "";
+                row.appendChild(parentKeyCell);
+            }
+            
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+        db_explorer_list_list.appendChild(table);
+    }
+}
+
+function getDBFromLocalStorage(db_id) {
+    const allDBs = DBManager.getAll();
+    for (const db of allDBs) {
+        if (db.id == db_id) {
+            return DBManager.loadLocal(db).db;
+        }
+    }
+    return null;
+}
+
+function updateGamemodeMenuButton(allDBs) {
+    // allDBs provient de refreshDBList()
+
+    const je_n_ai_jamais_list = document.getElementById("gamemode_je_n_ai_jamais_db_list")
+    const picolo_list = document.getElementById("gamemode_picolo_db_list")
+
+    // Rien d'affiché dans la liste
+    je_n_ai_jamais_list.innerHTML = ""
+    picolo_list.innerHTML = ""
+
+    for (const db of allDBs) {
+        const bdd_id = db.id;
+        const gamemode_type = db.gamemode;
+        const pack_name = db.pack_name;
+        const pack_description = db.pack_description;
+        const language = db.language;
+        // const vanilla = db.vanilla;
+        const bdd_source = db.source;
+
+        const actionDiv = document.createElement("div");
+        actionDiv.className = `col-12 col-sm-6 col-xl-4 col-xxl-3`;
+
+        const actionBtn = document.createElement("button");
+        actionBtn.className = `btn btn-primary gamemode_${gamemode_type}_section w-100 h-100`;
+        const description = pack_description ? `<p>${pack_description}</p>` : ``;
+
+        let addiontionnalData = ""
+        if (bdd_source != "vanilla" || game.only_display_current_language_databases == false) {
+            addiontionnalData = `<div class="d-flex justify-content-end">
+                    <span class="badge bg-dark m-1">${language}</span>
+                    <span class="badge bg-dark m-1">${bdd_source}</span>
+                    <span class="badge bg-dark m-1">${gamemode_type}</span>
+                </div>`;
+        } else { addiontionnalData = ``; }
+
+        actionBtn.innerHTML = `
+            <div class="d-flex justify-content-between flex-column">
+                <h4 id="text_gamemode_title_never_popular" 
+                    class="fw-bold h4 text-center w-100">${pack_name}</h4>
+                ${description}
+                ${addiontionnalData}
+            </div>`;
+        actionBtn.onclick = function() {
+            selectGame(
+                {
+                    gamemode_type:gamemode_type,
+                    bdd_data:
+                        {   
+                            bdd_id:bdd_id,
+                            bdd_source:bdd_source
+                        }
+                }
+            )
+        }
+
+        actionDiv.appendChild(actionBtn);
+
+        if (gamemode_type == "picolo") {
+            picolo_list.appendChild(actionDiv);
+        }
+
+        if (gamemode_type == "je_n_ai_jamais") {
+            je_n_ai_jamais_list.appendChild(actionDiv);
+        }
+    }
+    return;
+}
+
+function updateMixGamemodeMenuList(allDBs) {
+    // allDBs provient de refreshDBList()
+    
+    const picolo_list = document.getElementById("gamemode_mix_picolo")
+    const je_n_ai_jamais_list = document.getElementById("gamemode_mix_je_n_ai_jamais")
+
+    // Rien d'affiché dans la liste
+    je_n_ai_jamais_list.innerHTML = ""
+    picolo_list.innerHTML = ""
+
+    for (const db of allDBs) {
+        const bdd_id = db.id;
+        const gamemode_type = db.gamemode;
+        const pack_name = db.pack_name;
+        // const pack_description = db.pack_description;
+        const language = db.language;
+        // const vanilla = db.vanilla;
+        const bdd_source = db.source;
+
+        const actionDiv = document.createElement("div");
+        actionDiv.className = `form-check form-switch`;
+
+        const repartitionDiv = document.createElement("div");
+        repartitionDiv.className = `d-flex w-100 justify-content-between`;
+
+        const additionnalDiv = document.createElement("div");
+        actionDiv.className = `form-check form-switch`;
+        
+        let addiontionnalData = ""
+        if (bdd_source != "vanilla" || game.only_display_current_language_databases == false) {
+            addiontionnalData = `<div class="d-flex justify-content-end">
+                    <span class="badge bg-dark m-1">${language}</span>
+                    <span class="badge bg-dark m-1" title="${db.url}">externe</span>
+                </div>`;
+        } else { addiontionnalData = ``; }
+        additionnalDiv.innerHTML = addiontionnalData;
+
+        const actionLabel = document.createElement("label");
+        actionLabel.className = `form-check-label`;
+        actionLabel.setAttribute("for",`${bdd_id}-checkbox`);
+        actionLabel.appendChild(document.createTextNode(pack_name));
+
+        const actionInput = document.createElement("input");
+        actionInput.className = `form-check-input`;
+        actionInput.setAttribute("id",`${bdd_id}-checkbox`);
+        actionInput.setAttribute("type","checkbox");
+
+        actionInput.onclick = function() {
+            updateSelectedMixGamemode(
+                {
+                    checked: actionInput.checked,
+                    gamemode_type:gamemode_type,
+                    bdd_id:bdd_id,
+                    bdd_source:bdd_source
+                }
+            )
+        }
+
+        repartitionDiv.appendChild(actionLabel);
+        repartitionDiv.appendChild(additionnalDiv);
+
+        actionDiv.appendChild(actionInput);
+        actionDiv.appendChild(repartitionDiv);
+
+        if (gamemode_type == "picolo") {
+            picolo_list.appendChild(actionDiv);
+        }
+
+        if (gamemode_type == "je_n_ai_jamais") {
+            je_n_ai_jamais_list.appendChild(actionDiv);
+        }
+    }
+    return;
+}
+
+function externalDBLinkFromtTextInput() {
     const input = document.getElementById('external_db_input');
     const value = input.value.trim();
 
-    if (value !== '' && value.match(/\.json(\?.*)?$/i)) {
-        console.log('Valeur entrée :', value);
-        addExternalDBData(value)
-    }
-
     input.value = ''; // vide le champ input
     input.focus();
+
+    if (value.toLowerCase() == "miiiranda") {
+        DEBUG_miiiranda_db_bundle();
+        return;
+    }
+
+    if (value !== '' && value.match(/\.json(\?.*)?$/i)) {
+        console.log('Valeur entrée :', value);
+        addDBData( { url: value, vanilla: false} ); // game.gamemode_type = "mix";
+    
+    }
 }
 
-async function addExternalDBData(url) {
+function DEBUG_miiiranda_db_bundle() {
+    async function loadUrlList() {
+    const response = await fetch("https://gist.githubusercontent.com/difabiolorenzo/accab6224cbaf58a274f9497eeaed79e/raw/0fb82a051c13bfff5ebf658302ee4fa7e67a1657/gistfile1.txt");
+    const text = await response.text();
+
+    // Nettoyage + transformation en tableau
+    const url_list = text
+        .split(",")                // sépare par virgule
+        .map(url => url.trim())   // enlève espaces + retours ligne
+        .map(url => url.replace(/["']/g, "")) // enlève les guillemets
+        .filter(url => url.length > 0); // enlève les lignes vides
+
+        return url_list;
+    }
+
+    // utilisation
+    loadUrlList().then(url_list => {
+        addDBData( { urls: url_list} );
+        global.modal_external_db.show()
+    });
+}
+
+async function addDBData({ url = null, urls = null, file = null, vanilla = false }) {
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-        const data = await response.json();
 
-        data.url = url; //ajout de l'url dans la bdd
-        if (data.version >= global.external_db_version) {
-            // Cherche si une BDD avec le même ID existe déjà
-            const existingIndex = game.external_db.findIndex(db => db.id === data.id);
-        
-            if (existingIndex !== -1) {
-                const existingDB = game.external_db[existingIndex];
-        
-                if (data.version > existingDB.version) {
-                    // Remplace l'ancienne BDD par la nouvelle (version supérieure)
-                    game.external_db[existingIndex] = data;
-                    console.log(`BDD mise à jour : ${data.id} (v${existingDB.version} → v${data.version})`);
-                } else {
-                    // La version est inférieure ou égale → ne rien faire
-                    console.log(`BDD ignorée : ${data.id} (v${data.version}) est obsolète ou identique à celle existante (v${existingDB.version})`);
-                }
-            } else {
-                // Pas encore présente → ajouter
-                game.external_db.push(data);
-
-                console.log(`Nouvelle BDD ajoutée : ${data.id} (v${data.version})`);
+        // Si on reçoit un tableau d'URLs
+        if (urls && Array.isArray(urls)) {
+            for (const singleUrl of urls) {
+                await addDBData({ url: singleUrl, vanilla }); // appel récursif
             }
-            refreshModalExternalDBList();
-            refreshGamemodeExternalDBList()
+            return; // important pour ne pas continuer plus bas
+        }
+
+        let data;
+
+        if (url) {
+            // Chargement depuis URL
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP erreur ${response.status} (${url})`);
+            data = await response.json();
+            data.url = url;
+        } else if (file) {
+            // Chargement depuis fichier local
+            const fileText = await file.text();
+            data = JSON.parse(fileText);
+            data.url = null;
         } else {
-            console.error(`BDD trop ancienne : ${data.id} (v${data.version}) < version minimale requise (v${global.external_db_version})`);
+            throw new Error("Aucune source fournie (url, urls ou file).");
         }
-        
-    } catch (err) {
-        console.error(`Erreur lors du chargement de ${url}:`, err);
-    }
-}
 
-function refreshModalExternalDBList() {
-    var list = document.getElementById("modal_external_db_list")
-    list.innerHTML = "";
+        data.vanilla = vanilla;
 
-    for (var i in game.external_db) {
-        list.innerHTML += `<a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                                <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">${game.external_db[i].name}</h5>
-                                <span class="badge rounded-pill text-bg-primary">${game.external_db[i].db.length}</span>
-                                </div>
-                                <p class="mb-1">${game.external_db[i].description}</p>
-                                <div>
-                                    <small>gamemode:${game.external_db[i].gamemode}</small>
-                                    <small>language:${game.external_db[i].language}</small>
-                                    <small>id:${game.external_db[i].id}</small>
-                                    <small>version:${game.external_db[i].version}</small>
-                                    <small>url:${game.external_db[i].url}</small>
-                                </div>
-                            </a>`;
-    }
-}
+        const indexData = {
+            id: data.id,
+            pack_name: data.pack_name,
+            pack_description: data.pack_description,
+            gamemode: data.gamemode,
+            language: data.language,
+            version: data.version,
+            url: data.url,
+            vanilla: false
+        };
 
-function refreshGamemodeExternalDBList() {
-    var custom_mix_list = document.getElementById("custom_mix_gamemode_never_done_section_external_db");
-    var custom_never_done_list = document.getElementById("gamemode_collapse_never_external_db");
-    custom_mix_list.innerHTML = "";
-    custom_never_done_list.innerHTML = "";
-    if (game.external_db.length > 0) {
-        custom_mix_list.innerHTML = `<h6>${global.current_language_strings.external_db}</h6>`;
-        custom_never_done_list.innerHTML = `<h6>${global.current_language_strings.external_db}</h6>`;
+        const existingIndex = DBManager.indexes.external.findIndex(db => db.id === data.id);
 
-        for (var i in game.external_db) {
-            if (game.external_db[i].gamemode == "never_done") {
-                custom_mix_list.innerHTML += `<label class="form-check-label">
-                                                <input class="form-check-input" id="checkbox_checkbox_custom_mix_gamemode_${game.external_db[i].id}" type="checkbox"
-                                                onchange="updateMixGamemodeForm()" value="${game.external_db[i].id}">
-                                                    <a id="text_custom_mix_gamemode_${game.external_db[i].id}">${game.external_db[i].name}</a>
-                                                </input>
-                                            </label>`;
-
-                custom_never_done_list.innerHTML += `<div class="card p-2 m-1 gamemode_never_done_section">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h5 id="text_gamemode_title_${game.external_db[i].id}">${game.external_db[i].name}</h5>
-                                                            <button class="btn btn-primary" id="gamemode_option_${game.external_db[i].id}" value="${game.external_db[i].id}" onclick="selectExternalGamemode('never_done', this.value);">${global.current_language_strings.launch}</button>
-                                                        </div>
-                                                    </div>`
+        if (existingIndex !== -1) {
+            const existingDB = DBManager.indexes.external[existingIndex];
+            if (data.version > existingDB.version) {
+                DBManager.indexes.external[existingIndex] = indexData;
+                console.log(`Index mis à jour : ${data.id} (v${existingDB.version} → v${data.version})`);
+            } else {
+                console.log(`Index ignoré : ${data.id} (v${data.version} <= v${existingDB.version})`);
             }
+        } else {
+            DBManager.indexes.external.push(indexData);
+            console.log(`Nouvel index ajouté : ${data.id} (v${data.version})`);
         }
+
+        localStorage.setItem("db:index:external", JSON.stringify(DBManager.indexes.external));
+        localStorage.setItem(`external:${data.id}`, JSON.stringify(data));
+
+        refreshDBList();
+
+    } catch (err) {
+        console.error("Erreur lors du chargement de la base :", err);
+        alert(`Erreur : ${err.message}`);
     }
 }
 
-function downloadCustomDBTamplate() {
+function downloadCustomDBPicoloTamplate() {
     const template = {
-        version: global.external_db_version,
-        gamemode: "",
+        version: 1,
+        gamemode: "picolo",
         id: "",
         language: "",
-        name: "",
-        description: "",
+        pack_name: "",
+        pack_description: "",
         db: [
-            { pack_name: "never_done", text: "" }
+            { text: "" }
+        ]
+    };
+    downloadFileJSON(template, "template_picolo_bdd")
+}
+
+function downloadCustomDBNeverDoneTamplate() {
+    const template = {
+        version: 1,
+        gamemode: "je_n_ai_jamais",
+        id: "",
+        language: "",
+        pack_name: "",
+        pack_description: "",
+        db: [
+            { text: "" }
         ]
     };
 
-    const jsonStr = JSON.stringify(template, null, 4); // bien formatté
+    downloadFileJSON(template, "template_je_n_ai_jamais_bdd")
+}
+
+function downloadFileJSON(object, filename) {
+    const jsonStr = JSON.stringify(object, null, 4); // bien formatté
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
     // Crée un lien temporaire pour déclencher le téléchargement
     const a = document.createElement("a");
     a.href = url;
-    a.download = "template_bdd.json";
+    a.download = filename+".json";
     a.click();
 
     URL.revokeObjectURL(url); // Libère l'URL après téléchargement
 }
 
-function DEBUG_ImportCSV() {
-    var formFile = document.getElementById('input_csv');
-
-    if (!formFile.files) {
-        console.log("This browser doesn't seem to support the `files` property of file inputs.");
-    } else if (!formFile.files[0]) {
-        console.log("No file selected.");
-    } else {
-        // console.log("Import CSV called.")
-        let file = formFile.files[0];
-        let fr = new FileReader();
-        fr.onload = receivedText;
-        fr.readAsText(file);
-
-        function receivedText() {
-            // console.log("RESULT", fr.result);
-            // console.log(fr);
-
-            var csv_result = fr.result;
-            csvJSON(csv_result)
-            // console.log(csv_result)
-        // Do additional processing here
-        }
+function convertLangCodeToLanguage(lang) {
+    switch(lang) {
+        case "fr": return global.current_language_strings.lang_fr;
+        case "da": return global.current_language_strings.lang_da;
+        case "de": return global.current_language_strings.lang_de;
+        case "en": return global.current_language_strings.lang_en;
+        case "es": return global.current_language_strings.lang_es;
+        case "fi": return global.current_language_strings.lang_fi;
+        case "it": return global.current_language_strings.lang_it;
+        case "ja": return global.current_language_strings.lang_ja;
+        case "ko": return global.current_language_strings.lang_ko;
+        case "nb": return global.current_language_strings.lang_nb;
+        case "nl": return global.current_language_strings.lang_nl;
+        case "pt": return global.current_language_strings.lang_pt;
+        case "ru": return global.current_language_strings.lang_ru;
+        case "sv": return global.current_language_strings.lang_sv;
+        default: return global.current_language_strings.other;
     }
 }
-
-//     {cycle_state:"false",
-//     type:"8",
-//     text:"Team %t: What is %s's zodiac sign? If you're right,
-//     the other team drinks $ times. Otherwise, you drink!",
-//     ...
-//     key:"",
-//     parent_key:"",
-//     pack_name:"war",
-//     language:"en",
-//     nb_players:"1"
-// },
-
-function csvJSON(csv) {
-    function removeQuote(text) {
-        return text.substring(1,text.length-1)
-    }
-    var lines=csv.split("\n");
-    var result = [];
-    for (var i=0; i<lines.length; i++) {
-        var obj = {};
-        // Mise en tableau de la ligne séparé des virgules
-        var currentline=lines[i].split(",");
-        var text = [];
-        if (currentline.length == 8) {
-            text.push(currentline[2]);
-        } else {
-            for (var j=0; j<currentline.length-7; j++) {
-                text.push(currentline[j+2])
-            }
-        }
-        obj["text"] = removeQuote(text.join(''));
-        obj["cycle_state"] = removeQuote(currentline[0]);
-        console.log(currentline[0])
-        obj["type"] = removeQuote(currentline[1]);
-        obj["key"] = removeQuote(currentline[currentline.length-5]);
-        obj["parent_key"] = removeQuote(currentline[currentline.length-4]);
-        obj["pack_name"] = removeQuote(currentline[currentline.length-3]);
-        obj["language"] = removeQuote(currentline[currentline.length-2]);
-        obj["nb_players"] = removeQuote(currentline[currentline.length-1]);
-        
-        var lang = removeQuote(currentline[currentline.length-2])
-        var gamemode = removeQuote(currentline[currentline.length-3])
-        
-        result.push(obj);
-    }
-    console.log(result)
-}
-    // Le CSV n'est pas régulier, ne pas prendre la première variable
-    // var headers=lines[0].split(",");
-
-
-//     fr
-// en
-// da
-// de
-// es
-// fi
-// it
-// ja
-// ko
-// nb
-// nl
-// pt
-// ru
-// sv
-
-// Service Woker, Mise en cache
-if ('serviceWorker' in navigator && window.origin != "null" && window.matchMedia('(display-mode: standalone)').matches) {
-    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
-        if(reg.installing)
-            console.log('Service worker installing');
-        else if(reg.waiting)
-            console.log('Service worker installed');
-        else if(reg.active)
-            console.log('Service worker active');
-
-    }).catch(function(error) {
-        // registration failed
-        console.log('Registration failed with ' + error);
-    });
-};

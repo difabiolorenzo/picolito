@@ -76,10 +76,6 @@ function storeSettingsCookie() {
         global.audio_enabled,
         game.weakest_link.stop_at_max_chain,
         game.weakest_link.max_chain,
-        game.weakest_link.hide_answer,
-        game.password.word_to_find_amount,
-        game.password.style,
-        game.password.preview
     ]
 
     if (getCookie("settings") == '') {
@@ -131,10 +127,6 @@ function setSettingsValuesByCookies() {
         global.audio_enabled = global.cookie_settings_value[12];
         game.weakest_link.stop_at_max_chain = global.cookie_settings_value[13];
         game.weakest_link.max_chain = global.cookie_settings_value[14];
-        game.weakest_link.hide_answer = global.cookie_settings_value[15];
-        game.password.word_to_find_amount = global.cookie_settings_value[16];
-        game.password.style = global.cookie_settings_value[17];
-        game.password.preview = global.cookie_settings_value[18];
 
         updateHTMLSettingsByVar();
     }
@@ -157,10 +149,6 @@ function displayCookieList() {
         "global.audio_enabled",
         "game.weakest_link.stop_at_max_chain",
         "game.weakest_link.max_chain",
-        "game.weakest_link.hide_answer",
-        "game.password.word_to_find_amount",
-        "game.password.style",
-        "game.password.preview"
     ];
 
     var html_content = "";

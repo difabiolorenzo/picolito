@@ -21,7 +21,7 @@ function setLanguageString() {
             close: "Fermer",
             next: "Suivant",
             launch: "Lancer",
-            next_sentence: "Phrase suivante",
+            loading: "Chargement...",
             back: "Retour",
             reinitialize: "Réinitialiser",
             modify: "Modifier",
@@ -30,6 +30,8 @@ function setLanguageString() {
             ready: "Prêts?",
             start: "Commencer",
             virus: "VIRUS",
+            visit_website: "Aller sur le site",
+            next_sentence: "Phrase suivante",
             weakest_link_sip: "GORGEES",
             weakest_link_bank: "BANQUE",
             weakest_link_time: "TEMPS",
@@ -37,9 +39,10 @@ function setLanguageString() {
             weakest_link_wrong: "INCORRECTE",
             weakest_link_prepare_vote: "se prépare à voter.",
             weakest_link_vote_against: "vote contre",
-            weakest_link_minimum_requierement: "Impossible de lancer le Maillon Faible, 4 joueurs minimum.",
-            password_internet_requierement: "Une connexion internet est nécessaire.",
+            weakest_link_minimum_requierement: "Pour lancer le \"Maillon Faible\" il faut 2 joueurs au minimum.",
+            internet_requierement: "Une connexion internet est nécessaire.",
             end_game: "Fin de partie",
+            end: "Fin",
             restart: "Recommencer",
             player_singular: "joueur",
             player_plural: "joueurs",
@@ -57,21 +60,26 @@ function setLanguageString() {
             team_change: "Changer",
             modal_sentence_modifier: "Modifier la phrase",
             modal_sentence_modifier_end_debug: "Arrêter le debug",
-            modal_password_preview_title: "Prévisualisation des mots",
-            modal_password_preview_text: "Toucher pour fermer la fenêtre",
-            modal_password_preview_ended: "Prévisualisation finie",
             modal_sentence_list_title: "Liste des phrases",
-            external_db: "Bases de données externes",
+            databases: "Bases de données",
+            show_only_current_language_db: "Afficher uniquement les bases en français",
+            external_db_import_link: "Importer via un lien",
+            external_db_import_file: "Importer via un fichier",
             external_db_link: "Lien de base de données externe",
-            external_db_list: "Liste des bases de données",
-            external_db_download_template: "Télécharger le modèle",
-            external_db_disclaimer: "Fonctionne seulement avec le mode \"Je n'ai jamais\".",
+            delete_definitive: "Supprimer complètement",
+            db_manager_db_list: "Gestionnaire de bases de données",
+            db_manager_text_list: "Explorer les lignes",
+            db_manager_select_db: "-- Séléctionnez une base de données --",
+            db_manager_text_model: "Modèle",
+            external_db_download_picolo_template: "Modèle \"Picolo\"",
+            external_db_download_je_n_ai_jamais_template: "Modèle \"Je n'ai Jamais\"",
             settings: "Paramètres",
-            settings_picolo: "Picolo",
+            picolo: "Picolo",
             settings_chug: "Culs secs",
             settings_virus: "Virus",
             settings_social_posting: "Publication sur les réseaux sociaux",
             sip: "Gorgées",
+            sip_s: "gorgée(s)",
             settings_min_sip: "Gorgées minimum",
             settings_max_sip: "Gorgées maximum",
             settings_display: "Affichage (Picolito & Je n'ai jamais)",
@@ -81,8 +89,14 @@ function setLanguageString() {
             settings_darkmode_light: "Clair",
             settings_darkmode_dark: "Sombre",
             settings_information_highlight: "Distinction des informations",
+            settings_quotes_visualization: "Visualisation des guillemets",
+            settings_quotes_visualization_none: "Aucune",
+            settings_quotes_visualization_italic: "Italic",
+            settings_quotes_visualization_underline: "Souligné",
+            settings_quotes_visualization_highlight: "Surbrillance",
+            settings_quotes_visualization_black_on_white: "Noir sur blanc",
+            settings_quotes_visualization_white_on_black: "Blanc sur noir",
             settings_animation: "Animations",
-            settings_landscape_mode: "Mode paysage",
             settings_others: "Autres",
             settings_delete_all_cookies: "Supprimer tous les cookies",
             settings_save_settings: "Sauvegarder les paramètres",
@@ -90,81 +104,63 @@ function setLanguageString() {
             settings_weakest_link: "Maillon Faible",
             settings_weakest_link_tie: "Perdant en cas d'égalité au vote",
             settings_weakest_link_tie_strongest_link: "Le Maillon Fort décide",
-            settings_weakest_link_tie_arbitrary: "Arbitrairement",
-            settings_weakest_link_tie_both: "Les votés égalitaires sont tous perdants",
             settings_weakest_link_tie_weakest: "Les statistiques donnent le perdant",
             settings_weakest_link_soundtrack: "Bande son",
             settings_weakest_link_max_chain: "Limite de la chaine de bonne réponse",
             settings_weakest_link_max_chain_none: "Pas de maximum",
             settings_weakest_hide_answer: "Faire apparaitre la réponse progressivement",
-            settings_password: "Mot de passe",
-            settings_password_amount: "Nombre de mot à faire deviner",
-            settings_password_style: "Style",
-            settings_password_mode: "Mode de jeu (Mot de passe)",
-            settings_password_preview: "Prévisualisation",
             settings_credits: "Credits",
             gamemode: "Mode de jeu",
-            gamemode_picolo_title: "Picolo",
-            gamemode_default_title: "Before - 🥴",
-            gamemode_default_subtitle_0: "Le mode de jeu parfait pour s'ambiancer en soirées.",
-            gamemode_default_subtitle_1: "Soyez prêts, car Picolito ne vous fera pas de cadeaux.",
-            gamemode_silly_title: "On est débiles - 🤪",
-            gamemode_silly_subtitle_0: "Si vous êtes déjà bien entamés et cons comme vos pieds, ce pack est fait pour vous.",
-            gamemode_silly_subtitle_1: "Attention, public averti.",
-            gamemode_bar_title: "Bar - 🍻",
-            gamemode_bar_subtitle_0: "Si vous êtes prêt à retourner le bar, c'est le mode de jeu parfait.",
-            gamemode_bar_subtitle_1: "Attention, il ne faut pas avoir peur du ridicule.",
-            gamemode_hot_title: "Caliente - 🍆",
-            gamemode_hot_subtitle_0: "Orienté questions coquines, soyez prêts à dévoiler vos secrets les mieux gardés.",
-            gamemode_hot_subtitle_1: "Est-ce que ça va pécho ce soir?",
-            gamemode_war_title: "Guerre - 🌩",
-            gamemode_war_subtitle_0: "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...",
-            gamemode_war_subtitle_1: "Ce soir c'est la guerre!",
-            gamemode_war_minimum_requierement: "2 joueurs minimum.",
-            gamemode_never_title: "Je n'ai jamais",
-            gamemode_never_popular: "Populaire - ⭐",
-            gamemode_never_hot: "Coquin & Sexy - 💋",
-            gamemode_never_party: "Fête - 🎉",
-            gamemode_mix_title: "Mix - 🧪",
-            nav_menu_link_main: "À la une",
+            gamemode_picolo_war_minimum_requierement: "2 joueurs minimum.",
+            je_n_ai_jamais: "Je n'ai jamais",
+            gamemode_mix: "Mix",
+            gamemode_mix_subtitle: "Utilisez plusieurs modes de jeu Picolito en même temps.",
+            nav_menu_link_mix: "Mix",
             nav_menu_link_picolo: "Picolito",
             nav_menu_link_never: "Je n'ai Jamais",
-            nav_menu_link_other: "Autre",
-            gamemode_mix_subtitle_0: "Melangez Touut! Picolito... est là.",
-            gamemode_mix_subtitle_1: "Picolito & Je n'ai Jamais",
+            nav_menu_link_weakest_link: "Maillon Faible",
+            nav_menu_link_password: "Mot de passe",
             gamemode_weakest_link_title:"Maillon Faible 🔗",
-            gamemode_weakest_link_subtitle_1:"Vous êtes le picton faible. Au revoir.",
-            gamemode_weakest_link_subtitle_2:"4 joueurs min.",
+            gamemode_weakest_link_subtitle_1:"Vous êtes le maillon faible. Au revoir.",
             gamemode_title_password:"Mot de passe 💡",
-            gamemode_password_subtitle_1:"Un mot peut en cacher un autre",// Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
+            gamemode_password_subtitle_1:"Un mot peut en cacher un autre", // Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
             gamemode_password_subtitle_2:"Faire deviner le mot sans le dire",
-            gamemode_title_tenzi:"Tenzi 🎲",
-            gamemode_tenzi_subtitle_1:"Faire volte-face",
+            gamemode_password_warning_1:"Le mode de jeu \"Mot de passe\" est maintenant séparé de Picolito.",
+            gamemode_password_warning_2:"Retrouvez-le sur son propre projet GitHub et sa propre page",
 
             weakest_link_rule_header: "Maillon Faible",
             weakest_link_rule_1: "Les joueurs doivent répondre consecutivement et correctement à des questions pendant 60s.",
             weakest_link_rule_3: "Une seule mauvaise réponse fait tomber la chaine à 0, pour sauver la chaine, il est possible de dire \"banque\" après son nom mais avant la question.",
             weakest_link_rule_2: "À la fin, les joueurs votent contre le maillon faible qui se verra remettre le nombre de questions en banque.",
             weakest_link_rule_4: "Prêts? Vous avez une minute pour jouer au maillon faible.",
-            password_rule_header: "Mot de passe",
-            password_rule_1: "Les joueurs doivent deviner les mots affichés en s'aidant d'autre mots suggérés par un autre joueur.",
-            password_rule_2: "Les mots composés, de même famille, qui commencent pareil et les mimes sont interdits.",
+            weakest_link_minimum_player_requierement: "2 joueurs minimum necessaire.",
+            
+            weakest_link_tie_behaviour_strongest_link_decides: "le maillons fort décide.",
+            weakest_link_tie_behaviour_text_is_weakest_link: "est selon le système considéré comme le maillon faible.",
+            weakest_link_tie_behaviour_randomly_selected: "sera séléctionné comme maillon faible si les votes ne definissent pas le maillon faible.",
+            
+            weakest_link_vote_useful_bank: "\"Banque\" utile",
+            weakest_link_vote_useless_bank: "\"Banque\" inutile",
+            weakest_link_vote_saved_in_bank: "Sauvé en banque",
+            weakest_link_vote_correct: "Correcte",
+            weakest_link_vote_potential_chain_lost: "Perte de chaine",
+            weakest_link_vote_wrong: "Mauvaise",
 
-            gamemode_other: "Autre",
+            other: "Autre",
             lang_fr: "Français",
-            lang_da: "Danois",
-            lang_de: "Allemand",
-            lang_en: "Anglais",
-            lang_es: "Espagnol",
-            lang_fi: "Finlandais",
-            lang_it: "Italien",
-            lang_ja: "Japonais",
-            lang_ko: "Coréen",
-            lang_nb: "Novégien",
-            lang_nl: "Néerlandais",
-            lang_pt: "Portugais",
-            lang_ru: "Russe",
-            lang_sv: "Suédois",
+            lang_da: "Dansk",
+            lang_de: "Deutsch",
+            lang_en: "English",
+            lang_es: "Español",
+            lang_fi: "Suomalainen",
+            lang_it: "Italiano",
+            lang_ja: "日本語",
+            lang_ko: "한국인",
+            lang_nb: "Novegian",
+            lang_nl: "Nederlands",
+            lang_pt: "Português",
+            lang_ru: "Русский",
+            lang_sv: "Svensk",
         },
         en: {
             debug_add_fake_player: "Adding fake player.",
@@ -193,6 +189,7 @@ function setLanguageString() {
             close: "Close",
             next: "Next",
             launch: "Lancer",
+            loading: "Loading...",
             next_sentence: "Next sentence",
             back: "Back",
             reinitialize: "Reinitialize",
@@ -202,6 +199,7 @@ function setLanguageString() {
             ready: "Ready?",
             start: "Start",
             virus: "VIRUS",
+            visit_website: "Go to website",
             weakest_link_sip: "SIP",
             weakest_link_bank: "BANK",
             weakest_link_time: "TIME",
@@ -209,9 +207,10 @@ function setLanguageString() {
             weakest_link_wrong: "INCORRECT",
             weakest_link_prepare_vote: "will vote.",
             weakest_link_vote_against: "vote against",
-            weakest_link_minimum_requierement: "Weakest Link require 4 players at least.",
-            password_internet_requierement: "Internet connexion is requiered.",
+            weakest_link_minimum_requierement: "To launch the \"Weakest Link\" you need at least 2 players",
+            internet_requierement: "Internet connexion is requiered.",
             end_game: "Game Over",
+            end: "End",
             restart: "Restart",
             weakest_link_sip: "SIP",
             weakest_link_bank: "BANK",
@@ -234,22 +233,27 @@ function setLanguageString() {
             team_change: "Change",
             modal_sentence_modifier: "Modify sentence",
             modal_sentence_modifier_end_debug: "Stop debug",
-            modal_password_preview_title: "Words preview",
-            modal_password_preview_text: "Touch to close",
-            modal_password_preview_ended: "Preview ended",
             modal_sentence_list_title: "Sentences list",
-            external_db: "External databases",
+            databases: "Databases",
+            show_only_current_language_db: "Only display english databases",
+            external_db_import_link: "Import via link",
+            external_db_import_file: "Import via file",
             external_db_link: "External database link",
-            external_db_list: "External database list",
-            external_db_download_template: "Download model",
-            external_db_disclaimer: "Only works with \"Never I Ever\" mode",
+            delete_definitive: "Definitively delete",
+            db_manager_db_list: "Database manager",
+            db_manager_text_list: "Explore lines",
+            db_manager_select_db: "-- Choose a database --",
+            db_manager_text_model: "Model",
+            external_db_download_picolo_template: "Model \"Picolo\"",
+            external_db_download_je_n_ai_jamais_template: "Model \"Never Have I Ever\"",
             settings: "Settings",
-            settings_picolo: "Picolo",
+            picolo: "Picolo",
             settings_language: "Language",
             settings_chug: "Chugs",
             settings_virus: "Virus",
             settings_social_posting: "Posts on socials",
             sip: "Sip",
+            sip_s: "sip(s)",
             settings_min_sip: "Minimum sip",
             settings_max_sip: "Maximum sip",
             settings_display: "Display (Picolito & Never Have I Ever)",
@@ -258,8 +262,14 @@ function setLanguageString() {
             settings_darkmode_light: "Bright theme",
             settings_darkmode_dark: "Dark theme",
             settings_information_highlight: "Information highlight",
+            settings_quotes_visualization: "Quotez visualization",
+            settings_quotes_visualization_none: "None",
+            settings_quotes_visualization_italic: "Italic",
+            settings_quotes_visualization_underline: "Underline",
+            settings_quotes_visualization_highlight: "Highlighted",
+            settings_quotes_visualization_black_on_white: "Black on white",
+            settings_quotes_visualization_white_on_black: "White on black",
             settings_animation: "Animations",
-            settings_landscape_mode: "Landscape mode",
             settings_debug_display: "Recap",
             settings_others: "Other",
             settings_delete_all_cookies: "Delete all cookies",
@@ -268,81 +278,63 @@ function setLanguageString() {
             settings_weakest_link: "Weakest Link",
             settings_weakest_link_tie: "Loser in the event of a tie vote",
             settings_weakest_link_tie_strongest_link: "The Strongest Link decides",
-            settings_weakest_link_tie_arbitrary: "Arbitrarily",
-            settings_weakest_link_tie_both: "Equal votes are all losers",
             settings_weakest_link_tie_weakest: "Statistics show the loser",
             settings_weakest_link_soundtrack: "Music",
             settings_weakest_link_max_chain: "Limit correct awnser chain",
             settings_weakest_link_max_chain_none: "No maximum",
             settings_weakest_hide_answer: "Display progressively",
-            settings_password: "Password",
-            settings_password_amount: "Number of words to be guessed",
-            settings_password_style: "Style",
-            settings_password_mode: "Gamemode (Password)",
-            settings_password_preview: "Preview",
             settings_credits: "Credits",
             gamemode: "Gamemode",
-            gamemode_picolo_title: "Picolo",
-            gamemode_default_title: "Getting Started - 🥴",
-            gamemode_default_subtitle_0: "The perfect way to start the party and add some fun to your night.",
-            gamemode_default_subtitle_1: "Get ready, picolo shows no mercy.",
-            gamemode_silly_title: "Getting Crazy - 🤪",
-            gamemode_silly_subtitle_0: "If you want the night to get even more ridiculous, this game is for you.",
-            gamemode_silly_subtitle_1: "Hope you've got a decent buzz going.",
-            gamemode_bar_title: "Bar - 🍻",
-            gamemode_bar_subtitle_0: "If you're ready to turn the bar upside down, this is the perfetect game.",
-            gamemode_bar_subtitle_1: "Be prepared to face ridicule.",
-            gamemode_hot_title: "Caliente - 🍆",
-            gamemode_hot_subtitle_0: "Time to get a little naughty.",
-            gamemode_hot_subtitle_1: "Be prepare to reveal your best-kept secrets",
-            gamemode_war_title: "War - 🌩",
-            gamemode_war_subtitle_0: "Friends, come together!",
-            gamemode_war_subtitle_1: "Show your opponents no mercy, for tonight is war!",
-            gamemode_war_minimum_requierement: "2 players at least.",
-            gamemode_never_title: "Never I have ever",
-            gamemode_never_popular: "Popular - ⭐",
-            gamemode_never_hot: "Dirty & Sex - 💋",
-            gamemode_never_party: "Party - 🎉",
-            gamemode_mix_title: "Mix - 🧪",
-            nav_menu_link_main: "À la une",
+            gamemode_picolo_war_minimum_requierement: "2 players at least.",
+            je_n_ai_jamais: "Never I have ever",
+            gamemode_mix: "Mix.",
+            gamemode_mix_subtitle: "Use multiple Picolito game modes at the same time.",
+            nav_menu_link_mix: "Mix",
             nav_menu_link_picolo: "Picolito",
-            nav_menu_link_never: "Je n'ai Jamais",
-            nav_menu_link_other: "Autre",
-            gamemode_mix_subtitle_0: "Shuffle Everythiiiing! Picolito... is here.",
-            gamemode_mix_subtitle_1: "Picolito & Never I have ever",
+            nav_menu_link_never: "Never Have I Ever",
+            nav_menu_link_weakest_link: "Weakest Drink",
+            nav_menu_link_password: "Password",
             gamemode_weakest_link_title:"Weakest Link 🔗",
             gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye.",
-            gamemode_weakest_link_subtitle_2:"4 players min.",
             gamemode_title_password:"Password 💡",
             gamemode_password_subtitle_1:"One word can hide another",
             gamemode_password_subtitle_2:"Guess the word without saying it",
-            gamemode_title_tenzi:"Tenzi 🎲",
-            gamemode_tenzi_subtitle_1:"Rolling in the Deep -Adele",
+            gamemode_password_warning_1:"\"Password\" gamemode is now separated from Picolito.",
+            gamemode_password_warning_2:"Find it on his own GitHub project and page",
 
             weakest_link_rule_header: "Weakest Link",
             weakest_link_rule_1: "Players answer questions consecutively and correctly for 60s.",
             weakest_link_rule_3: "A single wrong answer drops the chain to 0, to save the chain, it is possible to say \"bank\" after your name but before the question.",
             weakest_link_rule_2: "At the end, players vote against the weakest link who will be given the number of questions in the bank.",
             weakest_link_rule_4: "Ready? Let's play The Weakest Link",
-            password_rule_header: "Password",
-            password_rule_1: "Players guess the words displayed with the help of other words suggested by another player.",
-            password_rule_2: "Composed words, from the same family, which start the same and mimes are prohibited",
+            weakest_link_minimum_player_requierement: "require 2 players minimum.",
 
-            gamemode_other: "Other",
-            lang_fr: "French",
-            lang_da: "Danish",
-            lang_de: "German",
+            weakest_link_tie_behaviour_strongest_link_decides: "strongest link decides.",
+            weakest_link_tie_behaviour_text_is_weakest_link: "is defined as the weakest link according to the system.",
+            weakest_link_tie_behaviour_randomly_selected: "will be randomly selected as the weakest link if the votes don't define the weakest link.",
+
+            weakest_link_vote_useful_bank: "Useful \"bank\"",
+            weakest_link_vote_useless_bank: "Useless \"bank\"",
+            weakest_link_vote_saved_in_bank: "Saved in bank",
+            weakest_link_vote_correct: "Correct",
+            weakest_link_vote_potential_chain_lost: "Potential chain lost",
+            weakest_link_vote_wrong: "Wrong",
+
+            other: "Other",
+            lang_fr: "Français",
+            lang_da: "Dansk",
+            lang_de: "Deutsch",
             lang_en: "English",
-            lang_es: "Spanish",
-            lang_fi: "Finlandais",
-            lang_it: "Italien",
-            lang_ja: "Japonais",
-            lang_ko: "Coréen",
-            lang_nb: "Novégien",
-            lang_nl: "Néerlandais",
-            lang_pt: "Portugais",
-            lang_ru: "Russe",
-            lang_sv: "Suédois",
+            lang_es: "Español",
+            lang_fi: "Suomalainen",
+            lang_it: "Italiano",
+            lang_ja: "日本語",
+            lang_ko: "한국인",
+            lang_nb: "Novegian",
+            lang_nl: "Nederlands",
+            lang_pt: "Português",
+            lang_ru: "Русский",
+            lang_sv: "Svensk",
         }
     }
 }
@@ -407,22 +399,12 @@ function updateHTMLLanguageStrings() {
 
     document.getElementById("text_ingame_title").innerText = global.current_language_strings.virus
     
-    document.getElementById("nav_menu_link_main").innerHTML = global.current_language_strings.nav_menu_link_main;
+    document.getElementById("nav_menu_link_mix").innerHTML = global.current_language_strings.nav_menu_link_mix;
     document.getElementById("nav_menu_link_picolo").innerHTML = global.current_language_strings.nav_menu_link_picolo;
     document.getElementById("nav_menu_link_never").innerHTML = global.current_language_strings.nav_menu_link_never;
-    document.getElementById("nav_menu_link_other").innerHTML = global.current_language_strings.nav_menu_link_other;
-    document.getElementById("gamemode_option_default").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_silly").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_bar").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_hot").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_war").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_password").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_never_popular").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_never_hot").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_never_party").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_weakest_link").innerHTML = global.current_language_strings.launch;
-    document.getElementById("gamemode_option_tenzi").innerHTML = global.current_language_strings.launch;
-
+    document.getElementById("nav_menu_link_weakest_link").innerHTML = global.current_language_strings.nav_menu_link_weakest_link;
+    document.getElementById("nav_menu_link_password").innerHTML = global.current_language_strings.nav_menu_link_password;
+    
     document.getElementById("text_prevention_panel").innerHTML = global.current_language_strings.prevention_panel;
 
     document.getElementById("text_menu_lang_fr").innerHTML = global.current_language_strings.lang_fr;
@@ -444,9 +426,6 @@ function updateHTMLLanguageStrings() {
     document.getElementById("modal_sentence_modifier_end_debug").innerHTML = global.current_language_strings.modal_sentence_modifier_end_debug;
     document.getElementById("modal_sentence_modifier_next_button").innerHTML = global.current_language_strings.next_sentence;
     document.getElementById("modal_sentence_modifier_modify_button").innerHTML = global.current_language_strings.modify;
-    
-    document.getElementById("text_modal_password_preview_title").innerHTML = global.current_language_strings.modal_password_preview_title;
-    document.getElementById("text_modal_password_preview_text").innerHTML = global.current_language_strings.modal_password_preview_text;
 
     document.getElementById("modal_sentence_list_title").innerHTML = global.current_language_strings.modal_sentence_list_title;
 
@@ -455,20 +434,27 @@ function updateHTMLLanguageStrings() {
     document.getElementById("menu_player_switch_team_mode_alert").innerHTML = global.current_language_strings.team_mode_alert;
     document.getElementById("menu_player_team_name_title").innerHTML = global.current_language_strings.team_name;
     
-    document.getElementById("text_modal_external_db_link").innerHTML = global.current_language_strings.external_db_link;
-    document.getElementById("text_modal_external_db_list").innerHTML = global.current_language_strings.external_db_list;
-    document.getElementById("external_db_input").placeholder = global.current_language_strings.external_db_link;
-    document.getElementById("modal_external_db_download_template").innerHTML = global.current_language_strings.external_db_download_template;
-    document.getElementById("text_modal_external_db_link_disclaimer").innerHTML = global.current_language_strings.external_db_disclaimer;
 
-    document.getElementById("picolito_settings_collapse_header").innerHTML = global.current_language_strings.settings;
+    document.getElementById("text_show_only_current_language_db").innerHTML = global.current_language_strings.show_only_current_language_db;
+    document.getElementById("text_modal_external_db_link").innerHTML = global.current_language_strings.databases;
+    document.getElementById("external_db_input").placeholder = global.current_language_strings.external_db_link;
+    document.getElementById("text_db_manager_db_manager").innerHTML = global.current_language_strings.db_manager_db_list;
+    document.getElementById("text_db_manager_text_list").innerHTML = global.current_language_strings.db_manager_text_list;
+    document.getElementById("text_db_import_url").innerHTML = global.current_language_strings.external_db_import_link;
+    document.getElementById("text_db_import_file").innerHTML = global.current_language_strings.external_db_import_file;
+    document.getElementById("text_db_manager_model").innerHTML = global.current_language_strings.db_manager_text_model;
+    document.getElementById("modal_external_db_download_picolo_template").innerHTML = global.current_language_strings.external_db_download_picolo_template;
+    document.getElementById("modal_external_db_download_je_n_ai_jamais_template").innerHTML = global.current_language_strings.external_db_download_je_n_ai_jamais_template;
+
     document.getElementById("text_modal_settings").innerHTML = global.current_language_strings.settings;
-    document.getElementById("text_settings_picolo").innerHTML = global.current_language_strings.settings_picolo;
+    document.getElementById("text_settings_picolo").innerHTML = global.current_language_strings.picolo;
     document.getElementById("text_settings_chug").innerHTML = global.current_language_strings.settings_chug;
     document.getElementById("text_settings_virus").innerHTML = global.current_language_strings.settings_virus;
     document.getElementById("text_settings_social").innerHTML = global.current_language_strings.settings_social_posting;
     document.getElementById("text_settings_min_sip").innerHTML = global.current_language_strings.settings_min_sip;
+    document.getElementById("text_settings_sip_min").innerHTML = global.current_language_strings.sip_s;
     document.getElementById("text_settings_max_sip").innerHTML = global.current_language_strings.settings_max_sip;
+    document.getElementById("text_settings_sip_max").innerHTML = global.current_language_strings.sip_s;
     document.getElementById("text_settings_display").innerHTML = global.current_language_strings.settings_display;
     document.getElementById("text_settings_language").innerHTML = global.current_language_strings.settings_language;
     document.getElementById("text_settings_dark_theme").innerHTML = global.current_language_strings.settings_dark_theme;
@@ -476,8 +462,14 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_settings_darkmode_light").innerHTML = global.current_language_strings.settings_darkmode_light;
     document.getElementById("text_settings_darkmode_dark").innerHTML = global.current_language_strings.settings_darkmode_dark;
     document.getElementById("text_settings_information_highlight").innerHTML = global.current_language_strings.settings_information_highlight;
+    document.getElementById("text_settings_quotes_visualization").innerHTML = global.current_language_strings.settings_quotes_visualization;
+    document.getElementById("text_settings_quotes_visualization_none").innerHTML = global.current_language_strings.settings_quotes_visualization_none;
+    document.getElementById("text_settings_quotes_visualization_italic").innerHTML = global.current_language_strings.settings_quotes_visualization_italic;
+    document.getElementById("text_settings_quotes_visualization_underline").innerHTML = global.current_language_strings.settings_quotes_visualization_underline;
+    document.getElementById("text_settings_quotes_visualization_highlight").innerHTML = global.current_language_strings.settings_quotes_visualization_highlight;
+    document.getElementById("text_settings_quotes_visualization_white_on_black").innerHTML = global.current_language_strings.settings_quotes_visualization_white_on_black;
+    document.getElementById("text_settings_quotes_visualization_black_on_white").innerHTML = global.current_language_strings.settings_quotes_visualization_black_on_white;
     document.getElementById("text_settings_animation").innerHTML = global.current_language_strings.settings_animation;
-    document.getElementById("text_settings_landscape").innerHTML = global.current_language_strings.settings_landscape_mode;
     document.getElementById("text_settings_others").innerHTML = global.current_language_strings.settings_others;
     document.getElementById("text_settings_save_settings").innerHTML = global.current_language_strings.settings_save_settings;
     document.getElementById("text_settings_delete_cookies").innerHTML = global.current_language_strings.settings_delete_all_cookies;
@@ -486,67 +478,38 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_settings_weakest_link").innerHTML = global.current_language_strings.settings_weakest_link;
     document.getElementById("text_settings_weakest_link_tie").innerHTML = global.current_language_strings.settings_weakest_link_tie;
     document.getElementById("text_settings_weakest_link_tie_strongest_link").innerHTML = global.current_language_strings.settings_weakest_link_tie_strongest_link;
-    document.getElementById("text_settings_weakest_link_tie_arbitrary").innerHTML = global.current_language_strings.settings_weakest_link_tie_arbitrary;
-    document.getElementById("text_settings_weakest_link_tie_both").innerHTML = global.current_language_strings.settings_weakest_link_tie_both;
     document.getElementById("text_settings_weakest_link_tie_weakest").innerHTML = global.current_language_strings.settings_weakest_link_tie_weakest;
     document.getElementById("text_input_weakest_link_soundtrack").innerHTML = global.current_language_strings.settings_weakest_link_soundtrack;
     document.getElementById("text_settings_weakest_link_max_chain").innerHTML = global.current_language_strings.settings_weakest_link_max_chain;
     document.getElementById("input_weakest_link_max_chain_none").innerHTML = global.current_language_strings.settings_weakest_link_max_chain_none;
-    document.getElementById("text_input_weakest_hide_answer").innerHTML = global.current_language_strings.settings_weakest_hide_answer;
 
-    document.getElementById("text_settings_password").innerHTML = global.current_language_strings.settings_password;
-    document.getElementById("text_settings_password_amount").innerHTML = global.current_language_strings.settings_password_amount;
-    document.getElementById("text_settings_password_style").innerHTML = global.current_language_strings.settings_password_style;
-    document.getElementById("text_settings_password_preview").innerHTML = global.current_language_strings.settings_password_preview;
     document.getElementById("text_settings_credits").innerHTML = global.current_language_strings.settings_credits;
 
-    document.getElementById("text_gamemode_title_default").innerHTML = global.current_language_strings.gamemode_default_title;
-    document.getElementById("text_gamemode_default_subtitle_0").innerHTML = global.current_language_strings.gamemode_default_subtitle_0;
-    document.getElementById("text_gamemode_default_subtitle_1").innerHTML = global.current_language_strings.gamemode_default_subtitle_1;
-    document.getElementById("text_gamemode_title_silly").innerHTML = global.current_language_strings.gamemode_silly_title;
-    document.getElementById("text_gamemode_silly_subtitle_0").innerHTML = global.current_language_strings.gamemode_silly_subtitle_0;
-    document.getElementById("text_gamemode_silly_subtitle_1").innerHTML = global.current_language_strings.gamemode_silly_subtitle_1;
-    document.getElementById("text_gamemode_title_bar").innerHTML = global.current_language_strings.gamemode_bar_title;
-    document.getElementById("text_gamemode_bar_subtitle_0").innerHTML = global.current_language_strings.gamemode_bar_subtitle_0;
-    document.getElementById("text_gamemode_bar_subtitle_1").innerHTML = global.current_language_strings.gamemode_bar_subtitle_1;
-    document.getElementById("text_gamemode_title_hot").innerHTML = global.current_language_strings.gamemode_hot_title;
-    document.getElementById("text_gamemode_hot_subtitle_0").innerHTML = global.current_language_strings.gamemode_hot_subtitle_0;
-    document.getElementById("text_gamemode_hot_subtitle_1").innerHTML = global.current_language_strings.gamemode_hot_subtitle_1;
-    document.getElementById("text_gamemode_title_war").innerHTML = global.current_language_strings.gamemode_war_title;
-    document.getElementById("text_gamemode_war_subtitle_0").innerHTML = global.current_language_strings.gamemode_war_subtitle_0;
-    document.getElementById("text_gamemode_war_subtitle_1").innerHTML = global.current_language_strings.gamemode_war_subtitle_1;
-    document.getElementById("text_gamemode_war_minimum_requierement").innerHTML = global.current_language_strings.gamemode_war_minimum_requierement;
+    document.getElementById("text_gamemode_picolo").innerHTML = global.current_language_strings.picolo;
+    // document.getElementById("text_gamemode_picolo_war_minimum_requierement").innerHTML = global.current_language_strings.gamemode_picolo_war_minimum_requierement;
 
-    document.getElementById("text_gamemode_title_never_popular").innerHTML = global.current_language_strings.gamemode_never_popular;
-    document.getElementById("text_gamemode_title_never_hot").innerHTML = global.current_language_strings.gamemode_never_hot;
-    document.getElementById("text_gamemode_title_never_party").innerHTML = global.current_language_strings.gamemode_never_party;
+    document.getElementById("gamemode_picolo_db_list").innerHTML = global.current_language_strings.loading;
 
-    document.getElementById("text_gamemode_mix_title").innerHTML = global.current_language_strings.gamemode_mix_title;
-    document.getElementById("text_gamemode_mix_subtitle_0").innerHTML = global.current_language_strings.gamemode_mix_subtitle_0;
-    document.getElementById("text_gamemode_mix_subtitle_1").innerHTML = global.current_language_strings.gamemode_mix_subtitle_1;
+    document.getElementById("text_gamemode_je_n_ai_jamais").innerHTML = global.current_language_strings.je_n_ai_jamais;
+
+    document.getElementById("text_gamemode_mix").innerHTML = global.current_language_strings.gamemode_mix;
+    document.getElementById("text_gamemode_mix_subtitle").innerHTML = global.current_language_strings.gamemode_mix_subtitle;
     document.getElementById("button_update_mix_gamemode_list").innerHTML = global.current_language_strings.next;
-
-    document.getElementById("text_custom_mix_gamemode_picolo_section").innerHTML = global.current_language_strings.gamemode_picolo_title;
-    document.getElementById("text_custom_mix_gamemode_default").innerHTML = global.current_language_strings.gamemode_default_title;
-    document.getElementById("text_custom_mix_gamemode_silly").innerHTML = global.current_language_strings.gamemode_silly_title;
-    document.getElementById("text_custom_mix_gamemode_bar").innerHTML = global.current_language_strings.gamemode_bar_title;
-    document.getElementById("text_custom_mix_gamemode_hot").innerHTML = global.current_language_strings.gamemode_hot_title;
-    document.getElementById("text_custom_mix_gamemode_never_section").innerHTML = global.current_language_strings.gamemode_never_title;
-    document.getElementById("text_custom_mix_gamemode_never_popular").innerHTML = global.current_language_strings.gamemode_never_popular;
-    document.getElementById("text_custom_mix_gamemode_never_hot").innerHTML = global.current_language_strings.gamemode_never_hot;
-    document.getElementById("text_custom_mix_gamemode_never_party").innerHTML = global.current_language_strings.gamemode_never_party;
+    document.getElementById("gamodemode_mix_section_title_picolo").innerHTML = global.current_language_strings.picolo;
+    document.getElementById("gamodemode_mix_section_title_je_n_ai_jamais").innerHTML = global.current_language_strings.je_n_ai_jamais;
 
     document.getElementById("text_gamemode_weakest_link_title").innerHTML = global.current_language_strings.gamemode_weakest_link_title;
     document.getElementById("text_gamemode_weakest_link_subtitle_1").innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_1;
-    document.getElementById("text_gamemode_weakest_link_subtitle_2").innerHTML = global.current_language_strings.gamemode_weakest_link_subtitle_2;
+    document.getElementById("text_gamemode_weakest_link_minimum_requirement").innerHTML = global.current_language_strings.weakest_link_minimum_requierement;
+    document.getElementById("button_gamemode_weakest_link_start").innerHTML = global.current_language_strings.start;
 
     document.getElementById("text_gamemode_title_password").innerHTML = global.current_language_strings.gamemode_title_password;
     document.getElementById("text_gamemode_password_subtitle_1").innerHTML = global.current_language_strings.gamemode_password_subtitle_1;
     document.getElementById("text_gamemode_password_subtitle_2").innerHTML = global.current_language_strings.gamemode_password_subtitle_2;
+    document.getElementById("text_gamemode_password_visit").innerHTML = global.current_language_strings.visit_website;
+    document.getElementById("text_gamemode_password_warning_1").innerHTML = global.current_language_strings.gamemode_password_warning_1;
+    document.getElementById("text_gamemode_password_warning_2").innerHTML = global.current_language_strings.gamemode_password_warning_2;
     
-    document.getElementById("text_gamemode_title_tenzi").innerHTML = global.current_language_strings.gamemode_title_tenzi;
-    document.getElementById("text_gamemode_tenzi_subtitle_1").innerHTML = global.current_language_strings.gamemode_tenzi_subtitle_1;
-
     document.getElementById("text_game_quit_topbar").innerHTML = global.current_language_strings.quit;
     document.getElementById("text_game_ready").innerHTML = global.current_language_strings.ready;
     document.getElementById("text_game_start_button").innerHTML = global.current_language_strings.start;
@@ -563,12 +526,6 @@ function updateHTMLLanguageStrings() {
     document.getElementById("text_weakest_link_rule_2").innerHTML = global.current_language_strings.weakest_link_rule_2;
     document.getElementById("text_weakest_link_rule_4").innerHTML = global.current_language_strings.weakest_link_rule_4;
 
-    document.getElementById("text_password_rule_header").innerHTML = global.current_language_strings.password_rule_header;
-    document.getElementById("text_password_rule_1").innerHTML = global.current_language_strings.password_rule_1;
-    document.getElementById("text_password_rule_2").innerHTML = global.current_language_strings.password_rule_2;
-    document.getElementById("text_password_option").innerHTML = global.current_language_strings.settings_password_amount;
-    document.getElementById("text_game_restart_password").innerHTML = global.current_language_strings.restart;
-
     document.getElementById("text_gamemode_menu").title = global.current_language_strings.gamemode;
     
     document.getElementById("ingame_weakest_link_text_sip").innerHTML = global.current_language_strings.weakest_link_sip;
@@ -577,8 +534,7 @@ function updateHTMLLanguageStrings() {
     document.getElementById("ingame_weakest_link_current_button_correct").innerHTML = global.current_language_strings.weakest_link_correct;
     document.getElementById("ingame_weakest_link_current_button_wrong").innerHTML = global.current_language_strings.weakest_link_wrong;
     document.getElementById("ingame_weakest_link_current_button_bank").innerHTML = global.current_language_strings.weakest_link_bank;
+    document.getElementById("text_weakest_link_game_ended").innerHTML = global.current_language_strings.end_game;
 
-    document.getElementById("text_weakest_link_next_player_prepare_voting").innerHTML = global.current_language_strings.weakest_link_prepare_vote;
-    document.getElementById("button_weakest_link_next_vote").innerHTML = global.current_language_strings.next;
-    document.getElementById("text_weakest_link_current_player_voting").innerHTML = global.current_language_strings.weakest_link_vote_against;
+    refreshDBList()
 }

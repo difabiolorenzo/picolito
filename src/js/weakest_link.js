@@ -1,416 +1,387 @@
+// MAILLON FAIBLE v2
+
+// function functionPromesse() {
+//   return new Promise((resolve) => {
+//     console.log("functionPromesse résolue")
+//   });
+// }
+
+// async function asyncCall() {
+//   console.log("functionPromesse");
+//   const result = await functionPromesse();
+//   console.log(result);
+// }
+
+// asyncCall();
+
 function initWeakestLink() {
-    // LA PLUPART DES REFENCES A DES IDENTIFIANTS POUR GERER LES JOUEURS NE REFLETENT PAS game.player_list
-    // MAIS UNE VERSION DES IDENTIFIANTS TRIES ALPHABETIQUEMENT
-    // EXEMPLE : game.player_list = ["Be", "Re", "Ar"]
-    // LES IDENTIFIANTS UTILISER SERONT 0 POUR DESIGNER "Ar", 1 pour "Be", 2 pour "Re" (RESPECTIVEMENT 2, 0 et 1)
-    // SOLUTION game.player_list[game.weakest_link.player_id_alphabetically_sorted[x]]
-    
-    ingame_weakest_link_current_player.style.display = ""
-    ingame_weakest_link_score_sip.innerHTML = "-"
-    ingame_weakest_link_score_bank.innerHTML = "-"
-    ingame_weakest_link_current_player.innerHTML = "-";
+    // Efface la base latente
+    game.pending_db = [];
 
-    if (game.player_list.length < 2) {
-            alert("nb player 0-1")
-            manageIngameOptionDisplay(false, 'weakest_link', 'flex')
-            ingame_weakest_link_current_player.style.display = "none"
-    } else {
-        manageIngameOptionDisplay(false, 'weakest_link', 'flex')
+    testStoredDatabase({bdd_id: "maillon_faible_fr", source: "vanilla"});
+    game.database = TAFFY(game.pending_db[0].db);
+    
+    displayPage("weakest_link");
+
+    game.weakest_link.player_list = game.player_list
+        .map(player => ({ player_name: player.player_name, team: player.team }))
+        .sort((a, b) => a.player_name.localeCompare(b.player_name, "fr", { sensitivity: "base" }));
+    game.weakest_link.current_player_index = 0;
+
+    for (let i in game.weakest_link.player_list) {
+        let player = game.weakest_link.player_list[i];
+
+        player.useful_bank = 0;
+        player.useless_bank = 0;
+        player.saved_in_bank = 0;
+        player.correct = 0;
+        player.potential_chain_lost = 0;
+        player.wrong = 0;
     }
 
-    game.weakest_link.player_turn_index = -1;
-    game.weakest_link.analytics_correct = 0;
-    game.weakest_link.analytics_wrong = 0;
-    game.weakest_link.analytics_potential_chain_lost = 0;
-    // game.weakest_link.player_id_played = [];
-    
-    game.weakest_link.vote = []
+    game.weakest_link.current_player_index = 0;
+    game.weakest_link.chain = 0;
+    game.weakest_link.bank = 0;
 
-    game.weakest_link.player_analytics.correct = [];
-    game.weakest_link.player_analytics.wrong = [];
-    game.weakest_link.player_analytics.bank_saved = [];
-    game.weakest_link.player_analytics.potential_bank_lost = [];
-    game.weakest_link.player_analytics.answer_time = [];
-    game.weakest_link.player_analytics.average_answer_time = []; 
-
-    for (var i = 0; i < game.player_list.length; i++) {
-        game.weakest_link.player_analytics.correct.push(0)
-        game.weakest_link.player_analytics.wrong.push(0)
-        game.weakest_link.player_analytics.bank_saved.push(0)
-        game.weakest_link.player_analytics.potential_bank_lost.push(0)
-        game.weakest_link.player_analytics.answer_time.push([0])
-    }
-    
-    // date to compare how fast first question is awnsered
-    game.weakest_link.time_game_started = new Date();
-
-    game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.concat(game.player_list);
-    game.weakest_link.alphabetically_ordered_player = game.weakest_link.alphabetically_ordered_player.sort()
-
-    game.weakest_link.player_id_alphabetically_sorted = game.player_list.map((_, index) => index).sort((a, b) => game.player_list[a].localeCompare(game.player_list[b]));
-
-    weakestLinkNextPlayer()
-
-    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
-    ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
-    
-    game.weakest_link.current_time = game.weakest_link.time + 5;
-
-    weakestLinkCalcTime();
-    weakestLinkChrono()
-    if (game.weakest_link.time == 60) { playsound("weakest_link_amb_60") }
-
-    game.weakest_link.weakestLinkTimer = setInterval(function() {weakestLinkChrono()}, 1000);
+    game.weakest_link.time = 60
 }
 
-function generateWeakestLink() {
+function quitWeakestLink() {
+    document.getElementById("weakest_link_content").classList.add("d-none")
+    document.getElementById("weakest_link_menu").classList.remove("d-none")
+    document.getElementById("weakest_link_stop_button").classList.add("d-none")
+
+    document.getElementById("weakest_link_content").classList.add("d-none")
+    document.getElementById("weakest_link_ending").classList.add("d-none")
+
+    clearInterval(weakestLinkTimer)
+}
+
+function startWeakestLink() {
+    // affichage
+    document.getElementById("weakest_link_content").classList.remove("d-none")
+    document.getElementById("weakest_link_menu").classList.add("d-none")
+    document.getElementById("weakest_link_stop_button").classList.remove("d-none")
+    document.getElementById("weakest_link_content").classList.remove("d-none")
+
+    // score et temps
+    document.getElementById("ingame_weakest_link_score_sip").innerHTML = game.weakest_link.chain;
+    document.getElementById("ingame_weakest_link_score_bank").innerHTML = game.weakest_link.bank;
+    document.getElementById("ingame_weakest_link_time").innerHTML = "0:00";
+
+    // question
+    generateWeakestLinkSentence()
+
+    // chrono    
+    game.weakest_link.current_time = game.weakest_link.time ;
+    weakestLinkCalcTime();
+    // if (game.weakest_link.time == 60) { playsound("weakest_link_amb_60") }
+    weakestLinkTimer = setInterval(function() { weakestLinkChrono() }, 1000);
+    
+    weakestLinkNextPlayer()
+}
+
+function endWeakestLink() {
+    document.getElementById("weakest_link_content").classList.add("d-none");
+    document.getElementById("weakest_link_ending").classList.remove("d-none");
+
+    weakestLinkChangeNameShield("", false)
+    endWeakestLinkAnalytics();
+    calculateWeakestAndStrongestLinks();
+    getLooserByAnalyticsWeakestLink();
+}
+
+function calculateWeakestAndStrongestLinks() {
+    // Le tri doit se faire sur le nombre de bonnes réponses, puis sur les réponses utiles en banque, 
+    // puis sur les réponses sauvées en banque, puis sur les réponses inutiles en banque, 
+    // puis sur les réponses potentiellement perdues, puis sur les mauvaises réponses
+    const players = game.weakest_link.player_list;
+    
+    if (!players || players.length === 0) {
+        return;
+    }
+
+    // Réinitialisation des flags
+    players.forEach(p => {
+        p.is_weakest_link = false;
+        p.is_strongest_link = false;
+    });
+
+    // Cas spécial : un seul joueur
+    if (players.length === 1) {
+        players[0].is_weakest_link = true;
+        players[0].is_strongest_link = true;
+        return;
+    }
+
+    // ==================== MAILLON FAIBLE ====================
+    let weakest_ref = players.reduce((min, player) => {
+        if (player.correct < min.correct) return player;
+        if (player.correct > min.correct) return min;
+
+        if (player.useful_bank < min.useful_bank) return player;
+        if (player.useful_bank > min.useful_bank) return min;
+
+        if (player.saved_in_bank < min.saved_in_bank) return player;
+        if (player.saved_in_bank > min.saved_in_bank) return min;
+
+        if (player.useless_bank > min.useless_bank) return player;
+        if (player.useless_bank < min.useless_bank) return min;
+
+        if (player.potential_chain_lost > min.potential_chain_lost) return player;
+        if (player.potential_chain_lost < min.potential_chain_lost) return min;
+
+        if (player.wrong > min.wrong) return player;
+        // égalité totale → on garde le min actuel
+        return min;
+    });
+
+    // ==================== MAILLON FORT ====================
+    let strongest_ref = players.reduce((max, player) => {
+        if (player.correct > max.correct) return player;
+        if (player.correct < max.correct) return max;
+
+        if (player.useful_bank > max.useful_bank) return player;
+        if (player.useful_bank < max.useful_bank) return max;
+
+        if (player.saved_in_bank > max.saved_in_bank) return player;
+        if (player.saved_in_bank < max.saved_in_bank) return max;
+
+        if (player.useless_bank < max.useless_bank) return player;
+        if (player.useless_bank > max.useless_bank) return max;
+
+        if (player.potential_chain_lost < max.potential_chain_lost) return player;
+        if (player.potential_chain_lost > max.potential_chain_lost) return max;
+
+        if (player.wrong < max.wrong) return player;
+        // égalité totale → on garde le max actuel
+        return max;
+    });
+
+    // ==================== MARQUAGE DES ÉGALITÉS ====================
+    players.forEach(player => {
+        // Maillon faible : tous ceux qui ont exactement les mêmes stats que weakest_ref
+        if (player.correct === weakest_ref.correct &&
+            player.useful_bank === weakest_ref.useful_bank &&
+            player.saved_in_bank === weakest_ref.saved_in_bank &&
+            player.useless_bank === weakest_ref.useless_bank &&
+            player.potential_chain_lost === weakest_ref.potential_chain_lost &&
+            player.wrong === weakest_ref.wrong) {
+            player.is_weakest_link = true;
+        }
+
+        // Maillon fort : tous ceux qui ont exactement les mêmes stats que strongest_ref
+        if (player.correct === strongest_ref.correct &&
+            player.useful_bank === strongest_ref.useful_bank &&
+            player.saved_in_bank === strongest_ref.saved_in_bank &&
+            player.useless_bank === strongest_ref.useless_bank &&
+            player.potential_chain_lost === strongest_ref.potential_chain_lost &&
+            player.wrong === strongest_ref.wrong) {
+            player.is_strongest_link = true;
+        }
+    });
+}
+
+function getLooserByAnalyticsWeakestLink() {
+    const weakest_players = game.weakest_link.player_list.filter(p => p.is_weakest_link);
+    const strongest_players = game.weakest_link.player_list.filter(p => p.is_strongest_link);
+
+    const tie_behaviour = game.weakest_link.tie_behaviour;
+
+    function strongestLinkBehaviour() {
+        const player = strongest_players[0]; // on sait que length === 1 grâce au if
+        document.getElementById("text_weakest_link_tie_beaviour_rule").innerHTML = 
+            `${player.player_name}, ${global.current_language_strings.weakest_link_tie_behaviour_strongest_link_decides}`;
+        console.log("strongest link behaviour applied", player.player_name);
+    }
+
+    function weakestLinkBehaviour() {
+        const player = weakest_players[0]; // on sait que length === 1 grâce au if
+        document.getElementById("text_weakest_link_tie_beaviour_rule").innerHTML = 
+            `${player.player_name} ${global.current_language_strings.weakest_link_tie_behaviour_text_is_weakest_link}`;
+        console.log("weakest link behaviour applied", player.player_name);
+    }
+
+    function randomWeakestLinkPlayer() {
+        const random_index = Math.floor(Math.random() * weakest_players.length);
+        const selected_player = weakest_players[random_index];
+        document.getElementById("text_weakest_link_tie_beaviour_rule").innerHTML = 
+            `${selected_player.player_name} ${global.current_language_strings.weakest_link_tie_behaviour_randomly_selected}`;
+        console.log("random weakest link player selected", selected_player.player_name);
+    }
+
+    if (tie_behaviour === "strongest_link" && strongest_players.length == 1) {
+        strongestLinkBehaviour();
+        return;
+    }
+    if (tie_behaviour === "weakest" && weakest_players.length == 1) {
+        weakestLinkBehaviour();
+        return;
+    }
+    
+    randomWeakestLinkPlayer()
+}
+
+function endWeakestLinkAnalytics() {
+    const analytics_element = document.getElementById("weakest_link_analytics")
+    analytics_element.innerHTML = ""
+
+    for (let i in game.weakest_link.player_list) {
+        let player = game.weakest_link.player_list[i];
+        let status = "text-muted";
+        
+        if (player.is_weakest_link) { status = "text-danger"; }
+        if (player.is_strongest_link) { status = "text-success"; }
+
+        analytics_element.innerHTML += `<div class="
+        col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+            <div class="card text-black p-3">
+                <h3 class="fw-bold ${status}">${player.player_name}</h3>
+                <span>${global.current_language_strings.weakest_link_vote_correct} : <span class="fw-bold text-success">${player.correct}</span></span>
+                
+                <span>${global.current_language_strings.weakest_link_vote_useful_bank} : <span class="fw-bold text-success">${player.useful_bank}</span></span>
+                <span>${global.current_language_strings.weakest_link_vote_useless_bank} : <span class="fw-bold">${player.useless_bank}</span></span>
+                <span>${global.current_language_strings.weakest_link_vote_saved_in_bank} : <span class="fw-bold text-success">${player.saved_in_bank}</span></span>
+                
+                <span>${global.current_language_strings.weakest_link_vote_potential_chain_lost} : <span class="fw-bold text-danger">${player.potential_chain_lost}</span></span>
+                <span>${global.current_language_strings.weakest_link_vote_wrong} : <span class="fw-bold text-danger">${player.wrong}</span></span>
+            </div>
+        </div>`
+    }
+}
+
+function generateWeakestLinkSentence() {
+    let random_int = "";
+    let database_id = "";
+    let question = "";
+    let reponse = "";
+
+    // Tirage de la question/réponse
     function getRandomSentence() {
-        var random_int = Math.floor(Math.random() * Math.floor(request.length));
+        random_int = Math.floor(Math.random() * Math.floor(request.length));
         database_id = request[random_int].___id;
-        formatted_sentence = request[random_int].text;
-        answer = request[random_int].answer;
-        pack_name = request[random_int].pack_name;
-        if (request[random_int].key != "") { key = request[random_int].key; }
+        question = request[random_int].question;
+        reponse = request[random_int].reponse;
 
         //remove sentence from db
         game.database().filter({ ___id: database_id }).remove();
     }
 
-    var request = game.database().get();
+    // Lancement
+    let request = game.database().get();
     getRandomSentence()
 
-    setBackgroundStyleColor("weakest_link");
-    displaySentence(formatted_sentence, "weakest_link", pack_name, answer);
-    addHistoryItem(0, database_id, undefined, undefined, formatted_sentence, undefined, undefined, "dark_blue", pack_name, answer);
-}
-    
-function weakestLinkCorrect() {
-    game.weakest_link.chain++;
-
-    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
-
-    game.weakest_link.analytics_correct++;
-    game.weakest_link.player_analytics.correct[game.weakest_link.player_turn_index]++;
-
-    weakestLinkTimestampStep()
-
-    weakestLinkNextPlayer();
-    nextSentence();
-}
-
-function weakestLinkWrong() {
-    //todo supp analytics_wrong pour une somme global en fin de jeu
-    game.weakest_link.analytics_wrong++;
-    game.weakest_link.player_analytics.wrong[game.weakest_link.player_turn_index]++;
-    game.weakest_link.player_analytics.potential_bank_lost[game.weakest_link.player_turn_index] += game.weakest_link.chain;
-    game.weakest_link.analytics_potential_chain_lost += game.weakest_link.chain;
-
-    game.weakest_link.chain = 0;
-    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
-
-    weakestLinkTimestampStep()
-    weakestLinkNextPlayer()
-    nextSentence()
-}
-
-function weakestLinkDisplayAnswer() {
-    ingame_answer.classList.remove("answer-hided");
-}
-
-function weakestLinkBank() {
-    game.weakest_link.player_analytics.bank_saved[game.weakest_link.player_turn_index] += game.weakest_link.chain;
-    
-    game.weakest_link.bank += game.weakest_link.chain;
-    game.weakest_link.chain = 0
-
-    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
-    ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
-
-    if (game.weakest_link.stop_at_max_chain == true && game.weakest_link.bank >= game.weakest_link.max_chain) {
-        stopsound("weakest_link_amb_60");playsound("weakest_link_amb_end")
-        weakestLinkEndQuestion()
-    }
-}
-
-function weakestLinkTimestampStep() {
-    if (game.player_list.length > 2) {
-        function weakestLinkCompareTimestamp(date_1, date_2) {
-            var diff_time = Math.abs(date_2 - date_1);
-            return diff_time;
-        }
-        
-        var timestamp = new Date()
-        game.sentence_history[game.cycle_id].timestamp = timestamp
-    
-        if (game.cycle_id > 0) {
-            var previous_sentence_timestamp = game.sentence_history[game.cycle_id-1].timestamp
-            var diff_time_calculated = weakestLinkCompareTimestamp(previous_sentence_timestamp, timestamp)
-            game.weakest_link.player_analytics.answer_time[game.weakest_link.player_turn_index].push(diff_time_calculated)
-        } else {
-            var diff_time_calculated = weakestLinkCompareTimestamp(game.weakest_link.time_game_started, timestamp)
-            game.weakest_link.player_analytics.answer_time[game.weakest_link.player_turn_index].push(diff_time_calculated)
-        }
-    }
-}
-
-function weakestLinkNextPlayer() {
-    if (game.player_list.length >= 2) {
-        if (game.weakest_link.player_turn_index+1 == game.player_list.length) {
-            game.weakest_link.player_turn_index = 0;
-        } else {
-            game.weakest_link.player_turn_index++
-        }
-        ingame_weakest_link_current_player.className = "weakest_link_shield_player"
-        
-        setTimeout(function() {
-            ingame_weakest_link_current_player.className = "weakest_link_shield_player changing_weakest_link_player"
-        }, 1)
-        setTimeout(function() {
-            ingame_weakest_link_current_player.innerHTML = game.weakest_link.alphabetically_ordered_player[game.weakest_link.player_turn_index].toUpperCase();
-        
-        }, 250)
-    }
-}
-
-function weakestLinkInitVote() {
-    game.weakest_link.player_vote_index = 0;
-    weakestLinkDisplayNextVote()
-    game.weakest_link.vote = [];
-
-    manageNavDisplay("quit",true)
-    manageNavDisplay("restart",true)
-    
-    game.weakest_link.vote_count = [];
-    for (var i = 0; i < game.player_list.length; i++) {
-        game.weakest_link.vote_count.push(0)
-    }
-}
-
-function weakestLinkDisplayVote() {
-    ingame_weakest_link_current_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[game.weakest_link.player_vote_index]
-    function weakestLinkUpdateBallotList() {
-            weakest_link_player_vote_ballot.innerHTML = ""
-            var ul_head = "";
-            var html_inner = "";
-    
-            for (var i = 0; i < game.weakest_link.alphabetically_ordered_player.length; i++) {
-                var player_name = game.weakest_link.alphabetically_ordered_player[i]
-                if (i != game.weakest_link.player_vote_index) {
-                    html_inner += `<li class="list-group-item sentence-list weakest-link-vote-button" onclick="weakestLinkVotePlayer(${i})">${player_name}</li>`;
-                }
-            }
-            weakest_link_player_vote_ballot.innerHTML = ul_head + html_inner + "</ul>";
-    }
-    weakestLinkUpdateBallotList()
-    manageIngameOptionDisplay(true, "weakest_link_vote", "flex")
-    manageIngameOptionDisplay(true, "weakest_link_next_vote", "none")
-}
-
-function weakestLinkVotePlayer(player_id) {
-    game.weakest_link.vote.push(player_id);
-    game.weakest_link.vote_count[player_id]++;
-
-    game.weakest_link.player_vote_index++;
-    if (game.weakest_link.player_vote_index < game.player_list.length) {
-        weakestLinkDisplayNextVote()
-    } else {
-        weakestLinkEndVoting()
-    }
-}
-
-function weakestLinkDisplayNextVote() {
-    manageIngameOptionDisplay(true, "weakest_link_vote", "none")
-    manageIngameOptionDisplay(true, "weakest_link_next_vote", "flex")
-    manageIngameOptionDisplay(true, "weakest_link_rule", "none");
-
-    var i = game.weakest_link.player_vote_index
-    ingame_weakest_link_next_player_voting.innerHTML = game.weakest_link.alphabetically_ordered_player[i]
-}
-
-function weakestLinkEndVoting() {
-    manageNavDisplay("quit",false);
-    manageNavDisplay("restart",false);
-
-    var highest_vote = 0;
-    var most_voted_player = []; //player_id
-    var tie = undefined;
-    var player_ratio = [] //id, ratio(correct-wrong),awnsering_time
-
-    for (var i = 0; i < game.weakest_link.vote.length; i++) {
-        //average_answer_time
-        var raw_average_anwser_time = game.weakest_link.player_analytics.answer_time[i]
-        var average_answer_time = raw_average_anwser_time.reduce((a, b) => a + b) / raw_average_anwser_time.length;
-        var average_anwser_time_sec = (average_answer_time-(average_answer_time%10)) / 1000;
-        game.weakest_link.player_analytics.average_answer_time.push(average_anwser_time_sec)
-
-        //vote count
-        var vote_count = game.weakest_link.vote_count[i]
-        if (vote_count > highest_vote) {
-            highest_vote = vote_count
-            most_voted_player = [];
-            most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
-            tie = undefined
-        } else if (vote_count == highest_vote && vote_count > 0) {
-            most_voted_player.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
-            var tie = true
-        }  
-        
-        //player ratio
-        player_ratio.push([i, game.weakest_link.player_analytics.correct[i] - game.weakest_link.player_analytics.wrong[i], game.weakest_link.player_analytics.average_answer_time[i], game.weakest_link.alphabetically_ordered_player[i]])
-    }
-    console.log(most_voted_player)
-
-    //ratio (give strongest_link, weakest_link(if_tie)) (Thx ChatGPT)
-    function sortPlayerWeakest(a, b) {
-        // Tri par nombre de points de manière décroissante
-        if (a[1] < b[1]) { return -1; } else if (a[1] > b[1]) { return 1; }
-        // En cas d'égalité des points, tri par temps de réponse de manière croissante
-        if (a[2] > b[2]) { return -1; } else if (a[2] < b[2]) { return 1; }
-        return null; // Les éléments sont égaux
-    }
-    function sortPlayerStrongest(a, b) {
-        // Tri par nombre de points de manière croissante
-        if (a[1] > b[1]) { return -1; } else if (a[1] < b[1]) { return 1; }
-        // En cas d'égalité des points, tri par temps de réponse de manière croissante
-        if (a[2] < b[2]) { return -1; } else if (a[2] > b[2]) { return 1; }
-        return null; // Les éléments sont égaux
-    }
-
-    var player_ratio_sorted = [];
-    player_ratio_sorted = player_ratio.slice();
-
-    //determ one weakest link ()
-    if (tie == true && game.weakest_link.tie_behaviour == "weakest") {
-        var most_voted_player_sorted = [];
-        most_voted_player_sorted = most_voted_player.slice();
-        game.weakest_link.weakest_link_id = most_voted_player_sorted.sort(sortPlayerWeakest)[0][0]
-    }
-
-    //determ who's strongest link
-    if (game.weakest_link.tie_behaviour == "weakest") { 
-        // player_ratio_sorted[game.weakest_link.weakest_link_id].pop()
-    }
-    game.weakest_link.strongest_link_id = player_ratio_sorted.sort(sortPlayerStrongest)[0][0]
-    
-    // each player stats
-    var ul_head = "";
-    var vote_result_innerHTML = "";
-
-    for (var i = 0; i < game.weakest_link.alphabetically_ordered_player.length; i++) {
-        var player_name = game.weakest_link.alphabetically_ordered_player[i]
-        var vote_count = game.weakest_link.vote_count[i]
-        var voted_player = game.weakest_link.alphabetically_ordered_player[game.weakest_link.vote[i]]
-        var average_anwser_time_sec = game.weakest_link.player_analytics.average_answer_time[i]
-        var potential_bank_lost = game.weakest_link.player_analytics.potential_bank_lost[i];
-        var bank_saved = game.weakest_link.player_analytics.bank_saved[i];
-        var correct = game.weakest_link.player_analytics.correct[i];
-        var wrong = game.weakest_link.player_analytics.wrong[i];
-
-        var html_space = "<a> </a>";
-        var text_vote_against = global.current_language_strings.weakest_link_vote_against;
-
-        vote_result_innerHTML += '<li class="list-group-item player-recap-vote">'
-        vote_result_innerHTML += `<p class="player_voting">${player_name}<a>`;
-        vote_result_innerHTML += `<p class="player_analytics"><span class="player_analytics_wheat">${player_name}</span>${html_space}<a>${text_vote_against}</a>${html_space}</span>${voted_player}</p>`;
-        if (vote_count > 0) {
-            vote_result_innerHTML += `<p class="player_analytics"><span class="player_analytics_orange">${vote_count}</span>${html_space}${text_vote_against}</p>`;
-        } else {
-            vote_result_innerHTML += `<p class="player_analytics">${vote_count}${html_space}${text_vote_against}</p>`;
-        }
-        if (correct > 0) {vote_result_innerHTML += `<p class="player_analytics"><span class="player_analytics_green">${correct}</span> bonne(s) réponse(s)</p>`;}
-        if (wrong > 0) {vote_result_innerHTML += `<p class="player_analytics"><span class="player_analytics_red">${wrong}</span> mauvaise(s) réponse(s)></p>`;}
-        if (average_anwser_time_sec > 0) {vote_result_innerHTML += `<p class="player_analytics">Temps de réponse moyen: <span class="player_analytics_wheat">${average_anwser_time_sec}</span> sec.</p>`;}
-        if (bank_saved > 0) {vote_result_innerHTML += `<p class="player_analytics">Sauve <span class="player_analytics_green">${bank_saved}</span> gorgées en banque</p>`;}
-        if (potential_bank_lost > 0) {vote_result_innerHTML += `<p class="player_analytics">Fait perdre <span class="player_analytics_red">${potential_bank_lost}</span> gorgées potentielles en banque</p>`;}
-        vote_result_innerHTML += `</li>`;
-    }
-    weakest_link_vote_result.innerHTML =  ul_head + vote_result_innerHTML + "</ul>"; 
-
-    weakest_link_vote_end_analytics_table.innerHTML = "";
-    analytics_table_innerHTML = `<tr>
-            <td id="text_ingame_weakest_link_analytics_time">Temps</td>
-            <td id="text_ingame_weakest_link_analytics_correct">Bonne réponse</td>
-            <td id="text_ingame_weakest_link_analytics_potential">Potentielle bonne réponse</td>
-            <td id="text_ingame_weakest_link_analytics_wrong">Mauvaise réponse</td>
-            <td id="text_ingame_weakest_link_analytics_bank">Banque</td>
-            <td id="text_ingame_weakest_link_analytics_strongest_link">Maillon Fort</td>
-        </tr>
-        <tr>
-            <td id="ingame_weakest_link_end_time" class="weakest_link_vote_analytics_data">${weakestLinkCalcTime(game.weakest_link.time, true)}</td>
-            <td id="ingame_weakest_link_end_analytics_correct" class="weakest_link_vote_analytics_data">${game.weakest_link.analytics_correct}</td>
-            <td id="ingame_weakest_link_end_analytics_potential_chain" class="weakest_link_vote_analytics_data">${game.weakest_link.analytics_potential_chain_lost}</td>
-            <td id="ingame_weakest_link_end_analytics_errors" class="weakest_link_vote_analytics_data">${game.weakest_link.analytics_wrong}</td>
-            <td id="ingame_weakest_link_end_penality_count" class="weakest_link_vote_analytics_data">${game.weakest_link.bank}</td>
-            <td id="ingame_weakest_link_end_analytics_strongest_link" class="weakest_link_vote_analytics_data player_analytics_green">${game.weakest_link.alphabetically_ordered_player[game.weakest_link.strongest_link_id]}</td>
-        </tr>
-        <tr>
-            <td colspan="5"><p id="weakest_link_loser_text_placeholder" class="no-margin"></p></td>
-            <td><button id="text_weakest_link_vote_quit" type="submit" class="btn btn-primary" onclick="exitGame()">Quitter</button></p></td>
-        </tr>`;
-    weakest_link_vote_end_analytics_table.innerHTML = analytics_table_innerHTML;
-
-    //display loser
-    switch (game.weakest_link.tie_behaviour) {
-        case "strongest_link" :
-        break;
-        case "arbitrary" :
-        break;
-        case "both" :
-            var behaviour_both_innerHTML = ""
-            for (var i = 0; i < most_voted_player.length; i++) { 
-                behaviour_both_innerHTML += most_voted_player[i][3];
-
-                if (i == most_voted_player.length-2 && i < most_voted_player.length) {
-                    behaviour_both_innerHTML += " et "
-                } else if (i < most_voted_player.length-1) {
-                    behaviour_both_innerHTML += ", "
-                }
-            }
-            weakest_link_loser_text_placeholder.innerHTML = behaviour_both_innerHTML + " sont les maillons faibles. Au reboire."
-        break;
-        case "weakest" :
-            weakest_link_loser_text_placeholder.innerHTML = `<span class="player_analytics_orange">${game.weakest_link.alphabetically_ordered_player[game.weakest_link.weakest_link_id]}</span><a> </a><a>vous êtes le maillon faible. Au reboire.</a>`
-        break;
-    }
-    
-    // EMPTY BANK
-    if (game.weakest_link.bank == 0) {
-        var penality = weakestLinkRandomPenalityInit();
-        weakest_link_loser_text_placeholder.innerHTML += `<br><a>Banque vide, nombre de pénalité tirée aléatoirement:</a><a> </a><span class="player_analytics_orange">${penality}</span>`
-    } else {
-        weakest_link_loser_text_placeholder.innerHTML += `<br><a>Nombre de gorgées en jeu:</a><a> </a><span class="player_analytics_orange">${game.weakest_link.bank}</span>`
-    }
-    
-    manageIngameOptionDisplay(true, "weakest_link_vote", "none")
-    manageIngameOptionDisplay(true, "weakest_link_vote_end", "flex")
-}
-
-function weakestLinkRandomPenalityInit() {
-    return Math.floor(Math.random() * (game.sip.max - game.sip.min)) + game.sip.min;
+    // Affichage en jeu
+    document.getElementById("weakest_link_question").innerHTML = question;
+    document.getElementById("weakest_link_reponse").innerHTML = reponse;
 }
 
 function weakestLinkChrono() {
-    if (game.weakest_link.current_time <= 1) {
-        weakestLinkEndQuestion();
+    if (game.weakest_link.current_time <= 0) {
+        clearInterval(weakestLinkTimer);
+        endWeakestLink()
+        return
     }
     game.weakest_link.current_time--;
     weakestLinkCalcTime();
 }
 
-function weakestLinkEndQuestion() {
-    clearInterval(game.weakest_link.weakestLinkTimer);
-    if (game.player_list.length > 2 ) {
-        weakestLinkInitVote()
-    } else { manageIngameOptionDisplay(true, 'replay', 'block') }
-}
-
-function weakestLinkCalcTime(time, returnFunc) {
-    if (time == undefined) { var time = game.weakest_link.current_time }
+function weakestLinkCalcTime() {
+    const time = game.weakest_link.current_time;
 
     var min = Math.floor(time/60)
     var sec = Math.floor(time%60)
     if (sec < 10) { sec = "0" + sec; }
-    ingame_weakest_link_time.innerHTML = min + ":" + sec
+    document.getElementById("ingame_weakest_link_time").innerHTML = min + ":" + sec
+}
+    
+function weakestLinkCorrect() {
+    // Statistiques joueur
+    let player = game.weakest_link.player_list[game.weakest_link.current_player_index];
+    player.correct++;
 
-    if (returnFunc == true) { return min + ":" + sec; }
+    // Chaine
+    game.weakest_link.chain++;
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+
+    weakestLinkNextPlayer();
+}
+
+function weakestLinkWrong() {
+    // Statistiques joueur
+    let player = game.weakest_link.player_list[game.weakest_link.current_player_index]; 
+    player.potential_chain_lost += game.weakest_link.chain;
+    player.wrong++;
+
+    game.weakest_link.chain = 0;
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+
+    weakestLinkNextPlayer()
+}
+
+function weakestLinkBank() {
+    // game.weakest_link.player_analytics.bank_saved[game.weakest_link.player_turn_index] += game.weakest_link.chain;
+    
+    // Statistiques joueur
+    let player = game.weakest_link.player_list[game.weakest_link.current_player_index]; 
+    if (game.weakest_link.chain > 0) { // banque utile
+        player.useful_bank++;
+        player.saved_in_bank = game.weakest_link.chain;
+    } else { // banque inutile
+        player.useless_bank++;
+    }
+
+    game.weakest_link.bank += game.weakest_link.chain;
+    game.weakest_link.chain = 0;
+
+    ingame_weakest_link_score_sip.innerHTML = game.weakest_link.chain;
+    ingame_weakest_link_score_bank.innerHTML = game.weakest_link.bank;
+
+    if (game.weakest_link.stop_at_max_chain == true && game.weakest_link.bank >= game.weakest_link.max_chain) {
+        // stopsound("weakest_link_amb_60");playsound("weakest_link_amb_end")
+        clearInterval(weakestLinkTimer);
+        endWeakestLink();
+    }
+}
+
+function weakestLinkNextPlayer() {
+    if (game.weakest_link.current_player_index + 1 == game.player_list.length) {
+        game.weakest_link.current_player_index = 0;
+    } else {
+        game.weakest_link.current_player_index++;
+    }  
+
+    let player_id = game.weakest_link.current_player_index;
+    let player_name = game.weakest_link.player_list[player_id].player_name;
+    weakestLinkChangeNameShield(player_name.toUpperCase(), true)
+
+    generateWeakestLinkSentence();
+}
+
+function weakestLinkChangeNameShield(name, animation) {
+    const element = document.getElementById("ingame_weakest_link_current_player");
+    
+    if (animation == true) {
+        // Animation bouclier
+        element.className = "weakest_link_shield_player"
+        setTimeout(function() { element.className = "weakest_link_shield_player changing_weakest_link_player" }, 1);
+        setTimeout(function() {element.innerHTML = name;}, 250);
+    } else {
+        element.innerHTML = name;
+    }
+
+}
+
+function DEBUG_weakestlink_add5sec() {
+    if (global.debug == true) {
+        var current_time_player = global.audio.weakest_link_amb_60.currentTime;
+        var current_time = game.weakest_link.current_time;
+    
+        if ((current_time - 5) >= 5) {
+            global.audio.weakest_link_amb_60.currentTime = current_time_player + 5;
+            game.weakest_link.current_time = current_time - 5;
+        }
+    
+        weakestLinkCalcTime();
+    }
 }
