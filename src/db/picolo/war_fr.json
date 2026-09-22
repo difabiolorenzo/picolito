@@ -1,10 +1,10 @@
 {
     "version": 1,
-    "gamemode": "picolo",
+    "gamemode": "war",
     "id": "picolo_war_fr",
     "language": "fr",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...\nCe soir c'est la guerre!",
+    "pack_description": "Affrontez-vous en équipe! Soyez solidaires et n'ayez aucune pitié...\nCe soir c'est la guerre !",
     "filters": [
             {"type": 8, "player_count": [0,1,2], "color": "blue" },
             {"type": 9, "player_count": [0], "color": "blue" },
