@@ -19,6 +19,9 @@ const PRECACHE = [
     "./src/js/cookie.js",
     "./src/js/picolito.js",
     "./src/js/weakest_link.js",
+    "./src/js/lang/fr.js",
+    "./src/js/lang/it.js",
+    "./src/js/lang/en.js",
     "./src/js/lang.js"
 ];
 

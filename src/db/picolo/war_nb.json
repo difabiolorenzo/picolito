@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_nb",
     "language": "nb",
@@ -464,7 +464,7 @@
         {"type": "11", "text": "Den mesteren som kan nevne flest fotball- eller ishockeyspillere (konkurrentene svarer annenhver gang), vinner! Deltakeren fra lag %t starter", "key": "", "parent_key": "champion-sport", "pack_name": "war", "language": "nb", "nb_players": "0"},
         {"type": "11", "text": "Den mesteren som kan nevne flest profesjonelle syklister (konkurrentene svarer annenhver gang) vinner! Deltakeren fra lag %t starter", "key": "", "parent_key": "champion-sport", "pack_name": "war", "language": "nb", "nb_players": "0"},
         {"type": "11", "text": "Den mesteren som kan nevne flest Redbull-konkurranser (konkurrentene svarer annenhver gang) vinner! Deltakeren fra lag %t starter", "key": "", "parent_key": "champion-sport", "pack_name": "war", "language": "nb", "nb_players": "0"},
-        {"type": "11", "text": "Hvert lag velger ut den mest vågale personen på laget sitt. $, slurker ligger i potten. Mestere, vent tålmodig, fortsettelsen først…", "key": "champion-stretching", "parent_key": "", "pack_name": "war", "language": "nb", "nb_players": "0"},
+        {"type": "11", "text": "Hvert lag velger ut den mest vågale personen på laget sitt. $ slurker ligger i potten. Mestere, vent tålmodig, fortsettelsen først…", "key": "champion-stretching", "parent_key": "", "pack_name": "war", "language": "nb", "nb_players": "0"},
         {"type": "11", "text": "Den som kan røre tærne sine først vinner for sitt lag!", "key": "", "parent_key": "champion-stretching", "pack_name": "war", "language": "nb", "nb_players": "0"},
         {"type": "11", "text": "Den med mest bevegelige skuldre vinner! Den som holder en hånd opp bak skuldrene og en ned, og som får hendene tettest mot hverandre, vinner.", "key": "", "parent_key": "champion-stretching", "pack_name": "war", "language": "nb", "nb_players": "0"},
         {"type": "11", "text": "Den som kan ta best spagat (komme nærmest gulvet) vinner!", "key": "", "parent_key": "champion-stretching", "pack_name": "war", "language": "nb", "nb_players": "0"},

@@ -78,32 +78,32 @@ Les bases de données sont organisées en **packs** : chaque pack est identifié
 
 ## Picolo
 
-| Pack | Nom affiché |
-|---|---|
-| Défaut | Before - 🥴 / Getting Started - 🥴 |
-| On est débiles | Silly / Getting Crazy - 🤪 |
-| Bar | Bar - 🍻 |
-| Caliente | Hot - 🍆 |
-| Guerre | War - 🌩 |
+| Pack |
+|---|
+| Défaut |
+| On est débiles |
+| Bar |
+| Caliente |
+| Guerre |
 
 ## Je n'ai jamais
 
-| Pack | Nom affiché |
-|---|---|
-| Populaire | Popular - ⭐ |
-| Fête | Party - 🎉 |
-| Coquin | Dirty & Sex - 💋 |
+| Pack |
+|---|
+| Populaire |
+| Fête |
+| Coquin |
 
 ## Quiz
 
-| Pack | Nom affiché |
-|---|---|
-| Maillon Faible | Le Maillon Faible |
+| Pack |
+|---|
+| Maillon Faible |
 
 ## Langues
 
 - L'**interface** est traduite en **FR / IT / EN** (sélecteur dans le menu).
-- Les **packs** sont fournis en FR et EN (le pack Guerre est aussi en IT), les fichiers de base couvrant **14 langues** (`da`, `de`, `en`, `es`, `fi`, `fr`, `it`, `ja`, `ko`, `nb`, `nl`, `pt`, `ru`, `sv`).
+- Les packs **Picolo** (Défaut, On est débiles, Bar, Caliente, Guerre) et **Je n'ai jamais** (Populaire, Fête, Coquin) sont actuellement **jouables en FR, EN et IT** — les fichiers existent aussi en **11 autres langues** (`da`, `de`, `es`, `fi`, `ja`, `ko`, `nb`, `nl`, `pt`, `ru`, `sv`), mais ces packs ne sont **pas encore chargés par le jeu**.
 - Réglage « Afficher seulement la base de données dans la langue d'affichage » pour filtrer les packs.
 
 ## Bases de données externes
@@ -131,7 +131,7 @@ Rendez-vous sur https://difabiolorenzo.github.io/picolito/
 Picolito est une **Progressive Web App** :
 - Installable comme application (`Manifest.webmanifest`).
 - Fonctionne **hors-ligne** grâce à un service worker (`sw.js`) : réseau d'abord, repli sur le cache (CDN Bootstrap/jQuery inclus).
-- L'installation est proposée dans « Réglages » (icetone d'installation).
+- L'installation est proposée par le navigateur.
 
 ## En local (développement)
 

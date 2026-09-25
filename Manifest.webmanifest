@@ -8,25 +8,25 @@
   "icons": [
       {
           "src": "./src/img/icon_48.jpg",
-          "type": "image/png",
+          "type": "image/jpeg",
           "sizes": "48x48",
           "purpose": "any maskable"
       },
       {
           "src": "./src/img/icon_96.jpg",
-          "type": "image/png",
+          "type": "image/jpeg",
           "sizes": "96x96",
           "purpose": "any maskable"
       },
       {
           "src": "./src/img/icon_192.jpg",
-          "type": "image/png",
+          "type": "image/jpeg",
           "sizes": "192x192",
           "purpose": "any maskable"
       },
       {
           "src": "./src/img/icon_512.jpg",
-          "type": "image/png",
+          "type": "image/jpeg",
           "sizes": "512x512",
           "purpose": "any maskable"
       }

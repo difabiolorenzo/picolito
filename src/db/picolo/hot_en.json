@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_hot_en",
     "language": "en",
@@ -131,9 +131,9 @@
         {"type": "2", "text": "%s, you can stop staring deeply into your friend's eyes!", "key": "", "parent_key": "look-in-the-eyes", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s, get on all fours and arch your back until told otherwise!", "key": "doggy-style-way", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s can be in a comfortable position again", "key": "", "parent_key": "doggy-style-way", "pack_name": "hot", "language": "en", "nb_players": "1"},
-        {"type": "2", "text": "%s you're the cop! You can body-search anyone, anywhere! $-sip penalty in case of refusal!", "key": "body-search", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
+        {"type": "2", "text": "%s you're the cop! You can body-search anyone, anywhere! $ penalty in case of refusal!", "key": "body-search", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s you're not the cop anymore, you can drink $ times you pervert!", "key": "", "parent_key": "body-search", "pack_name": "hot", "language": "en", "nb_players": "1"},
-        {"type": "2", "text": "%s is Cupid! You choose who kisses or hugs who. $-sip penalty in case of refusal", "key": "cupidon", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
+        {"type": "2", "text": "%s is Cupid! You choose who kisses or hugs who. $ penalty in case of refusal", "key": "cupidon", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s you're not Cupid anymore.", "key": "", "parent_key": "cupidon", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s is really horny... he or she is must kiss someone before each sip", "key": "kiss-before-drink", "parent_key": "", "pack_name": "hot", "language": "en", "nb_players": "1"},
         {"type": "2", "text": "%s, you cured your kissing addiction", "key": "", "parent_key": "kiss-before-drink", "pack_name": "hot", "language": "en", "nb_players": "1"},

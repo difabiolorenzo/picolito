@@ -8,6 +8,7 @@ function init() {
     game.team_2 = global.current_language_strings.team_default_name_1;
     retrieveCookie();
     loadPlayerListFromCookie(); // Charger les joueurs depuis les cookies
+    attachExternalDBFileInputListener(); // Attaché une seule fois (ne pas déplacer dans updateHTMLSettingsByVar)
 
     refreshDBList();
     
@@ -241,7 +242,7 @@ const MIX_ALLOWED_QUESTION_TYPES = ["question_picolito", "neuf_points_gagnants"]
 function defaultVariables() {
     global = {
         current_language: "fr",
-        debug: true,
+        debug: false,
         dark_mode: "bright",
         cookie_expiration_delay: 15,
         audio : {
@@ -269,30 +270,10 @@ function defaultVariables() {
     }
 
     game = {
-        picolito_version: "0.37",
+        picolito_version: "0.37.1",
         vanilla_db_index: VANILLA_DB_INDEX,
 
         mix_gamemode_list_picolo: [],
-
-        qpuc: {
-            gamemode_types: [
-                { id: "neuf_points_gagnants", key: "qpuc_gamemode_type_neuf_points_gagnants" },
-                { id: "quatre_a_la_suite", key: "qpuc_gamemode_type_quatre_a_la_suite" },
-                { id: "face_a_face", key: "qpuc_gamemode_type_face_a_face" },
-                { id: "jeu_decisif", key: "qpuc_gamemode_type_jeu_decisif" }
-            ],
-            selected_gamemode_type: null,
-            selected_packs: [],
-            // Mini-moteur de manches à points (Neuf points gagnants / Quatre à la suite)
-            manche: null,            // type de manche effectif en jeu ou null (mode carte classique)
-            answer_revealed: false,  // réponse de la carte courante révélée ?
-            answer_display: "click", // click = réponse cachée (révélée au clic), visible = réponse directement affichée
-            scores: {},              // { nom_joueur: points (NPG) | meilleure série (4QAS) }
-            q4_timer: null,          // setInterval du chrono 4QAS
-            q4_remaining: 40,        // secondes restantes du tour en cours
-            q4_streak: 0,            // série de bonnes réponses en cours du tour
-            q4_player_index: 0       // index du joueur dont c'est le tour
-        },
 
         player_list: [],
         max_player_number: -1,
@@ -359,6 +340,25 @@ function defaultVariables() {
             timer: null,
             text_size: "normal", // normal, small, big
             fade_out_time: 2500 
+        },
+        qpuc: {
+            gamemode_types: [
+                { id: "neuf_points_gagnants", key: "qpuc_gamemode_type_neuf_points_gagnants" },
+                { id: "quatre_a_la_suite", key: "qpuc_gamemode_type_quatre_a_la_suite" },
+                { id: "face_a_face", key: "qpuc_gamemode_type_face_a_face" },
+                { id: "jeu_decisif", key: "qpuc_gamemode_type_jeu_decisif" }
+            ],
+            selected_gamemode_type: null,
+            selected_packs: [],
+            // Mini-moteur de manches à points (Neuf points gagnants / Quatre à la suite)
+            manche: null,            // type de manche effectif en jeu ou null (mode carte classique)
+            answer_revealed: false,  // réponse de la carte courante révélée ?
+            answer_display: "click", // click = réponse cachée (révélée au clic), visible = réponse directement affichée
+            scores: {},              // { nom_joueur: points (NPG) | meilleure série (4QAS) }
+            q4_timer: null,          // setInterval du chrono 4QAS
+            q4_remaining: 40,        // secondes restantes du tour en cours
+            q4_streak: 0,            // série de bonnes réponses en cours du tour
+            q4_player_index: 0       // index du joueur dont c'est le tour
         }
     }
     updateHTMLSettingsByVar()
@@ -416,17 +416,20 @@ function updateHTMLSettingsByVar() {
 
     document.getElementById("input_show_only_current_language_db").checked = game.only_display_current_language_databases;
 
-    // Input ajout fichier bases de données
-    const input = document.getElementById("external_db_file_input");
-        input.addEventListener("change", async () => {
-            if (input.files && input.files[0]) {
-                await addDBData({ file: input.files[0] });
-                input.value = "";
-            }
-        }
-    );
-
     displayPage('menu');
+}
+
+function attachExternalDBFileInputListener() {
+    // Input ajout fichier bases de données — attaché une seule fois dans init()
+    // (updateHTMLSettingsByVar() est appelée par defaultVariables() ET retrieveCookie()
+    // ce qui dupliquait le listener → import fichier traité deux fois)
+    const input = document.getElementById("external_db_file_input");
+    input.addEventListener("change", async () => {
+        if (input.files && input.files[0]) {
+            await addDBData({ file: input.files[0] });
+            input.value = "";
+        }
+    });
 }
 
 function displaySafetyAndCookieModal() {
@@ -741,18 +744,15 @@ function setPlayerName(id, value) {
 function autoBalanceTeams() {
     if (game.player_list.length === 0) { return; }
     const target = Math.ceil(game.player_list.length / 2);
-    let count_1 = game.player_list.filter(player => player.team === "team_1").length;
-    const unassigned = game.player_list
-        .filter(player => player.team !== "team_1" && player.team !== "team_2")
-        .sort(() => Math.random() - 0.5);
-    for (const player of unassigned) {
-        if (count_1 < target) {
-            player.team = "team_1";
-            count_1++;
-        } else {
-            player.team = "team_2";
-        }
-    }
+    // Répartition aléatoire équilibrée : on re-mélange TOUS les joueurs
+    // (même déjà assignés), équipe 1 = ceil(n/2), équipe 2 = le reste.
+    const shuffled = game.player_list
+        .map((player, index) => ({ player, index, rand: Math.random() }))
+        .sort((a, b) => a.rand - b.rand || a.index - b.index)
+        .map(entry => entry.player);
+    shuffled.forEach((player, i) => {
+        player.team = i < target ? "team_1" : "team_2";
+    });
     refreshPlayerList();
     storePlayerListCookie();
 }
@@ -900,6 +900,15 @@ async function loadDatabase({ pack_id = null, source = "vanilla" }) {
 
             // On relit le localStorage après téléchargement
             storedData = DBManager.loadLocal(dbIndex);
+        } else {
+            // Check-auto de version (max 1 toutes les 6h) : met à jour le cache si la base a changé
+            const DB_VERSION_CHECK_DELAY = 6 * 60 * 60 * 1000;
+            const lastCheck = parseInt(localStorage.getItem(`db:check:${dbIndex.id}`) || "0", 10);
+            if (Date.now() - lastCheck >= DB_VERSION_CHECK_DELAY) {
+                localStorage.setItem(`db:check:${dbIndex.id}`, Date.now());
+                await DBManager.refresh(dbIndex);
+                storedData = DBManager.loadLocal(dbIndex);
+            }
         }
 
         if (storedData) {
@@ -1005,10 +1014,48 @@ function calcCombineDatabasesPossibleLenght() {
     const packs = game.current_gamemode.packs
     let length = 0;
 
-    for (let i in packs) { length += packs[i].db.length; }
-    
-    console.warn(`Cette fonction retourne bêtement la longueur de toutes les bases séléctionnées. (${length}) (à prévoire de prendre en compte les limite de certains types ex: virus, cul sec, suites de phrases)`);
+    for (let i in packs) {
+        const pack = packs[i];
+        if (pack.gamemode == "picolo" || pack.gamemode == "war") {
+            length += countPlayablePicoloMainSentences(pack);
+        } else {
+            length += pack.db.length;
+        }
+    }
+
     return length;
+}
+
+function countPlayablePicoloMainSentences(pack) {
+    const player_count = game.player_list.length;
+    const is_war = game.gamemode == "picolo_war";
+    const filters = Array.isArray(pack.filters) ? pack.filters : [];
+
+    // Types dont la couleur est active selon la variante et les réglages,
+    // et compatibles avec le nombre de joueurs (mêmes conditions que getColor/getTypesAndPlayerCount)
+    const usable_types = filters
+        .filter(filter => {
+            if (!Array.isArray(filter.player_count)) return true;
+            return Math.min(...filter.player_count) <= player_count;
+        })
+        .filter(filter => {
+            if (is_war && (filter.color == "red" || filter.color == "yellow")) return false;
+            if (filter.color == "red" && !game.picolito.chug_enabled) return false;
+            if (filter.color == "yellow" && !game.picolito.virus_enabled) return false;
+            return true;
+        })
+        .map(filter => filter.type.toString())
+        .filter(type => {
+            if (!game.picolito.social_posting_enabled && (type == "social_posting" || type == "15")) return false;
+            return true;
+        });
+
+    // Seules les phrases principales comptent (une suite suit sa carte, sans consommer de cycle à part)
+    return pack.db.filter(entry =>
+        entry.parent_key == "" &&
+        Number(entry.nb_players) <= player_count &&
+        usable_types.includes(entry.type.toString())
+    ).length;
 }
 
 function updateDatabaseIndicator(pack_id) {
@@ -1035,6 +1082,9 @@ function updateDatabaseIndicator(pack_id) {
 
 function restartGame() {
     let gamemode_type = game.current_gamemode.gamemode_type;
+    // Récupère la manche QPUC (Neuf points gagnants / Quatre à la suite) avant que
+    // exitGame() ne la remette à null (game.qpuc.selected_gamemode_type = null)
+    const qpuc_type = game.current_gamemode.qpuc_type ?? game.qpuc.selected_gamemode_type;
     // Reconstruction des descripteurs {pack_id, pack_source} depuis les packs chargés
     let packs = game.current_gamemode.packs.map(pack => ({
         pack_id: pack.id,
@@ -1048,7 +1098,8 @@ function restartGame() {
         {
             gamemode_type : gamemode_type,
             packs : packs,
-            restart : true
+            restart : true,
+            qpuc_type : qpuc_type
         }
     );
 }
@@ -1459,7 +1510,11 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
     const availablePlayers = [...player_name_list];
     let is_modified = false;
 
-    const formatted = template.replace(/%s|\$|%t/g, token => {
+    // Un backslash-dollar (\$) est un dollar littéral, protégé du remplacement de token.
+    const DOLLAR_PLACEHOLDER = '\uE000';
+    const masked = template.replace(/\\\$/g, DOLLAR_PLACEHOLDER);
+
+    const formatted = masked.replace(/%s|\$|%t/g, token => {
         let value;
         let html;
 
@@ -1494,7 +1549,7 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
         }
     });
 
-    return { formatted, keys, is_modified };
+    return { formatted: formatted.replace(/\uE000/g, '$'), keys, is_modified };
 }
 
 function applyQuotes(formatted, quotesIndicator) {
@@ -1545,8 +1600,6 @@ function textReplacer(text) {
 }
 
 function applyTextModifiers(original_sentence, keys) {
-    let formatted_sentence = original_sentence;
-
     let html_span_sip;
     let html_span_player;
     let html_span_team;
@@ -1563,6 +1616,10 @@ function applyTextModifiers(original_sentence, keys) {
         html_span_end = "";
     }
 
+    // Un backslash-dollar (\$) est un dollar littéral, protégé du remplacement de token.
+    const DOLLAR_PLACEHOLDER = '\uE000';
+    let formatted_sentence = original_sentence.replace(/\\\$/g, DOLLAR_PLACEHOLDER);
+
     keys.forEach(modifier => {
         switch (modifier.type) {
             case 'sip':
@@ -1577,7 +1634,7 @@ function applyTextModifiers(original_sentence, keys) {
         }
     });
     
-    return formatted_sentence;
+    return formatted_sentence.replace(/\uE000/g, '$');
 }
 
 function changeClearInformationSettings(value) {
@@ -1901,8 +1958,13 @@ const DBManager = {
         if (!Array.isArray(data.db)) return;
         for (const entry of data.db) {
             if (!entry) continue;
-            if (db.source === "external" && typeof entry.text === "string") {
-                entry.text = sanitizeExternalText(entry.text);
+            if (db.source === "external") {
+                // QPUC et Maillon Faible injectent question/reponse en innerHTML (audit 5d)
+                ["text", "question", "reponse"].forEach(field => {
+                    if (typeof entry[field] === "string") {
+                        entry[field] = sanitizeExternalText(entry[field]);
+                    }
+                });
             }
             entry.pack_id = data.id;
             entry.bdd_id = data.id; // compat ancien cache localStorage
@@ -2027,7 +2089,6 @@ function onlyDisplayCurrentLanguageDB() {
 }
 
 async function refreshDBList() {
-    if (global.debug==true) console.log("refreshDBList appelé encore une fois ???")
 
     const modal_db_list = document.getElementById("modal_db_list");
     await DBManager.init();
@@ -2054,8 +2115,8 @@ function getDBListItemTemplate(db) {
     const pack_id = escapeHTML(db.id);
     const local = DBManager.loadLocal(db);
     const localVersion = local?.version || "—";
-    const cacheBadge = local ? `<span class="badge border text-dark m-1">en cache</span>` : ``;
-    const stateBadge = db.available ? `` : `<span class="badge border text-danger m-1">indisponible</span>`;
+    const cacheBadge = local ? `<span class="badge border text-dark m-1">${global.current_language_strings.db_manager_cached}</span>` : ``;
+    const stateBadge = db.available ? `` : `<span class="badge border text-danger m-1">${global.current_language_strings.db_manager_unavailable}</span>`;
     const packDescription = db.pack_description ? `<span class="db-description" title="${escapeHTML(db.pack_description)}">${escapeHTML(db.pack_description)}</span>` : "";
     const actionBtnClass = local ? "btn-secondary" : "btn-success";
     const actionBtnIcon = local ? "bi-arrow-clockwise" : "bi-cloud-arrow-down";
@@ -2190,11 +2251,12 @@ function refreshExplorerList(db) {
 }
 
 function getExplorerColumns(gamemode, db_data) {
+    const L = global.current_language_strings;
     const columnsByGamemode = {
-        picolo: [["type", "Type"], ["text", "Texte"], ["key", "Clé"], ["parent_key", "Clé parente"]],
-        je_n_ai_jamais: [["text", "Texte"]],
-        maillon_faible: [["question", "Question"], ["reponse", "Réponse"], ["difficulty", "Difficulté"]],
-        question_pour_un_champion: [["series", "Série"], ["type", "Type"], ["theme", "Thème"], ["question", "Question"], ["reponse", "Réponse"]]
+        picolo: [["type", L.db_manager_col_type], ["text", L.db_manager_col_text], ["key", L.db_manager_col_key], ["parent_key", L.db_manager_col_parent_key]],
+        je_n_ai_jamais: [["text", L.db_manager_col_text]],
+        maillon_faible: [["question", L.db_manager_col_question], ["reponse", L.db_manager_col_answer], ["difficulty", L.db_manager_col_difficulty]],
+        question_pour_un_champion: [["series", L.db_manager_col_series], ["type", L.db_manager_col_type], ["theme", L.db_manager_col_theme], ["question", L.db_manager_col_question], ["reponse", L.db_manager_col_answer]]
     };
 
     const columns = columnsByGamemode[gamemode];
@@ -2390,12 +2452,16 @@ async function addDBData({ url = null, urls = null, file = null, vanilla = false
 
         data.vanilla = vanilla;
 
-        // Nettoyage XSS : échappement du texte des BDD externes
+        // Nettoyage XSS : échappement du texte des BDD externes (text + question + reponse,
+        // car QPUC et Maillon Faible injectent question/reponse en innerHTML — cf. audit 5d)
         if (!vanilla && Array.isArray(data.db)) {
             data.db.forEach(entry => {
-                if (entry && typeof entry.text === "string") {
-                    entry.text = sanitizeExternalText(entry.text);
-                }
+                if (!entry) return;
+                ["text", "question", "reponse"].forEach(field => {
+                    if (typeof entry[field] === "string") {
+                        entry[field] = sanitizeExternalText(entry[field]);
+                    }
+                });
             });
         }
 

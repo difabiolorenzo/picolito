@@ -50,7 +50,6 @@ function retrieve(sentence_id) {
         switch (game.current_gamemode.gamemode_type) {
             case "picolo": generatePicoloSentences(); break;
             case "war": generatePicoloSentences(); break;
-            case "external_db_picolo": generatePicoloExternalDBSentences(); break;
             case "je_n_ai_jamais": generateJeNaiJamaisSentences(); break;
             case "mix": generateMixSentences(); break;
             case "question_pour_un_champion": generateQuestionPourUnChampionSentences(null, getQpucQuestionTypes(), getQpucTurnPlayer()); break;
@@ -199,10 +198,13 @@ function generatePicoloSentences(preferred_pack_id=null) {
     }
     if (global.debug==true) console.log(selected_color)
 
-    // Cul sec
+    // Cul sec : uniquement si un type de phrase rouge existe réellement
+    let selected_type = getRandomTypeWithSentences(selected_color);
+    if (selected_type == null) {
+        console.warn(`Aucune phrase disponible pour la couleur "${selected_color}". Cul-sec non consommé.`);
+        return;
+    }
     if (selected_color == "red") { game.picolito.chug_remaining--; }
-
-    const selected_type = getRandomTypeWithSentences(selected_color);
     
     function getRandomSentence(type) {
         // Construction de la liste des potentielles phrases
@@ -261,6 +263,12 @@ function generatePicoloSentences(preferred_pack_id=null) {
     }
 
     const sentence_data = getRandomSentence(selected_type);
+    if (sentence_data == undefined) {
+        console.warn(`Aucune phrase ne peux être générée. (type: ${selected_type})`);
+        // Cul-sec consommé sans phrase : on ne l'affiche pas comme utilisé
+        if (selected_color == "red") { game.picolito.chug_remaining++; }
+        return;
+    }
     if (global.debug==true) console.log(sentence_data)
     const sentence_text_data = textReplacer(sentence_data.text)
         //formatted_sentence
@@ -288,7 +296,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
             if (selected_color == "yellow") {
                 if (global.debug==true) console.log("VIRUS ou suite d'une phrase");
                 game.picolito.virus_remaining--;
-                const random_virus_end = Math.floor(Math.random() * (game.picolito.virus_end_max - game.picolito.virus_end_min)) + game.picolito.virus_end_min;
+                const random_virus_end = Math.floor(Math.random() * (game.picolito.virus_end_max - game.picolito.virus_end_min + 1)) + game.picolito.virus_end_min;
                 
                 pushHistoryItem(extra_sentence_text_data, extra_sentence_data, random_virus_end);
                 if (global.debug==true) console.log("random_virus_end", random_virus_end);
@@ -303,7 +311,8 @@ function generateMixSentences() {
     // Si plusieurs modes dans mix alors traitement spécifiques
 
     const packs_by_mode = {
-        picolo: game.current_gamemode.packs.filter(e => (e.gamemode == "picolo")),
+        // Les packs "war" (mode équipe) participent à la lane picolo du Mix
+        picolo: game.current_gamemode.packs.filter(e => (e.gamemode == "picolo" || e.gamemode == "war")),
         je_n_ai_jamais: game.current_gamemode.packs.filter(e => (e.gamemode == "je_n_ai_jamais")),
         question_pour_un_champion: game.current_gamemode.packs.filter(e => (e.gamemode == "question_pour_un_champion"))
     };
@@ -935,7 +944,6 @@ function userActionClickSentence() {
     if (game.started == true && (
         gamemode_type == "picolo" || 
         gamemode_type == "war" || 
-        gamemode_type == "external_db_picolo" || 
         gamemode_type == "je_n_ai_jamais" || 
         gamemode_type == "mix" ||
         gamemode_type == "question_pour_un_champion")

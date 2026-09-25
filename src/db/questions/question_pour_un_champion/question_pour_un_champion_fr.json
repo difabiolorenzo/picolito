@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "gamemode": "question_pour_un_champion",
   "id": "question_pour_un_champion_fr",
   "language": "fr",
@@ -1768,7 +1768,7 @@
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "LE SUMO", "question": "( Dans quel pays est né le premier sumotori du continent Africain né en 1992 au Caire?", "reponse": "EGYPTE"},
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "LE SUMO", "question": "Dans quelle religion du Japon le sumo a-t-il été considéré comme un rite chamanique?", "reponse": "SHINTO (ÏSME)"},
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "LE SUMO", "question": "A 50 centimètres près, quel est le diamètre du dohyo, la surface où s'affrontent les sumotoris?", "reponse": "455 CM / 4,55 M"},
-    {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "LE SUMO", "question": "$$ 4,05 à 5,05 M = ok $$ Comment s'appelle la bande de tissu que les lutteurs s'enroulent autour de la taille?", "reponse": "MAWASHI"},
+    {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "LE SUMO", "question": "Comment s'appelle la bande de tissu que les lutteurs s'enroulent autour de la taille ?", "reponse": "MAWASHI"},
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "PHASES & EPREUVES DANS LES JEUX TV", "question": "D'après le nom de la phase que tu joues actuellement, combien de bonnes réponses à la suite dois-tu donner?", "reponse": ""},
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "PHASES & EPREUVES DANS LES JEUX TV", "question": "Quel mot composé utilisé dans le domaine des transports porte la 1 ère partie de Personne n'y avait pensé ?", "reponse": "ALLER- RETOUR"},
     {"series": "Série 18", "type": "quatre_a_la_suite", "theme": "PHASES & EPREUVES DANS LES JEUX TV", "question": "Dans Des chiffres & des lettres, depuis 2016, combien de mots le finaliste doit-il retrouver dans Les mots de la fin?", "reponse": ""},
