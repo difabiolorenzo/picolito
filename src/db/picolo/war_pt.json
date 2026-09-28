@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_pt",
     "language": "pt",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Equipas frente a equipas! Sejam solidários e não tenham piedade...\nHoje é dia de guerra!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Equipa %t, pergunta com $ goles em jogo: Qual é o apelido materno do/da %s?", "key": "", "parent_key": "", "pack_name": "war", "language": "pt", "nb_players": "1"},

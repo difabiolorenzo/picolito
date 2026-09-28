@@ -1,10 +1,10 @@
 {
-    "version": 2,
+    "version": 3,
     "gamemode": "war",
     "id": "picolo_war_nb",
     "language": "nb",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Lag mot lag! Hold sammen og vis ingen nåd...\nI natt er det krig!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Lag %t: Hvilket jentenavn har moren til %s? Hvis dere svarer riktig drikker det andre laget $ slurker. Ellers drikker dere!", "key": "", "parent_key": "", "pack_name": "war", "language": "nb", "nb_players": "1"},

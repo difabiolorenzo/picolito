@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "je_n_ai_jamais",
     "id": "je_n_ai_jamais_party_en",
     "language": "en",
     "pack_name": "Party - 🎉",
-    "pack_description": "",
+    "pack_description": "Crazy dares to kick the party into high gear.\nGo on, own up!",
     "db": [
         {"text":"Never have I ever asked someone to buy me a drink."},
         {"text":"Never have I ever asked someone to buy me alcohol when underage."},

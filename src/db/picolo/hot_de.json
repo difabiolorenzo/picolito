@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_hot_de",
     "language": "de",
     "pack_name": "Caliente - 🍆",
-    "pack_description": "",
+    "pack_description": "Mit frechen Fragen - seid bereit, eure gutsbewahrtesten Geheimnisse zu lüften.\nWird es heute Nacht etwas heftig?",
     "filters": [{"type": 1, "player_count": [0, 1, 2, 3, 4, 5], "color": "blue"}, {"type": 2, "player_count": [1, 2], "color": "yellow"}, {"type": 3, "player_count": [0], "color": "yellow"}, {"type": 4, "player_count": [0, 1, 2], "color": "green"}, {"type": 7, "player_count": [1, 2], "color": "red"}, {"type": 14, "player_count": [0, 1, 2, 3], "color": "green"}, {"type": 23, "player_count": [0, 1, 2], "color": "green"}, {"type": 24, "player_count": [3, 4], "color": "blue"}, {"type": 25, "player_count": [0, 1, 2], "color": "blue"}],
     "db": [
         {"type": "1", "text": "%s, wenn du ein Mädchen bist, leck deinen Finger auf erotische Weise. Wenn du ein Mann bist, tu' mit den Fingern so, als würdest du eine Muschi lecken und/oder trink $ Schlucke", "key": "", "parent_key": "", "pack_name": "hot", "language": "de", "nb_players": "1"},

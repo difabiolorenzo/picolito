@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_ko",
     "language": "ko",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "팀으로 대결! 동료들과 하나가 되며, 봐주지 마세요...\n오늘 밤은 전쟁이다!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "팀 %t, 질문과 함께 벌칙으로 $번 마시기 : %s의 엄마 쪽 성은?", "key": "", "parent_key": "", "pack_name": "war", "language": "ko", "nb_players": "1"},

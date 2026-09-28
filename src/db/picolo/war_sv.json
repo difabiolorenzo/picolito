@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_sv",
     "language": "sv",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Lag mot lag! Håll ihop och visa ingen nåd...\nIkväll är det krig!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Lag %t: Vilket flicknamn har %ss mamma? Om ni svarar rätt dricker det andra laget $ klunkar. Annars dricker ni!", "key": "", "parent_key": "", "pack_name": "war", "language": "sv", "nb_players": "1"},

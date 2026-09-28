@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "je_n_ai_jamais",
     "id": "je_n_ai_jamais_popular_fr",
     "language": "fr",
     "pack_name": "Populaire - ⭐",
-    "pack_description": "",
+    "pack_description": "Les grands classiques du « Je n'ai jamais » pour briser la glace.\nChiche, vous répondez ?",
     "db": [
         {"text":"Je n'ai jamais 'volé' de blague."},
         {"text":"Je n'ai jamais aimé l'école."},

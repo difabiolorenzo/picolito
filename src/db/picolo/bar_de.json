@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_bar_de",
     "language": "de",
     "pack_name": "Bar - 🍻",
-    "pack_description": "",
+    "pack_description": "Wenn du bereit bist, den Bar auf den Kopf zu stellen, ist das das perfekte Spiel.\nAchtung - keine Angst vor Peinlichkeit.",
     "filters": [{"type": 1, "player_count": [0, 1, 2], "color": "blue"}, {"type": 2, "player_count": [1, 3], "color": "yellow"}, {"type": 4, "player_count": [0, 1], "color": "green"}, {"type": 16, "player_count": [2, 3], "color": "blue"}, {"type": 17, "player_count": [0, 1, 2, 3], "color": "green"}, {"type": 18, "player_count": [1, 2], "color": "blue"}, {"type": 19, "player_count": [1, 2, 3], "color": "blue"}, {"type": 20, "player_count": [1], "color": "green"}, {"type": 21, "player_count": [1], "color": "green"}, {"type": 22, "player_count": [1], "color": "green"}],
     "db": [
         {"type": "1", "text": "%s, falls du aromatisiertes Bier trinkst, musst du einen Schluck trinken, falls nicht darfst du einen ausgeben", "key": "", "parent_key": "", "pack_name": "bar", "language": "de", "nb_players": "1"},

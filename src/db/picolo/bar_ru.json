@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_bar_ru",
     "language": "ru",
     "pack_name": "Bar - 🍻",
-    "pack_description": "",
+    "pack_description": "Если вы готовы перевернуть бар вверх дном, это идеальная игра.\nОсторожно, не бойтесь выглядеть нелепо.",
     "filters": [{"type": 1, "player_count": [0, 1, 2], "color": "blue"}, {"type": 2, "player_count": [1, 3], "color": "yellow"}, {"type": 4, "player_count": [0, 1], "color": "green"}, {"type": 16, "player_count": [2, 3], "color": "blue"}, {"type": 17, "player_count": [0, 1, 2, 3], "color": "green"}, {"type": 18, "player_count": [1, 2], "color": "blue"}, {"type": 19, "player_count": [1, 2, 3], "color": "blue"}, {"type": 20, "player_count": [1], "color": "green"}, {"type": 21, "player_count": [1], "color": "green"}, {"type": 22, "player_count": [1], "color": "green"}],
     "db": [
         {"type": "1", "text": "%s, если ты заказал себе ароматизированное пиво, сделай несколько глотков. Если нет, то решай, кому из игроков делать один глоток", "key": "", "parent_key": "", "pack_name": "bar", "language": "ru", "nb_players": "1"},

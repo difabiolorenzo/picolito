@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_silly_de",
     "language": "de",
     "pack_name": "On est débiles - 🤪",
-    "pack_description": "",
+    "pack_description": "Wenn ihr schon völlig benebelt und albern seid, ist dieses Pack genau richtig.\nVorsicht, liebes Publikum.",
     "filters": [{"type": 1, "player_count": [0, 1, 2, 3, 4], "color": "blue"}, {"type": 2, "player_count": [0, 1, 2], "color": "yellow"}, {"type": 3, "player_count": [0], "color": "yellow"}, {"type": 4, "player_count": [1, 2, 3], "color": "green"}, {"type": 6, "player_count": [0, 1, 2, 3], "color": "red"}, {"type": 14, "player_count": [0, 1], "color": "green"}, {"type": 23, "player_count": [0, 1, 2, 3, 4], "color": "green"}, {"type": 24, "player_count": [3, 4], "color": "blue"}, {"type": 25, "player_count": [0, 1, 2], "color": "blue"}],
     "db": [
         {"type": "1", "text": "%s imitiere einen Typ beim Kacken oder trink $ Schlucke", "key": "", "parent_key": "", "pack_name": "silly", "language": "de", "nb_players": "1"},

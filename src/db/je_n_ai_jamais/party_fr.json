@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "je_n_ai_jamais",
     "id": "je_n_ai_jamais_party_fr",
     "language": "fr",
     "pack_name": "Fête - 🎉",
-    "pack_description": "",
+    "pack_description": "Des défis déjantés pour mettre le feu à la soirée.\nAllez, assume !",
     "db": [
         {"text":"Jamais je ne me suis habillé en couple pour l'Halloween."},
         {"text":"Jamais je ne suis tombé d'un lit quand j'étais ivre."},

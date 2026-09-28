@@ -34,7 +34,6 @@ const LANGUAGE_IT = {
         ready: "Pronti?",
         start: "Inizia",
         virus: "VIRUS",
-        visit_website: "Vai al sito",
         next_sentence: "Frase successiva",
         previous_sentence: "Frase precedente",
         weakest_link_sip: "SORSI",
@@ -186,15 +185,9 @@ const LANGUAGE_IT = {
         nav_menu_link_never: "Non ho mai",
         nav_menu_link_weakest_link: "Anello più debole",
         nav_menu_link_question_pour_un_champion: "Domanda per un Campione",
-        nav_menu_link_password: "Password",
         gamemode_weakest_link_title: "Anello più debole 🔗",
         gamemode_weakest_link_subtitle_1: "Sei l'anello più debole. Arrivederci.",
-        gamemode_title_password: "Password 💡",
-        gamemode_password_subtitle_1: "Una parola può nasconderne un'altra",
-        gamemode_password_subtitle_2: "Fai indovinare la parola senza pronunciarla",
-        gamemode_password_warning_1: "La modalità \"Password\" è ora separata da Picolito.",
-        gamemode_password_warning_2: "La trovi sulla sua pagina e repository GitHub dedicati",
-    
+
         gamemode_question_pour_un_champion_title: "Domanda per un Campione ❓",
         gamemode_question_pour_un_champion_subtitle_1: "Metti alla prova le tue conoscenze e quelle dei tuoi amici!",
     
@@ -239,6 +232,7 @@ const LANGUAGE_IT = {
         weakest_link_ending_answer_show: "Mostra la risposta",
         weakest_link_ending_answer_hide: "Nascondi la risposta",
         weakest_link_questions_asked: "Domande poste",
+        sentence_infos_reveal: "Più informazioni",
         meta_description: "Giochi di serata Picolito",
     
         other: "Altro"

@@ -306,8 +306,8 @@ select.team_select {
     width: auto;
     max-width: 10rem;
 }
-#modal_modal_player_menu .modal-body > .input-group .btn,
-#modal_modal_player_menu .modal-body > .input-group .form-control {
+#modal_player_menu .modal-body > .input-group .btn,
+#modal_player_menu .modal-body > .input-group .form-control {
     height: calc(1.5em + 0.75rem + 2px);
 }
 
@@ -341,14 +341,14 @@ span.span_player {color: var(--picolo_player);}
 span.span_sip {color: var(--picolo_sip);}
 span.span_team {color: var(--picolo_teams);}
 
-#sentence_modifier_modal_sentence {
+#modal_sentence_modifier_sentence {
     padding: 1rem;
     font-size: larger;
     max-height: 25rem;
     overflow-y: auto;
 }
 
-[data-bs-theme="dark"] #sentence_modifier_modal_sentence span.span_highlight {
+[data-bs-theme="dark"] #modal_sentence_modifier_sentence span.span_highlight {
     background-color: #000000b0;
 }
 
@@ -384,7 +384,7 @@ span.span_team {color: var(--picolo_teams);}
     color: black !important;
 }
 
-div#ingame_option {
+div#ingame_option_screens {
     width: 100%;
     display: flex;
     height: 100%;
@@ -399,7 +399,7 @@ div#ingame_option {
     flex-direction: column-reverse;
 }
 
-#replay_ingame_option, #start_ingame_option, #weakest_link_rule {
+#ingame_replay_screen, #ingame_ready_screen, #weakest_link_rule {
     background-color: #191c1f;
     padding: 1.5rem;
     border-radius: .25rem;
@@ -436,7 +436,7 @@ div#ingame_option {
     }
   }
 
-a#picolito_version {
+a#picolito_version_safety {
     text-decoration: underline;
     color: unset;
     bottom: 5vw;
@@ -450,7 +450,6 @@ a#picolito_version {
 div#menu {padding: 1.5rem;height: auto;/* background-color: var(--weakest_link); *//* color: white; */height: auto;}
 
 
-div#menu_links {align-items: center;flex-direction: row;flex-wrap: wrap;justify-content: center;}
 
 div#menu_content {height: 100%;}
 
@@ -480,16 +479,7 @@ div#menu_player_list {
     /* justify-content: center; */
 }
 
-div#ingame_information {
-    color: rgb(0 0 0 / 50%);
-    padding: 1vh;
-    transition: 0.25s;
-}
 
-div#ingame_information:hover {
-    color: #000000a6;
-    font-weight: bold;
-}
 
 
 div#weakest_link_actions {
@@ -673,7 +663,7 @@ span.cookie_var {
     font-size: x-large;
 }
 
-#sentence_modifier_modal_sentence span.span_highlight {
+#modal_sentence_modifier_sentence span.span_highlight {
     background-color: #000000d4;
 }
 
@@ -859,6 +849,39 @@ div#db_explorer_list_list {
 }
 #ingame_sentence .qpuc_reveal_btn:hover {
     border-color:white;
+}
+
+/* Encart d'information d'une phrase (champ DB `infos`, tâche 3) : bouton de
+   révélation + liste cachée par défaut, dans le flux de #ingame_sentence. */
+#ingame_sentence .sentence_infos {
+    margin-top: 0.75rem;
+    text-align: center;
+}
+#ingame_sentence .sentence_infos_reveal_btn {
+    font-size: clamp(0.9rem, 0.6rem + 1vw, 1.2rem);
+    background: linear-gradient(180deg, var(--qpuc_light_blue) 0%, var(--qpuc_blue) 100%);
+    border: 3px solid var(--qpuc);
+    cursor: pointer;
+    font-family: Gotham;
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0.25rem 1rem;
+    box-shadow: inset 0 0 5px 0px rgb(0 0 0 / 30%);
+}
+#ingame_sentence .sentence_infos_reveal_btn:hover {
+    border-color: white;
+}
+#ingame_sentence .sentence_infos_content {
+    list-style: none;
+    margin: 0.75rem auto 0 auto;
+    padding: 0.5rem 1rem;
+    max-width: 60rem;
+    text-align: left;
+    border: 2px solid var(--qpuc);
+    border-radius: 5px;
+    background-color: rgb(0 0 0 / 25%);
 }
 
 .btn-qpuc {

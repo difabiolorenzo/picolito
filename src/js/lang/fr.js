@@ -34,7 +34,6 @@ const LANGUAGE_FR = {
         ready: "Prêts?",
         start: "Commencer",
         virus: "VIRUS",
-        visit_website: "Aller sur le site",
         next_sentence: "Phrase suivante",
         previous_sentence: "Phrase précédente",
         weakest_link_sip: "GORGEES",
@@ -184,18 +183,12 @@ const LANGUAGE_FR = {
         nav_menu_link_mix: "Mix",
         nav_menu_link_picolo: "Picolito",
         nav_menu_link_never: "Je n'ai Jamais",
-        nav_menu_link_password: "Mot de passe",
         nav_menu_link_weakest_link: "Maillon Faible",
         nav_menu_link_question_pour_un_champion: "Question pour un Champion",
     
         gamemode_weakest_link_title:"Maillon Faible 🔗",
         gamemode_weakest_link_subtitle_1:"Vous êtes le maillon faible. Au revoir.",
-        gamemode_title_password:"Mot de passe 💡",
-        gamemode_password_subtitle_1:"Un mot peut en cacher un autre", // Le jeu été diffusé en alternance avec le jeu Mot de Passe présenté par la même animatrice et à la même horaire
-        gamemode_password_subtitle_2:"Faire deviner le mot sans le dire",
-        gamemode_password_warning_1:"Le mode de jeu \"Mot de passe\" est maintenant séparé de Picolito.",
-        gamemode_password_warning_2:"Retrouvez-le sur son propre projet GitHub et sa propre page",
-    
+
         gamemode_question_pour_un_champion_title:"Question pour un Champion ❓",
         gamemode_question_pour_un_champion_subtitle_1:"Testez vos connaissances et celles de vos amis !",
     
@@ -240,6 +233,7 @@ const LANGUAGE_FR = {
         weakest_link_ending_answer_show: "Voir la réponse",
         weakest_link_ending_answer_hide: "Cacher la réponse",
         weakest_link_questions_asked: "Questions posées",
+        sentence_infos_reveal: "Plus d'infos",
         meta_description: "Jeux de soirée Picolito",
     
         other: "Autre"

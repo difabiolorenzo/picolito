@@ -42,7 +42,6 @@ const LANGUAGE_EN = {
         ready: "Ready?",
         start: "Start",
         virus: "VIRUS",
-        visit_website: "Go to website",
         weakest_link_prepare_vote: "will vote.",
         weakest_link_vote_against: "vote against",
         weakest_link_minimum_requierement: "To launch the \"Weakest Link\" you need at least 2 players",
@@ -192,15 +191,9 @@ const LANGUAGE_EN = {
         nav_menu_link_never: "Never Have I Ever",
         nav_menu_link_weakest_link: "Weakest Link",
         nav_menu_link_question_pour_un_champion: "Question for a Champion",
-        nav_menu_link_password: "Password",
         gamemode_weakest_link_title:"Weakest Link 🔗",
         gamemode_weakest_link_subtitle_1:"You are the weakest link goodbye.",
-        gamemode_title_password:"Password 💡",
-        gamemode_password_subtitle_1:"One word can hide another",
-        gamemode_password_subtitle_2:"Guess the word without saying it",
-        gamemode_password_warning_1:"\"Password\" gamemode is now separated from Picolito.",
-        gamemode_password_warning_2:"Find it on his own GitHub project and page",
-    
+
         gamemode_question_pour_un_champion_title:"Question for a Champion ❓",
         gamemode_question_pour_un_champion_subtitle_1:"Test your knowledge and your friends'!",
     
@@ -245,6 +238,7 @@ const LANGUAGE_EN = {
         weakest_link_ending_answer_show: "Show answer",
         weakest_link_ending_answer_hide: "Hide answer",
         weakest_link_questions_asked: "Questions asked",
+        sentence_infos_reveal: "More info",
     
         meta_description: "Picolito party games",
         other: "Other"

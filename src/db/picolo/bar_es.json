@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_bar_es",
     "language": "es",
     "pack_name": "Bar - 🍻",
-    "pack_description": "",
+    "pack_description": "Si estáis listos para dar la vuelta al bar, este es el modo de juego perfecto.\nCuidado, no temáis quedar ridículos.",
     "filters": [{"type": 1, "player_count": [0, 1, 2], "color": "blue"}, {"type": 2, "player_count": [1, 3], "color": "yellow"}, {"type": 4, "player_count": [0, 1], "color": "green"}, {"type": 16, "player_count": [2, 3], "color": "blue"}, {"type": 17, "player_count": [0, 1, 2, 3], "color": "green"}, {"type": 18, "player_count": [1, 2], "color": "blue"}, {"type": 19, "player_count": [1, 2, 3], "color": "blue"}, {"type": 20, "player_count": [1], "color": "green"}, {"type": 21, "player_count": [1], "color": "green"}, {"type": 22, "player_count": [1], "color": "green"}],
     "db": [
         {"type": "1", "text": "%s, bebe si consumes cerveza aromatizada, si no, reparte un trago", "key": "", "parent_key": "", "pack_name": "bar", "language": "es", "nb_players": "1"},

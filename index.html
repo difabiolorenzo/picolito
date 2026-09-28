@@ -17,10 +17,17 @@
         <link id="bootstrap-overlay" rel="stylesheet" href="./src/css/radium.css">
         <link rel="stylesheet" type="text/css" href="./src/css/main.css">
 
-        <script type="text/javascript" defer src="./src/js/main.js"></script>
+        <script type="text/javascript" defer src="./src/js/catalog.js"></script>
         <script type="text/javascript" defer src="./src/js/cookie.js"></script>
+        <script type="text/javascript" defer src="./src/js/format.js"></script>
+        <script type="text/javascript" defer src="./src/js/players.js"></script>
+        <script type="text/javascript" defer src="./src/js/ingame.js"></script>
+        <script type="text/javascript" defer src="./src/js/dbmanager.js"></script>
+        <script type="text/javascript" defer src="./src/js/external.js"></script>
+        <script type="text/javascript" defer src="./src/js/qpuc.js"></script>
         <script type="text/javascript" defer src="./src/js/picolito.js"></script>
         <script type="text/javascript" defer src="./src/js/weakest_link.js"></script>
+        <script type="text/javascript" defer src="./src/js/main.js"></script>
         <script type="text/javascript" defer src="./src/js/lang/fr.js"></script>
         <script type="text/javascript" defer src="./src/js/lang/it.js"></script>
         <script type="text/javascript" defer src="./src/js/lang/en.js"></script>
@@ -29,7 +36,7 @@
     <body onload="init()">
         <noscript>Javascript est désactivé.</noscript>
         <a class="visually-hidden-focusable" id="skip_to_content" href="#principal">Aller au contenu</a>
-        <div class="modal fade" id="modal_safety_and_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="text_prevention_warning">
+        <div class="modal fade" id="safety_and_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="text_prevention_warning">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -79,7 +86,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal_modal_player_menu" tabindex="-1" role="dialog">
+        <div class="modal fade" id="modal_player_menu" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -389,7 +396,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="db_manager_modal_experimental_settings" class="d-none">
+                                    <div id="db_manager_experimental_section" class="d-none">
                                         <div>
                                             <h4 id="text_db_manager_model">text_db_manager_model</h4>
                                             <div>
@@ -465,7 +472,7 @@
                 <span id="gamename_menu" class="gamename">PICOLITO</span>
                 <div class="btn-group" role="group">
                     <button id="picolito_settings_collapse_header" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_settings"><i class="bi bi-gear"></i></button>
-                    <button id="text_menu_add_player" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person-plus"></i></button>
+                    <button id="text_menu_add_player" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_player_menu"><i class="bi bi-person-plus"></i></button>
                     <button id="picolito_advanced_settings_collapse_header" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modal_external_db"><i class="bi bi-box-seam"></i></button>
                 </div>
             </div>
@@ -485,9 +492,6 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link fw-bold" id="nav_menu_link_never" data-bs-toggle="tab" data-bs-target="#tab_pane_never" type="button" role="tab" aria-controls="tab_pane_never" aria-selected="false">nav_menu_link_never</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link fw-bold" id="nav_menu_link_password" data-bs-toggle="tab" data-bs-target="#tab_pane_password" type="button" role="tab" aria-controls="tab_pane_password" aria-selected="false">nav_menu_link_password</button>
-                    </li>
                     <li id="nav_menu_qpuc" class="d-none nav-item" role="presentation">
                         <button class="nav-link fw-bold" id="nav_menu_link_question_pour_un_champion" data-bs-toggle="tab" data-bs-target="#tab_pane_question_pour_un_champion" type="button" role="tab" aria-controls="tab_pane_question_pour_un_champion" aria-selected="false">nav_menu_link_question_pour_un_champion</button>
                     </li>
@@ -502,38 +506,38 @@
                     <h4 class="fw-bold h4 text-center w-100" id="text_gamemode_mix">text_gamemode_mix</h4>
                     <p id="text_gamemode_mix_subtitle">text_gamemode_mix_subtitle</p>
 
-                    <button class="btn btn-primary col-12" id="button_update_mix_gamemode_list" disabled onclick="selectMixGamemode()">button_update_mix_gamemode_list</button>
+                    <button class="btn btn-primary col-12" id="mix_db_update_button" disabled onclick="selectMixGamemode()">mix_db_update_button</button>
                     <div class="p-2 m-1 row" id="gamemode_mix_section">
                         <div class="col-12 col-sm-6 col-xl-4 col-xxl-4">
-                            <h3 id="gamodemode_mix_section_title_picolo">gamodemode_mix_section_title_picolo</h3>
-                            <div class="p-2" id="gamemode_mix_picolo"></div>
-                            <div id="gamodemode_mix_section_slider_picolo_probability_placeholder" class="d-none p-3 rounded-1">
-                                <label id="gamodemode_mix_section_slider_picolo_probability_label" for="gamodemode_mix_section_slider_picolo_probability" class="form-label">gamodemode_mix_section_slider_picolo_probability_label</label>
+                            <h3 id="gamemode_mix_section_title_picolo">gamemode_mix_section_title_picolo</h3>
+                            <div class="p-2" id="gamemode_mix_picolo_db_list"></div>
+                            <div id="gamemode_mix_section_slider_picolo_probability_placeholder" class="d-none p-3 rounded-1">
+                                <label id="gamemode_mix_section_slider_picolo_probability_label" for="gamemode_mix_section_slider_picolo_probability" class="form-label">gamemode_mix_section_slider_picolo_probability_label</label>
                                 <div>
-                                    <span id="gamodemode_mix_section_slider_picolo_probability_value">value</span>
-                                    <input type="range" class="form-range" min="0" max="100" id="gamodemode_mix_section_slider_picolo_probability" onchange="updateMixGamemodeProbability('picolo', this.value)">
+                                    <span id="gamemode_mix_section_slider_picolo_probability_value">value</span>
+                                    <input type="range" class="form-range" min="0" max="100" id="gamemode_mix_section_slider_picolo_probability" onchange="updateMixGamemodeProbability('picolo', this.value)">
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-xl-4 col-xxl-4">
-                            <h3 id="gamodemode_mix_section_title_je_n_ai_jamais">gamodemode_mix_section_title_je_n_ai_jamais</h3>
-                            <div class="p-2" id="gamemode_mix_je_n_ai_jamais"></div>
-                            <div id="gamodemode_mix_section_slider_je_n_ai_jamais_probability_placeholder" class="d-none p-3 rounded-1">
-                                <label id="gamodemode_mix_section_slider_je_n_ai_jamais_probability_label" for="gamodemode_mix_section_slider_je_n_ai_jamais_probability" class="form-label">gamodemode_mix_section_slider_je_n_ai_jamais_probability_label</label>
+                            <h3 id="gamemode_mix_section_title_je_n_ai_jamais">gamemode_mix_section_title_je_n_ai_jamais</h3>
+                            <div class="p-2" id="gamemode_mix_je_n_ai_jamais_db_list"></div>
+                            <div id="gamemode_mix_section_slider_je_n_ai_jamais_probability_placeholder" class="d-none p-3 rounded-1">
+                                <label id="gamemode_mix_section_slider_je_n_ai_jamais_probability_label" for="gamemode_mix_section_slider_je_n_ai_jamais_probability" class="form-label">gamemode_mix_section_slider_je_n_ai_jamais_probability_label</label>
                                 <div>
-                                    <span id="gamodemode_mix_section_slider_je_n_ai_jamais_probability_value">value</span>
-                                    <input type="range" class="form-range" min="0" max="100" id="gamodemode_mix_section_slider_je_n_ai_jamais_probability" onchange="updateMixGamemodeProbability('je_n_ai_jamais', this.value)">
+                                    <span id="gamemode_mix_section_slider_je_n_ai_jamais_probability_value">value</span>
+                                    <input type="range" class="form-range" min="0" max="100" id="gamemode_mix_section_slider_je_n_ai_jamais_probability" onchange="updateMixGamemodeProbability('je_n_ai_jamais', this.value)">
                                 </div>
                             </div>
                         </div>
                         <div id="mix_db_section_qpuc" class="d-none col-12 col-sm-6 col-xl-4 col-xxl-4">
-                            <h3 id="gamodemode_mix_section_title_question_pour_un_champion">gamodemode_mix_section_title_question_pour_un_champion</h3>
-                            <div class="p-2" id="gamemode_mix_question_pour_un_champion"></div>
-                            <div id="gamodemode_mix_section_slider_question_pour_un_champion_probability_placeholder" class="d-none p-3 rounded-1">
-                                <label id="gamodemode_mix_section_slider_question_pour_un_champion_probability_label" for="gamodemode_mix_section_slider_question_pour_un_champion_probability" class="form-label">gamodemode_mix_section_slider_question_pour_un_champion_probability_label</label>
+                            <h3 id="gamemode_mix_section_title_question_pour_un_champion">gamemode_mix_section_title_question_pour_un_champion</h3>
+                            <div class="p-2" id="gamemode_mix_question_pour_un_champion_db_list"></div>
+                            <div id="gamemode_mix_section_slider_question_pour_un_champion_probability_placeholder" class="d-none p-3 rounded-1">
+                                <label id="gamemode_mix_section_slider_question_pour_un_champion_probability_label" for="gamemode_mix_section_slider_question_pour_un_champion_probability" class="form-label">gamemode_mix_section_slider_question_pour_un_champion_probability_label</label>
                                 <div>
-                                    <span id="gamodemode_mix_section_slider_question_pour_un_champion_probability_value">value</span>
-                                    <input type="range" class="form-range" min="0" max="100" id="gamodemode_mix_section_slider_question_pour_un_champion_probability" onchange="updateMixGamemodeProbability('question_pour_un_champion', this.value)">
+                                    <span id="gamemode_mix_section_slider_question_pour_un_champion_probability_value">value</span>
+                                    <input type="range" class="form-range" min="0" max="100" id="gamemode_mix_section_slider_question_pour_un_champion_probability" onchange="updateMixGamemodeProbability('question_pour_un_champion', this.value)">
                                 </div>
                             </div>
                         </div>
@@ -546,21 +550,6 @@
                 <div class="tab-pane card m-1 p-4 pt-0" id="tab_pane_never" role="tabpanel" aria-labelledby="nav_menu_link_never">
                     <h4 class="fw-bold h4 text-center w-100" id="text_gamemode_je_n_ai_jamais">text_gamemode_je_n_ai_jamais</h4>
                     <div id="gamemode_je_n_ai_jamais_db_list" class="row"></div>
-                </div>
-                <div class="tab-pane" id="tab_pane_password" role="tabpanel" aria-labelledby="nav_menu_link_password">
-
-                    <div class="card p-4 pt-0 m-1" id="gamemode_password_section">
-                        <div class="d-flex justify-content-between">
-                            <h4 id="text_gamemode_title_password"  class="fw-bold h4 text-center w-100">text_gamemode_title_password</h4>
-                        </div>
-                        <p id="text_gamemode_password_subtitle_1">text_gamemode_password_subtitle_1</p>
-                        <p id="text_gamemode_password_subtitle_2">text_gamemode_password_subtitle_2</p>
-                        <code id="text_gamemode_password_warning_1">text_gamemode_password_warning_1</code>
-                        <code id="text_gamemode_password_warning_2">text_gamemode_password_warning_2</code>
-                        <a class="btn btn-primary" id="text_gamemode_password_visit" href="https://difabiolorenzo.github.io/motdepasse/">text_gamemode_password_visit</a>
-                        <a class="btn btn-primary" href="https://github.com/difabiolorenzo/motdepasse">GitHub</a>
-                    </div>
-
                 </div>
                 <div class="tab-pane" id="tab_pane_question_pour_un_champion" role="tabpanel" aria-labelledby="nav_menu_link_question_pour_un_champion">
                     <div class="card p-4 pt-0 m-1" id="gamemode_question_pour_un_champion_section" >
@@ -597,7 +586,7 @@
                         <div>
                         </div>
                     </div>
-                    <p><button type="button" class="btn btn-link p-0" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#modal_safety_and_cookie_modal">text_prevention_panel</button></p>
+                    <p><button type="button" class="btn btn-link p-0" id="text_prevention_panel" data-bs-toggle="modal" data-bs-target="#safety_and_cookie_modal">text_prevention_panel</button></p>
                     <p><a id="text_gamemode_menu" href="https://github.com/difabiolorenzo/picolito/">GitHub</a></p>                        
                     <p><a id="text_settings_information_signal_bug" href="https://github.com/difabiolorenzo/picolito/issues">text_settings_information_signal_bug</a></p>
                 </div>
@@ -649,19 +638,19 @@
                             <button type="button" class="btn btn-qpuc btn-qpuc-danger m-1" id="qpuc_validate_bad" onclick="validateQpucAnswer(false)" disabled>qpuc_validate_bad</button>
                         </div>
                     </div>
-                    <div id="ingame_option" style="display: none;">
-                        <div id="start_ingame_option" style="display:none">
+                    <div id="ingame_option_screens" style="display: none;">
+                        <div id="ingame_ready_screen" style="display:none">
                             <p id="text_game_ready">text_game_ready</p>
                             <div class="d-flex flex-wrap justify-content-center gap-2">
                                 <button id="text_game_start_button" type='submit' class='btn btn-primary btn-lg' onclick='startGame()'>text_game_start_button</button>
-                                <button id="text_game_teams_ready" type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu" style="display:none;">text_game_teams_ready</button>
+                                <button id="text_game_teams_ready" type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#modal_player_menu" style="display:none;">text_game_teams_ready</button>
                                 <button id="text_game_quit_ready" type="button" class="btn btn-secondary btn-lg" onclick="exitGame()">text_game_quit_ready</button>
                             </div>
                         </div>
-                        <div id="replay_ingame_option" style="display:none">
+                        <div id="ingame_replay_screen" style="display:none">
                             <p id="text_game_endgame">text_game_endgame</p>
                             <div class="d-flex flex-wrap justify-content-center gap-2">
-                                <button id="text_game_teams_replay" type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu" style="display:none;">text_game_teams_replay</button>
+                                <button id="text_game_teams_replay" type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#modal_player_menu" style="display:none;">text_game_teams_replay</button>
                                 <button id="text_game_quit" type="submit" class="btn btn-primary btn-lg" onclick="exitGame()">text_game_quit</button>
                                 <button id="text_game_restart" type='submit' class='btn btn-primary btn-lg' onclick='restartGame()'>text_game_restart</button>
                             </div>
@@ -686,7 +675,7 @@
                     </div>
                     <div class="col-md-3" role="group">
                         <button id="text_game_quit_topbar" type="submit" class="btn btn-outline-dark" onclick="exitGame()">text_game_quit_topbar</button>
-                        <button id="text_game_player_menu" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modal_modal_player_menu"><i class="bi bi-person"></i></button>
+                        <button id="text_game_player_menu" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modal_player_menu"><i class="bi bi-person"></i></button>
                     </div>
                 </div>
                 
@@ -784,7 +773,7 @@
                     <div id="ingame_weakest_link_players">
                         <span id="ingame_weakest_link_current_player" class="weakest_link_shield_player changing_weakest_link_player">-</span>
                     </div>
-                    <div id="ingame_weakest_questions_actions" class="d-flex">
+                    <div id="ingame_weakest_link_questions_actions" class="d-flex">
                         <button type="button" id="ingame_weakest_link_current_button_wrong" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkWrong()">WRONG</button>
                          <button type="button" id="ingame_weakest_link_current_button_bank" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkBank()">BANK</button>
                         <button type="button" id="ingame_weakest_link_current_button_correct" class="weakest_link_shield_normal weakest_link_button" onclick="weakestLinkCorrect()">CORRECT</button>

@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_fi",
     "language": "fi",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Tiimittäin kamppailuun! Pysykää yhdessä älkääkä armautika...\nTänä yönä on sotaa!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Joukkue %t: Mikä on pelaajan %s äidin tyttönimi? Jos vastaatte oikein, juo toinen joukkue $ huikkaa ja jos ette, juotte te!", "key": "", "parent_key": "", "pack_name": "war", "language": "fi", "nb_players": "1"},

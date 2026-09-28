@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_da",
     "language": "da",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Sammen mod fjenderne! Stå sammen, og vis ingen nåde...\nI nat er der krig!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Hold %t: Hvilket pigenavn har %ss mor? Hvis I svarer rigtigt, drikker det andet hold $ slurke. Ellers drikker I!", "key": "", "parent_key": "", "pack_name": "war", "language": "da", "nb_players": "1"},

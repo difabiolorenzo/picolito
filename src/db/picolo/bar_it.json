@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "picolo",
     "id": "picolo_bar_it",
     "language": "it",
     "pack_name": "Bar - 🍻",
-    "pack_description": "Se siete pronti a mettere il bar sottosopra allora avete lo spirito giusto per fare questio gioco.\nAttenzione: vietato vergognarsi !",
+    "pack_description": "Se siete pronti a mettere il bar sottosopra allora avete lo spirito giusto per fare questo gioco.\nAttenzione: vietato vergognarsi !",
     "filters": [{"type": 1, "player_count": [0, 1, 2], "color": "blue"}, {"type": 2, "player_count": [1, 3], "color": "yellow"}, {"type": 4, "player_count": [0, 1], "color": "green"}, {"type": 16, "player_count": [2, 3], "color": "blue"}, {"type": 17, "player_count": [0, 1, 2, 3], "color": "green"}, {"type": 18, "player_count": [1, 2], "color": "blue"}, {"type": 19, "player_count": [1, 2, 3], "color": "blue"}, {"type": 20, "player_count": [1], "color": "green"}, {"type": 21, "player_count": [1], "color": "green"}, {"type": 22, "player_count": [1], "color": "green"}],
     "db": [
         {"type": "1", "text": "%s, se ti butti sulla birra aromatizzata bevi, altrimenti distribuisci un sorso", "key": "", "parent_key": "", "pack_name": "bar", "language": "it", "nb_players": "1"},

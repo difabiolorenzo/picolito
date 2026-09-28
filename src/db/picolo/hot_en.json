@@ -1,10 +1,10 @@
 {
-    "version": 2,
+    "version": 3,
     "gamemode": "picolo",
     "id": "picolo_hot_en",
     "language": "en",
     "pack_name": "Caliente - 🍆",
-    "pack_description": "Time to get a little naughty.\nBe prepare to reveal your best-kept secrets",
+    "pack_description": "Time to get a little naughty.\nBe prepared to reveal your best-kept secrets",
     "filters": [
             {"type": 1, "player_count": [0,1,2,3,4,5], "color": "blue" },
             {"type": 2, "player_count": [1,2], "color": "yellow" },

@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_ru",
     "language": "ru",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Команда против команды! Держитесь вместе и не щадите никого...\nСегодня война!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Команда %t : фамилия(девичья фамилия) %s ? Не ответили, делайте $ глотка(ов)", "key": "", "parent_key": "", "pack_name": "war", "language": "ru", "nb_players": "1"},

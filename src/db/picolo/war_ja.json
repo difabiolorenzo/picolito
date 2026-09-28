@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_ja",
     "language": "ja",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "チームで対決! 仲間は一つになれ、そして容赦するな...\n今夜は戦争だ!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "%tチーム、$口を賭けた質問です。%sの母親の姓は何ですか?", "key": "", "parent_key": "", "pack_name": "war", "language": "ja", "nb_players": "1"},

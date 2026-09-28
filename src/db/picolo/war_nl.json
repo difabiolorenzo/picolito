@@ -1,10 +1,10 @@
 {
-    "version": 1,
+    "version": 2,
     "gamemode": "war",
     "id": "picolo_war_nl",
     "language": "nl",
     "pack_name": "Guerre - 🌩",
-    "pack_description": "",
+    "pack_description": "Team tegen team! Houdt elkaar vast en wees meedogenloos...\nVanavond is het oorlog!",
     "filters": [{"type": 8, "player_count": [0, 1, 2], "color": "blue"}, {"type": 9, "player_count": [0], "color": "blue"}, {"type": 10, "player_count": [2, 3], "color": "blue"}, {"type": 11, "player_count": [0, 1], "color": "green"}, {"type": 12, "player_count": [0, 1], "color": "green"}, {"type": 13, "player_count": [0, 1], "color": "blue"}],
     "db": [
         {"type": "8", "text": "Team %t, het gaat bij deze vraag om $ slokken: Wat is de meisjesnaam van de moeder van %s ?", "key": "", "parent_key": "", "pack_name": "war", "language": "nl", "nb_players": "1"},

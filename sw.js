@@ -7,7 +7,7 @@
  * à l'installation.
  */
 
-const CACHE = "picolito-cache-v1";
+const CACHE = "picolito-cache-v3";
 
 const PRECACHE = [
     "./",
@@ -15,10 +15,17 @@ const PRECACHE = [
     "./Manifest.webmanifest",
     "./src/css/radium.css",
     "./src/css/main.css",
-    "./src/js/main.js",
+    "./src/js/catalog.js",
     "./src/js/cookie.js",
+    "./src/js/format.js",
+    "./src/js/players.js",
+    "./src/js/ingame.js",
+    "./src/js/dbmanager.js",
+    "./src/js/external.js",
+    "./src/js/qpuc.js",
     "./src/js/picolito.js",
     "./src/js/weakest_link.js",
+    "./src/js/main.js",
     "./src/js/lang/fr.js",
     "./src/js/lang/it.js",
     "./src/js/lang/en.js",
