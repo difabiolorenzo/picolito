@@ -131,6 +131,8 @@ const LANGUAGE_IT = {
         settings_darkmode_light: "Chiaro",
         settings_darkmode_dark: "Scuro",
         settings_information_highlight: "Evidenziazione delle informazioni",
+        settings_ingame_font: "Carattere del testo in gioco",
+        settings_ingame_font_default: "Predefinito",
         settings_quotes_visualization: "Visualizzazione delle virgolette",
         settings_quotes_visualization_none: "Nessuna",
         settings_quotes_visualization_italic: "Corsivo",

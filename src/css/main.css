@@ -1,4 +1,6 @@
 :root {
+    --sentence-font-size: clamp(2rem, -1.5rem + 8vw, 3rem);
+
     --picolito-primary: #ffc107;
     --picolito-primary-shade: #fde13e;
     --picolito-primary-light: #ffefb8;
@@ -77,6 +79,12 @@
   src: url('../font/Kimberley\ Black.ttf');
 }
 
+/* Polices du texte en jeu (réglage « Police du texte en jeu », INGAME_FONTS dans main.js).
+   Chargées seulement si sélectionnées ; licences OFL dans chaque dossier. */
+@font-face { font-family: 'Outfit'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../font/Outfit/Outfit-VariableFont_wght.ttf') format('truetype'); }
+@font-face { font-family: 'Cascadia Mono'; font-style: normal; font-weight: 200 700; font-display: swap; src: url('../font/Cascadia_Mono/CascadiaMono-VariableFont_wght.ttf') format('truetype'); }
+@font-face { font-family: 'Cascadia Mono'; font-style: italic; font-weight: 200 700; font-display: swap; src: url('../font/Cascadia_Mono/CascadiaMono-Italic-VariableFont_wght.ttf') format('truetype'); }
+
 
 body {
     accent-color: var(--picolito-background);
@@ -111,13 +119,18 @@ body {
 
 div#ingame_sentence, #text_game_ready, #text_game_endgame {
     font-weight: bold;
-    font-size: 2.5rem;
-    font-size: clamp(2rem, -1.5rem + 8vw, 3rem);
+    font-size: var(--sentence-font-size);
+    font-family: var(--ingame-font-family, inherit);
     user-select: none;
     -webkit-user-select:none;
     /* text-size-adjust: auto; */
     max-height: 60vh;
     /* line-height: 3rem; */
+}
+
+/* Aperçu des réglages : suit la police du texte en jeu */
+#text_settings_quotes_visualization_playground {
+    font-family: var(--ingame-font-family, inherit);
 }
 
 div#ingame_sentence {
@@ -126,7 +139,17 @@ div#ingame_sentence {
     max-height: 60vh;
     padding: 1rem;
     /* line-height: clamp(2.5rem, -1rem + 9vw, 4rem); */
-    font-size: clamp(2rem, -1.5rem + 8vw, 3rem);
+    cursor: pointer;
+    transition: opacity .15s ease, transform .1s ease;
+}
+
+/* R5 : la phrase est cliquable (phrase suivante) */
+@media (hover: hover) {
+    div#ingame_sentence:hover { opacity: .85; }
+}
+div#ingame_sentence:active { transform: scale(.98); }
+@media (prefers-reduced-motion: reduce) {
+    div#ingame_sentence:active { transform: none; }
 }
 
 #text_game_ready {
@@ -190,7 +213,7 @@ div#picolito.qpuc #picolito_gamemode_infos,
 div#picolito.qpuc #picolito_bdd_infos {color: white;}
 
 div#picolito.qpuc div#ingame_sentence {
-    font-family: Gotham;
+    font-family: var(--ingame-font-family, Gotham);
     background: linear-gradient(130deg, var(--qpuc_dark_blue) 17%, var(--qpuc_blue) 79%);
     border: 3px solid var(--qpuc_light_blue);
     border-radius: 10px;
@@ -435,17 +458,6 @@ div#ingame_option_screens {
         transform: scale3d(1, 1, 1);
     }
   }
-
-a#picolito_version_safety {
-    text-decoration: underline;
-    color: unset;
-    bottom: 5vw;
-    height: 7.5%;
-    padding: 2.5vw;
-    display: flex;
-    align-items: center;
-    font-size: larger;
-}
 
 div#menu {padding: 1.5rem;height: auto;/* background-color: var(--weakest_link); *//* color: white; */height: auto;}
 

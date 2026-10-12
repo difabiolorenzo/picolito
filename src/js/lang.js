@@ -6,44 +6,55 @@ function setLanguageString() {
     global.lang_de = "Deutsch";
     global.lang_en = "English";
     global.lang_es = "Español";
-    global.lang_fi = "Suomalainen";
+    global.lang_fi = "Suomi";
     global.lang_it = "Italiano";
     global.lang_ja = "日本語";
-    global.lang_ko = "한국인";
-    global.lang_nb = "Novegian";
+    global.lang_ko = "한국어";
+    global.lang_nb = "Norsk bokmål";
     global.lang_nl = "Nederlands";
     global.lang_pt = "Português";
     global.lang_ru = "Русский";
-    global.lang_sv = "Svensk";
+    global.lang_sv = "Svenska";
 
     document.getElementById("text_menu_lang_en").innerHTML = global.lang_en;
     document.getElementById("text_menu_lang_fr").innerHTML = global.lang_fr;
     document.getElementById("text_menu_lang_it").innerHTML = global.lang_it;
+    document.getElementById("text_menu_lang_da").innerHTML = global.lang_da;
+    document.getElementById("text_menu_lang_de").innerHTML = global.lang_de;
+    document.getElementById("text_menu_lang_es").innerHTML = global.lang_es;
+    document.getElementById("text_menu_lang_fi").innerHTML = global.lang_fi;
+    document.getElementById("text_menu_lang_ja").innerHTML = global.lang_ja;
+    document.getElementById("text_menu_lang_ko").innerHTML = global.lang_ko;
+    document.getElementById("text_menu_lang_nb").innerHTML = global.lang_nb;
+    document.getElementById("text_menu_lang_nl").innerHTML = global.lang_nl;
+    document.getElementById("text_menu_lang_pt").innerHTML = global.lang_pt;
+    document.getElementById("text_menu_lang_ru").innerHTML = global.lang_ru;
+    document.getElementById("text_menu_lang_sv").innerHTML = global.lang_sv;
 
     language = {
         fr: LANGUAGE_FR,
         it: LANGUAGE_IT,
-        en: LANGUAGE_EN
+        en: LANGUAGE_EN,
+        da: LANGUAGE_DA,
+        de: LANGUAGE_DE,
+        es: LANGUAGE_ES,
+        fi: LANGUAGE_FI,
+        ja: LANGUAGE_JA,
+        ko: LANGUAGE_KO,
+        nb: LANGUAGE_NB,
+        nl: LANGUAGE_NL,
+        pt: LANGUAGE_PT,
+        ru: LANGUAGE_RU,
+        sv: LANGUAGE_SV
     };
 }
 
 function updateCurrentLanguageString(lang) {
     input_language.value = lang
-    switch (lang) {
-        case "fr":
-            global.current_language_strings = language.fr;
-            global.current_language = "fr";
-            break;
-        case "it":
-            global.current_language_strings = language.it;
-            global.current_language = "it";
-            break;
-        // Seuls FR et IT ont un dictionnaire dédié ; toute autre langue retombe sur EN (default).
-        default:
-            global.current_language_strings = language.en;
-            global.current_language = "en";
-            break;
-    }
+    const dict = language[lang];
+    // Langue supportée (dictionnaire dédié) ; sinon repli sur EN.
+    global.current_language_strings = dict || language.en;
+    global.current_language = dict ? lang : "en";
 
     document.documentElement.lang = global.current_language;
     updateHTMLLanguageStrings()
@@ -111,6 +122,8 @@ const I18N_TARGETS = [
     ["text_settings_darkmode_dark", "settings_darkmode_dark"],
     ["text_settings_information_highlight", "settings_information_highlight"],
     ["text_settings_quotes_visualization", "settings_quotes_visualization"],
+    ["text_settings_ingame_font", "settings_ingame_font"],
+    ["text_settings_ingame_font_default", "settings_ingame_font_default"],
     ["text_settings_quotes_visualization_none", "settings_quotes_visualization_none"],
     ["text_settings_quotes_visualization_italic", "settings_quotes_visualization_italic"],
     ["text_settings_quotes_visualization_underline", "settings_quotes_visualization_underline"],
@@ -201,6 +214,9 @@ const I18N_TARGETS = [
     ["picolito_settings_collapse_header", "settings", "aria-label"],
     ["text_menu_add_player", "add_player", "aria-label"],
     ["picolito_advanced_settings_collapse_header", "databases", "aria-label"],
+    ["picolito_settings_collapse_header", "settings", "title"],
+    ["text_menu_add_player", "add_player", "title"],
+    ["picolito_advanced_settings_collapse_header", "databases", "title"],
     ["external_db_add_button", "add", "aria-label"],
     ["text_game_player_menu", "players_capitalized", "aria-label"],
     ["game_cycle_previous_button", "previous_sentence", "aria-label"],
@@ -232,7 +248,11 @@ function updateHTMLLanguageStrings() {
             if (key == "file_protocol_warning_text") {
                 value = value.replace(/%s/g, `<a href="${PICOLITO_URL}" target="_blank" rel="noopener">${PICOLITO_URL}</a>`);
             }
-            el[property] = value;
+            if (property.startsWith("aria-")) {
+                el.setAttribute(property, value);
+            } else {
+                el[property] = value;
+            }
         } else {
             console.warn(`updateHTMLLanguageStrings : élément #${id} introuvable`);
         }

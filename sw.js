@@ -7,7 +7,7 @@
  * à l'installation.
  */
 
-const CACHE = "picolito-cache-v3";
+const CACHE = "picolito-cache-v4";
 
 const PRECACHE = [
     "./",
@@ -29,6 +29,17 @@ const PRECACHE = [
     "./src/js/lang/fr.js",
     "./src/js/lang/it.js",
     "./src/js/lang/en.js",
+    "./src/js/lang/da.js",
+    "./src/js/lang/de.js",
+    "./src/js/lang/es.js",
+    "./src/js/lang/fi.js",
+    "./src/js/lang/ja.js",
+    "./src/js/lang/ko.js",
+    "./src/js/lang/nb.js",
+    "./src/js/lang/nl.js",
+    "./src/js/lang/pt.js",
+    "./src/js/lang/ru.js",
+    "./src/js/lang/sv.js",
     "./src/js/lang.js"
 ];
 

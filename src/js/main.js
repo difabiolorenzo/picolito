@@ -69,7 +69,7 @@ function defaultVariables() {
     }
 
     game = {
-        picolito_version: "0.37.2",
+        picolito_version: "0.37.3",
         vanilla_db_index: VANILLA_DB_INDEX,
 
         mix_gamemode_list_picolo: [],
@@ -79,6 +79,7 @@ function defaultVariables() {
 
         team_1: "",
         team_2: "",
+        team_mode: false,
 
         sip: {
             min: 1,
@@ -91,6 +92,7 @@ function defaultVariables() {
         display_color_indicator: true,
         quotes_indicator: "underline",   //none, italic, underline, highlight, white_on_black, black_on_white
         animation: true,
+        ingame_font: "default",   // clé de INGAME_FONTS
 
         only_display_current_language_databases: true,
 
@@ -209,11 +211,15 @@ function updateHTMLSettingsByVar() {
     input_weakest_link_text_size.value = game.weakest_link.text_size;
     input_weakest_link_soundtrack.checked = global.audio_enabled;
     input_qpuc_answer_display.value = game.qpuc.answer_display;
+    changeIngameFont(game.ingame_font);
 
     picolito_version_safety.innerHTML = `Picolito ${game.picolito_version}`;
     picolito_version_menu.innerHTML = `Picolito ${game.picolito_version}`;
 
     document.getElementById("input_show_only_current_language_db").checked = game.only_display_current_language_databases;
+
+    menu_player_switch_team_mode.checked = game.team_mode;
+    applyTeamModeVisibility();
 
     displayPage('menu');
 }
@@ -340,6 +346,26 @@ function changeQuotesVisualization(value) {
     game.quotes_indicator = value;
 
     settingsTextPreview()
+}
+
+// Polices du texte en jeu (@font-face dans main.css) ; null = police par défaut du thème
+const INGAME_FONTS = {
+    default: null,
+    outfit: "'Outfit', sans-serif",
+    cascadia_mono: "'Cascadia Mono', monospace"
+};
+
+function changeIngameFont(value) {
+    if (!Object.prototype.hasOwnProperty.call(INGAME_FONTS, value)) { value = "default"; }
+    game.ingame_font = value;
+    document.getElementById("input_ingame_font").value = value;
+
+    const family = INGAME_FONTS[value];
+    if (family) {
+        document.documentElement.style.setProperty("--ingame-font-family", family);
+    } else {
+        document.documentElement.style.removeProperty("--ingame-font-family");
+    }
 }
 
 function changeQpucAnswerDisplay(value) {
@@ -495,7 +521,7 @@ function DEBUG_carthage(debug) {
         game.debug = true;
         showToast("Bienvenue à Carthage.", "bg-success text-white border-0");
         document.getElementById("gamename_menu").innerHTML = "CODE LYOKOLITO";
-        // document.getElementById("debug_tools_placeholder").style.display = "block";
+        // document.getElementById("debug_tools_placeholder").classList.remove("d-none");
         document.getElementById("debug_button_add_player").classList.remove("d-none");
         document.getElementById("debug_button_quit_debug").classList.remove("d-none");
 
@@ -514,7 +540,7 @@ function DEBUG_carthage(debug) {
         global.modal_player_menu.hide()
 
         document.getElementById("gamename_menu").innerHTML = "PICOLITO";
-        // document.getElementById("debug_tools_placeholder").style.display = "none";
+        // document.getElementById("debug_tools_placeholder").classList.add("d-none");
         document.getElementById("debug_button_add_player").classList.add("d-none");
         document.getElementById("debug_button_quit_debug").classList.add("d-none");
 

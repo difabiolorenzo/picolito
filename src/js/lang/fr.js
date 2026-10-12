@@ -131,6 +131,8 @@ const LANGUAGE_FR = {
         settings_darkmode_light: "Clair",
         settings_darkmode_dark: "Sombre",
         settings_information_highlight: "Distinction des informations",
+        settings_ingame_font: "Police du texte en jeu",
+        settings_ingame_font_default: "Par défaut",
         settings_quotes_visualization: "Visualisation des guillemets",
         settings_quotes_visualization_none: "Aucune",
         settings_quotes_visualization_italic: "Italic",

@@ -79,8 +79,8 @@ function displaySentence(sentence, color, pack_id, answer) {
     if (color == "yellow") { displayPicoloVirusTitle() } else { hidePicoloVirusTitle() }
 }
 
-function displayPicoloVirusTitle() { document.getElementById("text_ingame_title").style.display = ""; }
-function hidePicoloVirusTitle() { document.getElementById("text_ingame_title").style.display = "none"; }
+function displayPicoloVirusTitle() { document.getElementById("text_ingame_title").classList.remove("d-none"); }
+function hidePicoloVirusTitle() { document.getElementById("text_ingame_title").classList.add("d-none"); }
 
 // Prise en compte des probabilités et paramètres pour choisir la couleur
 function getColor() {

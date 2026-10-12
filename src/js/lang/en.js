@@ -137,6 +137,8 @@ const LANGUAGE_EN = {
         settings_darkmode_light: "Bright theme",
         settings_darkmode_dark: "Dark theme",
         settings_information_highlight: "Information highlight",
+        settings_ingame_font: "In-game text font",
+        settings_ingame_font_default: "Default",
         settings_quotes_visualization: "Quotes visualization",
         settings_quotes_visualization_none: "None",
         settings_quotes_visualization_italic: "Italic",

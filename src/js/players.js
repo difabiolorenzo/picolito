@@ -34,7 +34,7 @@ function refreshTeamCounters() {
     if (!container) { return; }
 
     const total = game.player_list.length;
-    const team_mode = menu_player_switch_team_mode.checked;
+    const team_mode = game.team_mode;
     const unassigned_label = global.current_language_strings.player_unassigned;
     const players_label = global.current_language_strings.players_capitalized;
 
@@ -74,7 +74,7 @@ function refreshPlayerList() {
 
 function getPlayerRowTemplate(player) {
     const team = player.team;
-    const team_mode = menu_player_switch_team_mode.checked;
+    const team_mode = game.team_mode;
     const is_assigned = team_mode && (team == "team_1" || team == "team_2");
     const team_name = team == "team_1" ? game.team_1 : team == "team_2" ? game.team_2 : "";
     const unassigned_label = global.current_language_strings.player_unassigned;
@@ -104,12 +104,23 @@ function getPlayerRowTemplate(player) {
         </div>`;
 }
 
-function refreshTeamDisplay() {
-    const team_mode = menu_player_switch_team_mode.checked;
+function setTeamMode(enabled) {
+    game.team_mode = enabled === true;
+    refreshTeamDisplay();
+    storeSettingsCookie();
+}
+
+// Affiche/masque les contrôles d'équipe sans re-rendre la liste (sûr à l'init, avant le chargement des joueurs)
+function applyTeamModeVisibility() {
+    const team_mode = game.team_mode;
     document.getElementById("menu_player_team_placeholder").classList.toggle("d-none", !team_mode);
     document.getElementById("menu_player_auto_balance").classList.toggle("d-none", !team_mode);
     document.getElementById("menu_player_team_1_name").value = game.team_1;
     document.getElementById("menu_player_team_2_name").value = game.team_2;
+}
+
+function refreshTeamDisplay() {
+    applyTeamModeVisibility();
     refreshPlayerList();
 }
 

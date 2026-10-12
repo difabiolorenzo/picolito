@@ -195,7 +195,7 @@ function exitGame() {
     }
 
     setBackgroundStyleColor("black");
-    document.getElementById("text_ingame_title").style.display = "none";
+    document.getElementById("text_ingame_title").classList.add("d-none");
     document.getElementById("text_ingame_title").innerHTML = "";
 
     displaySentence("", undefined); // reset HTML sentence display
@@ -494,11 +494,7 @@ function picolitoNavigationButtonsDisplay(button, display=false) {
 
 function displayIngameOptionPanel(value) {
     const panel = document.getElementById("ingame_option_screens")
-    if (value == true) {
-        panel.style.display = "flex";
-    } else {
-        panel.style.display = "none";
-    }
+    panel.classList.toggle("d-none", value != true); // display: flex vient de main.css
 }
 
 function manageIngameOptionDisplay({ option = null, display = false }) {    
@@ -509,11 +505,7 @@ function manageIngameOptionDisplay({ option = null, display = false }) {
         default: break;
     }
 
-    if (display == true) {
-        selected_option.style.display = "block";
-    } else {
-        selected_option.style.display = "none";
-    }
+    selected_option.classList.toggle("d-none", display != true);
 }
 
 function updateWarTeamOptionDisplay(display) {
@@ -521,7 +513,7 @@ function updateWarTeamOptionDisplay(display) {
     for (const id of ids) {
         const element = document.getElementById(id);
         if (element) {
-            element.style.display = display ? "inline-flex" : "none";
+            element.classList.toggle("d-none", !display);
         }
     }
 }

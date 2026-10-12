@@ -195,6 +195,7 @@ const DBManager = {
 function onlyDisplayCurrentLanguageDB() {
     const input = document.getElementById("input_show_only_current_language_db")
     game.only_display_current_language_databases = input.checked
+    storeSettingsCookie()
     refreshDBList()
 }
 

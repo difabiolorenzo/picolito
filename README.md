@@ -102,8 +102,8 @@ Les bases de données sont organisées en **packs** : chaque pack est identifié
 
 ## Langues
 
-- L'**interface** est traduite en **FR / IT / EN** (sélecteur dans le menu).
-- Les packs **Picolo** (Défaut, On est débiles, Bar, Caliente, Guerre) et **Je n'ai jamais** (Populaire, Fête, Coquin) sont actuellement **jouables en FR, EN et IT** — les fichiers existent aussi en **11 autres langues** (`da`, `de`, `es`, `fi`, `ja`, `ko`, `nb`, `nl`, `pt`, `ru`, `sv`), mais ces packs ne sont **pas encore chargés par le jeu**.
+- L'**interface** est traduite en **14 langues** : `fr`, `it`, `en`, `da`, `de`, `es`, `fi`, `ja`, `ko`, `nb`, `nl`, `pt`, `ru`, `sv` (sélecteur dans le menu). ⚠️ Les traductions sont des contributions à **relire par un locuteur** ; signalez toute correction.
+- Les packs **Picolo** (Défaut, On est débiles, Bar, Caliente, Guerre) et **Je n'ai jamais** (Populaire, Fête, Coquin) sont jouables dans ces **14 langues** (55 entrées de catalogue). Le réglage ci-dessous les filtre sur la langue d'affichage.
 - Réglage « Afficher seulement la base de données dans la langue d'affichage » pour filtrer les packs.
 
 ## Bases de données externes
@@ -146,7 +146,7 @@ Aucune commande de build/test/lint. Pour lancer : servir un serveur HTTP statiqu
 
 # Développement
 
-Projet en **vanilla JavaScript** (aucun build step, aucun framework de test, pas de npm/webpack/vite). Bootstrap 5.1.3, jQuery 3.5.1, Popper et Bootstrap Icons via CDN.
+Projet en **vanilla JavaScript** (aucun build step, aucun framework de test, pas de npm/webpack/vite). Bootstrap 5.3.3, jQuery 3.5.1, Popper et Bootstrap Icons via CDN.
 
 # Différences entre les versions
 

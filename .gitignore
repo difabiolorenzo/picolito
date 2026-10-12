@@ -1,0 +1,4 @@
+/docs
+
+# artefacts générés par les outils de test
+/tests/output
