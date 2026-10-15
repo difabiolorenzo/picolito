@@ -7,7 +7,7 @@
  * à l'installation.
  */
 
-const CACHE = "picolito-cache-v6";
+const CACHE = "picolito-cache-v7";
 
 const PRECACHE = [
     "./",
@@ -17,6 +17,7 @@ const PRECACHE = [
     "./src/css/main.css",
     "./src/js/rng.js",
     "./src/js/types.js",
+    "./src/js/cards.js",
     "./src/js/catalog.js",
     "./src/js/cookie.js",
     "./src/js/format.js",

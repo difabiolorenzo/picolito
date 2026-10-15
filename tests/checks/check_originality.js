@@ -25,7 +25,8 @@
 // Mesure : trigrammes de caractères après normalisation (minuscules, sans accents, sans ponctuation,
 // sans tokens %s / %t / %1 / $), pondérés par leur rareté dans les références de la langue.
 // Similarité = coefficient de Dice pondéré (voir la classe Corpus).
-// Les phrases de moins de 20 caractères normalisés ne donnent qu'un avertissement (phrases banales).
+// Les phrases de moins de 40 caractères normalisés ne donnent qu'un avertissement : sur une phrase
+// aussi courte, un seul mot partagé suffit à faire monter le score, et elle est rarement protégeable.
 "use strict";
 
 const fs = require("fs");
@@ -35,7 +36,7 @@ const ROOT = path.join(__dirname, "..", "..");
 const DB_DIR = path.join(ROOT, "src", "db");
 const REF_PACKS_DIR = path.join(ROOT, "docs", "dev", "sources", "anciennes_bases");
 const REF_THIRD_PARTY_DIR = path.join(ROOT, "docs", "dev", "sources", "nouveau_je_n_ai_jamais");
-const MIN_LENGTH = 20;
+const MIN_LENGTH = 40;   // en dessous (caractères normalisés), une phrase trop proche n'est qu'un avertissement
 const RARE_GRAMS = 8;    // trigrammes les plus rares d'une phrase utilisés pour présélectionner
 const CANDIDATES = 200;  // références présélectionnées avant le calcul exact
 

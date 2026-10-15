@@ -94,10 +94,12 @@ const LEGACY_TYPE_MAP_BY_PACK = Object.freeze({
     bar: Object.freeze({ "4": "manche_jeu" })
 });
 
-// Famille de pack d'un identifiant : picolo_bar_fr -> bar, picolo_bar_v2_fr -> bar.
+// Famille de pack d'un identifiant : picolo_bar_fr -> bar, picolo_bar_v2_fr -> bar,
+// je_n_ai_jamais_party_v2_fr -> party (null pour un autre format, ex. les packs de questions).
+const PACK_ID_PATTERN = /^(?:picolo|je_n_ai_jamais)_([a-z0-9]+)(?:_v(\d+))?_([a-z]{2})$/;
 function packFamilyFromId(pack_id) {
-    const parts = String(pack_id ?? "").split("_");
-    return parts.length >= 3 ? parts[1] : null;
+    const m = PACK_ID_PATTERN.exec(String(pack_id ?? ""));
+    return m ? m[1] : null;
 }
 
 // Nouveau type d'une carte d'un ancien pack (null si inconnu).

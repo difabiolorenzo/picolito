@@ -1,0 +1,19 @@
+{
+    "schema": 2,
+    "id": "picolo_exemple_v2_fr",
+    "gamemode": "picolo",
+    "language": "fr",
+    "version": 1,
+    "experimental": true,
+    "pack_name": "Exemple",
+    "pack_description": "Pack de test du format schema 2 (tests/fixtures). Jamais chargé par le jeu.",
+    "db": [
+        { "id": "exemple_0001", "type": "action_defi", "text": "%1, imite le bruit d'une machine à café jusqu'à ce que quelqu'un rie, sinon bois $ gorgées" },
+        { "id": "exemple_0002", "type": "parole_juge", "text": "%1, qui de %2 ou de %3 survivrait le plus longtemps sur une île déserte ? L'autre boit $ gorgées" },
+        { "id": "exemple_0003", "type": "regle_joueur", "text": "%1 devient le serveur : chaque fois qu'un verre est vide, tu le remplis", "suites": [ { "text": "%1 rend son tablier, fin du service" } ] },
+        { "id": "exemple_0004", "type": "regle_globale", "text": "Interdit de dire « oui » : chaque oubli coûte $ gorgées", "suites": [ { "text": ["Le « oui » est de retour dans le vocabulaire", "Fin de l'interdiction du « oui »"], "offset_min": 5, "offset_max": 8 } ] },
+        { "id": "exemple_0005", "type": "collectif_bois_si", "text": "Tout le monde ayant déjà vu son train partir sous ses yeux boit $ gorgées" },
+        { "id": "exemple_0006", "type": "manche_categorie", "text": "Chacun son tour, citez un fromage. Le premier qui sèche boit $ gorgées. %1 commence" },
+        { "id": "exemple_0007", "type": "action_inconnu", "text": "%1, fais deviner une chanson à quelqu'un hors du groupe en la fredonnant, sinon bois $ gorgées", "joueurs": 1, "infos": ["Fredonner sans les paroles."] }
+    ]
+}

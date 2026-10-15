@@ -291,7 +291,8 @@ function generatePicoloSentences(preferred_pack_id=null) {
         } else {
             if (global.debug==true) console.log("sentence_data.key", sentence_data.key)
             if (global.debug==true) console.log("extra_sentence_data", extra_sentence_data)
-            const extra_sentence_text_data = textReplacer(extra_sentence_data.text)
+            // La suite reprend les joueurs et l'équipe de la carte (même attribution)
+            const extra_sentence_text_data = textReplacer(extra_sentence_data.text, sentence_text_data.assignment)
 
             // VIRUS ou suite d'une phrase
             if (selected_color == "yellow") {

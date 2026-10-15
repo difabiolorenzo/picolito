@@ -1,0 +1,19 @@
+{
+    "schema": 2,
+    "id": "picolo_exemple_v2_en",
+    "gamemode": "picolo",
+    "language": "en",
+    "version": 1,
+    "experimental": true,
+    "pack_name": "Example",
+    "pack_description": "Test pack for the schema 2 format (tests/fixtures). Never loaded by the game.",
+    "db": [
+        { "id": "exemple_0001", "type": "action_defi", "text": "%1, imitate a coffee machine until someone laughs, or drink $ sips" },
+        { "id": "exemple_0002", "type": "parole_juge", "text": "%1, who would last longer on a desert island: %2 or %3? The other one drinks $ sips" },
+        { "id": "exemple_0003", "type": "regle_joueur", "text": "%1 is now the waiter: whenever a glass is empty, you refill it", "suites": [ { "text": "%1 hangs up the apron, service is over" } ] },
+        { "id": "exemple_0004", "type": "regle_globale", "text": "Saying \"yes\" is forbidden: each slip costs $ sips", "suites": [ { "text": ["You may say \"yes\" again", "The \"yes\" rule is lifted"], "offset_min": 5, "offset_max": 8 } ] },
+        { "id": "exemple_0005", "type": "collectif_bois_si", "text": "Everyone who has ever missed a train drinks $ sips" },
+        { "id": "exemple_0006", "type": "manche_categorie", "text": "Take turns naming a cheese. The first one to dry up drinks $ sips. %1 starts" },
+        { "id": "exemple_0007", "type": "action_inconnu", "text": "%1, get someone outside the group to guess a song you hum, or drink $ sips", "joueurs": 1, "infos": ["Hum without the lyrics."] }
+    ]
+}

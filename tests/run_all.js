@@ -21,6 +21,8 @@ const CHECKS = [
     ["Originalité des packs réécrits", ["tests/checks/check_originality.js", "--all"]],
     ["Tirage seedé (rng)", ["tests/checks/check_rng.js"]],
     ["Catalogue des types et familles", ["tests/checks/check_types.js"]],
+    ["Format schema 2 et modèle de cartes", ["tests/checks/check_cards.js"]],
+    ["Remplissage des joueurs (%1, suites)", ["tests/checks/check_fill.js"]],
 ];
 
 // Les scripts locaux de index.html doivent être pré-cachés par sw.js, dans le même ordre.

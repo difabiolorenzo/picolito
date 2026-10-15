@@ -61,7 +61,9 @@ check(JSON.stringify(defaultFamilyProbability()) === JSON.stringify(Object.fromE
 // ---- Correspondance des anciens packs ----
 check(Object.values(LEGACY_TYPE_MAP).every((t) => CARD_TYPES[t]), "table ancien type -> nouveau type : cibles toutes connues");
 check(Object.values(LEGACY_TYPE_MAP_BY_PACK).every((m) => Object.values(m).every((t) => CARD_TYPES[t])), "corrections par pack : cibles toutes connues");
-check(packFamilyFromId("picolo_bar_fr") === "bar" && packFamilyFromId("picolo_bar_v2_fr") === "bar" && packFamilyFromId("x") === null, "famille de pack déduite de l'identifiant");
+check(packFamilyFromId("picolo_bar_fr") === "bar" && packFamilyFromId("picolo_bar_v2_fr") === "bar" && packFamilyFromId("picolo_war_fr") === "war"
+    && packFamilyFromId("je_n_ai_jamais_party_fr") === "party" && packFamilyFromId("je_n_ai_jamais_party_v2_fr") === "party"
+    && packFamilyFromId("question_pour_un_champion_fr") === null && packFamilyFromId("x") === null, "famille de pack déduite de l'identifiant");
 check(legacyTypeToCardType(4, "picolo_bar_fr") === "manche_jeu" && legacyTypeToCardType("4", "picolo_default_fr") === "manche_categorie", "type 4 : manche_jeu dans bar, manche_categorie ailleurs");
 
 const dir = path.join(ROOT, "src", "db", "picolo");

@@ -22,9 +22,12 @@ tests/
 │   ├── check_originality.js    originalité des packs réécrits (schema 2)
 │   ├── check_rng.js            tirage seedé : pas de Math.random(), parties rejouables
 │   ├── check_types.js          catalogue des types et familles (src/js/types.js)
+│   ├── check_cards.js          modèle interne des cartes (src/js/cards.js) et format schema 2
+│   ├── check_fill.js           remplissage des joueurs : %1/%2, suites, %t
 │   ├── check_sanitize.js       test sanitisation XSS des BDD externes
 │   ├── check_token_escape.js   test token `$` / slash-dollar
 │   └── smoke_player_teams.js   smoke test modale joueurs/équipes (CLI)
+├── fixtures/               ← packs d'exemple au format schema 2 (jamais chargés par le jeu)
 ├── tools/
 │   ├── matrix_packs.js         matrice types / actions / couleurs par famille (CLI, --html)
 │   ├── next_id.js              prochain identifiant de carte libre (packs schema 2)
@@ -42,7 +45,7 @@ tests/
 node tests/run_all.js
 ```
 
-Lance les 10 checks de `checks/` et vérifie que les scripts de `index.html` et le
+Lance les 12 checks de `checks/` et vérifie que les scripts de `index.html` et le
 `PRECACHE` de `sw.js` sont identiques et dans le même ordre. Code de sortie ≠ 0
 si une vérification échoue.
 
@@ -96,7 +99,13 @@ node tests/checks/check_pack.js <pack.json> [pack2.json ...] | --all
 `--all` audite tous les packs de `src/db/**/*.json` (79 fichiers : 66 picolo/war,
 6 je n'ai jamais, 1 maillon faible, 2 question pour un champion).
 
-Le schéma vérifié dépend du `gamemode` du pack :
+Un pack `schema: 2` (nouveau format, `docs/dev/reflexion/refonte_des_bases.md` §4.6) est vérifié selon ses propres règles :
+
+- **en-tête** : liste fermée de champs (`schema`, `id`, `gamemode`, `language`, `version`, `experimental`, `pack_name`, `pack_description`, `db`) ; tout autre champ (`filters`, poids, couleur…) est refusé, car le tirage se règle dans `src/js/types.js` ; `id` au format `{picolo|je_n_ai_jamais}_{famille}_v2_{langue}` ;
+- **cartes** : champs `id`, `type`, `text`, `suites`, `joueurs`, `infos` seulement ; `id` au format `{famille}_0000`, unique, absent de `tests/tools/retired_ids.json` ; type du catalogue (`collectif_bois_si` seul dans un pack Je n'ai jamais) ; joueurs `%1`, `%2`… numérotés sans trou, `%s` refusé, `%t` réservé aux packs `war` ; une seule suite, dont `text` est un texte ou une liste, dont les joueurs existent dans la carte, et dont `offset_min` ≤ `offset_max` ; `joueurs` ≥ plus grand `%N` ;
+- **parité des langues** : chaque langue d'une même famille a exactement les mêmes cartes que le français (mêmes `id`, même type, même nombre de suites, mêmes joueurs).
+
+Pour les anciens packs, le schéma vérifié dépend du `gamemode` :
 
 | Gamemode | Schéma db | Contrôles spécifiques |
 |---|---|---|
@@ -240,7 +249,7 @@ node tests/checks/check_originality.js --all     # tous les packs `schema: 2` de
 
 Chantier de réécriture des bases (`docs/dev/reflexion/refonte_des_bases.md` §4.3) : compare chaque phrase d'un pack `schema: 2` (texte de la carte et de ses suites) aux phrases d'origine de la même langue, et signale celles qui en sont trop proches. Références : `docs/dev/sources/anciennes_bases/` (copie des bases d'origine) et `docs/dev/sources/nouveau_je_n_ai_jamais/` (site tiers). `docs/` étant ignoré par git, ces références n'existent que sur le poste de travail : sans elles, le contrôle des packs est sauté avec un avertissement.
 
-Mesure : trigrammes de caractères après normalisation (minuscules, sans accents, ponctuation ni tokens `%s` `%t` `%1` `$`), pondérés par leur rareté dans les références, pour que les formules du jeu (« bois $ gorgées ») pèsent peu. Une phrase est en **erreur** si sa similarité (Dice pondéré) atteint `--seuil` ou si `--inclusion` de ses trigrammes se retrouvent dans une même ancienne phrase ; une phrase de moins de 20 caractères ne donne qu'un avertissement (phrases banales). `--top N` liste les N phrases les plus proches, même sous le seuil, pour calibrer. Repères mesurés : copie = 1 ; paraphrase proche ≈ 0,55 ; phrase neuve reprenant les formules du jeu ≈ 0,35-0,4. Seuil par défaut 0,5, à recalibrer sur le pack pilote. Un auto-test de la mesure tourne à chaque exécution.
+Mesure : trigrammes de caractères après normalisation (minuscules, sans accents, ponctuation ni tokens `%s` `%t` `%1` `$`), pondérés par leur rareté dans les références, pour que les formules du jeu (« bois $ gorgées ») pèsent peu. Une phrase est en **erreur** si sa similarité (Dice pondéré) atteint `--seuil` ou si `--inclusion` de ses trigrammes se retrouvent dans une même ancienne phrase ; une phrase de moins de 40 caractères ne donne qu'un avertissement (un seul mot partagé y fait monter le score, et une phrase aussi courte est rarement protégeable). `--top N` liste les N phrases les plus proches, même sous le seuil, pour calibrer. Repères mesurés : copie = 1 ; paraphrase proche ≈ 0,55 ; phrase neuve reprenant les formules du jeu ≈ 0,35-0,4. Seuil par défaut 0,5, à recalibrer sur le pack pilote. Un auto-test de la mesure tourne à chaque exécution.
 
 ## 11. Prochain identifiant de carte
 
@@ -265,6 +274,22 @@ node tests/checks/check_types.js
 ```
 
 Cohérence de `src/js/types.js` (`docs/dev/reflexion/refonte_des_bases.md` §5) : probabilités des familles (entières, total 100), clés i18n `family_<famille>`, réglages de `game.picolito` référencés par les familles et les types (vérifiés sur les vraies valeurs par défaut de `main.js`), famille, joueurs minimum, poids et décalage par défaut de chaque type, au moins un type par famille. Vérifie aussi que chaque type utilisé par les anciens packs `src/db/picolo` (toutes langues) a un nouveau type dans la table de correspondance, et affiche la répartition par famille qui en résulte.
+
+## 14. Modèle interne des cartes et format schema 2
+
+```bash
+node tests/checks/check_cards.js
+```
+
+Tout pack, ancien format ou `schema: 2`, est converti par `normalizePack` (`src/js/cards.js`) vers un modèle unique de cartes (`id`, `type`, `family`, `text`, `players`, `suites`, `infos`, `legacy`). Vérifie la conversion de tous les anciens packs Picolo, Guerre et Je n'ai jamais (aucune carte ni variante de suite perdue, décalages par défaut du type : 2 à 4 cartes pour une ancienne règle, carte suivante sinon), celle du pack d'exemple `tests/fixtures/picolo_exemple_v2_fr.json`, et que `check_pack.js` accepte ce pack (français et anglais identiques) mais refuse un pack invalide (12 erreurs attendues) et une traduction incomplète.
+
+## 15. Remplissage des joueurs
+
+```bash
+node tests/checks/check_fill.js
+```
+
+`textReplacer` (`src/js/format.js`) remplit un texte avec une **attribution** des joueurs et de l'équipe, qu'il renvoie et qu'on lui repasse pour remplir la suite d'une carte. Vérifie : `%1`, `%2`… désignent toujours le même joueur et deux numéros deux joueurs différents ; une suite reprend les joueurs et l'équipe de sa carte ; pour un ancien pack, le n-ième `%s` d'une suite reprend le n-ième joueur de la carte et les `%s` en plus sont des joueurs nouveaux (corrige « X est le pilier de bar » suivi de « Y n'est plus le pilier de bar ») ; un seul `%t` par carte et sa suite ; « [joueur] » quand il n'y a pas assez de joueurs ; et, en partie simulée, qu'une suite nomme bien les joueurs de sa carte.
 
 ## Notes
 

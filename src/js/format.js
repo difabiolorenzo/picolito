@@ -98,23 +98,52 @@ function getSpanClasses() {
     return { sip: "", player: "", team: "" };
 }
 
-function applyTokens(template, player_name_list, teams, spanClasses) {
+// Attribution des joueurs et de l'équipe d'une carte, partagée avec sa suite :
+//   players[i] = index (dans player_name_list) du joueur %{i+1}, et du (i+1)-ème %s d'un ancien pack ;
+//   team       = équipe de tous les %t.
+// Ainsi « %1 est le serveur » puis « %1 rend son tablier » désignent le même joueur, et pour un ancien
+// pack le n-ième %s d'une suite reprend le n-ième joueur de la carte (voir refonte_des_bases.md §5.8).
+function newTokenAssignment() {
+    return { players: [], team: undefined };
+}
+
+function applyTokens(template, player_name_list, teams, spanClasses, assignment = newTokenAssignment()) {
     const keys = [];
-    const availablePlayers = [...player_name_list];
     let is_modified = false;
+    let legacy_rank = 0; // rang du prochain %s dans ce texte
+
+    // Joueur de la position `slot` : déjà attribué, sinon tiré parmi les joueurs pas encore attribués.
+    const playerAt = (slot) => {
+        if (assignment.players[slot] === undefined) {
+            const used = new Set(assignment.players.filter((i) => i !== undefined));
+            const free = player_name_list.map((_, i) => i).filter((i) => !used.has(i));
+            if (free.length === 0) return '[joueur]';
+            assignment.players[slot] = free[Math.floor(rng() * free.length)];
+        }
+        return player_name_list[assignment.players[slot]] ?? '[joueur]';
+    };
 
     // Un backslash-dollar (\$) est un dollar littéral, protégé du remplacement de token.
     const DOLLAR_PLACEHOLDER = '\uE000';
     const masked = template.replace(/\\\$/g, DOLLAR_PLACEHOLDER);
 
-    const formatted = masked.replace(/%s|\$|%t/g, token => {
+    const formatted = masked.replace(/%\d+|%s|\$|%t/g, token => {
         let value;
         let html;
 
+        if (token !== '%s' && token !== '%t' && token !== '$') {
+            // %1, %2… : joueur numéroté (packs schema 2)
+            value = playerAt(Number(token.slice(1)) - 1);
+            html = `<span class='test ${spanClasses.player}'>${escapeHTML(value)}</span>`;
+            keys.push({ type: 'player', value });
+            is_modified = true;
+            return html;
+        }
+
         switch (token) {
             case '%s': {
-                const index = Math.floor(rng() * availablePlayers.length);
-                value = availablePlayers.splice(index, 1)[0] ?? '[joueur]';
+                // ancien format : le n-ième %s du texte est le joueur n de l'attribution
+                value = playerAt(legacy_rank++);
                 html = `<span class='test ${spanClasses.player}'>${escapeHTML(value)}</span>`;
                 keys.push({ type: 'player', value });
                 is_modified = true;
@@ -130,7 +159,8 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
             }
 
             case '%t': {
-                value = rng() < 0.5 ? teams.team_1 : teams.team_2;
+                if (assignment.team === undefined) assignment.team = rng() < 0.5 ? "team_1" : "team_2";
+                value = teams[assignment.team];
                 html = `<span class='${spanClasses.team}'>${escapeHTML(value)}</span>`;
                 keys.push({ type: 'team', value });
                 is_modified = true;
@@ -142,7 +172,7 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
         }
     });
 
-    return { formatted: formatted.replace(/\uE000/g, '$'), keys, is_modified };
+    return { formatted: formatted.replace(/\uE000/g, '$'), keys, is_modified, assignment };
 }
 
 function applyQuotes(formatted, quotesIndicator) {
@@ -163,10 +193,12 @@ function applyQuotes(formatted, quotesIndicator) {
     return formatted;
 }
 
-function textReplacer(text) {
+// `assignment` (facultatif) : attribution des joueurs et de l'équipe à réutiliser, celle de la carte
+// quand on remplit sa suite. Le résultat renvoie l'attribution utilisée (`assignment`).
+function textReplacer(text, assignment = newTokenAssignment()) {
     if (text == undefined) {
         console.error("La phrase n'est pas définie. (textReplacer)");
-        return { original_sentence: "", keys: [], formatted_sentence: "", is_modified: false };
+        return { original_sentence: "", keys: [], formatted_sentence: "", is_modified: false, assignment };
     }
 
     const original_sentence = text;
@@ -178,7 +210,8 @@ function textReplacer(text) {
         original_sentence,
         player_name_list,
         { team_1: game.team_1 || "TEAM1", team_2: game.team_2 || "TEAM2" },
-        spanClasses
+        spanClasses,
+        assignment
     );
 
     // Gestion des guillemets
@@ -188,7 +221,8 @@ function textReplacer(text) {
         original_sentence: original_sentence,
         keys: tokenResult.keys,
         formatted_sentence: formatted_sentence,
-        is_modified: tokenResult.is_modified
+        is_modified: tokenResult.is_modified,
+        assignment: tokenResult.assignment
     };
 }
 

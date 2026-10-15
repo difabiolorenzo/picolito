@@ -69,7 +69,7 @@ function defaultVariables() {
     }
 
     game = {
-        picolito_version: "0.37.4",
+        picolito_version: "0.37.4.1",
         vanilla_db_index: VANILLA_DB_INDEX,
 
         mix_gamemode_list_picolo: [],

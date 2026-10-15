@@ -91,6 +91,7 @@ function loadApp() {
     const pieces = [
         "src/js/rng.js",
         "src/js/types.js",
+        "src/js/cards.js",
         "src/js/catalog.js",
         "src/js/cookie.js",
         "src/js/format.js",
