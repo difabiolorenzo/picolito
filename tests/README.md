@@ -19,11 +19,16 @@ tests/
 │   ├── check_ids.js            vérification croisée des ids HTML/JS/CSS
 │   ├── check_infos.js          test encart d'information des phrases
 │   ├── check_langs.js          parité des 14 dictionnaires d'interface
+│   ├── check_originality.js    originalité des packs réécrits (schema 2)
+│   ├── check_rng.js            tirage seedé : pas de Math.random(), parties rejouables
+│   ├── check_types.js          catalogue des types et familles (src/js/types.js)
 │   ├── check_sanitize.js       test sanitisation XSS des BDD externes
 │   ├── check_token_escape.js   test token `$` / slash-dollar
 │   └── smoke_player_teams.js   smoke test modale joueurs/équipes (CLI)
 ├── tools/
-│   └── matrix_packs.js         matrice types / actions / couleurs par famille (CLI, --html)
+│   ├── matrix_packs.js         matrice types / actions / couleurs par famille (CLI, --html)
+│   ├── next_id.js              prochain identifiant de carte libre (packs schema 2)
+│   └── retired_ids.json        identifiants de cartes supprimées, jamais réutilisés
 └── output/                 ← artefacts générés (ignoré par git)
 ```
 
@@ -37,7 +42,7 @@ tests/
 node tests/run_all.js
 ```
 
-Lance les 7 checks de `checks/` et vérifie que les scripts de `index.html` et le
+Lance les 10 checks de `checks/` et vérifie que les scripts de `index.html` et le
 `PRECACHE` de `sw.js` sont identiques et dans le même ordre. Code de sortie ≠ 0
 si une vérification échoue.
 
@@ -55,6 +60,7 @@ Options :
 | `--count N` | 30 | Phrases générées (les sessions sont rejouées à la fin du pack) |
 | `--team1 X` | Equipe 1 | Nom de l'équipe 1 (remplace le token `%t`) |
 | `--team2 X` | Equipe 2 | Nom de l'équipe 2 |
+| `--seed X` | aléatoire | Graine du tirage : la même graine rejoue exactement la même partie (la graine utilisée est affichée en tête de sortie) |
 | `--json` | — | Sortie machine-readable (stdout) |
 | `--raw` | — | Affiche le HTML brut au lieu du texte nettoyé |
 | `--debug` | — | Active les logs internes (`game.debug = true`) |
@@ -225,8 +231,44 @@ Génère le tableau de conception des packs (types × actions × couleurs) en li
 - Le rendu HTML colore les cellules `type` et `couleurs` de la teinte
   correspondante (bleu/jaune/vert/rouge).
 
+## 10. Originalité des packs réécrits
+
+```bash
+node tests/checks/check_originality.js <pack.json> [pack2.json ...] [--seuil 0.5] [--inclusion 0.85] [--top N] [--json]
+node tests/checks/check_originality.js --all     # tous les packs `schema: 2` de src/db (lancé par run_all.js)
+```
+
+Chantier de réécriture des bases (`docs/dev/reflexion/refonte_des_bases.md` §4.3) : compare chaque phrase d'un pack `schema: 2` (texte de la carte et de ses suites) aux phrases d'origine de la même langue, et signale celles qui en sont trop proches. Références : `docs/dev/sources/anciennes_bases/` (copie des bases d'origine) et `docs/dev/sources/nouveau_je_n_ai_jamais/` (site tiers). `docs/` étant ignoré par git, ces références n'existent que sur le poste de travail : sans elles, le contrôle des packs est sauté avec un avertissement.
+
+Mesure : trigrammes de caractères après normalisation (minuscules, sans accents, ponctuation ni tokens `%s` `%t` `%1` `$`), pondérés par leur rareté dans les références, pour que les formules du jeu (« bois $ gorgées ») pèsent peu. Une phrase est en **erreur** si sa similarité (Dice pondéré) atteint `--seuil` ou si `--inclusion` de ses trigrammes se retrouvent dans une même ancienne phrase ; une phrase de moins de 20 caractères ne donne qu'un avertissement (phrases banales). `--top N` liste les N phrases les plus proches, même sous le seuil, pour calibrer. Repères mesurés : copie = 1 ; paraphrase proche ≈ 0,55 ; phrase neuve reprenant les formules du jeu ≈ 0,35-0,4. Seuil par défaut 0,5, à recalibrer sur le pack pilote. Un auto-test de la mesure tourne à chaque exécution.
+
+## 11. Prochain identifiant de carte
+
+```bash
+node tests/tools/next_id.js <famille> [nombre]     # ex. node tests/tools/next_id.js bar 5
+```
+
+Donne les prochains `id` libres d'une famille de pack (`bar_0043`…) : plus grand numéro déjà utilisé dans les packs `schema: 2`, toutes langues confondues, en comptant `tests/tools/retired_ids.json`. Un id n'est jamais réutilisé : à chaque suppression d'une carte, ajouter son id dans ce fichier.
+
+## 12. Tirage seedé
+
+```bash
+node tests/checks/check_rng.js
+```
+
+Tout tirage du jeu passe par `rng()` (`src/js/rng.js`, chargé en premier ; voir `docs/dev/reflexion/systeme_filtres.md` §7.7). Vérifie qu'aucun fichier de `src/js/` n'appelle `Math.random()` en dehors de `rng.js` (un appel oublié casserait la reproductibilité sans que rien ne le signale), que le générateur est déterministe, et qu'une partie simulée (Picolo, Je n'ai jamais, Mix) se rejoue à l'identique avec la même graine. Dans le navigateur, `?seed=<texte>` dans l'URL fixe la graine de chaque partie ; sans paramètre, une graine neuve est tirée à chaque partie. La graine de la partie en cours est dans `game.seed` (affichée en console en mode debug).
+
+## 13. Catalogue des types et familles
+
+```bash
+node tests/checks/check_types.js
+```
+
+Cohérence de `src/js/types.js` (`docs/dev/reflexion/refonte_des_bases.md` §5) : probabilités des familles (entières, total 100), clés i18n `family_<famille>`, réglages de `game.picolito` référencés par les familles et les types (vérifiés sur les vraies valeurs par défaut de `main.js`), famille, joueurs minimum, poids et décalage par défaut de chaque type, au moins un type par famille. Vérifie aussi que chaque type utilisé par les anciens packs `src/db/picolo` (toutes langues) a un nouveau type dans la table de correspondance, et affiche la répartition par famille qui en résulte.
+
 ## Notes
 
+- Le harnais transforme les `const` de premier niveau des sources en `var` pour les rendre accessibles aux tests (dans le navigateur, les scripts les partagent déjà).
 - Le stubbing DOM est minimal : les éléments liés par id sont des objets factices ;
   seuls sont exercés les chemins qui touchent `game` et quelques `document.getElementById`.
 - Encodage : les fichiers sont lus/écrits en UTF-8. Sur une console Windows à la

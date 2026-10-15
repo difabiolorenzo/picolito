@@ -1,0 +1,4 @@
+{
+  "_doc": "Identifiants de cartes supprimées (packs schema 2). Un id retiré n'est jamais réutilisé : à chaque suppression d'une carte, ajouter son id ici. Lu par tests/tools/next_id.js.",
+  "ids": []
+}

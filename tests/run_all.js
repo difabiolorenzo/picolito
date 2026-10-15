@@ -18,6 +18,9 @@ const CHECKS = [
     ["Échappement du token $", ["tests/checks/check_token_escape.js"]],
     ["Encart d'information", ["tests/checks/check_infos.js"]],
     ["Joueurs / équipes", ["tests/checks/smoke_player_teams.js"]],
+    ["Originalité des packs réécrits", ["tests/checks/check_originality.js", "--all"]],
+    ["Tirage seedé (rng)", ["tests/checks/check_rng.js"]],
+    ["Catalogue des types et familles", ["tests/checks/check_types.js"]],
 ];
 
 // Les scripts locaux de index.html doivent être pré-cachés par sw.js, dans le même ordre.

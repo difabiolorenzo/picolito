@@ -74,7 +74,7 @@ function randomSip() {
     const sip_max = game.sip.max;
     const step = sip_max - sip_min;
 
-    const random_sip = Math.floor(Math.random() * (step + 1)) + sip_min;
+    const random_sip = Math.floor(rng() * (step + 1)) + sip_min;
 
     return random_sip;
 }
@@ -113,7 +113,7 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
 
         switch (token) {
             case '%s': {
-                const index = Math.floor(Math.random() * availablePlayers.length);
+                const index = Math.floor(rng() * availablePlayers.length);
                 value = availablePlayers.splice(index, 1)[0] ?? '[joueur]';
                 html = `<span class='test ${spanClasses.player}'>${escapeHTML(value)}</span>`;
                 keys.push({ type: 'player', value });
@@ -130,7 +130,7 @@ function applyTokens(template, player_name_list, teams, spanClasses) {
             }
 
             case '%t': {
-                value = Math.random() < 0.5 ? teams.team_1 : teams.team_2;
+                value = rng() < 0.5 ? teams.team_1 : teams.team_2;
                 html = `<span class='${spanClasses.team}'>${escapeHTML(value)}</span>`;
                 keys.push({ type: 'team', value });
                 is_modified = true;

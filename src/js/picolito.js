@@ -95,7 +95,7 @@ function getColor() {
     const total = available.reduce((s, c) => s + c.probability, 0);
     if (total <= 0) return null; // ou une valeur par défaut
 
-    const randomValue = Math.random() * total; // [0, total)
+    const randomValue = rng() * total; // [0, total)
     let cumulative = 0;
     const selected = available.find(c => {
         cumulative += c.probability;
@@ -128,7 +128,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
         pack_id = preferred_pack_id;
     } else {
         // Base de donnée aléatoire
-        const ran = Math.floor(Math.random() * packs.length)
+        const ran = Math.floor(rng() * packs.length)
         pack_id = packs[ran].id;
     }
     const pack = packs.filter(e => (e.id == pack_id))[0]
@@ -185,7 +185,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
             return null;
         }
 
-        const randomIndex = Math.floor(Math.random() * types_with_sentences.length);
+        const randomIndex = Math.floor(rng() * types_with_sentences.length);
         return types_with_sentences[randomIndex].type;
     }
 
@@ -226,7 +226,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
             return;
         }
 
-        const random_int = Math.floor(Math.random() * Math.floor(request.length));
+        const random_int = Math.floor(rng() * Math.floor(request.length));
         return request[random_int];
     }
 
@@ -243,7 +243,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
             return;
         }
 
-        const random_int = Math.floor(Math.random() * Math.floor(request.length));
+        const random_int = Math.floor(rng() * Math.floor(request.length));
         return request[random_int];
     }
 
@@ -297,7 +297,7 @@ function generatePicoloSentences(preferred_pack_id=null) {
             if (selected_color == "yellow") {
                 if (global.debug==true) console.log("VIRUS ou suite d'une phrase");
                 game.picolito.virus_remaining--;
-                const random_virus_end = Math.floor(Math.random() * (game.picolito.virus_end_max - game.picolito.virus_end_min + 1)) + game.picolito.virus_end_min;
+                const random_virus_end = Math.floor(rng() * (game.picolito.virus_end_max - game.picolito.virus_end_min + 1)) + game.picolito.virus_end_min;
 
                 pushHistoryItem(extra_sentence_text_data, extra_sentence_data, random_virus_end);
                 if (global.debug==true) console.log("random_virus_end", random_virus_end);
@@ -340,9 +340,9 @@ function generateMixSentences() {
 
         if (total <= 0) {
             // Fallback équiprobable si aucun poids n'est défini
-            selected_mode = eligible_modes[Math.floor(Math.random() * eligible_modes.length)];
+            selected_mode = eligible_modes[Math.floor(rng() * eligible_modes.length)];
         } else {
-            const random_value = Math.random() * total;
+            const random_value = rng() * total;
             let cumulative = 0;
             selected_mode = eligible_modes.find((g, i) => {
                 cumulative += weights[i];
@@ -354,19 +354,19 @@ function generateMixSentences() {
 
     function randomPicoloID() {
         const packs = packs_by_mode.picolo.filter(pack => pack.db.length > 0);
-        generatePicoloSentences(packs[Math.floor(Math.random() * packs.length)].id);
+        generatePicoloSentences(packs[Math.floor(rng() * packs.length)].id);
         if (global.debug==true) console.log("generation picolo sentence mix")
     }
 
     function randomJeNaiJamaisID() {
         const packs = packs_by_mode.je_n_ai_jamais.filter(pack => pack.db.length > 0);
-        generateJeNaiJamaisSentences(packs[Math.floor(Math.random() * packs.length)].id);
+        generateJeNaiJamaisSentences(packs[Math.floor(rng() * packs.length)].id);
         if (global.debug==true) console.log("generation je_n_ai_jamais sentence mix")
     }
 
     function randomQuestionPourUnChampionID() {
         const packs = packs_by_mode.question_pour_un_champion.filter(pack => pack.db.length > 0);
-        generateQuestionPourUnChampionSentences(packs[Math.floor(Math.random() * packs.length)].id, MIX_ALLOWED_QUESTION_TYPES);
+        generateQuestionPourUnChampionSentences(packs[Math.floor(rng() * packs.length)].id, MIX_ALLOWED_QUESTION_TYPES);
         if (global.debug==true) console.log("generation question_pour_un_champion sentence mix")
     }
 
@@ -431,7 +431,7 @@ function generateJeNaiJamaisSentences(preferred_pack_id=null) {
         pack_id = preferred_pack_id;
     } else {
         // Base de donnée aléatoire
-        const ran = Math.floor(Math.random() * packs.length)
+        const ran = Math.floor(rng() * packs.length)
         pack_id = packs[ran].id;
     }
     const pack = packs.filter(e => (e.id == pack_id))[0]
@@ -454,7 +454,7 @@ function generateJeNaiJamaisSentences(preferred_pack_id=null) {
 
     // pack_id ? est-ce utile car déjà appelé un peu en haut ?
     function getRandomSentence() {
-        const random_int = Math.floor(Math.random() * Math.floor(request.length));
+        const random_int = Math.floor(rng() * Math.floor(request.length));
 
         const text_replacer_data = textReplacer(request[random_int].text)
         formatted_sentence = text_replacer_data.formatted_sentence;

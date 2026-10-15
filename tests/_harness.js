@@ -89,6 +89,8 @@ function loadApp() {
     setupStubs();
     const ROOT = path.join(__dirname, "..");
     const pieces = [
+        "src/js/rng.js",
+        "src/js/types.js",
         "src/js/catalog.js",
         "src/js/cookie.js",
         "src/js/format.js",
@@ -101,9 +103,10 @@ function loadApp() {
         "src/js/weakest_link.js",
         "src/js/main.js"
     ].map((f) => fs.readFileSync(path.join(ROOT, f), "utf8")).join("\n");
-    // `const DBManager` resterait dans l'environnement de l'indirect eval (inaccessible) :
-    // on le re-déclare `var` pour qu'il atterrisse sur globalThis (transformation test-only).
-    let source = pieces.replace("const DBManager = {", "var DBManager = {");
+    // Les `const` de premier niveau (DBManager, CARD_TYPES…) resteraient dans l'environnement de
+    // l'indirect eval, inaccessibles aux tests : on les re-déclare `var` pour qu'elles atterrissent
+    // sur globalThis (transformation test-only ; dans le navigateur, les scripts les partagent déjà).
+    let source = pieces.replace(/^const (\w+) = /gm, "var $1 = ");
     (0, eval)(source);
     // Références navigateur-global utilisées par le code (éléments par id)
     globalThis.ingame_sentence = globalThis.document.getElementById("ingame_sentence");

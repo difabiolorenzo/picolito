@@ -20,13 +20,13 @@ const { loadApp, buildGame, getGenerator, stripHtml } = require("../_harness.js"
 
 function usage() {
     console.log("Usage: node tests/checks/generate_sentences.js <pack.json> [pack2.json ...] [options]");
-    console.log("Options: --players N --count N --team1 X --team2 Y --json --raw --debug");
+    console.log("Options: --players N --count N --team1 X --team2 Y --seed X --json --raw --debug");
     process.exit(1);
 }
 
 function parseArgs(argv) {
     const files = [];
-    const opts = { players: 3, count: 30, team1: "Equipe 1", team2: "Equipe 2", json: false, raw: false, debug: false };
+    const opts = { players: 3, count: 30, team1: "Equipe 1", team2: "Equipe 2", seed: null, json: false, raw: false, debug: false };
     for (let i = 0; i < argv.length; i++) {
         const a = argv[i];
         const next = () => argv[++i];
@@ -34,6 +34,7 @@ function parseArgs(argv) {
         else if (a == "--count") opts.count = parseInt(next(), 10);
         else if (a == "--team1") opts.team1 = next();
         else if (a == "--team2") opts.team2 = next();
+        else if (a == "--seed") opts.seed = next();
         else if (a == "--json") opts.json = true;
         else if (a == "--raw") opts.raw = true;
         else if (a == "--debug") opts.debug = true;
@@ -54,6 +55,8 @@ loadApp();
 const players = Array.from({ length: opts.players }, (_, i) => `Joueur ${i + 1}`);
 const game = buildGame({ packs, players, team1: opts.team1, team2: opts.team2 });
 game.debug = opts.debug;
+// Graine du tirage (rng.js) : fixée par --seed pour rejouer exactement la même partie
+game.seed = setSeed(opts.seed ?? Date.now());
 
 getGenerator(game); // valide que le mode est supporté
 const errors = [];
@@ -101,6 +104,7 @@ console.warn = origWarn;
 if (opts.json) {
     console.log(JSON.stringify({
         packs: files,
+        seed: game.seed,
         players: players,
         gamemode_type: game.current_gamemode.gamemode_type,
         gamemode: game.gamemode,
@@ -115,6 +119,7 @@ if (opts.json) {
     console.log(`Mode    : ${game.gamemode} (${game.current_gamemode.gamemode_type}) — BDD ${game.current_gamemode.database_length} phrases`);
     console.log(`Joueurs : ${players.join(", ")}`);
     console.log(`Equipes : ${opts.team1} / ${opts.team2}`);
+    console.log(`Graine  : ${game.seed} (rejouer : --seed ${game.seed})`);
     console.log("");
     for (const e of entries) {
         console.log(`${String(e.position).padStart(3)}) [${(e.color || "-").padEnd(6)}] ${e.text}${e.is_followup ? "  [suite]" : ""}`);

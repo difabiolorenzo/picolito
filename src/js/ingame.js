@@ -172,6 +172,10 @@ function startGame() {
 
     game.started = true;
 
+    // Graine de la partie (rng.js) : fixe si ?seed= dans l'URL, sinon neuve
+    game.seed = newGameSeed();
+    if (global.debug==true) console.log("seed", game.seed);
+
     manageNavDisplay("navigation_arrows", true);
 
     displayIngameOptionPanel(false);

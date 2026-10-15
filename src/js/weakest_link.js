@@ -230,7 +230,7 @@ function getLooserByAnalyticsWeakestLink() {
 
     function randomWeakestLinkPlayer() {
         const candidates = weakest_players.length > 0 ? weakest_players : game.weakest_link.player_list;
-        const random_index = Math.floor(Math.random() * candidates.length);
+        const random_index = Math.floor(rng() * candidates.length);
         const selected_player = candidates[random_index];
         document.getElementById("text_weakest_link_tie_beaviour_rule").innerHTML = 
             `<span class="fw-bold">${escapeHTML(selected_player.player_name)}</span> ${global.current_language_strings.weakest_link_tie_behaviour_randomly_selected}`;
@@ -331,7 +331,7 @@ function generateWeakestLinkSentence() {
             return;
         }
 
-        random_int = Math.floor(Math.random() * Math.floor(request.length));
+        random_int = Math.floor(rng() * Math.floor(request.length));
         question = request[random_int].question;
         reponse = request[random_int].reponse;
 

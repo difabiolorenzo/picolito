@@ -7,7 +7,7 @@
  * à l'installation.
  */
 
-const CACHE = "picolito-cache-v4";
+const CACHE = "picolito-cache-v6";
 
 const PRECACHE = [
     "./",
@@ -15,6 +15,8 @@ const PRECACHE = [
     "./Manifest.webmanifest",
     "./src/css/radium.css",
     "./src/css/main.css",
+    "./src/js/rng.js",
+    "./src/js/types.js",
     "./src/js/catalog.js",
     "./src/js/cookie.js",
     "./src/js/format.js",

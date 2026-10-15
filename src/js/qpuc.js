@@ -142,7 +142,7 @@ function generateQuestionPourUnChampionSentences(preferred_pack_id=null, allowed
         if (preferred.length == 0) { return; }
         pack_id = preferred[0].id;
     } else {
-        const ran = Math.floor(Math.random() * candidates.length)
+        const ran = Math.floor(rng() * candidates.length)
         pack_id = candidates[ran].id;
     }
     const pack = candidates.filter(e => (e.id == pack_id))[0]
@@ -169,7 +169,7 @@ function generateQuestionPourUnChampionSentences(preferred_pack_id=null, allowed
     let keys = [];
 
     function getRandomSentence() {
-        const random_int = Math.floor(Math.random() * Math.floor(db.length));
+        const random_int = Math.floor(rng() * Math.floor(db.length));
 
         const entry = db[random_int];
         // %s : un joueur est désigné pour répondre à la question (tirage aléatoire, ou joueur forcé en 4QAS).

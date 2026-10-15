@@ -202,7 +202,7 @@ function autoBalanceTeams() {
     // Répartition aléatoire équilibrée : on re-mélange TOUS les joueurs
     // (même déjà assignés), équipe 1 = ceil(n/2), équipe 2 = le reste.
     const shuffled = game.player_list
-        .map((player, index) => ({ player, index, rand: Math.random() }))
+        .map((player, index) => ({ player, index, rand: rng() }))
         .sort((a, b) => a.rand - b.rand || a.index - b.index)
         .map(entry => entry.player);
     shuffled.forEach((player, i) => {

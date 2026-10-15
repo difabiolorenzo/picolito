@@ -1,5 +1,5 @@
 // Catalogue des bases de phrases intégrées (pack entries) et du mix.
-// Dépend de rien ; chargé en premier (avant main.js).
+// Dépend de rien ; chargé après rng.js et types.js (avant main.js).
 
 const VANILLA_DB_INDEX = [
     // Picolo

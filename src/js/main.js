@@ -69,7 +69,7 @@ function defaultVariables() {
     }
 
     game = {
-        picolito_version: "0.37.3",
+        picolito_version: "0.37.4",
         vanilla_db_index: VANILLA_DB_INDEX,
 
         mix_gamemode_list_picolo: [],
@@ -379,7 +379,7 @@ function changeQpucAnswerDisplay(value) {
 function DEBUG_RandomPlayer(amount) {
     const groland_names = ["Ricard","Bertrude","Zolande","Alpipignoux","Fifrelin","Anisette","Migreline","Giclette","Fanchon","Patimbert","Flinflin","Pantoufline","Childibert","Tringolin","Mimeline","Fricadène","Monique"];
     for (let i=0; i<amount; i++) {
-        const random = Math.round(Math.random() * (groland_names.length-1))
+        const random = Math.round(rng() * (groland_names.length-1))
         addPlayer(groland_names[random]);
         groland_names.splice(random, 1);
     }
