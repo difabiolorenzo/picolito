@@ -98,6 +98,7 @@ const SETTINGS_SCHEMA = [
     { key: "team_2_name",                            path: ["game", "team_2"],                                type: "string",  default: "Team 2",   legacy_index: undefined },
     { key: "ingame_font",                            path: ["game", "ingame_font"],                           type: "string",  default: "default",  legacy_index: undefined },
     { key: "only_display_current_language_databases", path: ["game", "only_display_current_language_databases"], type: "boolean", default: true, legacy_index: undefined },
+    { key: "show_experimental_packs",                path: ["game", "show_experimental_packs"],                type: "boolean", default: false, legacy_index: undefined },
     { key: "team_mode",                              path: ["game", "team_mode"],                             type: "boolean", default: false,      legacy_index: undefined },
 ];
 

@@ -52,7 +52,7 @@ ok(`${cards} cartes, dont ${suites} avec suite (${alternatives} variantes de sui
 
 const def = normalizePack(read(path.join(ROOT, "src", "db", "picolo", "default_fr.json"))).cards;
 const virus = def.find((c) => c.type === "regle_joueur" && c.suites.length);
-check(virus && virus.suites[0].offset_min === 2 && virus.suites[0].offset_max === 4, "ancienne règle (virus) : suite à 2-4 cartes, comme virus_end_min/max");
+check(virus && virus.suites[0].offset_min === 2 && virus.suites[0].offset_max === 4, "ancienne règle (virus) : suite à 2-4 cartes, comme l'ancien réglage virus_end_min/max");
 const nextCard = def.find((c) => c.family !== "regle" && c.suites.length);
 check(nextCard && nextCard.suites[0].offset_min === 1 && nextCard.suites[0].offset_max === 1, "ancienne suite hors règle : carte suivante");
 check(def.every((c) => c.legacy === true && /^picolo_default_fr:\d+$/.test(c.id)), "anciennes cartes : legacy et id <pack>:<index>");

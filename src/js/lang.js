@@ -78,7 +78,6 @@ const I18N_TARGETS = [
     ["file_protocol_warning_title", "file_protocol_warning_title"],
     ["file_protocol_warning_text", "file_protocol_warning_text"],
     ["file_protocol_warning_ok", "file_protocol_warning_ok"],
-    ["text_ingame_title", "virus", "innerText"],
     ["nav_menu_link_mix", "nav_menu_link_mix"],
     ["nav_menu_link_picolo", "nav_menu_link_picolo"],
     ["nav_menu_link_never", "nav_menu_link_never"],
@@ -95,6 +94,7 @@ const I18N_TARGETS = [
     ["menu_player_switch_team_mode_alert", "team_mode_alert"],
     ["menu_player_team_name_title", "team_name"],
     ["text_show_only_current_language_db", "show_only_current_language_db"],
+    ["text_show_experimental_packs", "show_experimental_packs"],
     ["text_modal_external_db_link", "databases"],
     ["external_db_input", "external_db_link", "placeholder"],
     ["text_db_manager_db_manager", "db_manager_db_list"],
@@ -257,6 +257,10 @@ function updateHTMLLanguageStrings() {
             console.warn(`updateHTMLLanguageStrings : élément #${id} introuvable`);
         }
     }
+
+    // Nom de la famille de la carte affichée (picolito.js), dans la nouvelle langue
+    const current = typeof game !== "undefined" && game.sentence_history ? game.sentence_history[game.cycle_id] : undefined;
+    if (current && typeof displayFamilyTitle === "function") displayFamilyTitle(current.family);
 
     refreshDBList();
 }

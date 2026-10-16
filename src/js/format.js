@@ -34,39 +34,39 @@ function addHistoryItem({
     formatted_sentence=undefined,
     key=undefined,
     type=undefined,
+    family=undefined,
     color=undefined,
     pack_id=undefined,
     validated=undefined,
     infos=undefined,
 }
 ) {
-    const offset_sentence_id = (game.cycle_id) + posOffset;
-    if (posOffset > 0) {
-        for (let i = 0; i < posOffset; i++) {
-            const sentence_history_content = {
-                id: "A0000000000000",
-                formatted_sentence:"none"
-            }
-            game.sentence_history.push(sentence_history_content);
-        }
-    }
     const sentence_history_item = {
         original_sentence: original_sentence,
         sentence_keys: sentence_keys,
         formatted_sentence: formatted_sentence,
         key: key,
         type: type,
+        family: family,
         color : color,
         pack_id : pack_id,
         validated : validated,
         infos : infos,
     }
 
-    if (game.sentence_history[game.cycle_id] == undefined) {
-        game.sentence_history.push(sentence_history_item);
-    } else if (game.sentence_history[offset_sentence_id].formatted_sentence == "none") {
-        game.sentence_history[offset_sentence_id] = sentence_history_item;
+    // Une suite (posOffset > 0) n'est pas écrite d'avance dans l'historique : elle attend dans la
+    // file des suites et prend place, à son échéance, entre deux cartes (playPendingSuite, picolito.js).
+    if (posOffset > 0) {
+        getPendingSuites().push({ due: game.cycle_id + posOffset, item: { ...sentence_history_item, is_suite: true } });
+        return;
     }
+    game.sentence_history[game.cycle_id] = sentence_history_item;
+}
+
+// File des suites en attente : [{ due, item }], due = carte à partir de laquelle la suite peut passer.
+function getPendingSuites() {
+    if (!Array.isArray(game.pending_suites)) game.pending_suites = [];
+    return game.pending_suites;
 }
 
 function randomSip() {

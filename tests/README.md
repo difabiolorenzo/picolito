@@ -24,6 +24,10 @@ tests/
 │   ├── check_types.js          catalogue des types et familles (src/js/types.js)
 │   ├── check_cards.js          modèle interne des cartes (src/js/cards.js) et format schema 2
 │   ├── check_fill.js           remplissage des joueurs : %1/%2, suites, %t
+│   ├── check_draw.js           tirage par familles : règles, proportions, packs mélangés
+│   ├── check_suites.js         suites en attente : aucune perdue, collisions, prolongation
+│   ├── check_never.js          Je n'ai jamais sur le modèle de cartes, Mix
+│   ├── check_experimental.js   packs expérimentaux : réglage, filtre, badge
 │   ├── check_sanitize.js       test sanitisation XSS des BDD externes
 │   ├── check_token_escape.js   test token `$` / slash-dollar
 │   └── smoke_player_teams.js   smoke test modale joueurs/équipes (CLI)
@@ -45,7 +49,7 @@ tests/
 node tests/run_all.js
 ```
 
-Lance les 12 checks de `checks/` et vérifie que les scripts de `index.html` et le
+Lance les 16 checks de `checks/` et vérifie que les scripts de `index.html` et le
 `PRECACHE` de `sw.js` sont identiques et dans le même ordre. Code de sortie ≠ 0
 si une vérification échoue.
 
@@ -81,7 +85,7 @@ node tests/checks/generate_sentences.js src/db/picolo/default_fr.json --players 
 node tests/checks/generate_sentences.js src/db/picolo/war_fr.json --players 3 --count 200 --json > resultat.json
 ```
 
-La sortie terminal affiche une entrée par phrase : position, couleur (blue/green/…),
+La sortie terminal affiche une entrée par phrase : position, famille (action/parole/…, ou couleur pour Je n'ai jamais),
 texte (avec le nom du joueur/équipe réellement remplacés), et `[suite]` pour les
 phrases qui sont la continuité d'une carte précédente. Le pied de bilan indique le
 nombre d'**erreurs** (exceptions levées par le moteur : à rapporter comme bug) et
@@ -273,7 +277,7 @@ Tout tirage du jeu passe par `rng()` (`src/js/rng.js`, chargé en premier ; voir
 node tests/checks/check_types.js
 ```
 
-Cohérence de `src/js/types.js` (`docs/dev/reflexion/refonte_des_bases.md` §5) : probabilités des familles (entières, total 100), clés i18n `family_<famille>`, réglages de `game.picolito` référencés par les familles et les types (vérifiés sur les vraies valeurs par défaut de `main.js`), famille, joueurs minimum, poids et décalage par défaut de chaque type, au moins un type par famille. Vérifie aussi que chaque type utilisé par les anciens packs `src/db/picolo` (toutes langues) a un nouveau type dans la table de correspondance, et affiche la répartition par famille qui en résulte.
+Cohérence de `src/js/types.js` (`docs/dev/reflexion/refonte_des_bases.md` §5) : probabilités des familles (entières, total 100), clés i18n `family_<famille>`, couleurs de chaque famille dans `src/css/main.css` (fond, liste des phrases, mode sombre), réglages de `game.picolito` référencés par les familles et les types (vérifiés sur les vraies valeurs par défaut de `main.js`), famille, joueurs minimum, poids et décalage par défaut de chaque type, au moins un type par famille. Vérifie aussi que chaque type utilisé par les anciens packs `src/db/picolo` (toutes langues) a un nouveau type dans la table de correspondance, et affiche la répartition par famille qui en résulte.
 
 ## 14. Modèle interne des cartes et format schema 2
 
@@ -290,6 +294,38 @@ node tests/checks/check_fill.js
 ```
 
 `textReplacer` (`src/js/format.js`) remplit un texte avec une **attribution** des joueurs et de l'équipe, qu'il renvoie et qu'on lui repasse pour remplir la suite d'une carte. Vérifie : `%1`, `%2`… désignent toujours le même joueur et deux numéros deux joueurs différents ; une suite reprend les joueurs et l'équipe de sa carte ; pour un ancien pack, le n-ième `%s` d'une suite reprend le n-ième joueur de la carte et les `%s` en plus sont des joueurs nouveaux (corrige « X est le pilier de bar » suivi de « Y n'est plus le pilier de bar ») ; un seul `%t` par carte et sa suite ; « [joueur] » quand il n'y a pas assez de joueurs ; et, en partie simulée, qu'une suite nomme bien les joueurs de sa carte.
+
+## 16. Tirage par familles
+
+```bash
+node tests/checks/check_draw.js
+```
+
+Tirage d'une carte Picolo / Guerre (`generatePicoloSentences`, `src/js/picolito.js`) selon l'organigramme de `docs/dev/reflexion/refonte_des_bases.md` §5.6 : famille (probabilités `game.picolito.family_probability`), puis pack (uniforme parmi ceux qui ont la famille), puis type (pondéré par le poids du catalogue), puis carte (uniforme parmi les cartes jouables). Simule des parties à graine fixe et vérifie : Règle et Cul-sec pas avant leur carte minimale, au plus leur compteur par partie, jamais en Guerre, désactivables ; pas de Manche sur les 2 dernières cartes ; aucune carte ne revient dans une partie ; aucune carte ne nomme plus de joueurs qu'il n'y en a, et à 0 joueur plusieurs familles restent jouables ; `social_posting_enabled` ; proportions des familles (± 4 points), des packs et des types (à égalité) ; un ancien pack et un pack schema 2 dans la même partie.
+
+## 17. Suites en attente
+
+```bash
+node tests/checks/check_suites.js
+```
+
+Une suite n'est plus écrite d'avance dans l'historique : `addHistoryItem` (`src/js/format.js`) la place dans une file (`game.pending_suites`) avec son échéance, et `retrieve` (`src/js/picolito.js`) la joue entre deux cartes quand vient son tour, avant tout nouveau tirage. Deux suites dues en même temps passent l'une après l'autre ; après la dernière carte de base (50 par défaut), plus de nouveau tirage : les suites en attente sont jouées à la suite, et `getGameLength()` donne la longueur prolongée (indicateur « N / M »). Vérifie sur 300 parties simulées : aucune suite perdue, jamais avant son échéance, retard seulement dû à d'autres suites, rien d'autre que des suites après la fin de base, longueur annoncée exacte ; et, sur les anciens packs, une règle (virus) qui se termine 2 à 4 cartes plus tard et une autre suite à la carte suivante.
+
+## 18. Je n'ai jamais
+
+```bash
+node tests/checks/check_never.js
+```
+
+Le mode Je n'ai jamais (`generateJeNaiJamaisSentences`, `src/js/picolito.js`) tire des cartes `collectif_bois_si` du modèle de cartes, anciens packs convertis ou packs `schema: 2`, et garde les cartes jouées dans `game.played_cards` au lieu de retirer les phrases du pack. Vérifie : chaque phrase une seule fois par partie, `pack.db` intact, plus de tirage une fois le pack épuisé et phrases de nouveau jouables à la partie suivante ; affichage inchangé (couleur Je n'ai jamais, pas de pastille de famille) ; texte rempli une seule fois (gorgées affichées = gorgées enregistrées) ; ancien pack et pack schema 2 ensemble ; et, dans le Mix, qu'un pack Je n'ai jamais épuisé laisse la place à Picolo sans carte vide (`hasPlayableCards`).
+
+## 19. Packs expérimentaux
+
+```bash
+node tests/checks/check_experimental.js
+```
+
+Un pack réécrit est livré à côté de l'ancien avec `"experimental": true` (dans son fichier **et** dans son entrée de `VANILLA_DB_INDEX`, `src/js/catalog.js`) ; il n'apparaît que si le réglage `show_experimental_packs` (gestionnaire de bases, désactivé par défaut) est activé (`docs/dev/reflexion/refonte_des_bases.md` §6.1). Vérifie : réglage enregistré et désactivé par défaut ; champ `experimental` identique dans le catalogue et dans chaque fichier ; `DBManager.getAll()` cache ou montre les packs expérimentaux sans perdre le filtre de langue ; le champ survit à la mise à jour du catalogue après téléchargement ; badge « Expérimental » ; désactiver le réglage retire un pack expérimental déjà coché dans le Mix.
 
 ## Notes
 

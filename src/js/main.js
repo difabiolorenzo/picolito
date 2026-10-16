@@ -69,7 +69,7 @@ function defaultVariables() {
     }
 
     game = {
-        picolito_version: "0.37.4.1",
+        picolito_version: "0.37.5",
         vanilla_db_index: VANILLA_DB_INDEX,
 
         mix_gamemode_list_picolo: [],
@@ -95,6 +95,7 @@ function defaultVariables() {
         ingame_font: "default",   // clé de INGAME_FONTS
 
         only_display_current_language_databases: true,
+        show_experimental_packs: false,   // packs en cours de réécriture (refonte_des_bases.md §6.1)
 
         sentence_history: [],   //sentence_history_item = { sentence,key,type,nature }
         max_sentence_amount: 50,
@@ -106,18 +107,13 @@ function defaultVariables() {
 
             virus_enabled: true,
             virus_remaining: 1, // virus can occur X times, can overlap
-            virus_end_min: 2,   // virus can end after X more sentence_id minimum
-            virus_end_max: 4,   // virus can end after X more sentence_id maximum
+            // durée d'une règle (virus) : décalage par défaut de sa suite, dans types.js (RULE_DURATION)
             virus_sentence_id_start_min: 10, // virus start to appear after sentence_id X
 
             social_posting_enabled: false,
 
-            color_probability: {
-                blue: 70,
-                red: 5,
-                green: 20,
-                yellow: 5
-            },
+            // Probabilités des familles de cartes (types.js), total 100
+            family_probability: defaultFamilyProbability(),
 
             // can_alter_player_name_in_sentence: true,
             // can_alter_sip_in_sentence: true,
@@ -174,6 +170,7 @@ function resetVariables() {
     game.questions = undefined;
 
     game.sentence_history = [];
+    game.pending_suites = [];
 
     game_cycle_count.innerHTML = "-";
 }
@@ -217,6 +214,7 @@ function updateHTMLSettingsByVar() {
     picolito_version_menu.innerHTML = `Picolito ${game.picolito_version}`;
 
     document.getElementById("input_show_only_current_language_db").checked = game.only_display_current_language_databases;
+    document.getElementById("input_show_experimental_packs").checked = game.show_experimental_packs === true;
 
     menu_player_switch_team_mode.checked = game.team_mode;
     applyTeamModeVisibility();

@@ -150,7 +150,7 @@ function buildGame({ packs = [], players = ["Alice", "Bob", "Carl"], team1 = "Eq
             virus_remaining: 1,
             virus_sentence_id_start_min: 10,
             social_posting_enabled: false,
-            color_probability: { blue: 70, red: 5, green: 20, yellow: 5 },
+            family_probability: defaultFamilyProbability(),
             chug_amount: 1
         },
         cycle_id: -1,

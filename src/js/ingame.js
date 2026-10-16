@@ -19,7 +19,7 @@ function displayPage(page) {
 function setBackgroundStyleColor(value) {
     const element = document.getElementById("picolito");
     element.classList.add("page", "dark_affected");
-    ["blue", "red", "yellow", "green", "je_n_ai_jamais", "black", "qpuc"].forEach(c => element.classList.remove(c));
+    ["je_n_ai_jamais", "black", "qpuc", ...Object.keys(FAMILIES).map(f => "family-" + f)].forEach(c => element.classList.remove(c));
     element.classList.add(value);
 }
 
@@ -174,6 +174,8 @@ function startGame() {
 
     // Graine de la partie (rng.js) : fixe si ?seed= dans l'URL, sinon neuve
     game.seed = newGameSeed();
+    game.played_cards = new Set();   // cartes déjà jouées (picolito.js)
+    game.pending_suites = [];        // suites en attente (format.js, picolito.js)
     if (global.debug==true) console.log("seed", game.seed);
 
     manageNavDisplay("navigation_arrows", true);
@@ -261,45 +263,14 @@ function calcCombineDatabasesPossibleLenght() {
     for (let i in packs) {
         const pack = packs[i];
         if (pack.gamemode == "picolo" || pack.gamemode == "war") {
-            length += countPlayablePicoloMainSentences(pack);
+            // Cartes jouables selon le catalogue, les réglages et le nombre de joueurs (picolito.js)
+            length += countPlayablePicoloCards(pack, game.player_list.length);
         } else {
             length += pack.db.length;
         }
     }
 
     return length;
-}
-
-function countPlayablePicoloMainSentences(pack) {
-    const player_count = game.player_list.length;
-    const is_war = game.gamemode == "picolo_war";
-    const filters = Array.isArray(pack.filters) ? pack.filters : [];
-
-    // Types dont la couleur est active selon la variante et les réglages,
-    // et compatibles avec le nombre de joueurs (mêmes conditions que getColor/getTypesAndPlayerCount)
-    const usable_types = filters
-        .filter(filter => {
-            if (!Array.isArray(filter.player_count)) return true;
-            return Math.min(...filter.player_count) <= player_count;
-        })
-        .filter(filter => {
-            if (is_war && (filter.color == "red" || filter.color == "yellow")) return false;
-            if (filter.color == "red" && !game.picolito.chug_enabled) return false;
-            if (filter.color == "yellow" && !game.picolito.virus_enabled) return false;
-            return true;
-        })
-        .map(filter => filter.type.toString())
-        .filter(type => {
-            if (!game.picolito.social_posting_enabled && (type == "social_posting" || type == "15")) return false;
-            return true;
-        });
-
-    // Seules les phrases principales comptent (une suite suit sa carte, sans consommer de cycle à part)
-    return pack.db.filter(entry =>
-        entry.parent_key == "" &&
-        Number(entry.nb_players) <= player_count &&
-        usable_types.includes(entry.type.toString())
-    ).length;
 }
 
 function updateDatabaseIndicator(pack_id) {
@@ -541,14 +512,8 @@ function manageNavDisplay(navigation_option=null, display=false) {
 }
 
 function updateGameCycleIndicator() {
-    const database_length = game.current_gamemode.database_length;
-
-    let max_sentences;
-    if (database_length < game.max_sentence_amount) {
-        max_sentences = database_length;
-    } else {
-        max_sentences = game.max_sentence_amount;
-    }
+    // 50 cartes (ou moins), prolongées par les suites en attente (picolito.js)
+    const max_sentences = getGameLength();
     //previous
     if (game.cycle_id > 0) {
         picolitoNavigationButtonsDisplay("previous", true);

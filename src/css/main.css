@@ -9,21 +9,21 @@
     --gray-dark: #343a40;
     
     --picolo_yellow: #E7BB00;
-    --picolo_yellow_light: #ffe98a;
-    --picolo_yellow_dark: #473a00;
-    --picolo_red: #E51000;
-    --picolo_red_light: #ff928a;
-    --picolo_red_dark: #470500;
     --picolo_blue: #1B586B;
-    --picolo_blue_light: #a1d7e8;
-    --picolo_blue_dark: #051114;
-    --picolo_green: #00B407;
-    --picolo_green_light: #8aff8e;
-    --picolo_green_dark: #001a01;
-    --picolo_yellow_highlight: #E7BB00;
-    --picolo_red_highlight: #E51000;
-    --picolo_blue_highlight: #0093c1;
-    --picolo_green_highlight: #00d508;
+    /* Familles de cartes (src/js/types.js) : fond et texte ; en mode sombre, le fond sert de couleur de texte.
+       Contrastes vérifiés ≥ 5:1 (texte sur fond, et fond sur le gris sombre #212529). */
+    --family_action: #3DDC84;
+    --family_action_dark: #0B2A17;
+    --family_parole: #5AB8FF;
+    --family_parole_dark: #06223A;
+    --family_collectif: var(--je_n_ai_jamais_light);
+    --family_collectif_dark: var(--je_n_ai_jamais_dark);
+    --family_manche: #FF9F43;
+    --family_manche_dark: #3A1C00;
+    --family_regle: #FFD84D;
+    --family_regle_dark: #3A2E00;
+    --family_cul_sec: #FF5A5F;
+    --family_cul_sec_dark: #3A0507;
     --weakest_link: #093340;
     --picolo_player: #88ffff;
     --picolo_sip: #ffff88;
@@ -156,12 +156,17 @@ div#ingame_sentence:active { transform: scale(.98); }
     font-size: xx-large;
 }
 
+/* Nom de la famille de la carte (Picolo / Guerre / Mix), en pastille au-dessus de la phrase */
 #text_ingame_title {
-    font-size: 4rem;
-    font-weight: bolder;
-    font-family: monospace;
-    margin-bottom: 5vh;
-    margin-top: 5vh;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .35rem .9rem;
+    border-radius: 999px;
+    margin-bottom: 3vh;
+    margin-top: 3vh;
     opacity: 1;
     animation: animation_d_ingame_title .5s ease;
 }
@@ -175,25 +180,41 @@ div#ingame_sentence:active { transform: scale(.98); }
 }
 
 div#picolito {overflow: hidden;padding: 0;background: var(--gray-dark);background-color: var(--gray-dark);width: 100vw;transition: .25s;}
-div#picolito.yellow {background-color: var(--picolo_yellow_light);}
-div#picolito.yellow div#ingame_sentence,
-div#picolito.yellow #picolito_gamemode_infos,
-div#picolito.yellow #picolito_bdd_infos {color: var(--picolo_yellow_dark);}
+div#picolito.family-action {background-color: var(--family_action);}
+div#picolito.family-action div#ingame_sentence,
+div#picolito.family-action #picolito_gamemode_infos,
+div#picolito.family-action #picolito_bdd_infos {color: var(--family_action_dark);}
+div#picolito.family-action #text_ingame_title {background-color: var(--family_action_dark); color: var(--family_action);}
 
-div#picolito.red {background-color: var(--picolo_red_light);}
-div#picolito.red div#ingame_sentence,
-div#picolito.red #picolito_gamemode_infos,
-div#picolito.red #picolito_bdd_infos {color: var(--picolo_red_dark);}
+div#picolito.family-parole {background-color: var(--family_parole);}
+div#picolito.family-parole div#ingame_sentence,
+div#picolito.family-parole #picolito_gamemode_infos,
+div#picolito.family-parole #picolito_bdd_infos {color: var(--family_parole_dark);}
+div#picolito.family-parole #text_ingame_title {background-color: var(--family_parole_dark); color: var(--family_parole);}
 
-div#picolito.blue {background-color: var(--picolo_blue_light);}
-div#picolito.blue div#ingame_sentence,
-div#picolito.blue #picolito_gamemode_infos,
-div#picolito.blue #picolito_bdd_infos {color: var(--picolo_blue_dark);}
+div#picolito.family-collectif {background-color: var(--family_collectif);}
+div#picolito.family-collectif div#ingame_sentence,
+div#picolito.family-collectif #picolito_gamemode_infos,
+div#picolito.family-collectif #picolito_bdd_infos {color: var(--family_collectif_dark);}
+div#picolito.family-collectif #text_ingame_title {background-color: var(--family_collectif_dark); color: var(--family_collectif);}
 
-div#picolito.green {background-color: var(--picolo_green_light);}
-div#picolito.green div#ingame_sentence,
-div#picolito.green #picolito_gamemode_infos,
-div#picolito.green #picolito_bdd_infos {color: var(--picolo_green_dark);}
+div#picolito.family-manche {background-color: var(--family_manche);}
+div#picolito.family-manche div#ingame_sentence,
+div#picolito.family-manche #picolito_gamemode_infos,
+div#picolito.family-manche #picolito_bdd_infos {color: var(--family_manche_dark);}
+div#picolito.family-manche #text_ingame_title {background-color: var(--family_manche_dark); color: var(--family_manche);}
+
+div#picolito.family-regle {background-color: var(--family_regle);}
+div#picolito.family-regle div#ingame_sentence,
+div#picolito.family-regle #picolito_gamemode_infos,
+div#picolito.family-regle #picolito_bdd_infos {color: var(--family_regle_dark);}
+div#picolito.family-regle #text_ingame_title {background-color: var(--family_regle_dark); color: var(--family_regle);}
+
+div#picolito.family-cul_sec {background-color: var(--family_cul_sec);}
+div#picolito.family-cul_sec div#ingame_sentence,
+div#picolito.family-cul_sec #picolito_gamemode_infos,
+div#picolito.family-cul_sec #picolito_bdd_infos {color: var(--family_cul_sec_dark);}
+div#picolito.family-cul_sec #text_ingame_title {background-color: var(--family_cul_sec_dark); color: var(--family_cul_sec);}
 
 div#picolito.black {background-color: var(--dark_mode_light_gray);}
 
@@ -252,12 +273,71 @@ div#question_pour_un_champion {
 
 [data-bs-theme="dark"] div#picolito.dark_affected {background-color: inherit;}
 
-[data-bs-theme="dark"] .dark_affected.blue #ingame_sentence {color: var(--picolo_blue_highlight);}
-[data-bs-theme="dark"] .dark_affected.red #ingame_sentence {color: var(--picolo_red);}
-[data-bs-theme="dark"] .dark_affected.yellow #ingame_sentence {color: var(--picolo_yellow);}
-[data-bs-theme="dark"] .dark_affected.green #ingame_sentence {color: var(--picolo_green_highlight);}
-[data-bs-theme="dark"] .dark_affected.je_n_ai_jamais #ingame_sentence {color: var(--je_n_ai_jamais_light);}
+/* Mode sombre : le fond suit le thème, le texte prend la couleur de la famille. Sélecteurs avec
+   div#picolito … div#ingame_sentence pour l'emporter sur les règles du mode clair (plus d'identifiants). */
+[data-bs-theme="dark"] div#picolito.dark_affected.family-action div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-action #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-action #picolito_bdd_infos {color: var(--family_action);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-parole div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-parole #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-parole #picolito_bdd_infos {color: var(--family_parole);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-collectif div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-collectif #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-collectif #picolito_bdd_infos {color: var(--family_collectif);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-manche div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-manche #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-manche #picolito_bdd_infos {color: var(--family_manche);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-regle div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-regle #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-regle #picolito_bdd_infos {color: var(--family_regle);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-cul_sec div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-cul_sec #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.family-cul_sec #picolito_bdd_infos {color: var(--family_cul_sec);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-action #text_ingame_title {background-color: var(--family_action); color: var(--family_action_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-parole #text_ingame_title {background-color: var(--family_parole); color: var(--family_parole_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-collectif #text_ingame_title {background-color: var(--family_collectif); color: var(--family_collectif_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-manche #text_ingame_title {background-color: var(--family_manche); color: var(--family_manche_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-regle #text_ingame_title {background-color: var(--family_regle); color: var(--family_regle_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.family-cul_sec #text_ingame_title {background-color: var(--family_cul_sec); color: var(--family_cul_sec_dark);}
+[data-bs-theme="dark"] div#picolito.dark_affected.je_n_ai_jamais div#ingame_sentence,
+[data-bs-theme="dark"] div#picolito.dark_affected.je_n_ai_jamais #picolito_gamemode_infos,
+[data-bs-theme="dark"] div#picolito.dark_affected.je_n_ai_jamais #picolito_bdd_infos {color: var(--je_n_ai_jamais_light);}
 [data-bs-theme="dark"] div#picolito.dark_affected.qpuc #ingame_sentence {color: var(--qpuc);}
+
+/* Fond sombre (mode sombre, écran d'attente .black, QPUC) : les boutons « dark » de la barre de jeu
+   (Quitter, joueurs, flèches, compteur) passent en clair, sinon ils sont noirs sur noir. */
+[data-bs-theme="dark"] div#picolito .btn-outline-dark,
+div#picolito.black .btn-outline-dark,
+div#picolito.qpuc .btn-outline-dark {
+    --bs-btn-color: #f8f9fa;
+    --bs-btn-border-color: rgba(255, 255, 255, .6);
+    --bs-btn-hover-color: #212529;
+    --bs-btn-hover-bg: #f8f9fa;
+    --bs-btn-hover-border-color: #f8f9fa;
+    --bs-btn-active-color: #212529;
+    --bs-btn-active-bg: #f8f9fa;
+    --bs-btn-active-border-color: #f8f9fa;
+    --bs-btn-disabled-color: #f8f9fa;
+    --bs-btn-disabled-border-color: rgba(255, 255, 255, .6);
+    --bs-btn-focus-shadow-rgb: 248, 249, 250;
+}
+[data-bs-theme="dark"] div#picolito .btn-dark,
+div#picolito.black .btn-dark,
+div#picolito.qpuc .btn-dark {
+    --bs-btn-color: #f8f9fa;
+    --bs-btn-bg: rgba(255, 255, 255, .15);
+    --bs-btn-border-color: rgba(255, 255, 255, .6);
+    --bs-btn-hover-color: #212529;
+    --bs-btn-hover-bg: #f8f9fa;
+    --bs-btn-hover-border-color: #f8f9fa;
+    --bs-btn-active-color: #212529;
+    --bs-btn-active-bg: #f8f9fa;
+    --bs-btn-active-border-color: #f8f9fa;
+    --bs-btn-disabled-color: #f8f9fa;
+    --bs-btn-disabled-bg: rgba(255, 255, 255, .15);
+    --bs-btn-disabled-border-color: rgba(255, 255, 255, .6);
+    --bs-btn-focus-shadow-rgb: 248, 249, 250;
+}
 
 .recap_sentences_cell {
     border: 1px solid black;
@@ -382,21 +462,29 @@ span.span_team {color: var(--picolo_teams);}
     margin: 4px;
     color: white !important;
 }
-.sentence-list-red {
-    background-color:var(--picolo_red_light) !important;
-    color: var(--picolo_red_dark) !important;
+.sentence-list-family-action {
+    background-color: var(--family_action) !important;
+    color: var(--family_action_dark) !important;
 }
-.sentence-list-yellow {
-    background-color:var(--picolo_yellow_light) !important;
-    color: var(--picolo_yellow_dark) !important;
+.sentence-list-family-parole {
+    background-color: var(--family_parole) !important;
+    color: var(--family_parole_dark) !important;
 }
-.sentence-list-green {
-    background-color: var(--picolo_green_light) !important;
-    color: var(--picolo_green_dark) !important;
+.sentence-list-family-collectif {
+    background-color: var(--family_collectif) !important;
+    color: var(--family_collectif_dark) !important;
 }
-.sentence-list-blue {
-    background-color:var(--picolo_blue_light) !important;
-    color: var(--picolo_blue_dark) !important;
+.sentence-list-family-manche {
+    background-color: var(--family_manche) !important;
+    color: var(--family_manche_dark) !important;
+}
+.sentence-list-family-regle {
+    background-color: var(--family_regle) !important;
+    color: var(--family_regle_dark) !important;
+}
+.sentence-list-family-cul_sec {
+    background-color: var(--family_cul_sec) !important;
+    color: var(--family_cul_sec_dark) !important;
 }
 .sentence-list-je_n_ai_jamais {
     background-color:var(--je_n_ai_jamais_light) !important;
@@ -1093,7 +1181,7 @@ div#db_explorer_list_list {
         font-size: 2rem;
     }
     #text_ingame_title {
-        font-size: 2.5rem;
+        font-size: .95rem;
     }
     div#ingame_sentence, #text_game_ready, #text_game_endgame {
         font-size: 2.5rem;

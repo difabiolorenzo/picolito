@@ -69,7 +69,7 @@ const pack = {
 let checked = 0;
 for (let seed = 0; seed < 30; seed++) {
     const game = buildGame({ packs: [JSON.parse(JSON.stringify(pack))], players: PLAYERS });
-    game.picolito.color_probability = { blue: 100, red: 0, green: 0, yellow: 0 };
+    game.picolito.family_probability = { action: 100, parole: 0, collectif: 0, manche: 0, regle: 0, cul_sec: 0 };
     setSeed("partie-" + seed);
     for (let n = 0; n < 2; n++) incrementCycleID();
     const hist = game.sentence_history.filter((h) => h && h.formatted_sentence !== "none");

@@ -33,11 +33,17 @@ const DBManager = {
     },
 
     // ---- Toutes les DB ----
+    // Packs expérimentaux (réécriture des bases en cours) : visibles seulement si le réglage
+    // show_experimental_packs est activé (voir docs/dev/reflexion/refonte_des_bases.md §6.1).
     getAll() {
-        if (game.only_display_current_language_databases) {
-            return this.catalog.filter(db => db.language === global.current_language);
+        let list = this.catalog;
+        if (game.show_experimental_packs !== true) {
+            list = list.filter(db => db.experimental !== true);
         }
-        return this.catalog;
+        if (game.only_display_current_language_databases) {
+            list = list.filter(db => db.language === global.current_language);
+        }
+        return list;
     },
 
     // ---- Vérifier la disponibilité d'une base (statique, sans requête réseau) ----
@@ -93,6 +99,7 @@ const DBManager = {
             pack_name: data.pack_name,
             pack_description: data.pack_description,
             filters: data.filters,
+            experimental: data.experimental === true,
             available: true,
             source: db.source
         };
@@ -192,6 +199,25 @@ const DBManager = {
     }
 };
 
+function showExperimentalPacks() {
+    const input = document.getElementById("input_show_experimental_packs")
+    game.show_experimental_packs = input.checked
+    // Réglage désactivé : un pack expérimental déjà coché dans le Mix est retiré de la sélection
+    if (game.show_experimental_packs !== true) {
+        const isExperimental = (entry) => DBManager.getById(entry.pack_id, entry.pack_source)?.experimental === true;
+        // (le Mix range ses packs de tous les modes dans mix_gamemode_list_picolo)
+        game.mix_gamemode_list_picolo = (game.mix_gamemode_list_picolo || []).filter(entry => !isExperimental(entry));
+    }
+    storeSettingsCookie()
+    refreshDBList()
+}
+
+// Badge « Expérimental » d'un pack (vide sinon).
+function getExperimentalBadgeHTML(db) {
+    if (db.experimental !== true) return "";
+    return `<span class="badge bg-warning text-dark m-1">${escapeHTML(global.current_language_strings.experimental_badge)}</span>`;
+}
+
 function onlyDisplayCurrentLanguageDB() {
     const input = document.getElementById("input_show_only_current_language_db")
     game.only_display_current_language_databases = input.checked
@@ -251,6 +277,7 @@ function getDBListItemTemplate(db) {
                         <span class="badge border m-1 ${db.source === "vanilla" ? "text-dark" : "text-info"}">${getSourceLabel(db.source)}</span>
                         <span class="badge border text-dark m-1">v${escapeHTML(localVersion)}</span>
                         ${cacheBadge}
+                        ${getExperimentalBadgeHTML(db)}
                         ${getLanguageBadgeHTML(db)}
                         ${stateBadge}
                     </div>
@@ -415,6 +442,7 @@ function getGamemodePackCardTemplate(db) {
             <button class="btn btn-primary gamemode_${gamemode_type}_section w-100 h-100" onclick="startGamemodeFromCard('${pack_id}', '${pack_source}', '${gamemode_type}')">
                 <div class="d-flex justify-content-between flex-column">
                     <h4 class="fw-bold h4 text-center w-100">${pack_name}</h4>
+                    ${db.experimental === true ? `<div class="d-flex justify-content-center">${getExperimentalBadgeHTML(db)}</div>` : ``}
                     ${pack_description}
                     ${additionalData}
                 </div>
@@ -475,6 +503,7 @@ function getMixGamemodeSwitchTemplate(db) {
             <div class="d-flex w-100 justify-content-between">
                 <label class="form-check-label" for="${pack_id}-checkbox">${pack_name}</label>
                 <div class="d-flex justify-content-end gap-1">
+                    ${getExperimentalBadgeHTML(db)}
                     ${additionalData}
                 </div>
             </div>

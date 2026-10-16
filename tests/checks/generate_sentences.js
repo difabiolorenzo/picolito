@@ -69,6 +69,8 @@ console.warn = (m) => { warnings++; };
 function newSession() {
     game.cycle_id = -1;
     game.sentence_history = [];
+    game.pending_suites = [];
+    game.played_cards = new Set();
 }
 
 newSession();
@@ -79,7 +81,6 @@ function consecutive() {
 }
 for (let n = 0; n < opts.count; n++) {
     if (game.cycle_id + 1 >= game.current_gamemode.database_length) newSession(); // fin de pack : on relance une session
-    const was_prefilled = !!(game.sentence_history[game.cycle_id + 1] && game.sentence_history[game.cycle_id + 1].formatted_sentence != "none");
     try {
         incrementCycleID();
         const h = game.sentence_history[game.cycle_id];
@@ -91,9 +92,10 @@ for (let n = 0; n < opts.count; n++) {
             position: n + 1,
             cycle_id: game.cycle_id,
             color: h.color,
+            family: h.family,
             type: h.type,
             text: opts.raw ? h.formatted_sentence : stripHtml(h.formatted_sentence),
-            is_followup: was_prefilled
+            is_followup: !!h.is_suite
         });
     } catch (e) {
         errors.push({ position: n + 1, reason: e.message });
@@ -122,7 +124,7 @@ if (opts.json) {
     console.log(`Graine  : ${game.seed} (rejouer : --seed ${game.seed})`);
     console.log("");
     for (const e of entries) {
-        console.log(`${String(e.position).padStart(3)}) [${(e.color || "-").padEnd(6)}] ${e.text}${e.is_followup ? "  [suite]" : ""}`);
+        console.log(`${String(e.position).padStart(3)}) [${(e.family || e.color || "-").padEnd(9)}] ${e.text}${e.is_followup ? "  [suite]" : ""}`);
     }
     console.log("");
     const suites = entries.filter((e) => e.is_followup).length;

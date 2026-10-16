@@ -4,7 +4,7 @@
 // Vérifie :
 //   - familles : probabilités entières qui totalisent 100, clé i18n, réglages référencés existants ;
 //   - types : famille connue, joueurs minimum, poids, décalage par défaut des suites, réglage existant ;
-//   - chaque famille a au moins un type ;
+//   - chaque famille a au moins un type et ses couleurs dans src/css/main.css ;
 //   - anciens packs : chaque type utilisé dans src/db/picolo (toutes langues) a un nouveau type connu.
 // Sortie : une ligne « OK : … » par assertion, arrêt (exit 1) sur le premier échec.
 "use strict";
@@ -39,6 +39,14 @@ for (const f of families) {
     }
 }
 check(new Set(families.map((f) => FAMILIES[f].order)).size === families.length, "ordre des familles sans doublon");
+
+// Affichage : chaque famille a ses couleurs (src/css/main.css) — fond, liste des phrases, mode sombre.
+const css = fs.readFileSync(path.join(ROOT, "src", "css", "main.css"), "utf8");
+for (const f of families) {
+    const missing = [`--family_${f}:`, `--family_${f}_dark:`, `div#picolito.family-${f} {`, `.sentence-list-family-${f} {`, `div#picolito.dark_affected.family-${f} div#ingame_sentence`]
+        .filter((sel) => !css.includes(sel));
+    check(missing.length === 0, missing.length ? `famille ${f} : CSS manquant ${missing.join(", ")}` : `famille ${f} : couleurs CSS (fond, liste, mode sombre)`);
+}
 
 // ---- Types ----
 const types = Object.keys(CARD_TYPES);

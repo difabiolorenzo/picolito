@@ -23,6 +23,10 @@ const CHECKS = [
     ["Catalogue des types et familles", ["tests/checks/check_types.js"]],
     ["Format schema 2 et modèle de cartes", ["tests/checks/check_cards.js"]],
     ["Remplissage des joueurs (%1, suites)", ["tests/checks/check_fill.js"]],
+    ["Tirage par familles", ["tests/checks/check_draw.js"]],
+    ["Suites en attente (collisions, prolongation)", ["tests/checks/check_suites.js"]],
+    ["Je n'ai jamais (modèle de cartes, Mix)", ["tests/checks/check_never.js"]],
+    ["Packs expérimentaux", ["tests/checks/check_experimental.js"]],
 ];
 
 // Les scripts locaux de index.html doivent être pré-cachés par sw.js, dans le même ordre.

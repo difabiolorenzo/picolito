@@ -30,7 +30,8 @@ const FAMILIES = Object.freeze({
 
 // ---- Types ----
 // family       : famille du type.
-// min_players  : joueurs requis au minimum pour que le type soit possible.
+// min_players  : indication de rédaction (joueurs que nomme en général une carte de ce type) ;
+//                le tirage ne s'en sert pas, il juge chaque carte par le nombre de joueurs qu'elle nomme.
 // weight       : poids du type dans le tirage au sein de sa famille (1 = même chance que les autres).
 // suite_offset : décalage par défaut d'une suite, en cartes ({min, max}, 1 = carte suivante) ;
 //                une suite peut le remplacer par offset_min / offset_max.
